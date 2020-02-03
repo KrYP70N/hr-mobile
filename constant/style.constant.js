@@ -47,6 +47,9 @@ export default style = StyleSheet.create({
   textSecondary: {
     color: color.secondary
   },
+  textNegative: {
+    color: color.negative
+  },
   textLight: {
     color: color.light
   },
@@ -82,6 +85,9 @@ export default style = StyleSheet.create({
   },
   justifyCenter: {
     justifyContent: 'center'
+  },
+  justifyBetween: {
+    justifyContent: 'space-between'
   },
   mr10: {
     marginRight: 10

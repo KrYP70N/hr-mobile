@@ -3,5 +3,6 @@ export default {
     secondary: '#333',
     placeholder: '#aaa',
     light: '#fff',
-    light2: '#ccc'
+    light2: '#ccc',
+    negative: '#FF0101'
 }
