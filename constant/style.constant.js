@@ -1,0 +1,153 @@
+import React, { Component } from 'react'
+import {
+  StyleSheet
+} from 'react-native'
+
+import color from './colors.constant'
+
+let style
+
+export default style = StyleSheet.create({
+  h1: {
+    fontSize: 28
+  },
+  h2: {
+    fontSize: 22
+  },
+  h3: {
+    fontSize: 18
+  },
+  h4: {
+    fontSize: 16
+  },
+  h5: {
+    fontSize: 14
+  },
+  h6: {
+    fontSize: 12
+  },
+  icon: {
+    fontSize: 19
+  },
+  fontBold: {
+    fontWeight: 'bold'
+  },
+  fontLight: {
+    fontWeight: 'normal'
+  },
+  backgroundPrimary: {
+    backgroundColor: color.primary
+  },
+  textButton: {
+    fontSize: 16
+  },
+  textPrimary: {
+    color: color.primary
+  },
+  textSecondary: {
+    color: color.secondary
+  },
+  textLight: {
+    color: color.light
+  },
+  textPlaceholder: {
+    color: color.placeholder
+  },
+  textCenter: {
+    textAlign: 'center'
+  },
+  textLeft: {
+    textAlign: 'left'
+  },
+  textRight: {
+    textAlign: 'right'
+  },
+  buttonPrimary: {
+    backgroundColor: color.primary
+  },
+  width100: {
+    width: '100%'
+  },
+  width50: {
+    width: '50%'
+  },
+  dispayFlex: {
+    display: 'flex'
+  },
+  flexRow: {
+    flexDirection: 'row'
+  },
+  itemCenter: {
+    alignItems: 'center'
+  },
+  justifyCenter: {
+    justifyContent: 'center'
+  },
+  mr10: {
+    marginRight: 10
+  },
+  mt10: {
+    marginTop: 10
+  },
+  mt20: {
+    marginTop: 20
+  },
+  mt30: {
+    marginTop: 30
+  },
+  mt40: {
+    marginTop: 40
+  },
+  mt50: {
+    marginBottom: 50
+  },
+  mb10: {
+    marginBottom: 10
+  },
+  mb20: {
+    marginBottom: 20
+  },
+  mb30: {
+    marginBottom: 30
+  },
+  mb40: {
+    marginBottom: 40
+  },
+  mb50: {
+    marginBottom: 50
+  },
+  mb60: {
+    marginBottom: 60
+  },
+  mb50: {
+    marginBottom: 70
+  },
+  border0: {
+    borderWidth: 0
+  },
+  radius: {
+    borderRadius: 5,
+    overflow: 'hidden'
+  },
+  copyright: {
+    textAlign: 'center'
+  },
+  list: {
+    backgroundColor: color.light,
+    borderBottomWidth: 1,
+    borderBottomColor: color.light2,
+    padding: 10,
+    paddingLeft: 20,
+    paddingRight: 20
+  },
+  listLast: {
+    borderWidth: 0,
+    borderBottomColor: color.light
+  },
+  listLabel: {
+    color: color.placeholder
+  },
+  container: {
+    padding: 20
+  }
+})
