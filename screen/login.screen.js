@@ -83,7 +83,11 @@ export default class LoginScreen extends Component {
             </Item>
           </View>
           <View style={[style.textCenter, style.mb50]}>
-            <Button block style={style.buttonPrimary}>
+            <Button 
+            block 
+            style={style.buttonPrimary}
+            onPress={() => this.props.navigation.navigate('MainScreen')}
+            >
               <Text style={[style.textLight, style.textButton]}>Login</Text>
             </Button>
           </View>

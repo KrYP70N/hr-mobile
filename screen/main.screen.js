@@ -4,7 +4,8 @@ import {
     View,
     Text,
     Image,
-    TouchableNativeFeedback
+    TouchableNativeFeedback,
+    TouchableOpacity
 } from 'react-native'
 
 // icon set
@@ -20,12 +21,25 @@ import main from '../constant/main.constant'
 import Card from '../components/card.component'
 
 export default class MainScreen extends Component {
-    static navigationOptions = ({ navigation, navigationOptions }) => {
-        const { params } = navigation.state
+    static navigationOptions = navData => {
         
         return {
-          headerShown: false 
-        };
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => {
+                    navData.navigation.openDrawer()
+                }}>
+                    {/* <Image style={styles.headerImage} source={require('../assets/icons/Menu.png')} onPress={() => {
+                        navData.navigation.openDrawer();
+                    }} /> */}
+                    <Icon active name='menu' style={[style.h2, style.textSecondary, style.ml20]} onPress={() => {
+                        navData.navigation.openDrawer();
+                    }}/>
+                </TouchableOpacity>
+            )
+        }
+        // return {
+        //   headerShown: false 
+        // };
     }
     render () {
         return (
@@ -36,7 +50,7 @@ export default class MainScreen extends Component {
                     <View style={[main.bannerProfile, style.mb50]}>
                         <View style={[main.info]}>
                             <View style={main.profile}>
-                                <Image source={require('../assets/icon/user.png')}/>
+                                <Image source={require('../assets/icon/user.png')} />
                             </View>
                             <View>
                                 <Text style={[style.textLight, style.h2]}>John Doe</Text>
@@ -44,7 +58,7 @@ export default class MainScreen extends Component {
                             </View>
                         </View>
                         <View style={[main.bannerLink]}>
-                            <Icon active name='arrow-right' style={[style.h2, style.textLight, style.textRight]}></Icon>
+                            <Icon active name='arrow-right' style={[style.h1, style.textLight, style.textRight]} onPress={() => this.props.navigation.navigate('ProfileScreen')}></Icon>
                         </View>
                     </View>
                 </View>
@@ -78,6 +92,9 @@ export default class MainScreen extends Component {
                                 icon: 'layout',
                                 label: 'Dashboard',
                                 layout: 'column'
+                            },
+                            click: () => {
+                                this.props.navigation.navigate('DashboardScreen')
                             }
                         }}/>
                         <Card data={{
@@ -86,6 +103,9 @@ export default class MainScreen extends Component {
                                 icon: 'calendar',
                                 label: 'Attandance',
                                 layout: 'column'
+                            },
+                            click: () => {
+                                this.props.navigation.navigate('AttendanceScreen')
                             }
                         }}/>
                         <Card data={{

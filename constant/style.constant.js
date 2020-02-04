@@ -92,6 +92,12 @@ export default style = StyleSheet.create({
   mr10: {
     marginRight: 10
   },
+  ml10: {
+    marginLeft: 10
+  },
+  ml20: {
+    marginLeft: 20
+  },
   mt10: {
     marginTop: 10
   },
@@ -125,8 +131,17 @@ export default style = StyleSheet.create({
   mb60: {
     marginBottom: 60
   },
-  mb50: {
+  mb70: {
     marginBottom: 70
+  },
+  mb80: {
+    marginBottom: 80
+  },
+  mb90: {
+    marginBottom: 90
+  },
+  mb100: {
+    marginBottom: 100
   },
   border0: {
     borderWidth: 0

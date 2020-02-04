@@ -48,5 +48,17 @@ export default attendance = StyleSheet.create({
         width: '47%',
         borderRadius: 5,
         padding: 10
+    },
+    stickyFoot: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        padding: 20,
+        backgroundColor: color.primary,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })

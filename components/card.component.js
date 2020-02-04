@@ -71,7 +71,7 @@ export default Card = ({data}) => {
 
      
     return (
-        <TouchableNativeFeedback>
+        <TouchableNativeFeedback onPress={data.click}>
             <View style={data.cardStyle}>
                 <InfoTitle />
                 <Placeholder />
