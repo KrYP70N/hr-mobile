@@ -114,6 +114,9 @@ export default class MainScreen extends Component {
                                 icon: 'user-minus',
                                 label: 'Leave',
                                 layout: 'column'
+                            },
+                            click: () => {
+                                this.props.navigation.navigate('LeaveScreen')
                             }
                         }}/>
                         <Card data={{

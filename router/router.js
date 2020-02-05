@@ -9,6 +9,7 @@ import ProfileScreen from '../screen/profile.screen'
 import MainScreen from '../screen/main.screen'
 import DashboardScreen from '../screen/dashboard.screen'
 import AttendanceScreen from '../screen/attendance.screen'
+import LeaveScreen from '../screen/Leave/leave.screen'
 
 const AppNavigator = createStackNavigator(
   {
@@ -26,6 +27,9 @@ const AppNavigator = createStackNavigator(
     },
     AttendanceScreen: {
       screen: AttendanceScreen
+    },
+    LeaveScreen: {
+      screen: LeaveScreen
     }
   },
   {
