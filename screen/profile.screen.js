@@ -22,6 +22,25 @@ import style from '../constant/style.constant'
 import profile from '../constant/profile.constant'
 
 export default class ProfileScreen extends Component {
+
+  // constructor
+  constructor(props) {
+    super(props)
+    this.state = {
+      token: null,
+      user: null
+    }
+  }
+
+  // mount
+  componentDidMount () {
+    // console.log(this.props.navigation.state.params)
+    this.setState({
+      token: this.props.navigation.state.params,
+      user: this.props.navigation.state.user
+    })
+  }
+
   render () {
     return (
       <ScrollView style={profile.container}>
@@ -32,7 +51,12 @@ export default class ProfileScreen extends Component {
           {/* profile - primary */}
           <View style={[profile.profile, style.mb10]}>
             <View style={profile.pictureBox}>
-              <Image source={require('../assets/icon/user.png')} style={profile.picture}/>
+              {
+                this.state.user === null ?
+                <Image source={require('../assets/icon/user.png')} style={profile.picture}/> :
+                <Image source={require('../assets/icon/user.png')} style={profile.picture}/>
+              }
+              
             </View>
             <Text style={[style.textPlaceholder, style.mb10]}>ID - 123456</Text>
             <Text style={[style.h2, style.textPrimary, style.mb10, style.fontBold]}>John Doe</Text>
@@ -69,7 +93,6 @@ export default class ProfileScreen extends Component {
             </View>
           </View>
         </View>
-
       </ScrollView>
     )
   }
