@@ -83,7 +83,7 @@ export default class Request extends Component {
                 </Item>
                 
                 {/* reason */}
-                <Textarea rowSpan={5} bordered placeholder="Reason for Leave" placeholderTextColor={{color: color.placeholder}} style={style.mb20}/>
+                <Textarea rowSpan={5} bordered placeholder="Reason for Leave" placeholderTextColor={{color: color.placeholder}} />
 
                 <View style={[style.dispayFlex, style.flexRow, style.justifyBetween, style.itemCenter]}>
                     <Text style={[style.textPlaceholder, style.h3]}>Attachment</Text>
