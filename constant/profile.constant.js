@@ -33,7 +33,8 @@ export default profile = StyleSheet.create({
         borderRadius: 50,
         borderColor: color.primary,
         borderWidth: 2,
-        position: 'relative'
+        position: 'relative',
+        overflow: 'hidden'
     },
     picture: {
         width: 96,
