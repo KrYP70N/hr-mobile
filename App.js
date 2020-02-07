@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import AppNavigator from './router/router'
-import { Font } from 'expo-font'
+import {Font} from 'expo-font'
 import { Root } from 'native-base';
 
 export default class App extends Component {

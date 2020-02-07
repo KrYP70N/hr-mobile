@@ -23,6 +23,21 @@ class APIs {
       })
   }
 
+  // request getTime
+  static getServerTime (token) {
+    return axios.create({
+      headers: {
+        access_token: token
+      }
+    }).get(`${config.req}/getTime`)
+      .then(function(res) {
+        return {data: res.data.data, status: 'success'}
+      })
+      .catch(function(error) {
+          return {error: error, status: 'fail'}
+      })
+  }
+
   // request profile
   static getProfile (token, id) {
     return axios.create({
@@ -38,6 +53,7 @@ class APIs {
       })
   }
 
+  // checkin-out
   static postCheckin (token, id) {
     return axios.create(
         {
@@ -53,6 +69,7 @@ class APIs {
         return err
       })
   }
+
 }
 
 module.exports = APIs
@@ -60,9 +77,5 @@ module.exports = APIs
 // sample api call
 
 // token
-APIs.getToken('siko', '123')
-  .then((res) => {
-    console.log(res)
-  })
 
 // console.log('hi')

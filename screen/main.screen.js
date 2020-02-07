@@ -24,6 +24,7 @@ import main from '../constant/main.constant'
 
 // import component
 import Card from '../components/card.component'
+import Clock from '../components/clock.component'
 
 // import controller
 import APIs from '../controller/api.controller'
@@ -93,7 +94,7 @@ export default class MainScreen extends Component {
             
           }>
           <View style={main.banner}>
-            <Text style={[main.bannerText, style.textLight, style.mb20, style.mt20]}>10:11 AM friday, 01 Nov 2019</Text>
+            <Clock style={[main.bannerText, style.textLight, style.mb20, style.mt20]} token={this.state.token.val}/>
             <View style={[main.bannerProfile, style.mb50]}>
               <View style={[main.info]}>
                 <View style={main.profile}>
