@@ -159,12 +159,17 @@ export default class ProfileScreen extends Component {
         </View>
 
         {/* contact info */}
-        <Text style={[style.h2, style.fontBold, style.mb20]}>Personal Info</Text>
+        <Text style={[style.h2, style.fontBold, style.mb20]}>Personal Infos</Text>
         <View style={[style.mb40, style.radius]}>
           <View style={style.listBox}>
             {personalinfo}
           </View>
         </View>
+
+
+
+
+        
       </ScrollView>
     )
   }
