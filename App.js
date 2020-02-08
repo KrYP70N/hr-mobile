@@ -12,7 +12,6 @@ export default class App extends Component {
     })
     return (
       <Root>
-        <AppNavigator />
       </Root>
     )
   }
