@@ -5,7 +5,7 @@ import {
   Text,
   Image,
   TouchableNativeFeedback,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native'
 
 // native base
@@ -16,8 +16,13 @@ import {
 // icon set
 import Icon from 'react-native-vector-icons/Feather';
 
-// import constant & style
+// location
+import * as Location from 'expo-location'
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions'
+import { isPointWithinRadius } from 'geolib'
 
+// import constant & style
 import color from '../constant/colors.constant'
 import style from '../constant/style.constant'
 import main from '../constant/main.constant'
@@ -29,6 +34,7 @@ import Clock from '../components/clock.component'
 // import controller
 import APIs from '../controller/api.controller'
 
+
 export default class MainScreen extends Component {
   // constructor
   constructor(props) {
@@ -38,16 +44,39 @@ export default class MainScreen extends Component {
         id: this.props.navigation.state.params.id,
         val: this.props.navigation.state.params.token
       },
-      user: null
+      user: null,
+      location: null,
+      errorMessage: null
     }
   }
+  
+  // get location
+  
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    this.setState({ location });
+  };
 
   // didmount
   componentDidMount() {
+    // check location
+    if (Platform.OS === 'android' && !Constants.isDevice) {
+      this.setState({
+        errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
+      });
+    } else {
+      this._getLocationAsync();
+    }
     // load user
     APIs.getProfile(this.state.token.val, this.state.token.id)
       .then((res) => {
-        console.log(res.status)
         if (res.status === 'success') {
           this.setState({
             user: res.data
@@ -81,6 +110,17 @@ export default class MainScreen extends Component {
   }
 
   render() {
+    // profile pic
+    let picture = require('../assets/icon/user.png')
+    if(this.state.user !== null) {
+      if(this.state.user.data['Profile Picture'][0] !== false) {
+        picture = {
+          uri: `
+            data:${this.state.user.data['Profile Picture'][1]};base64,${this.state.user.data['Profile Picture'][0]}
+          `
+        }
+      }
+    }
 
     return (
       <ScrollView>
@@ -100,7 +140,15 @@ export default class MainScreen extends Component {
                 <View style={main.profile}>
                   {
                     this.state.user === null ? 
-                    <Icon active name='arrow-right' style={[style.h1, style.textLight, style.textRight]}></Icon> : 
+                    <Image
+                      style={{
+                          width: 64,
+                          height: 64,
+                          position: 'absolute',
+                          top: 0
+                        }}
+                      source={require('../assets/icon/user.png')}
+                    /> : 
                     <Image 
                       style={{
                         width: 64,
@@ -108,12 +156,8 @@ export default class MainScreen extends Component {
                         position: 'absolute',
                         top: 0
                       }}
-                      source={{
-                        uri: `data:${this.state.user.data['Profile Picture'][1]};base64,${this.state.user.data['Profile Picture'][0]}`
-                      }}
+                      source={picture}
                     />
-                    
-
                   }
                 </View>
                 <View>
@@ -126,7 +170,8 @@ export default class MainScreen extends Component {
                   <Text style={[style.textLight]}>
                     {
                       this.state.user === null ? null : 
-                      this.state.user.data['Job Position']
+                      this.state.user.data['Job Position'] === false ?
+                      'untiled position' : this.state.user.data['Job Position']
                     }
                   </Text>
                 </View>
@@ -148,7 +193,26 @@ export default class MainScreen extends Component {
                 label: 'Check In',
                 layout: 'row'
               },
-              placeholder: "You haven't check in yet."
+              placeholder: "You haven't check in yet.",
+              click: () => {
+                {/* alert(this.state.location) */}
+                if(this.state.location !== null) {
+                  let userLat = this.state.user.data['Latitude']
+                  let userLong = this.state.user.data['Longtitude']
+                  {/* let isCenter =  isPointWithinRadius(
+                    {latitude: userLat, longitude: userLong},
+                    {latitude: this.state.location.coords.latitude, longitude: this.state.location.coords.longitude},
+                    this.state.user.data['Radius(m)']) */}
+                  let isCenter =  isPointWithinRadius(
+                    {latitude: userLat, longitude: userLong},
+                    {latitude: userLat, longitude: userLong},
+                    9
+                  )
+                  isCenter ? alert('check in success') : alert('out of range')
+                } else {
+                  alert('please check your GPS setting!')
+                }
+              }
             }} />
             <Card data={{
               cardStyle: main.card,
@@ -157,7 +221,26 @@ export default class MainScreen extends Component {
                 label: 'Check Out',
                 layout: 'row'
               },
-              placeholder: "Don't forget to check out."
+              placeholder: "Don't forget to check out.",
+              click: () => {
+                {/* alert(this.state.location) */}
+                if(this.state.location !== null) {
+                  let userLat = this.state.user.data['Latitude']
+                  let userLong = this.state.user.data['Longtitude']
+                  {/* let isCenter =  isPointWithinRadius(
+                    {latitude: userLat, longitude: userLong},
+                    {latitude: this.state.location.coords.latitude, longitude: this.state.location.coords.longitude},
+                    this.state.user.data['Radius(m)']) */}
+                  let isCenter =  isPointWithinRadius(
+                    {latitude: userLat, longitude: userLong},
+                    {latitude: userLat, longitude: userLong},
+                    9
+                  )
+                  isCenter ? alert('check out success') : alert('out of range')
+                } else {
+                  alert('please check your GPS setting!')
+                }
+              }
             }} />
 
             {/* navigation list */}
@@ -225,16 +308,3 @@ export default class MainScreen extends Component {
     )
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -97,7 +97,7 @@ export default class AttendanceScreen extends Component {
         {/* footer sticky */}
         
          <TouchableNativeFeedback>
-          <View style={attendance.stickyFoot}>
+          <View style={style.stickyFoot}>
             <Icon active name='calendar' style={[style.h2, style.textLight, style.mr10]}/>
             <Text style={[style.textCenter, style.textLight, style.h3]}>Attendance Record</Text>
           </View>

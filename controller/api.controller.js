@@ -1,8 +1,8 @@
 const axios = require('axios')
 
 const config = {
-  req: 'http://192.168.1.175:8071',
-  db: 'Odoo11_HR_C'
+  req: 'http://192.168.1.106:8071',
+  db: 'TESTING'
 }
 
 class APIs {

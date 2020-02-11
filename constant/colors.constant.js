@@ -4,5 +4,6 @@ export default {
     placeholder: '#aaa',
     light: '#fff',
     light2: '#ccc',
-    negative: '#FF0101'
+    negative: '#FF0101',
+    warning: '#FFB300'
 }

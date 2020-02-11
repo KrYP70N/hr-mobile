@@ -100,6 +100,7 @@ export default class ProfileScreen extends Component {
 
   render () {
 
+    // work
     const workinfo = this.state.workInfo.map((data) => {
       if(data.value !== "" && data.value !== false) {
         return (
@@ -110,7 +111,7 @@ export default class ProfileScreen extends Component {
         )
       }
     })
-
+    // personal
     const personalinfo = this.state.personalInfo.map((data) => {
       if(data.value !== "" && data.value !== false) {
         return (
@@ -121,6 +122,18 @@ export default class ProfileScreen extends Component {
         )
       }
     })
+    // profile validate
+    let picture = require('../assets/icon/user.png')
+
+    if(this.state.user !== null) {
+      if(this.state.user.data['Profile Picture'][0] !== false) {
+        profile = {
+          uri: `
+            data:${this.state.user.data['Profile Picture'][1]};base64,${this.state.user.data['Profile Picture'][0]}
+          `
+        }
+      }
+    }
 
     return (
       <ScrollView style={profile.container}>
@@ -134,11 +147,7 @@ export default class ProfileScreen extends Component {
               {
                 this.state.user === null ?
                 <Image source={require('../assets/icon/user.png')} style={profile.picture}/> :
-                <Image source={{
-
-
-                  uri: `data:${this.state.user.data['Profile Picture'][1]};base64,${this.state.user.data['Profile Picture'][0]}`
-                }} style={profile.picture}/>
+                <Image source={picture} style={profile.picture}/>
               }
               
             </View>

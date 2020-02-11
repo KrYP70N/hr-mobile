@@ -12,7 +12,10 @@ import {
     Header, 
     Content, 
     Tab, 
-    Tabs 
+    Tabs,
+    Footer,
+    FooterTab,
+    Button
 } from 'native-base';
 
 
@@ -50,6 +53,7 @@ export default class LeaveScreen extends Component {
                         <Approve />
                     </Tab>
                 </Tabs>
+                
             </Container>
         )
     }

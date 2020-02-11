@@ -38,6 +38,12 @@ export default style = StyleSheet.create({
   backgroundPrimary: {
     backgroundColor: color.primary
   },
+  backgroundSecondary: {
+    backgroundColor: color.secondary
+  },
+  backgroundPlaceholder: {
+    backgroundColor: color.placeholder
+  },
   textButton: {
     fontSize: 16
   },
@@ -49,6 +55,9 @@ export default style = StyleSheet.create({
   },
   textNegative: {
     color: color.negative
+  },
+  textWarning: {
+    color: color.warning
   },
   textLight: {
     color: color.light
@@ -170,5 +179,17 @@ export default style = StyleSheet.create({
   },
   container: {
     padding: 20
+  },
+  stickyFoot: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      padding: 20,
+      backgroundColor: color.primary,
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center'
   }
 })
