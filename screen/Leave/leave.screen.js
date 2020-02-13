@@ -35,7 +35,7 @@ import attendance from '../../constant/attendance.constant'
 // import leave modules
 import Request from './request.leave'
 import Approve from './approve.leave'
-import History from './approve.leave'
+import History from './history.leave'
 
 // export 
 export default class LeaveScreen extends Component {
@@ -50,7 +50,7 @@ export default class LeaveScreen extends Component {
                         <Approve />
                     </Tab>
                     <Tab heading="History" tabStyle={{backgroundColor: color.primary}} activeTabStyle={{backgroundColor: color.primary}}>
-                        <Approve />
+                        <History />
                     </Tab>
                 </Tabs>
                 

@@ -75,7 +75,8 @@ export default style = StyleSheet.create({
     textAlign: 'right'
   },
   buttonPrimary: {
-    backgroundColor: color.primary
+    backgroundColor: color.primary,
+    padding: 30
   },
   width100: {
     width: '100%'

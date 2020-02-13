@@ -46,9 +46,9 @@ export default class Request extends Component {
                             <Picker
                                 mode="dropdown"
                                 iosIcon={<Icon name="chevron-down" />}
-                                style={{ width: undefined }}
+                                style={[style.textPlaceholder]}
                                 placeholder="Select your SIM"
-                                placeholderStyle={{ color: "#bfc6ea" }}
+                                placeholderStyle={[style.textPlaceholder]}
                                 placeholderIconColor="#007aff"
                             >
                                 <Picker.Item label="Casual Leave" value="key0" />

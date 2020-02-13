@@ -6,9 +6,9 @@ import {
 import color from './colors.constant'
 import style from './style.constant'
 
-let attendance
+let leave
 
-export default attendance = StyleSheet.create({
+export default leave = StyleSheet.create({
     timeBanner: {
         display: 'flex',
         alignItems: 'center',

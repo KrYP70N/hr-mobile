@@ -29,7 +29,7 @@ import Icon from 'react-native-vector-icons/Feather'
 
 import color from '../../constant/colors.constant'
 import style from '../../constant/style.constant'
-import attendance from '../../constant/attendance.constant'
+import leave from '../../constant/leave.constant'
 
 export default class Approve extends Component {
     render () {
