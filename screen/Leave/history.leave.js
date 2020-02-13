@@ -76,6 +76,7 @@ export default class History extends Component {
                         <Card>
                             <CardItem>
                                 <Text style={style.h3}>Casual Leaves</Text>
+                                <Text></Text>
                             </CardItem>
                         </Card>
                     </View>
