@@ -58,7 +58,7 @@ export default class LoginScreen extends Component {
         .then((res) => {
           // this.props.navigation.navigate('MainScreen', { id: res.data.employee_id, token: res.data.access_token })
           if (res.status === 'success') {
-            this.props.navigation.navigate('MainScreen', { id: res.data.employee_id, token: res.data.access_token })
+            this.props.navigation.navigate('MainScreen', {id: res.data.employee_id, token: res.data.access_token})
           } else {
             Toast.show({
               text: "Sorry, user name or password is not correct!",

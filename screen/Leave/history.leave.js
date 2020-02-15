@@ -13,7 +13,9 @@ import {
     Col, 
     Content, 
     Picker, 
-    Button} from 'native-base'
+    Button,
+    Card,
+    CardItem} from 'native-base'
 
 import Icon from 'react-native-vector-icons/Feather'
 
@@ -72,11 +74,27 @@ export default class History extends Component {
                             <Text style={[style.width100, style.textCenter, style.textButton, style.mt10, style.mb10]}>Search</Text>
                         </Button>
                     </View>
-                    <View>
+                    <View style={leave.leaveHistory}>
+                        
                         <Card>
-                            <CardItem>
-                                <Text style={style.h3}>Casual Leaves</Text>
-                                <Text></Text>
+                            <CardItem style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                width: "100%",
+                                justifyContent: "flex-start"
+                            }}>
+                                {/* leave type */}
+                                <View style={[style.dispayFlex, style.justifyBetween, style.flexRow, style.width100]}>
+                                    <Text style={[style.h3, style.fontBold, style.textSecondary]}>Casual Leaves</Text>
+                                    <Text style={[style.textPlaceholder]}>11 Nov 2020</Text>
+                                </View>
+
+                                {/* <View>
+                                    <Text>07 Nov 2019 to 09 Nov 2020</Text>
+                                    <Button style={[style.buttonPrimary]}>
+                                        <Text>Approve</Text>
+                                    </Button>
+                                </View> */}
                             </CardItem>
                         </Card>
                     </View>
