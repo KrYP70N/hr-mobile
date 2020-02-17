@@ -1,4 +1,5 @@
 export default {
+    oh: 0.5,
     o1: 10,
     o2: 20,
     o3: 30,

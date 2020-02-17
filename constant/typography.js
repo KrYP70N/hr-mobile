@@ -13,6 +13,15 @@ export default {
         fontSize: size.s2,
         color: color.secondary
     },
+    cardTitle: {
+        fontSize: size.s3,
+        fontWeight: 'bold',
+        color: color.secondary
+    },
+    cardRthLabel: {
+        fontSize: size.s1,
+        color: color.placeHolder
+    },
     headline: {
         fontSize: size.s4,
         color: color.primary
