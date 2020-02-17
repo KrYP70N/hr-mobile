@@ -43,5 +43,56 @@ export default StyleSheet.create({
         ...typo.icnLight,
         width: '100%',
         textAlign: 'right'
+    },
+    checkHolder: {
+        padding: offset.o1,
+        marginTop: -offset.o4,
+    },
+    cardLft: {
+        paddingRight: offset.o1,
+        marginBottom: offset.o1
+    },
+    cardRight: {
+        paddingLeft: offset.o1,
+        marginBottom: offset.o1
+    },
+    checkBody: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    checkTitle: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: offset.o1
+    },
+    checkTitleTxt: {
+        ...typo.subHeader,
+        marginLeft: offset.o1
+    },
+    checkIcn: {
+        color: color.primary
+    },
+    checkInfo: {
+        ...typo.textSmall,
+        color: color.placeHolder,
+        textAlign: 'center'
+    },
+    disabled: {
+        opacity: 0.8,
+        backgroundColor: color.primary
+    },
+    menuHolder: {
+        paddingLeft: offset.o1,
+        paddingRight: offset.o1
+    },
+    menuBody: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    icon: {
+        ...typo.icnLight,
+        marginBottom: offset.o2,
+        color: color.primary
     }
 })
