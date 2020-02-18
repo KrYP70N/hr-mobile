@@ -4,7 +4,7 @@ import { Container } from 'native-base';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 
-import Overtime from './screen/overtime/overtime.screen'
+import Attendance from './screen/Attendance/attendance.screen'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -30,7 +30,8 @@ export default class App extends React.Component {
 
     return (
       <Container>
-        <Overtime />
+        <Attendance
+         />
       </Container>
     );
   }

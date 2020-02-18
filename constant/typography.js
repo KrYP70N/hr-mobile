@@ -18,6 +18,11 @@ export default {
         fontWeight: 'bold',
         color: color.secondary
     },
+    cardSTitle: {
+        fontSize: size.s2,
+        fontWeight: 'bold',
+        color: color.secondary
+    },
     cardRthLabel: {
         fontSize: size.s1,
         color: color.placeHolder

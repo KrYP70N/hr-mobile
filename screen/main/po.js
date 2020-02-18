@@ -3,7 +3,7 @@ export default {
         icon: 'ios-clock',
         title: 'Check In',
         checked: {
-            true: "You already check in. \n",
+            true: "You already check in.",
             false: "You haven't check in yet."
         }
     },
