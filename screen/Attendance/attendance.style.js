@@ -93,6 +93,6 @@ export default StyleSheet.create({
     },
     infoCardLabel: {
         ...typo.textSmall,
-        color: color.danger
+        color: color.placeHolder
     }
 })

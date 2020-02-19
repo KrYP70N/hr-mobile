@@ -5,6 +5,7 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 
 import Attendance from './screen/Attendance/attendance.screen'
+import Payroll from './screen/payroll/payroll.screen'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -30,8 +31,7 @@ export default class App extends React.Component {
 
     return (
       <Container>
-        <Attendance
-         />
+        <Payroll/>
       </Container>
     );
   }
