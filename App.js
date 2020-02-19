@@ -1,10 +1,10 @@
 import React from 'react';
 import { AppLoading } from 'expo';
-import { Container, Spinner, View } from 'native-base';
+import { Container, Spinner, View, Root } from 'native-base';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 
-import Navigation from './router/drawer.navigation'
+import Navigation from './router/navigation'
 
 import Loading from './components/loading.component'
 
@@ -35,9 +35,9 @@ export default class App extends React.Component {
     }
 
     return (
-      <Container>
+      <Root>
         <Navigation />
-      </Container>
+      </Root>
     );
   }
 }

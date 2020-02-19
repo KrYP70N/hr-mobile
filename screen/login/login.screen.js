@@ -1,28 +1,69 @@
 import React, { Component } from 'react'
-import { KeyboardAvoidingView, Image } from 'react-native'
-import { View, Text, Container, Form, Content, Item, Label, Input, Button, Footer, Icon } from 'native-base'
+import { KeyboardAvoidingView, Image, Keyboard } from 'react-native'
+import { View, Text, Container, Form, Content, Item, Label, Input, Button, Footer, Icon, Toast } from 'native-base'
 
 import styLogin from './login.style'
 import po from './po'
-import { ScrollView } from 'react-native-gesture-handler'
+
+import Overlay from '../../components/overlay.component'
+
+import APIs from '../../controllers/api.controller'
 
 export default class Login extends Component {
 
     constructor (props) {
         super(props)
         this.state = {
-            hide_passowrd: true
+            hide_passowrd: true,
+            overlay: false,
+            user: null,
+            name: null
         }
 
         // submit
         this.login = () => {
-            this.props.navigation.navigate('Main')
+            // inject keyboard
+            Keyboard.dismiss()
+            this.setState({
+                overlay: true
+            })
+            APIs.Token(this.state.user, this.state.password)
+                .then((res) => {
+                    this.setState({
+                        overlay: false
+                    })
+                    if(res.status === 'success') {
+                        this.props.navigation.navigate('Main', )
+                    } else {
+                        Toast.show({
+                            text: 'user name or password is not correct!',
+                            buttonStyle: 'Okay'
+                        })
+                    }
+                })
         }
 
-    }
+        // handle user field
+        this.user = (key) => {
+            this.setState({
+                user: key
+            })
+        }
 
+        // handle password field
+        this.password = (key)  => {
+            this.setState({
+                password: key
+            })
+        }
+
+
+
+        
+    }
     
     render() {
+        
         return (
             <KeyboardAvoidingView behavior="height" style={styLogin.kbView}>
                 <Container style={styLogin.container}>
@@ -35,12 +76,14 @@ export default class Login extends Component {
                     
                     <Item floatingLabel style={styLogin.item}>
                         <Label style={styLogin.label}>{po.label.name}</Label>
-                        <Input style={styLogin.input} />
+                        <Input style={styLogin.input} onChangeText={(key) => this.user(key)}/>
                     </Item>
 
                     <Item floatingLabel style={styLogin.password}>
                         <Label style={styLogin.label}>{po.label.psw}</Label>
-                        <Input secureTextEntry={this.state.hide_passowrd} style={styLogin.input} />
+                        <Input secureTextEntry={this.state.hide_passowrd} style={styLogin.input} 
+                            onChangeText={(key) => {this.password(key)}}
+                        />
                         <Icon active name={
                             this.state.hide_passowrd === true ? 'ios-eye-off' : 'ios-eye'
                         } onPress={() => {
@@ -62,6 +105,7 @@ export default class Login extends Component {
 
                     <Text style={styLogin.copyright}>{po.copyright}</Text>
                 </Container>
+                <Overlay overlay={this.state.overlay}/>
             </KeyboardAvoidingView>
         )
     }

@@ -40,7 +40,9 @@ export default class Payroll extends Component {
                                 <Body>
                                     <View style={styPayroll.titleHolder}>
                                         <Text style={styPayroll.cardTitle}>October</Text>
-                                        <Icon name="ios-arrow-round-forward" style={styPayroll.cardRthLabel}/>
+                                        <Icon name="ios-arrow-round-forward" style={styPayroll.cardRthLabel} onPress={() => {
+                                            this.props.navigation.navigate('PayrollDetail')
+                                        }}/>
                                     </View>
                                     <Text style={styPayroll.month}>29 Oct 2020</Text>
                                     <View style={styPayroll.titleHolder}>
@@ -58,7 +60,7 @@ export default class Payroll extends Component {
                                 <Body>
                                     <View style={styPayroll.titleHolder}>
                                         <Text style={styPayroll.cardTitle}>October</Text>
-                                        <Icon name="ios-arrow-round-forward" style={styPayroll.cardRthLabel}/>
+                                        <Icon name="ios-arrow-round-forward" style={styPayroll.cardRthLabel} onPress={() => {this.props.navigation.navi}}/>
                                     </View>
                                     <Text style={styPayroll.month}>29 Oct 2020</Text>
                                     <View style={styPayroll.titleHolder}>
@@ -76,7 +78,7 @@ export default class Payroll extends Component {
                                     <Body>
                                         <View style={styPayroll.titleHolder}>
                                             <Text style={styPayroll.cardTitle}>October</Text>
-                                            <Icon name="ios-arrow-round-forward" style={styPayroll.cardRthLabel}/>
+                                            <Icon name="ios-arrow-round-forward" style={styPayroll.cardRthLabel} onPress={() => {this.props.navigation.navi}}/>
                                         </View>
                                         <Text style={styPayroll.month}>29 Oct 2020</Text>
                                         <View style={styPayroll.titleHolder}>
