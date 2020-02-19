@@ -13,8 +13,15 @@ export default class Login extends Component {
         this.state = {
             hide_passowrd: true
         }
+
+        // submit
+        this.login = () => {
+            this.props.navigation.navigate('Main')
+        }
+
     }
 
+    
     render() {
         return (
             <KeyboardAvoidingView behavior="height" style={styLogin.kbView}>
@@ -43,7 +50,7 @@ export default class Login extends Component {
                         }} style={styLogin.icn}/> 
                     </Item>
 
-                    <Button style={styLogin.button}>
+                    <Button style={styLogin.button} onPress={this.login}>
                         <Text style={styLogin.buttonText}>{po.label.btn}</Text>
                     </Button>
 
@@ -56,7 +63,6 @@ export default class Login extends Component {
                     <Text style={styLogin.copyright}>{po.copyright}</Text>
                 </Container>
             </KeyboardAvoidingView>
-
         )
     }
 }

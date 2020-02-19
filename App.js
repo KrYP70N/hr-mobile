@@ -1,12 +1,12 @@
 import React from 'react';
 import { AppLoading } from 'expo';
-import { Container } from 'native-base';
+import { Container, Spinner, View } from 'native-base';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 
-import Attendance from './screen/Attendance/attendance.screen'
-import Payroll from './screen/payroll/payroll.screen'
-import PayrollDetail from './screen/payroll/pryroll.detail.screen'
+import Navigation from './router/drawer.navigation'
+
+import Loading from './components/loading.component'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -22,17 +22,21 @@ export default class App extends React.Component {
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
       ...Ionicons.font,
     });
-    this.setState({ isReady: true });
+    setTimeout(() => {
+      this.setState({ isReady: true });
+    }, 4000)
   }
 
   render() {
     if (!this.state.isReady) {
-      return <AppLoading />;
+      return (
+        <Loading />
+      )
     }
 
     return (
       <Container>
-        <PayrollDetail />
+        <Navigation />
       </Container>
     );
   }

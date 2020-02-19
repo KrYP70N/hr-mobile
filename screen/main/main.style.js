@@ -48,6 +48,9 @@ export default StyleSheet.create({
         padding: offset.o1,
         marginTop: -offset.o4,
     },
+    checkCard: {
+        height: 120
+    },
     cardLft: {
         paddingRight: offset.o1,
         marginBottom: offset.o1
@@ -58,7 +61,8 @@ export default StyleSheet.create({
     },
     checkBody: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     checkTitle: {
         display: 'flex',
@@ -78,9 +82,11 @@ export default StyleSheet.create({
         color: color.placeHolder,
         textAlign: 'center'
     },
-    disabled: {
-        opacity: 0.8,
-        backgroundColor: color.primary
+    disabled: {        
+        backgroundColor: color.dark
+    },
+    disabledMenu: {
+        opacity: 0.5
     },
     menuHolder: {
         paddingLeft: offset.o1,

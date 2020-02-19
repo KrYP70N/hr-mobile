@@ -22,19 +22,22 @@ export default {
         },
         {
             icon: 'ios-calendar',
-            name: 'Attendance'
+            name: 'Attendance',
+            navigate: 'Attendance'
         },
         {
             icon: 'ios-walk',
-            name: 'Leave'
+            name: 'Leave',
         },
         {
             icon: 'ios-stopwatch',
-            name: 'Overtime'
+            name: 'Overtime',
+            navigate: 'Overtime'
         },
         {
             icon: 'md-bookmarks',
-            name: 'Payroll'
+            name: 'Payroll',
+            navigate :'Payroll'
         },
         {
             icon: 'md-cash',
