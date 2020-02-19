@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import Attendance from './screen/Attendance/attendance.screen'
 import Payroll from './screen/payroll/payroll.screen'
+import PayrollDetail from './screen/payroll/pryroll.detail.screen'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -31,7 +32,7 @@ export default class App extends React.Component {
 
     return (
       <Container>
-        <Payroll/>
+        <PayrollDetail />
       </Container>
     );
   }

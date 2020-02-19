@@ -50,12 +50,60 @@ export default StyleSheet.create({
         color: color.tertiary
     },
     salary: {
-        ...typo.parabraph,
+        ...typo.paragraph,
         color: color.placeHolder,
         marginBottom: offset.o2
     },
     cardButton: {
         ...button.secondary,
-        alignSelf: 'flex-end'
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: offset.o1
+    },
+    detailBanner: {
+        padding: offset.o3,
+        backgroundColor: color.primary,
+        display: 'flex',
+        alignItems: 'center'
+    },
+    detailSalary: {
+        ...typo.headline,
+        color: color.light
+    },
+    bannerTxt: {
+        ...typo.paragraph,
+        color: color.light,
+        marginBottom: offset.o2
+    },
+    bannerTxtS: {
+        ...typo.textSmall,
+        color: color.light
+    },
+    listItem: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    }, 
+    listLft: {
+        ...typo.paragraph,
+        color: color.placeHolder
+    },
+    listRht: {
+        ...typo.paragraph,
+        color: color.tertiary
+    },
+    divText: {
+        ...typo.subHeader,
+        fontWeight: 'bold',
+        marginTop: offset.o2,
+        marginBottom: offset.o2,
+        color: color.secondary
+    },
+    stickyButton: {
+        ...button.primary,
+        width: '100%',
+        position: 'absolute',
+        bottom: 0,
+        left: 0
     }
 })

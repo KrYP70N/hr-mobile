@@ -9,7 +9,7 @@ let size = {
 }
 
 export default {
-    parabraph: {
+    paragraph: {
         fontSize: size.s2,
         color: color.secondary
     },

@@ -35,8 +35,43 @@ export default class Payroll extends Component {
                         </Button>
                     </Form>
                     <View style={styPayroll.list}>
-                        
-                            <Card>
+                        <Card>
+                            <CardItem>
+                                <Body>
+                                    <View style={styPayroll.titleHolder}>
+                                        <Text style={styPayroll.cardTitle}>October</Text>
+                                        <Icon name="ios-arrow-round-forward" style={styPayroll.cardRthLabel}/>
+                                    </View>
+                                    <Text style={styPayroll.month}>29 Oct 2020</Text>
+                                    <View style={styPayroll.titleHolder}>
+                                        <Text style={styPayroll.salary}>Net Salary - 780,000 MMK</Text>
+                                        <Button style={styPayroll.cardButton}>
+                                            <Icon name="md-arrow-down"/>
+                                            <Text>PDF</Text>
+                                        </Button>
+                                    </View>
+                                </Body>
+                            </CardItem>
+                        </Card>
+                        <Card>
+                            <CardItem>
+                                <Body>
+                                    <View style={styPayroll.titleHolder}>
+                                        <Text style={styPayroll.cardTitle}>October</Text>
+                                        <Icon name="ios-arrow-round-forward" style={styPayroll.cardRthLabel}/>
+                                    </View>
+                                    <Text style={styPayroll.month}>29 Oct 2020</Text>
+                                    <View style={styPayroll.titleHolder}>
+                                        <Text style={styPayroll.salary}>Net Salary - 780,000 MMK</Text>
+                                        <Button style={styPayroll.cardButton}>
+                                            <Icon name="md-arrow-down"/>
+                                            <Text>PDF</Text>
+                                        </Button>
+                                    </View>
+                                </Body>
+                            </CardItem>
+                        </Card>
+                        <Card>
                                 <CardItem>
                                     <Body>
                                         <View style={styPayroll.titleHolder}>
@@ -44,40 +79,13 @@ export default class Payroll extends Component {
                                             <Icon name="ios-arrow-round-forward" style={styPayroll.cardRthLabel}/>
                                         </View>
                                         <Text style={styPayroll.month}>29 Oct 2020</Text>
-                                        <Text style={styPayroll.salary}>Net Salary - 780,000 MMK</Text>
-                                        <Button style={styPayroll.cardButton}>
-                                            <Text>Download PDF</Text>
-                                        </Button>
-                                    </Body>
-                                </CardItem>
-                            </Card>
-                            <Card>
-                                <CardItem>
-                                    <Body>
                                         <View style={styPayroll.titleHolder}>
-                                            <Text style={styPayroll.cardTitle}>October</Text>
-                                            <Icon name="ios-arrow-round-forward" style={styPayroll.cardRthLabel}/>
+                                            <Text style={styPayroll.salary}>Net Salary - 780,000 MMK</Text>
+                                            <Button style={styPayroll.cardButton}>
+                                                <Icon name="md-arrow-down"/>
+                                                <Text>PDF</Text>
+                                            </Button>
                                         </View>
-                                        <Text style={styPayroll.month}>29 Oct 2020</Text>
-                                        <Text style={styPayroll.salary}>Net Salary - 780,000 MMK</Text>
-                                        <Button style={styPayroll.cardButton}>
-                                            <Text>Download PDF</Text>
-                                        </Button>
-                                    </Body>
-                                </CardItem>
-                            </Card>
-                            <Card>
-                                <CardItem>
-                                    <Body>
-                                        <View style={styPayroll.titleHolder}>
-                                            <Text style={styPayroll.cardTitle}>October</Text>
-                                            <Icon name="ios-arrow-round-forward" style={styPayroll.cardRthLabel}/>
-                                        </View>
-                                        <Text style={styPayroll.month}>29 Oct 2020</Text>
-                                        <Text style={styPayroll.salary}>Net Salary - 780,000 MMK</Text>
-                                        <Button style={styPayroll.cardButton}>
-                                            <Text>Download PDF</Text>
-                                        </Button>
                                     </Body>
                                 </CardItem>
                             </Card>
