@@ -7,7 +7,8 @@ axios.create({
     }
 }).get(`http://192.168.1.108:8071/getTime`)
     .then(function (res) {
-        return console.log({ data: res.data["data"]["Current Server Time"], status: 'success' })
+        console.log(res)
+        return { data: res.data["data"]["Current Server Time"], status: 'success' }
     })
     .catch(function (error) {
         return { error: error, status: 'fail' }
