@@ -1,18 +1,28 @@
 import React, { Component } from 'react'
-import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title } from 'native-base'
+import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea } from 'native-base'
 import { Image } from 'react-native'
 import { TouchableNativeFeedback } from 'react-native-gesture-handler'
+import Moment from 'moment'
 
 import styMain from './main.style'
 import po from './po'
 import color from '../../constant/color'
 
+import Loading from '../../components/loading.component'
+
+import APIs from '../../controllers/api.controller'
+import Time from '../../controllers/time.controller'
 
 export default class Main extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
+            auth: null,
+            id: null,
+            time: null,
+            profile: null,
+            overlay: true,
             checkin: {
                 status: true,
                 disabled: false
@@ -20,26 +30,101 @@ export default class Main extends Component {
             checkout: {
                 status: true,
                 disabled: true
-            }
+            },
+            isReady: false
         }
     }
 
+    componentDidMount () {
+        this.setState({
+            auth: this.props.route.params.auth,
+            id: this.props.route.params.id
+        })
+
+        
+    }
+
+    componentDidUpdate () {
+        // time request
+        if(this.state.auth !== null && this.state.time === null) {
+            APIs.Time(this.state.auth)
+            .then((res) => {
+                if(res.status === 'success') {
+                    this.setState({
+                        time: Moment(res.data).format()
+                    })
+                } else {
+                    this.props.navigation.navigate('Login')
+                }
+            })
+        }
+
+        // profile request
+        if(this.state.auth !== null && this.state.profile === null) {
+            APIs.Profile(this.state.id, this.state.auth)
+            .then((res) => {
+                // this.setState({
+                //     profile: res.data
+                // })
+            })
+        }
+
+        if(this.state.time !== null) {
+            let t = new Date(this.state.time)
+            setTimeout(() => {
+                this.setState({
+                    time: t.setSeconds(t.getSeconds() + 1)
+                })
+            }, 1000)
+        }
+
+        
+        // remove overlay
+        if(
+            this.state.time !== null && 
+            this.state.id !== null && 
+            this.state.auth !== null &&
+            this.state.profile !== null &&
+            this.state.isReady === false
+        ) {
+            this.setState({
+                isReady: true
+            })
+        }
+
+        
+    }
+
     render() {
-        console.log(this.props.navigation)
+        let time = this.state.time
+        // loading screen
+        if(this.state.isReady === false) {
+            return (
+                <Loading />
+            )
+        }
         return (
             <Container>
                 <Content>
-
                     <TouchableNativeFeedback style={styMain.banner}
-                        onPress={() => this.props.navigation.navigate('Profile')}
-                    >
-                        <Text style={styMain.time}>10:11 AM Friday, 01 Nov 2019</Text>
+                        onPress={() => 
+                        this.props.navigation.navigate('Profile', {
+                            profile: this.state.profile
+                        })
+                    }>
+                        <Text style={styMain.time}>
+                            {Time.hour(time)}:{Time.minute(time)}:{Time.second(time)} {Time.part(time)} {Time.day(time)}, {Time.date(time)} {Time.month(time)} {Time.year(time)}
+                        </Text>
                         <Row>
                             <Col style={styMain.userInfo}>
-                                <Image source={require('../../assets/icon/user.png')} style={styMain.profilePic} />
+                                <Image source={
+                                    this.state.profile.data['Profile Picture'][0] ?
+                                    {uri: 'data:image/png;base64,' + this.state.data["Profile Picture"]} : 
+                                    require('../../assets/icon/user.png')
+                                } style={styMain.profilePic} />
                                 <View>
-                                    <Text style={styMain.name}>John Doe</Text>
-                                    <Text style={styMain.pos}>Web Developer</Text>
+                                    <Text style={styMain.name}>{this.state.profile.data['Employee Name']}</Text>
+                                    <Text style={[styMain.pos, {display: this.state.profile.data['Job Position'] ? null : 'none'}]}>{this.state.profile.data['Job Position']}</Text>
                                 </View>
                             </Col>
                             <Col>

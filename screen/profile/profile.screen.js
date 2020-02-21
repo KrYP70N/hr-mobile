@@ -6,7 +6,16 @@ import styProfile from './profile.style'
 import po from './po'
 
 export default class Profile extends Component {
+    constructor (props) {
+        super(props)
+    }
+
     render () {
+
+        let profile_data = this.props.route.params["profile"]
+
+        console.log(profile_data)
+
         return (
             <Container>
                 <Content style={styProfile.content}>

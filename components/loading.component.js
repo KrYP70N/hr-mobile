@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Image } from 'react-native'
-import { Content, Container, View, Text } from 'native-base'
+import { Content, Container, View, Text, Icon, Spinner } from 'native-base'
 
 export default class Loading extends Component {
     render () {
@@ -12,12 +12,7 @@ export default class Loading extends Component {
                 display: 'flex',
                 justifyContent: 'center'
             }}>
-                <Image 
-                    source={require('../assets/upload/loading.gif')}
-                    style={{
-                        alignSelf: 'center'
-                    }}
-                />
+                <Spinner />
             </View>
         )
     }

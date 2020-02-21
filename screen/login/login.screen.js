@@ -17,7 +17,9 @@ export default class Login extends Component {
             hide_passowrd: true,
             overlay: false,
             user: null,
-            name: null
+            name: null,
+            auth: null,
+            id: null
         }
 
         // submit
@@ -33,7 +35,11 @@ export default class Login extends Component {
                         overlay: false
                     })
                     if(res.status === 'success') {
-                        this.props.navigation.navigate('Main', )
+                        this.setState({
+                            auth: res.data.access_token,
+                            id: res.data.uid
+                        })
+                        this.props.navigation.navigate('Main', {auth: this.state.auth, id: this.state.id})
                     } else {
                         Toast.show({
                             text: 'user name or password is not correct!',
@@ -57,9 +63,6 @@ export default class Login extends Component {
             })
         }
 
-
-
-        
     }
     
     render() {
