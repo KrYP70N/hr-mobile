@@ -47,7 +47,7 @@ export default class Main extends Component {
     componentDidUpdate () {
         // time request
         if(this.state.auth !== null && this.state.time === null) {
-            APIs.Time(this.state.auth)
+            APIs.Time('access_token_23600924292eba93058d060f4f28c574b5e53336')
             .then((res) => {
                 if(res.status === 'success') {
                     this.setState({

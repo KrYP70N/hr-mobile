@@ -11,15 +11,16 @@ export default class APIs {
     static Token(name, password) {
         return axios.create({
             headers: {
-                db: config.db,
-                login: name,
-                password: password
+                db: 'TESTING',
+                login: 'admin',
+                password: 'admin'
             }
         }).get(`${config.req}/api/auth/token`)
             .then(function (res) {
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log('---------')
                 return { error: error, status: 'fail' }
             })
     }

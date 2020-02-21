@@ -11,7 +11,7 @@ import APIs from '../../controllers/api.controller'
 
 export default class Login extends Component {
 
-    constructor (props) {
+    constructor(props) {
         super(props)
         this.state = {
             hide_passowrd: true,
@@ -24,6 +24,7 @@ export default class Login extends Component {
 
         // submit
         this.login = () => {
+            return this.props.navigation.navigate('Main', {auth: 'access_token_23600924292eba93058d060f4f28c574b5e53336', id: 1})
             // inject keyboard
             Keyboard.dismiss()
             this.setState({
@@ -39,7 +40,7 @@ export default class Login extends Component {
                             auth: res.data.access_token,
                             id: res.data.uid
                         })
-                        this.props.navigation.navigate('Main', {auth: this.state.auth, id: this.state.id})
+                        // this.props.navigation.navigate('Main', {auth: this.state.auth, id: this.state.id})
                     } else {
                         Toast.show({
                             text: 'user name or password is not correct!',
@@ -47,6 +48,7 @@ export default class Login extends Component {
                         })
                     }
                 })
+
         }
 
         // handle user field
@@ -57,16 +59,16 @@ export default class Login extends Component {
         }
 
         // handle password field
-        this.password = (key)  => {
+        this.password = (key) => {
             this.setState({
                 password: key
             })
         }
 
     }
-    
+
     render() {
-        
+
         return (
             <KeyboardAvoidingView behavior="height" style={styLogin.kbView}>
                 <Container style={styLogin.container}>
@@ -76,16 +78,16 @@ export default class Login extends Component {
                     />
                     <Text style={styLogin.title}>{po.title}</Text>
                     <Text style={styLogin.sub}>{po.sub}</Text>
-                    
+
                     <Item floatingLabel style={styLogin.item}>
                         <Label style={styLogin.label}>{po.label.name}</Label>
-                        <Input style={styLogin.input} onChangeText={(key) => this.user(key)}/>
+                        <Input style={styLogin.input} onChangeText={(key) => this.user(key)} />
                     </Item>
 
                     <Item floatingLabel style={styLogin.password}>
                         <Label style={styLogin.label}>{po.label.psw}</Label>
-                        <Input secureTextEntry={this.state.hide_passowrd} style={styLogin.input} 
-                            onChangeText={(key) => {this.password(key)}}
+                        <Input secureTextEntry={this.state.hide_passowrd} style={styLogin.input}
+                            onChangeText={(key) => { this.password(key) }}
                         />
                         <Icon active name={
                             this.state.hide_passowrd === true ? 'ios-eye-off' : 'ios-eye'
@@ -93,7 +95,7 @@ export default class Login extends Component {
                             this.setState({
                                 hide_passowrd: !this.state.hide_passowrd
                             })
-                        }} style={styLogin.icn}/> 
+                        }} style={styLogin.icn} />
                     </Item>
 
                     <Button style={styLogin.button} onPress={this.login}>
@@ -108,7 +110,7 @@ export default class Login extends Component {
 
                     <Text style={styLogin.copyright}>{po.copyright}</Text>
                 </Container>
-                <Overlay overlay={this.state.overlay}/>
+                <Overlay overlay={this.state.overlay} />
             </KeyboardAvoidingView>
         )
     }
