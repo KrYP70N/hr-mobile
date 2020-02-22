@@ -24,7 +24,7 @@ export default class Login extends Component {
 
         // submit
         this.login = () => {
-            return this.props.navigation.navigate('Main', {auth: 'access_token_23600924292eba93058d060f4f28c574b5e53336', id: 1})
+            // return this.props.navigation.navigate('Main', {auth: 'access_token_23600924292eba93058d060f4f28c574b5e53336', id: 1})
             // inject keyboard
             Keyboard.dismiss()
             this.setState({
@@ -36,11 +36,12 @@ export default class Login extends Component {
                         overlay: false
                     })
                     if(res.status === 'success') {
+                        console.log(res.data)
                         this.setState({
                             auth: res.data.access_token,
                             id: res.data.uid
                         })
-                        // this.props.navigation.navigate('Main', {auth: this.state.auth, id: this.state.id})
+                        this.props.navigation.navigate('Main', {auth: this.state.auth, id: this.state.id})
                     } else {
                         Toast.show({
                             text: 'user name or password is not correct!',
