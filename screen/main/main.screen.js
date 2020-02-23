@@ -54,6 +54,7 @@ export default class Main extends Component {
                         time: Moment(res.data).format()
                     })
                 } else {
+                    console.log(res)
                     this.props.navigation.navigate('Login')
                 }
             })
@@ -63,9 +64,9 @@ export default class Main extends Component {
         if(this.state.auth !== null && this.state.profile === null) {
             APIs.Profile(this.state.id, this.state.auth)
             .then((res) => {
-                // this.setState({
-                //     profile: res.data
-                // })
+                this.setState({
+                    profile: res.data
+                })
             })
         }
 

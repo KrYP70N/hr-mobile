@@ -9,6 +9,7 @@ export default class APIs {
     
     // auth token
     static Token(name, password) {
+        console.log(name, password)
         return axios.create({
             headers: {
                 db: config.db,
@@ -51,11 +52,11 @@ export default class APIs {
                 
                 let str_index = data.indexOf('data\": ') + 'data\": '.length
 
-                data = data.slice(str_index, data.length - 1)
+                data = data.slice(str_index, data.length - 1).split(',')
 
-                console.log(data)
-                // console.log(JSON.parse())
-                // return { data: res.data, status: 'success' }
+                
+
+                return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
