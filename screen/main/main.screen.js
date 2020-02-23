@@ -13,6 +13,8 @@ import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 import Time from '../../controllers/time.controller'
 
+import ProfileModel from '../../model/profile.model'
+
 export default class Main extends Component {
 
     constructor(props) {
@@ -63,13 +65,14 @@ export default class Main extends Component {
         // profile request
         if(this.state.auth !== null && this.state.profile === null) {
             APIs.Profile(this.state.id, this.state.auth)
-            .then((res) => {
+            .then((res) => {                
                 this.setState({
                     profile: res.data
                 })
             })
         }
 
+        // time request
         if(this.state.time !== null) {
             let t = new Date(this.state.time)
             setTimeout(() => {
@@ -108,10 +111,11 @@ export default class Main extends Component {
             <Container>
                 <Content>
                     <TouchableNativeFeedback style={styMain.banner}
-                        onPress={() => 
-                        this.props.navigation.navigate('Profile', {
-                            profile: this.state.profile
-                        })
+                        onPress={() => {
+                            this.props.navigation.navigate('Profile', {
+                                profile: this.state.profile
+                            })
+                        }
                     }>
                         <Text style={styMain.time}>
                             {Time.hour(time)}:{Time.minute(time)}:{Time.second(time)} {Time.part(time)} {Time.day(time)}, {Time.date(time)} {Time.month(time)} {Time.year(time)}
@@ -119,13 +123,34 @@ export default class Main extends Component {
                         <Row>
                             <Col style={styMain.userInfo}>
                                 <Image source={
-                                    this.state.profile.data['Profile Picture'][0] ?
-                                    {uri: 'data:image/png;base64,' + this.state.data["Profile Picture"]} : 
-                                    require('../../assets/icon/user.png')
+                                    ProfileModel.checkKey(
+                                    this.state.profile['General Information'], 'Profile Picture') === undefined ?
+                                    require('../../assets/icon/user.png') : 
+                                    {uri: 'data:image/png;base64,' + this.state.data['Profile Picture']}
                                 } style={styMain.profilePic} />
                                 <View>
-                                    <Text style={styMain.name}>{this.state.profile.data['Employee Name']}</Text>
-                                    <Text style={[styMain.pos, {display: this.state.profile.data['Job Position'] ? null : 'none'}]}>{this.state.profile.data['Job Position']}</Text>
+                                    <Text style={styMain.name}>
+                                        {/* {this.state.profile.data['Employee Name']} */}{
+                                        ProfileModel.checkKey(
+                                            this.state.profile['General Information'], 'Employee Name'
+                                        ) === undefined ?
+                                        "UNKNOWN EMPLOYEE" :
+                                        ProfileModel.checkKey(
+                                            this.state.profile['General Information'], 'Employee Name'
+                                        )
+                                        }
+                                    </Text>
+                                    <Text style={[styMain.pos]}>
+                                        {
+                                            ProfileModel.checkKey(
+                                            this.state.profile['General Information'], 'Job Position'
+                                            ) === undefined ?
+                                            "UNKNOWN POSITION" :
+                                            ProfileModel.checkKey(
+                                            this.state.profile['General Information'], 'Job Position'
+                                            )
+                                        }
+                                    </Text>
                                 </View>
                             </Col>
                             <Col>
@@ -137,18 +162,16 @@ export default class Main extends Component {
                     {/* check in/out */}
                     <Row style={styMain.checkHolder}>
                         <Col style={styMain.cardLft}>
-                            <TouchableNativeFeedback>
+                            <TouchableNativeFeedback 
+                                onPress={() => {APIs.Checkin(this.state.id, this.state.auth)}}
+                            >
                                 <Card style={[
                                     this.state.checkin.disabled ? styMain.disabled : null,
                                     styMain.checkCard]}>
                                     <Body style={styMain.checkBody}>
                                         <View style={styMain.checkTitle}>
-                                            <Icon name={po.checkin.icon} style={[
-                                                styMain.checkIcn,
-                                                this.state.checkin.disabled ? { color: color.light } : null]} />
-                                            <Text style={[
-                                                styMain.checkIcn, this.state.checkin.disabled ? { color: color.light } : null,
-                                                styMain.checkTitleTxt]}>{po.checkin.title}</Text>
+                                            <Icon name={po.checkin.icon} style={[styMain.checkIcn]} />
+                                            <Text style={[styMain.checkTitleTxt]}>{po.checkin.title}</Text>
                                         </View>
                                         <Text style={styMain.checkInfo}>
                                             {this.state.checkin ? po.checkin.checked.true : po.checkin.checked.true}
@@ -159,18 +182,17 @@ export default class Main extends Component {
                         </Col>
 
                         <Col style={styMain.cardRight}>
-                            <TouchableNativeFeedback>
+                            <TouchableNativeFeedback
+                                onPress={() => {
+                                    APIs.Checkout(this.state.id, this.state.auth)
+                                }}
+                            >
                                 <Card style={[
-                                    this.state.checkout.disabled ? styMain.disabled : null,
                                     styMain.checkCard]}>
                                     <Body style={styMain.checkBody}>
                                         <View style={styMain.checkTitle}>
-                                            <Icon name={po.checkout.icon} style={[
-                                                    styMain.checkIcn,
-                                                    this.state.checkout.disabled ? { color: color.light } : null]} />
-                                            <Text style={[
-                                                styMain.checkIcn, this.state.checkout.disabled ? { color: color.light } : null,
-                                                styMain.checkTitleTxt]}>{po.checkout.title}</Text>
+                                            <Icon name={po.checkout.icon} style={[styMain.checkIcn]} />
+                                            <Text style={[styMain.checkTitleTxt]}>{po.checkout.title}</Text>
                                         </View>
                                         <Text style={styMain.checkInfo}>
                                             {this.state.checkout.status ? po.checkout.checked.true : po.checkout.checked.false}

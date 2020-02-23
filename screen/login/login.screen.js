@@ -24,7 +24,6 @@ export default class Login extends Component {
 
         // submit
         this.login = () => {
-            // return this.props.navigation.navigate('Main', {auth: 'access_token_23600924292eba93058d060f4f28c574b5e53336', id: 1})
             // inject keyboard
             Keyboard.dismiss()
             this.setState({
