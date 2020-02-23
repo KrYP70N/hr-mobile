@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const config = {
-    req: 'http://192.168.1.108:8071',
+    req: 'http://192.168.100.116:8071',
     db: 'TESTING'
 }
 
