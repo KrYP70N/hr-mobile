@@ -1,4 +1,9 @@
 import React, { Component } from 'react'
+
+import Constants from 'expo-constants'
+import * as Location from 'expo-location'
+import * as Permissions from 'expo-permissions';
+
 import { KeyboardAvoidingView, Image, Keyboard } from 'react-native'
 import { View, Text, Container, Form, Content, Item, Label, Input, Button, Footer, Icon, Toast } from 'native-base'
 
@@ -19,7 +24,8 @@ export default class Login extends Component {
             user: null,
             name: null,
             auth: null,
-            id: null
+            id: null,
+            errorMessage: null
         }
 
         // submit
@@ -34,13 +40,13 @@ export default class Login extends Component {
                     this.setState({
                         overlay: false
                     })
-                    if(res.status === 'success') {
+                    if (res.status === 'success') {
                         console.log(res.data)
                         this.setState({
                             auth: res.data.access_token,
                             id: res.data.uid
                         })
-                        this.props.navigation.navigate('Main', {auth: this.state.auth, id: this.state.id})
+                        this.props.navigation.navigate('Main', { auth: this.state.auth, id: this.state.id })
                     } else {
                         Toast.show({
                             text: 'user name or password is not correct!',
@@ -48,8 +54,9 @@ export default class Login extends Component {
                         })
                     }
                 })
-
         }
+
+        
 
         // handle user field
         this.user = (key) => {
@@ -64,11 +71,10 @@ export default class Login extends Component {
                 password: key
             })
         }
-
     }
 
     render() {
-
+        console.log(this.state.location)
         return (
             <KeyboardAvoidingView behavior="height" style={styLogin.kbView}>
                 <Container style={styLogin.container}>
@@ -107,8 +113,6 @@ export default class Login extends Component {
                     }}>
                         <Text style={styLogin.resetTxt}>Forget Passowrd?</Text>
                     </Button>
-
-                    <Text style={styLogin.copyright}>{po.copyright}</Text>
                 </Container>
                 <Overlay overlay={this.state.overlay} />
             </KeyboardAvoidingView>

@@ -1,11 +1,22 @@
 import axios from 'axios'
 
 const config = {
-    req: 'http://192.168.1.102:8071',
+    req: 'http://192.168.1.108:8071',
     db: 'TESTING'
 }
 
 export default class APIs {
+
+    // auth
+    static Auth(key, version) {
+        return axios.get(`http://apiendpoint.innovixhr.com/api/build/hr?siteKey=${key}&appVersion=${version}`)
+            .then(function (res) {
+                return { data: res.data.model, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
     
     // auth token
     static Token(name, password) {
