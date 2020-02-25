@@ -19,13 +19,15 @@ export default class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            hide_passowrd: true,
+            appData: this.props.route.params,
+            hidePassword: true,
             overlay: false,
             user: null,
             name: null,
             auth: null,
             id: null,
-            errorMessage: null
+            errorMessage: null,
+            api: null
         }
 
         // submit
@@ -35,19 +37,22 @@ export default class Login extends Component {
             this.setState({
                 overlay: true
             })
-            APIs.Token(this.state.user, this.state.password)
+            APIs.Token(this.state.user, this.state.password, this.state.api)
                 .then((res) => {
                     this.setState({
                         overlay: false
                     })
                     if (res.status === 'success') {
-                        console.log(res.data)
                         this.setState({
                             auth: res.data.access_token,
                             id: res.data.uid
                         })
                         this.props.navigation.navigate('Main', { auth: this.state.auth, id: this.state.id })
                     } else {
+                        console.log(res.error)
+                        if(res.error === 'Network Error') {
+                            console.log('hola')
+                        }
                         Toast.show({
                             text: 'user name or password is not correct!',
                             buttonStyle: 'Okay'
@@ -55,8 +60,6 @@ export default class Login extends Component {
                     }
                 })
         }
-
-        
 
         // handle user field
         this.user = (key) => {
@@ -73,8 +76,20 @@ export default class Login extends Component {
         }
     }
 
+    componentDidMount() {
+        if(this.state.appData.data.data === null) {
+            this.props.navigation.navigate('Auth')
+        } else {
+            this.setState({
+                api: {
+                    url: this.state.appData.data.data.ApiEndPoint,
+                    db: this.state.appData.data.data.Database
+                }
+            })
+        }
+    }
+
     render() {
-        console.log(this.state.location)
         return (
             <KeyboardAvoidingView behavior="height" style={styLogin.kbView}>
                 <Container style={styLogin.container}>
@@ -92,14 +107,14 @@ export default class Login extends Component {
 
                     <Item floatingLabel style={styLogin.password}>
                         <Label style={styLogin.label}>{po.label.psw}</Label>
-                        <Input secureTextEntry={this.state.hide_passowrd} style={styLogin.input}
+                        <Input secureTextEntry={this.state.hidePassword} style={styLogin.input}
                             onChangeText={(key) => { this.password(key) }}
                         />
                         <Icon active name={
-                            this.state.hide_passowrd === true ? 'ios-eye-off' : 'ios-eye'
+                            this.state.hidePassword === true ? 'ios-eye-off' : 'ios-eye'
                         } onPress={() => {
                             this.setState({
-                                hide_passowrd: !this.state.hide_passowrd
+                                hidePassword: !this.state.hidePassword
                             })
                         }} style={styLogin.icn} />
                     </Item>

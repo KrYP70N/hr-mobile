@@ -4,12 +4,13 @@ import Constants from 'expo-constants'
 
 import APIs from '../../controllers/api.controller'
 import { Image, AsyncStorage, Keyboard } from 'react-native'
-import { View, Text, Container, Content, Form, Item, Label, Input, Body, Button, Textarea } from 'native-base'
+import { View, Text, Container, Content, Form, Item, Label, Input, Body, Button, Textarea, Toast } from 'native-base'
 
 import styAuth from './auth.style'
 import { KeyboardAvoidingView } from 'react-native'
 import Loading from '../../components/loading.component'
 import Overlay from '../../components/overlay.component'
+import { hydrate } from 'react-dom'
 
 export default class Auth extends Component {
 
@@ -35,22 +36,26 @@ export default class Auth extends Component {
             Keyboard.dismiss()
             APIs.Auth(this.state.key, this.state.version)
                 .then((res) => {
-                    
-                    // set overlay
-                    this.setState({
-                        overlay: true
-                    })
-                    
-                    AsyncStorage.setItem('@hrdata:data', {
-                        key: this.state.key,
-                        data: res
-                    })
+                    if(res.status === 'success') {
+                        this.setState({
+                            overlay: true
+                        })
+                        AsyncStorage.setItem('@hrdata:data', JSON.stringify(res))
                         .then(() => {
                             console.log(this.state.key)
                             this.setState({
                                 overlay: false
                             })
+                            this.props.navigation.navigate('Login', {data: res})
                         })
+                    } else {
+                        Toast.show({
+                            text: 'Invalid security key!',
+                            buttonText: 'Okay',
+                            duration: 4000
+                        })
+                    }
+                    
                 })
 
         }
@@ -58,15 +63,18 @@ export default class Auth extends Component {
 
     async componentDidMount () {
         try {
-            const key = await AsyncStorage.getItem('@hrdata:key')
+            const key = await AsyncStorage.getItem('@hrdata:data')
             if(key === null) {
                 this.setState({
                     loading: false
                 })
             } else {
-                AsyncStorage.getItem('@hrdata:key')
+                this.setState({
+                    loading: false
+                })
+                AsyncStorage.getItem('@hrdata:data')
                     .then((res) => {
-                        console.log(res)
+                        this.props.navigation.navigate('Login', {data: JSON.parse(res)})
                     })
             }
         } catch (error) {
@@ -76,7 +84,6 @@ export default class Auth extends Component {
     }
 
     render() {
-        console.log(this.state)
         if(this.state.loading === true) {
             return (
                 <Loading />
