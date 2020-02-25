@@ -44,9 +44,8 @@ export default StyleSheet.create({
         width: '100%',
         textAlign: 'right'
     },
-    checkHolder: {
-        padding: offset.o1,
-        marginTop: -offset.o4,
+    checkinout: {
+        marginTop: -offset.o4
     },
     checkCard: {
         height: 120
@@ -93,12 +92,19 @@ export default StyleSheet.create({
         paddingRight: offset.o1
     },
     menuBody: {
+        minHeight: 100,
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: offset.o1
     },
     icon: {
         ...typo.icnLight,
         marginBottom: offset.o2,
         color: color.primary
+    },
+    imgIcn: {
+        width: 40,
+        height: 38,
+        marginBottom: offset.o1
     }
 })

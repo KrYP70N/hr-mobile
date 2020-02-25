@@ -20,11 +20,11 @@ export default class APIs {
     static Token(name, password, db) {
         return axios.create({
             headers: {
-                db: config.db,
+                db: db.db,
                 login: name,
                 password: password
             }
-        }).get(`${config.req}/api/auth/token`)
+        }).get(`${db.url}/api/auth/token`)
             .then(function (res) {
                 return { data: res.data, status: 'success' }
             })
@@ -34,12 +34,12 @@ export default class APIs {
     }
 
     // time controller
-    static Time(auth) {
+    static Time(auth, url) {
         return axios.create({
             headers: {
                 access_token: auth
             }
-        }).get(`${config.req}/getTime`)
+        }).get(`${url}/getTime`)
             .then(function (res) {
                 return { data: res.data["data"]["Current Server Time"], status: 'success' }
             })
@@ -49,12 +49,12 @@ export default class APIs {
     }
 
     // user controller
-    static Profile(id, auth) {
+    static Profile(id, auth, url) {
         return axios.create({
             headers: {
                 access_token: auth
             }
-        }).get(`${config.req}/user/profile/${id}`)
+        }).get(`${url}/user/profile/${id}`)
             .then(function (res) {
                 let data = res["request"]["_response"]
                 let str_index = data.indexOf('data\": ') + 'data\": '.length

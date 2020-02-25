@@ -47,12 +47,8 @@ export default class Login extends Component {
                             auth: res.data.access_token,
                             id: res.data.uid
                         })
-                        this.props.navigation.navigate('Main', { auth: this.state.auth, id: this.state.id })
+                        this.props.navigation.navigate('Main', { auth: this.state.auth, id: this.state.id, url: this.state.api.url })
                     } else {
-                        console.log(res.error)
-                        if(res.error === 'Network Error') {
-                            console.log('hola')
-                        }
                         Toast.show({
                             text: 'user name or password is not correct!',
                             buttonStyle: 'Okay'

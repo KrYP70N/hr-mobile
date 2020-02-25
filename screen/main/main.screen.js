@@ -15,6 +15,8 @@ import Time from '../../controllers/time.controller'
 
 import ProfileModel from '../../model/profile.model'
 
+import CheckInOut from '../../components/checkinout.component'
+
 export default class Main extends Component {
 
     constructor(props) {
@@ -42,14 +44,12 @@ export default class Main extends Component {
             auth: this.props.route.params.auth,
             id: this.props.route.params.id
         })
-
-        
     }
 
     componentDidUpdate () {
         // time request
         if(this.state.auth !== null && this.state.time === null) {
-            APIs.Time(this.state.auth)
+            APIs.Time(this.state.auth, this.props.route.params.url)
             .then((res) => {
                 if(res.status === 'success') {
                     this.setState({
@@ -64,7 +64,7 @@ export default class Main extends Component {
 
         // profile request
         if(this.state.auth !== null && this.state.profile === null) {
-            APIs.Profile(this.state.id, this.state.auth)
+            APIs.Profile(this.state.id, this.state.auth, this.props.route.params.url)
             .then((res) => {                
                 this.setState({
                     profile: res.data
@@ -101,6 +101,7 @@ export default class Main extends Component {
 
     render() {
         let time = this.state.time
+
         // loading screen
         if(this.state.isReady === false) {
             return (
@@ -158,72 +159,20 @@ export default class Main extends Component {
                             </Col>
                         </Row>
                     </TouchableNativeFeedback>
-
+                                        
                     {/* check in/out */}
-                    <Row style={styMain.checkHolder}>
-                        <Col style={styMain.cardLft}>
-                            <TouchableNativeFeedback 
-                                onPress={() => {APIs.Checkin(this.state.id, this.state.auth)}}
-                            >
-                                <Card style={[
-                                    this.state.checkin.disabled ? styMain.disabled : null,
-                                    styMain.checkCard]}>
-                                    <Body style={styMain.checkBody}>
-                                        <View style={styMain.checkTitle}>
-                                            <Icon name={po.checkin.icon} style={[styMain.checkIcn]} />
-                                            <Text style={[styMain.checkTitleTxt]}>{po.checkin.title}</Text>
-                                        </View>
-                                        <Text style={styMain.checkInfo}>
-                                            {this.state.checkin ? po.checkin.checked.true : po.checkin.checked.true}
-                                        </Text>
-                                    </Body>
-                                </Card>
-                            </TouchableNativeFeedback>
-                        </Col>
-
-                        <Col style={styMain.cardRight}>
-                            <TouchableNativeFeedback
-                                onPress={() => {
-                                    APIs.Checkout(this.state.id, this.state.auth)
-                                }}
-                            >
-                                <Card style={[
-                                    styMain.checkCard]}>
-                                    <Body style={styMain.checkBody}>
-                                        <View style={styMain.checkTitle}>
-                                            <Icon name={po.checkout.icon} style={[styMain.checkIcn]} />
-                                            <Text style={[styMain.checkTitleTxt]}>{po.checkout.title}</Text>
-                                        </View>
-                                        <Text style={styMain.checkInfo}>
-                                            {this.state.checkout.status ? po.checkout.checked.true : po.checkout.checked.false}
-                                        </Text>
-                                    </Body>
-                                </Card>
-                            </TouchableNativeFeedback>
-                        </Col>
-                    </Row>
+                    <View style={styMain.checkinout}>
+                        <CheckInOut data={this.state.profile['General Information']}
+                        userid={this.state.id}
+                        auth={this.state.auth}
+                        url={this.props.route.params.url}/>
+                    </View>
+                    
                     {/* nav list */}
 
                     {/* menu */}
                     <Row style={styMain.menuHolder}>
                         <Col style={styMain.cardLft}>
-                            <Card style={!po.menu[0].navigate ? styMain.disabledMenu : null}>
-                                <TouchableNativeFeedback onPress={() =>
-                                    po.menu[0].navigate ? 
-                                    this.props.navigation.navigate(
-                                        po.menu[0].navigate
-                                    ) : null
-                                    }>
-                                    <CardItem>
-                                        <Body style={styMain.menuBody}>
-                                            <Icon name={po.menu[0].icon} style={styMain.icon} />
-                                            <Text>{po.menu[0].name}</Text>
-                                        </Body>
-                                    </CardItem>
-                                </TouchableNativeFeedback>
-                            </Card>
-                        </Col>
-                        <Col style={styMain.cardRight}>
                             <Card style={!po.menu[1].navigate ? styMain.disabledMenu : null}>
                                 <TouchableNativeFeedback onPress={() => 
                                     po.menu[1].navigate ? 
@@ -233,16 +182,15 @@ export default class Main extends Component {
                                     }>
                                     <CardItem>
                                         <Body style={styMain.menuBody}>
-                                            <Icon name={po.menu[1].icon} style={styMain.icon} />
+                                            {/* <Icon name={po.menu[1].icon} style={styMain.icon} /> */}
+                                            <Image style={styMain.imgIcn} source={require('../../assets/icon/attendance.png')}/>
                                             <Text>{po.menu[1].name}</Text>
                                         </Body>
                                     </CardItem>
                                 </TouchableNativeFeedback>
                             </Card>
                         </Col>
-                    </Row>
-                    <Row style={styMain.menuHolder}>
-                        <Col style={styMain.cardLft}>
+                        <Col style={styMain.cardRight}>
                             <Card style={!po.menu[2].navigate ? styMain.disabledMenu : null}>
                                 <TouchableNativeFeedback onPress={() => 
                                     po.menu[2].navigate ? 
@@ -252,14 +200,18 @@ export default class Main extends Component {
                                     }>
                                     <CardItem>
                                         <Body style={styMain.menuBody}>
-                                            <Icon name={po.menu[2].icon} style={styMain.icon} />
+                                            {/* <Icon name={po.menu[2].icon} style={styMain.icon} /> */}
+                                            <Image style={styMain.imgIcn} source={require('../../assets/icon/leave.png')}/>
                                             <Text>{po.menu[2].name}</Text>
                                         </Body>
                                     </CardItem>
                                 </TouchableNativeFeedback>
                             </Card>
                         </Col>
-                        <Col style={styMain.cardRight}>
+                    </Row>
+                    <Row style={styMain.menuHolder}>
+                        
+                        <Col style={styMain.cardLft}>
                             <Card style={!po.menu[3].navigate ? styMain.disabledMenu : null}>
                                 <TouchableNativeFeedback onPress={() => 
                                     po.menu[3].navigate ? 
@@ -269,16 +221,15 @@ export default class Main extends Component {
                                     }>
                                     <CardItem>
                                         <Body style={styMain.menuBody}>
-                                            <Icon name={po.menu[3].icon} style={styMain.icon} />
+                                            {/* <Icon name={po.menu[3].icon} style={styMain.icon} /> */}
+                                            <Image style={[styMain.imgIcn, {height: 45}]} source={require('../../assets/icon/ot.png')}/>
                                             <Text>{po.menu[3].name}</Text>
                                         </Body>
                                     </CardItem>
                                 </TouchableNativeFeedback>
                             </Card>
                         </Col>
-                    </Row>
-                    <Row style={styMain.menuHolder}>
-                        <Col style={styMain.cardLft}>
+                        <Col style={styMain.cardRight}>
                             <Card style={!po.menu[4].navigate ? styMain.disabledMenu : null}>
                                 <TouchableNativeFeedback onPress={() => 
                                     po.menu[4].navigate ? 
@@ -288,32 +239,15 @@ export default class Main extends Component {
                                     }>
                                     <CardItem>
                                         <Body style={styMain.menuBody}>
-                                            <Icon name={po.menu[4].icon} style={styMain.icon} />
+                                            {/* <Icon name={po.menu[4].icon} style={styMain.icon} /> */}
+                                            <Image style={[styMain.imgIcn, {height: 40}]} source={require('../../assets/icon/payroll.png')}/>
                                             <Text>{po.menu[4].name}</Text>
                                         </Body>
                                     </CardItem>
                                 </TouchableNativeFeedback>
                             </Card>
                         </Col>
-                        <Col style={styMain.cardRight}>
-                            <Card style={!po.menu[5].navigate ? styMain.disabledMenu : null}>
-                                <TouchableNativeFeedback onPress={() => 
-                                    po.menu[5].navigate ? 
-                                    this.props.navigation.navigate(
-                                        po.menu[5].navigate
-                                    ) : null
-                                    }>
-                                    <CardItem>
-                                        <Body style={styMain.menuBody}>
-                                            <Icon name={po.menu[5].icon} style={styMain.icon} />
-                                            <Text>{po.menu[5].name}</Text>
-                                        </Body>
-                                    </CardItem>
-                                </TouchableNativeFeedback>
-                            </Card>
-                        </Col>
                     </Row>
-
                 </Content>
             </Container>
         )
