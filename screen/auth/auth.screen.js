@@ -96,7 +96,7 @@ export default class Auth extends Component {
                     <KeyboardAvoidingView behavior='position'>
                         <Form style={styAuth.form}>
                             <Image source={require('../../assets/upload/logo.png')} styl/>
-                            <Text style={styAuth.title}>Varification</Text>
+                            <Text style={styAuth.title}>Verification</Text>
                             <Item last floatingLabel style={styAuth.item}>
                                 <Label style={styAuth.label}>Enter Your Security Key</Label>
                                 <Input 

@@ -45,7 +45,7 @@ export default class Login extends Component {
                     if (res.status === 'success') {
                         this.setState({
                             auth: res.data.access_token,
-                            id: res.data.uid
+                            id: res.data.employee_id
                         })
                         this.props.navigation.navigate('Main', { auth: this.state.auth, id: this.state.id, url: this.state.api.url })
                     } else {

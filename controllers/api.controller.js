@@ -11,13 +11,15 @@ export default class APIs {
     static Auth(key, version) {
         return axios.get(`http://apiendpoint.innovixhr.com/api/build/hr?siteKey=${key}&appVersion=${version}`)
             .then(function (res) {
-                console.log(res.data)
                 return { data: res.data.model, status: res.data.success }
             })
     }
     
     // auth token
     static Token(name, password, db) {
+        console.log(name)
+        console.log(password)
+        console.log(db)
         return axios.create({
             headers: {
                 db: db.db,
@@ -29,6 +31,7 @@ export default class APIs {
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -57,8 +60,13 @@ export default class APIs {
         }).get(`${url}/user/profile/${id}`)
             .then(function (res) {
                 let data = res["request"]["_response"]
+                data = data.slice(data.indexOf('"Job Position"'), data.length)
                 let str_index = data.indexOf('data\": ') + 'data\": '.length
                 data = data.slice(str_index + 1, data.length - 2)
+
+                // reformat image
+                let profileImage = data.slice(0, data.indexOf('"Job Position"'))
+                // console.log(profileImage)
 
                 // reformat general information
                 let generalInfo = data.slice(0, data.indexOf("Work Information") - 3).split(', "')
@@ -101,34 +109,46 @@ export default class APIs {
     }
 
     // checkin controller
-    static Checkin(id, auth) {
+    static Checkin(id, auth, url) {
         return axios.create({
             headers: {
                 access_token: auth
             }
-        }).post(`${config.req}/checkin/${id}`)
+        }).post(`${url}/checkin/${id}`)
             .then(function (res) {
                 return { data: res, status: 'success' }
             })
             .catch(function (error) {
-                alert('error')
                 return { error: error, status: 'fail' }
             })
     }
 
     // cehckout controller
-    static Checkout(id, auth) {
+    static Checkout(id, auth, url) {
         return axios.create({
             headers: {
                 access_token: auth
             }
-        }).post(`${config.req}/checkout/${id}`)
+        }).post(`${url}/checkout/${id}`)
             .then(function (res) {
-                alert('success')
                 return { data: res, status: 'success' }
             })
             .catch(function (error) {
-                alert('error')
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // checkinout status
+    static CheckStatus(id, auth, url) {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).get(`${url}/checkinout/status/${id}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
                 return { error: error, status: 'fail' }
             })
     }

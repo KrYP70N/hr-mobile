@@ -28,7 +28,7 @@ export default class Time {
     }
     // date
     static date(data) {
-        let t = new Date(data).getDay()
+        let t = new Date(data).getDate()
         return t < 10 ? '0'+t : t
     }
     // month

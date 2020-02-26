@@ -6,7 +6,8 @@ import offset from '../../constant/offset'
 
 export default StyleSheet.create({
     container: {
-        padding: offset.o1
+        paddingLeft: offset.o1,
+        paddingRight: offset.o1
     },
     timeCard: {
         marginBottom: offset.o1
@@ -14,7 +15,8 @@ export default StyleSheet.create({
     clock: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        minHeight: 120
     },
     date: {
         ...typo.parabraph,
@@ -22,8 +24,7 @@ export default StyleSheet.create({
         marginBottom: offset.o1
     },
     time: {
-        ...typo.headline,
-        marginBottom: offset.o2,
+        ...typo.headline
     },
     checkinTime: {
         paddingRight: offset.o1,

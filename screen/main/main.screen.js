@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea } from 'native-base'
 import { Image } from 'react-native'
 import { TouchableNativeFeedback } from 'react-native-gesture-handler'
-import Moment from 'moment'
 
 import styMain from './main.style'
 import po from './po'
@@ -16,6 +15,7 @@ import Time from '../../controllers/time.controller'
 import ProfileModel from '../../model/profile.model'
 
 import CheckInOut from '../../components/checkinout.component'
+import Clock from '../../components/time.component'
 
 export default class Main extends Component {
 
@@ -24,7 +24,6 @@ export default class Main extends Component {
         this.state = {
             auth: null,
             id: null,
-            time: null,
             profile: null,
             overlay: true,
             checkin: {
@@ -47,21 +46,7 @@ export default class Main extends Component {
     }
 
     componentDidUpdate () {
-        // time request
-        if(this.state.auth !== null && this.state.time === null) {
-            APIs.Time(this.state.auth, this.props.route.params.url)
-            .then((res) => {
-                if(res.status === 'success') {
-                    this.setState({
-                        time: Moment(res.data).format()
-                    })
-                } else {
-                    console.log(res)
-                    this.props.navigation.navigate('Login')
-                }
-            })
-        }
-
+        
         // profile request
         if(this.state.auth !== null && this.state.profile === null) {
             APIs.Profile(this.state.id, this.state.auth, this.props.route.params.url)
@@ -71,21 +56,9 @@ export default class Main extends Component {
                 })
             })
         }
-
-        // time request
-        if(this.state.time !== null) {
-            let t = new Date(this.state.time)
-            setTimeout(() => {
-                this.setState({
-                    time: t.setSeconds(t.getSeconds() + 1)
-                })
-            }, 1000)
-        }
-
         
         // remove overlay
         if(
-            this.state.time !== null && 
             this.state.id !== null && 
             this.state.auth !== null &&
             this.state.profile !== null &&
@@ -100,8 +73,6 @@ export default class Main extends Component {
     }
 
     render() {
-        let time = this.state.time
-
         // loading screen
         if(this.state.isReady === false) {
             return (
@@ -118,9 +89,10 @@ export default class Main extends Component {
                             })
                         }
                     }>
-                        <Text style={styMain.time}>
-                            {Time.hour(time)}:{Time.minute(time)}:{Time.second(time)} {Time.part(time)} {Time.day(time)}, {Time.date(time)} {Time.month(time)} {Time.year(time)}
-                        </Text>
+                        <Clock 
+                        style={styMain.time} 
+                        auth={this.props.route.params.auth} 
+                        url={this.props.route.params.url} />
                         <Row>
                             <Col style={styMain.userInfo}>
                                 <Image source={
@@ -177,7 +149,10 @@ export default class Main extends Component {
                                 <TouchableNativeFeedback onPress={() => 
                                     po.menu[1].navigate ? 
                                     this.props.navigation.navigate(
-                                        po.menu[1].navigate
+                                        po.menu[1].navigate, {
+                                            data: this.state,
+                                            url: this.props.route.params.url
+                                        }
                                     ) : null
                                     }>
                                     <CardItem>
