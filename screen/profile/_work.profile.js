@@ -15,7 +15,7 @@ export default class WorkProfile extends Component {
         // let data = this.props.data
         let InfoItems = this.props.data.map(data => {
             return (
-                <CardItem style={styProfile.infoItem} >
+                <CardItem style={styProfile.infoItem} key={ProfileModel.getKey(data)}>
                     <Body>
                         <Text style={styProfile.workLabel}>
                             {ProfileModel.getKey(data)}

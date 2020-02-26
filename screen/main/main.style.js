@@ -29,7 +29,8 @@ export default StyleSheet.create({
         overflow: 'hidden',
         borderWidth: 1,
         borderColor: color.light,
-        marginRight: offset.o1
+        marginRight: offset.o1,
+        backgroundColor: color.light
     },
     name: {
         ...typo.subHeader,

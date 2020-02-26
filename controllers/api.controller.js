@@ -17,9 +17,6 @@ export default class APIs {
     
     // auth token
     static Token(name, password, db) {
-        console.log(name)
-        console.log(password)
-        console.log(db)
         return axios.create({
             headers: {
                 db: db.db,
@@ -60,13 +57,11 @@ export default class APIs {
         }).get(`${url}/user/profile/${id}`)
             .then(function (res) {
                 let data = res["request"]["_response"]
-                data = data.slice(data.indexOf('"Job Position"'), data.length)
-                let str_index = data.indexOf('data\": ') + 'data\": '.length
-                data = data.slice(str_index + 1, data.length - 2)
-
-                // reformat image
-                let profileImage = data.slice(0, data.indexOf('"Job Position"'))
-                // console.log(profileImage)
+                data = data.slice(data.indexOf('"Job Position"'), data.length - 2)
+                
+                // reformat profileImage
+                let profileImage = res.data.data['Profile Picture']
+                console.log(profileImage)
 
                 // reformat general information
                 let generalInfo = data.slice(0, data.indexOf("Work Information") - 3).split(', "')
@@ -96,6 +91,7 @@ export default class APIs {
                 })
                 
                 let infoCollection = {
+                    "Profile Image": profileImage,
                     "General Information": generalData,
                     "Work Information": workData,
                     "Personal Information": personalData
@@ -109,12 +105,12 @@ export default class APIs {
     }
 
     // checkin controller
-    static Checkin(id, auth, url) {
+    static Checkin(id, auth, url, coord) {
         return axios.create({
             headers: {
                 access_token: auth
             }
-        }).post(`${url}/checkin/${id}`)
+        }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
                 return { data: res, status: 'success' }
             })
@@ -124,12 +120,13 @@ export default class APIs {
     }
 
     // cehckout controller
-    static Checkout(id, auth, url) {
+    static Checkout(id, auth, url, coord) {
+        console.log(coord)
         return axios.create({
             headers: {
                 access_token: auth
             }
-        }).post(`${url}/checkout/${id}`)
+        }).post(coord === undefined ? `${url}/checkout/${id}` : `${url}/checkout/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
                 return { data: res, status: 'success' }
             })
@@ -145,6 +142,21 @@ export default class APIs {
                 access_token: auth
             }
         }).get(`${url}/checkinout/status/${id}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // attendance summary
+    static AttendanceSummary(id, auth, url) {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).get(`${url}/attendance/summary/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })

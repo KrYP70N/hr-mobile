@@ -21,7 +21,7 @@ export default class Profile extends Component {
         return (
             <Container>
                 <Content style={styProfile.content}>
-                    <GeneralProfile data={profile_data['General Information']}/>
+                    <GeneralProfile data={profile_data['General Information']} profileImage={profile_data['Profile Image']}/>
                     <WorkProfile data={profile_data['Work Information']}/>
                     <PersonalProfile data={profile_data['Personal Information']}/>
                 </Content>

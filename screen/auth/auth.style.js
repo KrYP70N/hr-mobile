@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native'
 import offset from '../../constant/offset'
 import typo from '../../constant/typography'
 import button from '../../constant/button'
+import color from '../../constant/color'
 
 export default StyleSheet.create({
     container: {
@@ -19,6 +20,9 @@ export default StyleSheet.create({
     logo: {
         width: 205
     },
+    icon: {
+        color: color.placeHolder
+    },
     form: {
         display: 'flex',
         justifyContent: 'center',
@@ -33,12 +37,11 @@ export default StyleSheet.create({
     },
     label: {
         marginBottom: offset.o2,
-        textAlign: 'center',
         marginLeft: -(offset.o1 + offset.oh)
     },
     input: {
         marginTop: offset.o1,
-        textAlign: 'center'
+        fontSize: offset.o2
     },
     button: {
         ...button.primary,

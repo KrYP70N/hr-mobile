@@ -4,7 +4,7 @@ import Constants from 'expo-constants'
 
 import APIs from '../../controllers/api.controller'
 import { Image, AsyncStorage, Keyboard } from 'react-native'
-import { View, Text, Container, Content, Form, Item, Label, Input, Body, Button, Textarea, Toast } from 'native-base'
+import { View, Text, Container, Content, Form, Item, Label, Input, Body, Button, Textarea, Toast, Icon } from 'native-base'
 
 import styAuth from './auth.style'
 import { KeyboardAvoidingView } from 'react-native'
@@ -21,7 +21,8 @@ export default class Auth extends Component {
             version: 1,
             auth: null,
             loading: true,
-            overlay: false
+            overlay: false,
+            secure: true
         }
 
         // key handle
@@ -103,6 +104,15 @@ export default class Auth extends Component {
                                 style={styAuth.input} 
                                 keyboardType='numeric'
                                 onChangeText={(data) => this.keyHandle(data)}
+                                secureTextEntry={this.state.secure}
+                                />
+                                <Icon name={this.state.secure ? 'ios-eye-off' : 'ios-eye'} 
+                                style={styAuth.icon} 
+                                onPress={() => {
+                                    this.setState({
+                                        secure: !this.state.secure
+                                    })
+                                }}
                                 />
                             </Item>
                             <Button style={styAuth.button} onPress={() => {this.submitKey()}}>

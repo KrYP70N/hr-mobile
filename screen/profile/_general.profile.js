@@ -14,12 +14,10 @@ export default class GeneralProfile extends Component {
         return (
             <View style={styProfile.personalInfo}>
                 <Image source={
-                    ProfileModel.checkKey(
-                    this.props.data, 'Profile Picture') === undefined ?
-                    require('../../assets/icon/user.png') : 
+                    this.props.profileImage === false ? 
+                    require('../../assets/icon/user.png') :
                     {
-                        uri: ProfileModel.checkKey(this.props.data, 'Profile Picture')[0] + ',' + 
-                        ProfileModel.checkKey(this.props.data, 'Profile Picture')[1]
+                        uri: `data:${this.props.profileImage[1]};base64,${this.props.profileImage[0]}`
                     }
                 } style={styProfile.image}/>
                 <Text style={styProfile.id}>{

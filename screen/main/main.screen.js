@@ -96,10 +96,11 @@ export default class Main extends Component {
                         <Row>
                             <Col style={styMain.userInfo}>
                                 <Image source={
-                                    ProfileModel.checkKey(
-                                    this.state.profile['General Information'], 'Profile Picture') === undefined ?
-                                    require('../../assets/icon/user.png') : 
-                                    {uri: 'data:image/png;base64,' + this.state.data['Profile Picture']}
+                                    this.state.profile['Profile Image'] === false ? 
+                                    require('../../assets/icon/user.png') :
+                                    {
+                                        uri: `data:${this.state.profile['Profile Image'][1]};base64,${this.state.profile['Profile Image'][0]}`
+                                    }
                                 } style={styMain.profilePic} />
                                 <View>
                                     <Text style={styMain.name}>
@@ -151,7 +152,8 @@ export default class Main extends Component {
                                     this.props.navigation.navigate(
                                         po.menu[1].navigate, {
                                             data: this.state,
-                                            url: this.props.route.params.url
+                                            url: this.props.route.params.url,
+                                            id: this.props.route.params.id
                                         }
                                     ) : null
                                     }>
