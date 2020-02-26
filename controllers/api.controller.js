@@ -165,4 +165,6 @@ export default class APIs {
             })
     }
 
+    // request leave type
+
 }
