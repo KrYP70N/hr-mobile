@@ -19,6 +19,7 @@ export default class Approve extends Component {
             APIs.OTPending(this.props.data.id, this.props.data.auth, this.props.data.url)
             .then((res) => {
                 if(res.status === 'success') {
+                    console.log(res.data)
                     this.setState({
                         data: res.data
                     })
@@ -30,7 +31,7 @@ export default class Approve extends Component {
         let requests = this.state.data.map((req) => {
             console.log(req)
             return (
-                <Card key={req['overtime_emp_id']}>
+                <Card key={req['overtime_emp_id']+Math.floor(Math.random()*3000)}>
                     <CardItem>
                         <Body>
                             <View style={styOt.cardTitleContainer}>
