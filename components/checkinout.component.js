@@ -56,7 +56,7 @@ export default class CheckInOut extends Component {
                                 },
                                 duration: 3000
                             })
-                            // this.status(this.props.userid, this.props.auth, this.props.url)
+                            this.status(this.props.userid, this.props.auth, this.props.url)
                         } else {
                             Toast.show({
                                 text: 'Invalid Check In',
@@ -74,11 +74,17 @@ export default class CheckInOut extends Component {
             } else {
                 this.fencing()
                     .then((res) => {
+                        console.log(res.latitude, res.longitude)
+                        console.log(this.state.lat, this.state.long)
+
                         let checkRange = geolib.isPointWithinRadius(
                             { latitude: res.latitude, longitude: res.longitude },
                             { latitude: this.state.lat, longitude: this.state.long },
                             this.state.radius
                         )
+
+                        console.log(checkRange)
+                        
                         if (checkRange === false) {
                             Toast.show({
                                 text: 'Opp! You are out of range.',
@@ -93,7 +99,6 @@ export default class CheckInOut extends Component {
                         } else {
                             APIs.Checkin(this.props.userid, this.props.auth, this.props.url, {lat: res.latitude, long: res.longitude})
                                 .then((res) => {
-                                    console.log(res)
                                     if (res.status === 'success') {
                                         Toast.show({
                                             text: 'Success Check In',
@@ -105,7 +110,7 @@ export default class CheckInOut extends Component {
                                             },
                                             duration: 3000
                                         })
-                                        // this.status(this.props.userid, this.props.auth, this.props.url)
+                                        this.status(this.props.userid, this.props.auth, this.props.url)
                                     } else {
                                         Toast.show({
                                             text: 'Invalid Check In',
@@ -139,7 +144,7 @@ export default class CheckInOut extends Component {
                                 },
                                 duration: 3000
                             })
-                            // this.status(this.props.userid, this.props.auth, this.props.url)
+                            this.status(this.props.userid, this.props.auth, this.props.url)
                         } else {
                             Toast.show({
                                 text: 'Invalid Check Out',

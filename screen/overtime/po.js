@@ -10,6 +10,9 @@ export default {
         end: {
             label: 'End Time'
         },
+        hour: {
+            label: 'Hours'
+        },
         textarea: {
             label: 'reason'
         },

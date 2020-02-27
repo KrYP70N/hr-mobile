@@ -11,12 +11,14 @@ export default class APIs {
     static Auth(key, version) {
         return axios.get(`http://apiendpoint.innovixhr.com/api/build/hr?siteKey=${key}&appVersion=${version}`)
             .then(function (res) {
+                console.log(res)
                 return { data: res.data.model, status: res.data.success }
             })
     }
     
     // auth token
     static Token(name, password, db) {
+        console.log(name, password, db)
         return axios.create({
             headers: {
                 db: db.db,
@@ -25,10 +27,11 @@ export default class APIs {
             }
         }).get(`${db.url}/api/auth/token`)
             .then(function (res) {
+                console.log(res)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log(error)
+
                 return { error: error, status: 'fail' }
             })
     }
@@ -61,7 +64,6 @@ export default class APIs {
                 
                 // reformat profileImage
                 let profileImage = res.data.data['Profile Picture']
-                console.log(profileImage)
 
                 // reformat general information
                 let generalInfo = data.slice(0, data.indexOf("Work Information") - 3).split(', "')
@@ -121,7 +123,6 @@ export default class APIs {
 
     // cehckout controller
     static Checkout(id, auth, url, coord) {
-        console.log(coord)
         return axios.create({
             headers: {
                 access_token: auth
@@ -165,6 +166,34 @@ export default class APIs {
             })
     }
 
-    // request leave type
+    // request ot type
+    static OTRequest(id, auth, url, date, hour, description) {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).post(`${url}/overtime/${id}?request_date=${date}&hour=${hour}&description=${description}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // request ot not in final approve
+    static OTPending(id, auth, url) {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).get(`${url}/list/OTRequest/${id}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
 
 }

@@ -46,6 +46,9 @@ export default {
         ...typo.headline,
         color: color.placeHolder
     },
+    tabs: {
+        backgroundColor: color.primary
+    },
     datepicker: {
         borderBottomWidth: 0.5,
         borderColor: color.placeHolder,

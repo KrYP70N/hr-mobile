@@ -96,7 +96,7 @@ export default class Main extends Component {
                         <Row>
                             <Col style={styMain.userInfo}>
                                 <Image source={
-                                    this.state.profile['Profile Image'] === false ? 
+                                    this.state.profile['Profile Image'][0] === false ? 
                                     require('../../assets/icon/user.png') :
                                     {
                                         uri: `data:${this.state.profile['Profile Image'][1]};base64,${this.state.profile['Profile Image'][0]}`
@@ -193,7 +193,11 @@ export default class Main extends Component {
                                 <TouchableNativeFeedback onPress={() => 
                                     po.menu[3].navigate ? 
                                     this.props.navigation.navigate(
-                                        po.menu[3].navigate
+                                        po.menu[3].navigate, {
+                                            data: this.state,
+                                            url: this.props.route.params.url,
+                                            id: this.props.route.params.id
+                                        }
                                     ) : null
                                     }>
                                     <CardItem>

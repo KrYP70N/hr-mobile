@@ -52,12 +52,12 @@ export default StyleSheet.create({
         height: 120
     },
     cardLft: {
-        paddingRight: offset.o1,
-        marginBottom: offset.o1
+        paddingRight: offset.oh,
+        marginBottom: offset.oh
     },
     cardRight: {
-        paddingLeft: offset.o1,
-        marginBottom: offset.o1
+        paddingLeft: offset.oh,
+        marginBottom: offset.oh
     },
     checkBody: {
         display: 'flex',

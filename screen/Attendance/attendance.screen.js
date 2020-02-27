@@ -65,7 +65,7 @@ export default class Attendance extends Component {
             console.log()
             return (
                 <Card style={[styAttend.infoCard,
-                    this.state.data[title][0][0] === null ? {display: 'none'} : null
+                    this.state.data[title][0][0] === null || this.state.data[title][0][0] === 0 ? {display: 'none'} : null
                 ]} key={title}> 
                     <View style={styAttend.cardLTitle}>
                         <Text style={styAttend.infoCardTitle}>{title}</Text>
