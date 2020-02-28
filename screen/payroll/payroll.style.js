@@ -11,6 +11,7 @@ export default StyleSheet.create({
     },
     form: {
         padding: offset.o1,
+        marginBottom: offset.o5,
         backgroundColor: color.light
     },
     fieldSet: {
@@ -105,5 +106,18 @@ export default StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         left: 0
+    },
+    noData: {
+        padding: offset.o3,
+        display: 'flex',
+        alignItems: 'center'
+    },
+    nodataIcon: {
+        fontSize: offset.o4,
+        color: color.placeHolder,
+        marginBottom: offset.o2
+    },
+    nodataText: {
+        color: color.placeHolder
     }
 })

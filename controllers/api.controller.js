@@ -11,14 +11,12 @@ export default class APIs {
     static Auth(key, version) {
         return axios.get(`http://apiendpoint.innovixhr.com/api/build/hr?siteKey=${key}&appVersion=${version}`)
             .then(function (res) {
-                console.log(res)
                 return { data: res.data.model, status: res.data.success }
             })
     }
     
     // auth token
     static Token(name, password, db) {
-        console.log(name, password, db)
         return axios.create({
             headers: {
                 db: db.db,
@@ -31,7 +29,7 @@ export default class APIs {
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
-
+                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -203,6 +201,36 @@ export default class APIs {
                 access_token: auth
             }
         }).post(`${url}/approve/overtime/${otID}?status=${status}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // yearly payroll record
+    static yearPayroll = (id, auth, url, year) => {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).get(`${url}/payroll/${id}/${year}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // monthly payslip
+    static getPaySlip = (slipid, auth, url) => {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).get(`${url}/payroll/${slipid}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })

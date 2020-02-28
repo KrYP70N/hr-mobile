@@ -11,9 +11,6 @@ import CheckInOut from '../../components/checkinout.component'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
 
-
-
-
 export default class Attendance extends Component {
 
     constructor(props) {

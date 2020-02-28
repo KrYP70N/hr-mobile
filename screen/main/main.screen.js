@@ -215,7 +215,11 @@ export default class Main extends Component {
                                 <TouchableNativeFeedback onPress={() => 
                                     po.menu[4].navigate ? 
                                     this.props.navigation.navigate(
-                                        po.menu[4].navigate
+                                        po.menu[4].navigate, {
+                                            auth: this.state.auth,
+                                            url: this.props.route.params.url,
+                                            id: this.props.route.params.id
+                                        }
                                     ) : null
                                     }>
                                     <CardItem>

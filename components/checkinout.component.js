@@ -33,6 +33,7 @@ export default class CheckInOut extends Component {
         this.status = (id, auth, url) => {
             APIs.CheckStatus(id, auth, url)
                 .then((res) => {
+                    console.log(res)
                     this.setState({
                         nextCheckin: res.data['Checkin'],
                         nextCheckout: res.data['Checkout']
@@ -42,7 +43,7 @@ export default class CheckInOut extends Component {
 
         this.checkin = () => {
             if (!this.state.geofencing) {
-
+                console.log('hola')
                 APIs.Checkin(this.props.userid, this.props.auth, this.props.url)
                     .then((res) => {
                         if (res.status === 'success') {
@@ -74,9 +75,6 @@ export default class CheckInOut extends Component {
             } else {
                 this.fencing()
                     .then((res) => {
-                        console.log(res.latitude, res.longitude)
-                        console.log(this.state.lat, this.state.long)
-
                         let checkRange = geolib.isPointWithinRadius(
                             { latitude: res.latitude, longitude: res.longitude },
                             { latitude: this.state.lat, longitude: this.state.long },
@@ -215,6 +213,7 @@ export default class CheckInOut extends Component {
         this.fencing = async () => {
             let { status } = await Permissions.askAsync(Permissions.LOCATION)
             if (status !== 'granted') {
+
                 Toast.show({
                     text: 'Permission to access location was denied',
                     duration: 6000,
@@ -226,7 +225,16 @@ export default class CheckInOut extends Component {
                     }
                 })
             } else {
-                let location = await Location.getCurrentPositionAsync({});
+                // Toast.show({
+                //     text: "Sorry, Your device or network can't support location service properly!",
+                //     textStyle: {
+                //         textAlign: 'center'
+                //     },
+                //     style: {
+                //         backgroundColor: color.primary
+                //     }
+                // })
+                let location = await Location.getCurrentPositionAsync()
                 return location.coords
             }
         }
