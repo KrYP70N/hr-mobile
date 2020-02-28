@@ -196,4 +196,19 @@ export default class APIs {
             })
     }
 
+    // cancel ot
+    static OTCancel(otID, auth, url, status) {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).post(`${url}/approve/overtime/${otID}?status=${status}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
 }

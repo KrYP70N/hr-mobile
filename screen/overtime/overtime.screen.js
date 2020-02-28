@@ -17,14 +17,19 @@ export default class Overtime extends Component {
         this.state = {
             auth: this.props.route.params.data['auth'],
             url: this.props.route.params.url,
-            id: this.props.route.params.id
+            id: this.props.route.params.id,
+            token: 1
         }
     }
 
     render () {
         return (
             <Container>
-                <Tabs >
+                <Tabs onChangeTab={() => {
+                    this.setState({
+                        token: this.state.token + 1
+                    })
+                }}>
                     <Tab heading="Request" tabStyle={{
                         backgroundColor: color.primary
                     }} activeTabStyle={{
@@ -37,7 +42,7 @@ export default class Overtime extends Component {
                     }} activeTabStyle={{
                         backgroundColor: color.primary
                     }}>
-                        <Approve data={this.state} />
+                        <Approve data={this.state} token={this.state.token} />
                     </Tab>
                     <Tab heading="History" tabStyle={{
                         backgroundColor: color.primary

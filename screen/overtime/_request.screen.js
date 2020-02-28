@@ -65,7 +65,7 @@ export default class Request extends Component {
                 .then((res) => {
                     if(res.status === 'success') {
                         Toast.show({
-                            text: res.data,
+                            text: 'Request Success!',
                             textStyle: {
                                 textAlign: 'center'
                             },
@@ -76,7 +76,7 @@ export default class Request extends Component {
                         })
                     } else {
                         Toast.show({
-                            text: res.data,
+                            text: 'Network Error! Please try again in later.',
                             textStyle: {
                                 textAlign: 'center'
                             },
