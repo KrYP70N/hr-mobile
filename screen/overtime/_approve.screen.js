@@ -67,7 +67,7 @@ export default class Approve extends Component {
         
         let requests = this.state.data.map((req) => {
             return (
-                <Card key={req['OT_Obj_Id']+Math.floor(Math.random()*3000)} >
+                <Card key={Math.floor(Math.random()*3000)+req['date']+Math.floor(Math.random()*3000)} >
                     <CardItem>
                         <Body>
                             <View style={styOt.cardTitleContainer}>

@@ -30,8 +30,8 @@ export default {
         }
     },
     history: {
-        label1: 'From',
-        label2: 'To',
+        label1: 'Year',
+        label2: 'Month',
         button: 'Search',
         card: {
             title: 'Overtime Request',
