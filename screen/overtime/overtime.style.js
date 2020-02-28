@@ -26,8 +26,7 @@ export default {
         marginTop: offset.o5
     },
     picker: {
-        marginBottom: offset.o4,
-        marginTop: offset.o2
+        marginBottom: offset.o4
     },
     button: {
         ...button.primary,
