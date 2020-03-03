@@ -14,6 +14,16 @@ import { View, Text, Button, Icon } from 'native-base';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import { NavigationActions } from 'react-navigation';
 
+import Auth from '../screen/auth/auth.screen'
+import Login from '../screen/login/login.screen'
+import Main from '../screen/main/main.screen'
+import Profile from '../screen/profile/profile.screen'
+import Attendance from '../screen/attendance/attendance.screen'
+import Overtime from '../screen/overtime/overtime.screen'
+import Payroll from '../screen/payroll/payroll.screen'
+import PayrollDetail from '../screen/payroll/pryroll.detail.screen'
+import Leave from '../screen/leave/leave.screen'
+
 import styNav from './navigation.style'
 
 function CustomdrawerContent(props) {
