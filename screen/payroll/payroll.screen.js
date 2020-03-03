@@ -2,10 +2,13 @@ import React, { Component } from 'react'
 
 import po from './po'
 import styPayroll from './payroll.style'
-import { Container, Content, Text, Form, Item, Label, Input, Picker, Row, Col, Button, View, CardItem, Body, Card, Icon } from 'native-base'
+import { Container, Content, Text, Form, Item, Label, Input, Picker, Row, Col, Button, View, CardItem, Body, Card, Icon, Header, Left, Right } from 'native-base'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 import PayrollList from './_list.payroll.screen.'
+import offset from '../../constant/offset'
+import color from '../../constant/color'
+
 
 export default class Payroll extends Component {
 
@@ -96,6 +99,26 @@ export default class Payroll extends Component {
 
         return (
             <Container style={styPayroll.container}>
+                <Header style={{
+                        backgroundColor: color.light
+                    }}>
+                        <Left style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }}>
+                            <Icon name='ios-arrow-round-back' style={{
+                                fontSize: offset.o4,
+                                color: color.primary,
+                                marginRight: offset.o2
+                            }} onPress={() => { this.props.navigation.navigate('Main') }} />
+                            <Text style={{
+                                color: color.secondary
+                            }}>Payroll</Text>
+                        </Left>
+                        <Right></Right>
+                    </Header>
+
                 <Content>
                     <Form style={styPayroll.form}>
                         <Row style={styPayroll.fieldSet}>

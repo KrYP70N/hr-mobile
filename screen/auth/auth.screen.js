@@ -12,6 +12,8 @@ import Loading from '../../components/loading.component'
 import Overlay from '../../components/overlay.component'
 import { hydrate } from 'react-dom'
 
+
+
 export default class Auth extends Component {
 
     constructor(props) {

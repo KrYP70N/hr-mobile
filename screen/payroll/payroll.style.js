@@ -11,8 +11,12 @@ export default StyleSheet.create({
     },
     form: {
         padding: offset.o1,
-        marginBottom: offset.o5,
         backgroundColor: color.light
+    },
+    itemBox: {
+        padding: offset.o1,
+        backgroundColor: color.light,
+        marginBottom: offset.o5
     },
     fieldSet: {
         marginBottom: offset.o2

@@ -28,6 +28,7 @@ export default {
         {
             icon: 'ios-walk',
             name: 'Leave',
+            navigate: 'Leave'
         },
         {
             icon: 'ios-stopwatch',

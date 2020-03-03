@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea } from 'native-base'
+import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea, Header, Left, Right } from 'native-base'
 import { Image } from 'react-native'
 import { TouchableNativeFeedback } from 'react-native-gesture-handler'
 
@@ -81,6 +81,20 @@ export default class Main extends Component {
         }
         return (
             <Container>
+                <Header style={styMain.header}>
+                    <Left>
+                        <Icon name='menu' style={styMain.headerMenu}
+                            onPress={() => {
+                                this.props.navigation.openDrawer(this.props)
+                            }}
+                        />
+                    </Left>
+                    <Right>
+                        <Image source={
+                            require('../../assets/upload/logo.png')
+                        } style={styMain.headerLogo}/>
+                    </Right>
+                </Header>
                 <Content>
                     <TouchableNativeFeedback style={styMain.banner}
                         onPress={() => {
@@ -172,7 +186,11 @@ export default class Main extends Component {
                                 <TouchableNativeFeedback onPress={() => 
                                     po.menu[2].navigate ? 
                                     this.props.navigation.navigate(
-                                        po.menu[2].navigate
+                                        po.menu[2].navigate, {
+                                            auth: this.state.auth,
+                                            url: this.props.route.params.url,
+                                            id: this.props.route.params.id
+                                        }
                                     ) : null
                                     }>
                                     <CardItem>

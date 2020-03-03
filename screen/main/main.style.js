@@ -5,6 +5,16 @@ import typo from '../../constant/typography'
 import offset from '../../constant/offset'
 
 export default StyleSheet.create({
+    header: {
+        backgroundColor: color.light
+    },
+    headerMenu: {
+        color: color.primary
+    },
+    headerLogo: {
+        width: 112,
+        height: 26
+    },
     banner: {
         backgroundColor: color.primary,
         padding: offset.o2,

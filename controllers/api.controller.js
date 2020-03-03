@@ -1,10 +1,5 @@
 import axios from 'axios'
 
-const config = {
-    req: 'http://192.168.1.100:8071',
-    db: 'TESTING'
-}
-
 export default class APIs {
 
     // auth
@@ -238,5 +233,53 @@ export default class APIs {
                 return { error: error, status: 'fail' }
             })
     }
+
+    // get leave type
+    static getLeaveType = (auth, url) => {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).get(`${url}/leave/types`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // request leave
+    static requestLeave = (auth, url, id, leaveType, from, to, dayType) => {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // get pending Leave
+    static getLeaveType = (auth, url, id) => {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).get(`${url}/list/leaveRequest/${id}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // get leave history
+    static getLeaveHistory = (auth)
 
 }

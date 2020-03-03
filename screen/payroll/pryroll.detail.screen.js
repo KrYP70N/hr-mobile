@@ -73,7 +73,7 @@ export default class PayrollDetail extends Component {
                         <Text style={styPayroll.bannerTxtS}>From {this.state.data[0].date_from} to {this.state.data[0].date_to}</Text>
                     </View>
 
-                    <View style={styPayroll.form}>
+                    <View style={styPayroll.itemBox}>
                         <Card>
                             <List>
                                 {silpdata}
