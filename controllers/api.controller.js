@@ -2,7 +2,6 @@ import axios from 'axios'
 
 export default class APIs {
 
-    // auth
     static Auth(key, version) {
         return axios.get(`http://apiendpoint.innovixhr.com/api/build/hr?siteKey=${key}&appVersion=${version}`)
             .then(function (res) {
@@ -280,6 +279,6 @@ export default class APIs {
     }
 
     // get leave history
-    static getLeaveHistory = (auth)
+    // static getLeaveHistory = (auth)
 
 }
