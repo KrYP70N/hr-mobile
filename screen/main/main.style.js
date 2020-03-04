@@ -25,7 +25,7 @@ export default StyleSheet.create({
         width: '100%',
         textAlign: 'center',
         color: color.light,
-        marginBottom: offset.o3
+        marginBottom: offset.o2
     },
     userInfo: {
         display: 'flex',

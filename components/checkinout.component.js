@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Image, StyleSheet, Platform } from 'react-native'
+import { Image, StyleSheet, Platform, AsyncStorage } from 'react-native'
 import { Text, View, Row, Col, Card, CardItem, Icon, Toast } from 'native-base'
 
 import offset from '../constant/offset'
@@ -16,24 +16,30 @@ import * as geolib from 'geolib'
 
 import APIs from '../controllers/api.controller'
 import ProfileModel from '../model/profile.model'
+import * as IntentLauncher from 'expo-intent-launcher'
 
 export default class CheckInOut extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            geofencing: false,
-            lat: null,
-            long: null,
-            radius: null,
+            geofencing: null,
+            granted: null,
+            lat: 0,
+            long: 0,
+            userLat: 0,
+            userLong: 0,
+            radius: 0,
             nextCheckin: false,
-            nextCheckout: false
+            nextCheckout: false,
+            url: null,
+            token: null,
+            id: null
         }
 
         this.status = (id, auth, url) => {
             APIs.CheckStatus(id, auth, url)
                 .then((res) => {
-                    console.log(res)
                     this.setState({
                         nextCheckin: res.data['Checkin'],
                         nextCheckout: res.data['Checkout']
@@ -42,9 +48,8 @@ export default class CheckInOut extends Component {
         }
 
         this.checkin = () => {
-            if (!this.state.geofencing) {
-                console.log('hola')
-                APIs.Checkin(this.props.userid, this.props.auth, this.props.url)
+            if (this.state.geofencing === false) {
+                APIs.Checkin(this.state.url, this.state.auth, this.state.id)
                     .then((res) => {
                         if (res.status === 'success') {
                             Toast.show({
@@ -55,9 +60,9 @@ export default class CheckInOut extends Component {
                                 textStyle: {
                                     textAlign: 'center'
                                 },
-                                duration: 3000
+                                duration: 4000
                             })
-                            this.status(this.props.userid, this.props.auth, this.props.url)
+                            
                         } else {
                             Toast.show({
                                 text: 'Invalid Check In',
@@ -67,69 +72,56 @@ export default class CheckInOut extends Component {
                                 textStyle: {
                                     textAlign: 'center'
                                 },
-                                duration: 3000
+                                duration: 4000
                             })
                         }
                     })
 
             } else {
-                this.fencing()
+                let checkRange = geolib.isPointWithinRadius(
+                    { latitude: this.state.userLat, longitude: this.state.userLong },
+                    { latitude: this.state.lat, longitude: this.state.long },
+                    this.state.radius
+                )
+                if(checkRange === true)  {
+                    APIs.Checkin(this.state.url, this.state.token, this.state.id, {lat: this.state.lat, long: this.state.long})
                     .then((res) => {
-                        let checkRange = geolib.isPointWithinRadius(
-                            { latitude: res.latitude, longitude: res.longitude },
-                            { latitude: this.state.lat, longitude: this.state.long },
-                            this.state.radius
-                        )
-
-                        console.log(checkRange)
-                        
-                        if (checkRange === false) {
+                        if(res.status === 'success') {
                             Toast.show({
-                                text: 'Opp! You are out of range.',
+                                text: 'Check in success!',
                                 style: {
-                                    backgroundColor: color.danger
+                                    backgroundColor: color.primary
                                 },
                                 textStyle: {
-                                    textAlign: "center"
+                                    textAlign: 'center'
                                 },
                                 duration: 3000
                             })
                         } else {
-                            APIs.Checkin(this.props.userid, this.props.auth, this.props.url, {lat: res.latitude, long: res.longitude})
-                                .then((res) => {
-                                    if (res.status === 'success') {
-                                        Toast.show({
-                                            text: 'Success Check In',
-                                            style: {
-                                                backgroundColor: color.primary
-                                            },
-                                            textStyle: {
-                                                textAlign: 'center'
-                                            },
-                                            duration: 3000
-                                        })
-                                        this.status(this.props.userid, this.props.auth, this.props.url)
-                                    } else {
-                                        Toast.show({
-                                            text: 'Invalid Check In',
-                                            style: {
-                                                backgroundColor: color.danger
-                                            },
-                                            textStyle: {
-                                                textAlign: 'center'
-                                            },
-                                            duration: 3000
-                                        })
-                                    }
-                                })
+                            AsyncStorage.setItem('@hr:login', 'false')
+                            .then(() => {
+                                this.props.navigation.navigate('Login')
+                            })
                         }
                     })
+                } else {
+                    Toast.show({
+                        text: 'OPP! Location out of range.',
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        duration: 3000
+                    })
+                }
             }
         }
 
         this.checkout = () => {
-            if (!this.state.geofencing) {
-                APIs.Checkout(this.props.userid, this.props.auth, this.props.url)
+            if (this.state.geofencing === false) {
+                APIs.Checkout(this.state.url, this.state.auth, this.state.id)
                     .then((res) => {
                         if (res.status === 'success') {
                             Toast.show({
@@ -140,9 +132,8 @@ export default class CheckInOut extends Component {
                                 textStyle: {
                                     textAlign: 'center'
                                 },
-                                duration: 3000
+                                duration: 4000
                             })
-                            this.status(this.props.userid, this.props.auth, this.props.url)
                         } else {
                             Toast.show({
                                 text: 'Invalid Check Out',
@@ -152,109 +143,104 @@ export default class CheckInOut extends Component {
                                 textStyle: {
                                     textAlign: 'center'
                                 },
-                                duration: 3000
+                                duration: 4000
                             })
                         }
                     })
+
             } else {
-                this.fencing()
+                let checkRange = geolib.isPointWithinRadius(
+                    { latitude: this.state.userLat, longitude: this.state.userLong },
+                    { latitude: this.state.lat, longitude: this.state.long },
+                    this.state.radius
+                )
+                if(checkRange === true)  {
+                    APIs.Checkout(this.state.url, this.state.token, this.state.id, {lat: this.state.lat, long: this.state.long})
                     .then((res) => {
-                        let checkRange = geolib.isPointWithinRadius(
-                            { latitude: res.latitude, longitude: res.longitude },
-                            { latitude: this.state.lat, longitude: this.state.long },
-                            this.state.radius
-                        )
-                        if (checkRange === false) {
+                        if(res.status === 'success') {
                             Toast.show({
-                                text: 'Opp! You are out of range.',
+                                text: 'Check out success!',
                                 style: {
-                                    backgroundColor: color.danger
+                                    backgroundColor: color.primary
                                 },
                                 textStyle: {
-                                    textAlign: "center"
+                                    textAlign: 'center'
                                 },
                                 duration: 3000
                             })
                         } else {
-                            APIs.Checkout(this.props.userid, this.props.auth, this.props.url, {lat: res.latitude, long: res.longitude})
-                                .then((res) => {
-                                    console.log(res)
-                                    if (res.status === 'success') {
-                                        Toast.show({
-                                            text: 'Success Check Out',
-                                            style: {
-                                                backgroundColor: color.primary
-                                            },
-                                            textStyle: {
-                                                textAlign: 'center'
-                                            },
-                                            duration: 3000
-                                        })
-                                        // this.status(this.props.userid, this.props.auth, this.props.url)
-                                    } else {
-                                        Toast.show({
-                                            text: 'Invalid Check Out',
-                                            style: {
-                                                backgroundColor: color.danger
-                                            },
-                                            textStyle: {
-                                                textAlign: 'center'
-                                            },
-                                            duration: 3000
-                                        })
-                                    }
-                                })
+                            AsyncStorage.setItem('@hr:login', 'false')
+                            .then(() => {
+                                this.props.navigation.navigate('Login')
+                            })
                         }
                     })
+                } else {
+                    Toast.show({
+                        text: 'OPP! Location out of range.',
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        duration: 3000
+                    })
+                }
             }
         }
 
-        // geo fencing
-        this.fencing = async () => {
-            let { status } = await Permissions.askAsync(Permissions.LOCATION)
-            if (status !== 'granted') {
-
-                Toast.show({
-                    text: 'Permission to access location was denied',
-                    duration: 6000,
-                    style: {
-                        backgroundColor: color.primary
-                    },
-                    textStyle: {
-                        textAlign: 'center'
-                    }
-                })
-            } else {
-                // Toast.show({
-                //     text: "Sorry, Your device or network can't support location service properly!",
-                //     textStyle: {
-                //         textAlign: 'center'
-                //     },
-                //     style: {
-                //         backgroundColor: color.primary
-                //     }
-                // })
-                let location = await Location.getCurrentPositionAsync()
-                return location.coords
-            }
-        }
     }
 
     componentDidMount() {
-        // check geo fencing
-        if (ProfileModel.checkKey(this.props.data, 'Geo Fencing')) {
+        // check next chekin
+        AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+            let data = JSON.parse(res)
             this.setState({
-                lat: ProfileModel.checkKey(this.props.data, 'Latitude'),
-                long: ProfileModel.checkKey(this.props.data, 'Longtitude'),
-                radius: ProfileModel.checkKey(this.props.data, 'Radius(m)'),
-                geofencing: true
+                url: data.ApiEndPoint
             })
+            AsyncStorage.getItem('@hr:token')
+            .then((res) => {
+                let data = JSON.parse(res)
+                this.setState({
+                    token: data.key,
+                    id: data.id
+                })
+            })
+        })
+    }
 
-            // tracing geo
+    componentDidUpdate () {
+
+        // collect checkin info
+        if(
+            this.state.url !== null && 
+            this.state.token !== null && 
+            this.state.id !== null &&
+            this.state.geofencing === null) {
+                APIs.Profile(this.state.url, this.state.token, this.state.id)
+                .then((res) => {
+                    let data = res.data['General Information']
+                    this.setState({
+                        geofencing: ProfileModel.checkKey(data, 'Geo Fencing'),
+                        lat: ProfileModel.checkKey(data, 'Latitude'),
+                        long: ProfileModel.checkKey(data, 'Longtitude'),
+                        radius: ProfileModel.checkKey(data, 'Radius(m)')
+                    })
+                })
+        }
+
+        // user location
+        if(this.state.geofencing === true && this.state.granted === null) {
+            // not supported location service
             if (Platform.OS === 'android' && !Constants.isDevice) {
+                this.setState({
+                    granted: 'error'
+                })
                 Toast.show({
                     text: 'OPP! Location service is not supported on your device!',
-                    duration: 6000,
+                    duration: 4000,
                     style: {
                         backgroundColor: color.primary
                     },
@@ -263,27 +249,90 @@ export default class CheckInOut extends Component {
                     }
                 })
             } else {
-                this.fencing()
+                Permissions.askAsync(Permissions.LOCATION)
+                .then((res) => {
+                    if(res.status === 'granted') {
+                        this.setState({
+                            granted: true
+                        })
+                        Location.getCurrentPositionAsync()
+                        .then((res) => {
+                            this.setState({
+                                userLat: res.coords.latitude,
+                                userLong: res.coords.longitude,
+                            })
+                        })
+                    } else {
+                        this.setState({
+                            granted: false
+                        })
+                    }
+                })
             }
         }
-
-        // check next chekin
-        this.status(this.props.userid, this.props.auth, this.props.url)
+        
     }
 
     render() {
+        if(this.state.granted === 'error') {
+            return (
+                <Row style={styles.row}>
+                    <Col>
+                        <Card style={styles.cardLocation}>
+                            <TouchableNativeFeedback
+                                style={styles.locationOn}
+                                onPress={
+                                    () => {
+                                        IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS)
+                                    }
+                                }
+                            > 
+                                <Icon name='md-globe' style={styles.map}/>
+                                <Text style={styles.placeholder}>OPP, Your device is not supported!</Text>
+                            </TouchableNativeFeedback>
+                        </Card>
+                    </Col>
+                </Row>
+            )
+        }
+
+        if(this.status.geofencing !== false && this.state.granted === false) {
+            return (
+                <Row style={styles.row}>
+                    <Col>
+                        <Card style={styles.cardLocation}>
+                            <TouchableNativeFeedback
+                                style={styles.locationOn}
+                                onPress={
+                                    () => {
+                                        IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS)
+                                    }
+                                }
+                            > 
+                                <Icon name='md-globe' style={styles.map}/>
+                                <Text style={styles.placeholder}>Please, Turn location service on!</Text>
+                            </TouchableNativeFeedback>
+                        </Card>
+                    </Col>
+                </Row>
+            )
+        }
+
         return (
             <Row style={styles.row}>
                 <Col style={styles.lft}>
                     <Card>
                         <TouchableNativeFeedback
                             style={styles.card}
-                            onPress={this.state.nextCheckin === false ? this.checkin :
+                            onPress={
+                                this.state.geofencing !== null &&
+                                this.state.granted !== null
+                                ? this.checkin :
                                 () => {
                                     Toast.show({
-                                        text: 'You already check in!',
+                                        text: 'Connection Err! Please Try again in later.',
                                         style: {
-                                            backgroundColor: color.secondary
+                                            backgroundColor: color.primary
                                         },
                                         textStyle: {
                                             textAlign: 'center'
@@ -311,11 +360,14 @@ export default class CheckInOut extends Component {
                 <Col style={styles.rht}>
                     <Card>
                         <TouchableNativeFeedback style={styles.card}
-                            onPress={this.state.nextCheckout === false ? this.checkout : () => {
+                            onPress={
+                                this.state.geofencing !== null &&
+                                this.state.granted !== null
+                                ? this.checkout : () => {
                                 Toast.show({
-                                    text: 'You already Check Out!',
+                                    text: 'Connection Err! Please Try again in later.',
                                     style: {
-                                        backgroundColor: color.secondary
+                                        backgroundColor: color.primary
                                     },
                                     textStyle: {
                                         textAlign: 'center'
@@ -356,6 +408,13 @@ const styles = StyleSheet.create({
     card: {
         minHeight: 120
     },
+    locationOn: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: 140,
+        padding: offset.o2
+    },
     view: {
         display: 'flex',
         alignItems: 'center',
@@ -369,5 +428,16 @@ const styles = StyleSheet.create({
     text: {
         ...typo.subHeader,
         color: color.secondary
+    },
+    cardLocation: {
+        borderRadius: offset.o1
+    },
+    placeholder: {
+        ...typo.placeholder
+    },
+    map: {
+        fontSize: offset.o5,
+        color: color.placeHolder,
+        marginBottom: offset.o1
     }
 })

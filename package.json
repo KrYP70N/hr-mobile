@@ -16,6 +16,7 @@
     "expo": "~36.0.0",
     "expo-document-picker": "~8.0.0",
     "expo-font": "~8.0.0",
+    "expo-intent-launcher": "~8.0.0",
     "geolib": "^3.2.1",
     "moment": "^2.24.0",
     "native-base": "^2.13.8",

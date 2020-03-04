@@ -44,19 +44,19 @@ export default class Login extends Component {
                     this.setState({
                         loading: true
                     })
-
-
                     if (res.status === 'success') {
-                        this.setState({
-                            loading: false
-                        })
-                        
                         AsyncStorage.setItem('@hr:token', JSON.stringify({
                             key: res.data.access_token,
                             id: res.data.employee_id
                         }))
                         .then(() => {
                             AsyncStorage.setItem('@hr:login', 'true')
+                            .then(() => {
+                                this.setState({
+                                    loading: false
+                                })
+                                this.props.navigation.navigate('Main')
+                            })
                         })
 
                     } else {
@@ -95,8 +95,8 @@ export default class Login extends Component {
     async componentDidMount() {
         // check auth success?
         AsyncStorage.getItem('@hr:endPoint')
-        .then((res) => {
-            if(res === null) {
+        .then((resEndPoint) => {
+            if(resEndPoint === null) {
                 this.props.navigation.navigate('Auth')
             } else {
                 AsyncStorage.getItem('@hr:login')
@@ -105,8 +105,8 @@ export default class Login extends Component {
                         this.props.navigation.navigate('Main')
                     } else {
                         this.setState({
-                            apiUrl: DB.getEndPoint(res),
-                            db: DB.getName(res)
+                            apiUrl: DB.getEndPoint(resEndPoint),
+                            db: DB.getName(resEndPoint)
                         })
                     }
                 })

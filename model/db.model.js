@@ -17,5 +17,15 @@ export default {
     // get site key
     getSiteKey: (data) => {
         return JSON.parse(data)['SiteKey']
+    },
+
+    // get token
+    getToken: (data) => {
+        return JSON.parse(data)['key']
+    },
+
+    // get uid
+    getUserId: (data) => {
+        return JSON.parse(data)['id']
     }
 }

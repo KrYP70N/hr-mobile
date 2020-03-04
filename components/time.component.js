@@ -5,6 +5,8 @@ import Moment from 'moment'
 import APIs from '../controllers/api.controller'
 import Time from '../controllers/time.controller'
 import color from '../constant/color'
+import { AsyncStorage } from 'react-native'
+import DB from '../model/db.model'
 
 export default class Clock extends Component {
 
@@ -16,19 +18,26 @@ export default class Clock extends Component {
     }
 
     componentDidMount () {
-        // time request
-        if (this.props.auth !== null && this.state.time === null) {
-            APIs.Time(this.props.auth, this.props.url)
-                .then((res) => {
-                    if (res.status === 'success') {
+        AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+            let endPoint = DB.getEndPoint(res)
+            AsyncStorage.getItem('@hr:token')
+            .then((res) => {
+                let key = DB.getToken(res)
+                
+                // request time
+                APIs.Time(endPoint, key)
+                .then((response) => {
+                    if(response.status === 'success') {
                         this.setState({
-                            time: Moment(res.data).format()
+                            time: Moment(response.data)
                         })
                     } else {
-                        this.props.navigation.navigate('Login')
+                        console.log('error')
                     }
                 })
-        }
+            })
+        })
     }
 
     componentDidUpdate () {
@@ -67,11 +76,11 @@ export default class Clock extends Component {
         }
         
         return (
-            <Text style={{
+            <Text style={[this.props.style, {
                 width: '100%',
                 color: color.light,
                 textAlign: 'center'
-            }}>...</Text>
+            }]}>...</Text>
         )
         
     }

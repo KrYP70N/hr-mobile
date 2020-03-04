@@ -27,10 +27,10 @@ export default class APIs {
     }
 
     // time controller
-    static Time(auth, url) {
+    static Time(url, token) {
         return axios.create({
             headers: {
-                access_token: auth
+                access_token: token
             }
         }).get(`${url}/getTime`)
             .then(function (res) {
@@ -42,7 +42,7 @@ export default class APIs {
     }
 
     // user controller
-    static Profile(id, auth, url) {
+    static Profile(url, auth, id) {
         return axios.create({
             headers: {
                 access_token: auth
@@ -97,7 +97,7 @@ export default class APIs {
     }
 
     // checkin controller
-    static Checkin(id, auth, url, coord) {
+    static Checkin(url, auth, id, coord) {
         return axios.create({
             headers: {
                 access_token: auth
@@ -112,7 +112,7 @@ export default class APIs {
     }
 
     // cehckout controller
-    static Checkout(id, auth, url, coord) {
+    static Checkout(url, auth, id, coord) {
         return axios.create({
             headers: {
                 access_token: auth
