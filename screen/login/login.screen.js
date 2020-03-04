@@ -4,7 +4,7 @@ import Constants from 'expo-constants'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions';
 
-import { KeyboardAvoidingView, Image, Keyboard } from 'react-native'
+import { KeyboardAvoidingView, Image, Keyboard, AsyncStorage } from 'react-native'
 import { View, Text, Container, Form, Content, Item, Label, Input, Button, Footer, Icon, Toast } from 'native-base'
 
 import styLogin from './login.style'
@@ -13,6 +13,9 @@ import po from './po'
 import Overlay from '../../components/overlay.component'
 
 import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component';
+import DB from '../../model/db.model'
+import color from '../../constant/color';
 
 
 export default class Login extends Component {
@@ -20,15 +23,12 @@ export default class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            appData: this.props.route.params,
+            apiUrl: null,
+            db: null,
             hidePassword: true,
-            overlay: false,
             user: null,
             name: null,
-            auth: null,
-            id: null,
-            errorMessage: null,
-            api: null
+            loading: false
         }
 
         // submit
@@ -36,23 +36,42 @@ export default class Login extends Component {
             // inject keyboard
             Keyboard.dismiss()
             this.setState({
-                overlay: true
+                loading: true
             })
-            APIs.Token(this.state.user, this.state.password, this.state.api)
+            APIs.Token(this.state.apiUrl, this.state.db, this.state.user, this.state.password)
                 .then((res) => {
+                    // display loading
                     this.setState({
-                        overlay: false
+                        loading: true
                     })
+
+
                     if (res.status === 'success') {
                         this.setState({
-                            auth: res.data.access_token,
-                            id: res.data.employee_id
+                            loading: false
                         })
-                        this.props.navigation.navigate('Main', { auth: this.state.auth, id: this.state.id, url: this.state.api.url })
+                        
+                        AsyncStorage.setItem('@hr:token', JSON.stringify({
+                            key: res.data.access_token,
+                            id: res.data.employee_id
+                        }))
+                        .then(() => {
+                            AsyncStorage.setItem('@hr:login', 'true')
+                        })
+
                     } else {
+                        this.setState({
+                            loading: false
+                        })
                         Toast.show({
                             text: 'user name or password is not correct!',
-                            buttonStyle: 'Okay'
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 4000
                         })
                     }
                 })
@@ -73,20 +92,36 @@ export default class Login extends Component {
         }
     }
 
-    componentDidMount() {
-        if(this.state.appData.data.data === null) {
-            this.props.navigation.navigate('Auth')
-        } else {
-            this.setState({
-                api: {
-                    url: this.state.appData.data.data.ApiEndPoint,
-                    db: this.state.appData.data.data.Database
-                }
-            })
-        }
+    async componentDidMount() {
+        // check auth success?
+        AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+            if(res === null) {
+                this.props.navigation.navigate('Auth')
+            } else {
+                AsyncStorage.getItem('@hr:login')
+                .then((res) => {
+                    if(res === 'true') {
+                        this.props.navigation.navigate('Main')
+                    } else {
+                        this.setState({
+                            apiUrl: DB.getEndPoint(res),
+                            db: DB.getName(res)
+                        })
+                    }
+                })
+            }
+        })
     }
 
     render() {
+
+        if(this.state.db === null || this.state.apiUrl === null || this.state.loading === true) {
+            return (
+                <Loading />
+            )
+        }
+
         return (
             <KeyboardAvoidingView behavior="height" style={styLogin.kbView}>
                 <Container style={styLogin.container}>

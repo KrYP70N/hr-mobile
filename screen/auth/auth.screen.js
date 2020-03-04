@@ -22,7 +22,6 @@ export default class Auth extends Component {
         this.state = {
             key: null,
             version: 1,
-            auth: null,
             loading: false,
             secure: true
         }
@@ -76,10 +75,7 @@ export default class Auth extends Component {
         try {
             const key = await AsyncStorage.getItem('@hr:endPoint')
             if(key !== null) {
-                AsyncStorage.getItem('@hr:endPoint')
-                    .then((res) => {
-                        this.props.navigation.navigate('Login')
-                    })
+                this.props.navigation.navigate('Login')
             }
         } catch (error) {
             Toast.show({

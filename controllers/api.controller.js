@@ -10,20 +10,18 @@ export default class APIs {
     }
     
     // auth token
-    static Token(name, password, db) {
+    static Token(url, db, user, password) {
         return axios.create({
             headers: {
-                db: db.db,
-                login: name,
+                db: db,
+                login: user,
                 password: password
             }
-        }).get(`${db.url}/api/auth/token`)
+        }).get(`${url}/api/auth/token`)
             .then(function (res) {
-                console.log(res)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
