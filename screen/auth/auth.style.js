@@ -30,17 +30,16 @@ export default StyleSheet.create({
     },
     item: {
         marginLeft: 0,
-        marginBottom: offset.o3
-    },
-    title: {
-        ...typo.headline
+        marginBottom: offset.o5
     },
     label: {
-        marginBottom: offset.o2,
-        marginLeft: -(offset.o1 + offset.oh)
+        color: color.placeHolder
+    },
+    title: {
+        ...typo.headline,
+        marginBottom: offset.o3
     },
     input: {
-        marginTop: offset.o1,
         fontSize: offset.o2
     },
     button: {
@@ -51,4 +50,5 @@ export default StyleSheet.create({
         width: '100%',
         textAlign: 'center'
     }
+
 })

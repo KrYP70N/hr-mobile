@@ -98,4 +98,24 @@ export default StyleSheet.create({
         padding: offset.o2,
         color: color.lighter
     },
+    file: {
+        width: 100,
+        height: 100,
+        padding: offset.o1,
+        borderWidth: 1,
+        borderColor: color.placeHolder,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    filename: {
+        fontSize: offset.o1,
+        textAlign: 'center'
+    },
+    closeImage: {
+        fontSize: offset.o3,
+        position: 'absolute',
+        top: - (offset.o1 + offset.oh),
+        right: - (offset.o1 + offset.oh)
+    }
 })

@@ -97,12 +97,12 @@ export default class Login extends Component {
                     <Text style={styLogin.title}>{po.title}</Text>
                     <Text style={styLogin.sub}>{po.sub}</Text>
 
-                    <Item floatingLabel style={styLogin.item}>
+                    <Item fixedLabel style={styLogin.item}>
                         <Label style={styLogin.label}>{po.label.name}</Label>
-                        <Input style={styLogin.input} onChangeText={(key) => this.user(key)} />
+                        <Input onChangeText={(key) => this.user(key)} />
                     </Item>
 
-                    <Item floatingLabel style={styLogin.password}>
+                    <Item fixedLabel style={styLogin.password}>
                         <Label style={styLogin.label}>{po.label.psw}</Label>
                         <Input secureTextEntry={this.state.hidePassword} style={styLogin.input}
                             onChangeText={(key) => { this.password(key) }}
@@ -123,7 +123,7 @@ export default class Login extends Component {
                     <Button transparent style={styLogin.resetPwd} onPress={() => {
                         alert('sorry, not avaliable!')
                     }}>
-                        <Text style={styLogin.resetTxt}>Forget Passowrd?</Text>
+                        <Text style={styLogin.resetTxt}>Change Access Token?</Text>
                     </Button>
                 </Container>
                 <Overlay overlay={this.state.overlay} />

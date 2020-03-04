@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, Form, Item, Label, Picker, Input, Textarea, Row, Col, Button, Container, Content, DatePicker, Toast } from 'native-base'
+import { View, Text, Form, Item, Label, Picker, Input, Textarea, Row, Col, Button, Container, Content, DatePicker, Toast, Icon } from 'native-base'
 
 import color from '../../constant/color'
 import styLeave from './leave.style'
 import { KeyboardAvoidingView } from 'react-native'
+
+import * as DocumentPicker from 'expo-document-picker';
 
 import APIs from '../../controllers/api.controller'
 
@@ -20,7 +22,8 @@ export default class LeaveRequest extends Component {
             from: null,
             to: null,
             dayType: false,
-            description: null
+            description: null,
+            file: null
         }
         // selectLeaveType
         this.selectLeaveType = (data) => {
@@ -89,7 +92,9 @@ export default class LeaveRequest extends Component {
 
         APIs.getLeaveType(this.state.auth, this.state.url)
             .then((res) => {
+                console.log(res)
                 if(res.status === 'success') {
+                    console.log(res.data)
                     this.setState({
                         leaveType: res.data
                     })
@@ -98,6 +103,7 @@ export default class LeaveRequest extends Component {
                         selectedLeaveType: res.data[0]['leave_type_id']
                     })
                 } else {
+
                     this.props.navigation.navigate('Login')
                 }
             })
@@ -179,10 +185,34 @@ export default class LeaveRequest extends Component {
                             />
                             <Row style={styLeave.attachRow}>
                                 <Col>
-                                    <Text style={styLeave.placeholder}>Attachemnt</Text>
+                                    {
+                                        this.state.file === null ?
+                                            <Text style={styLeave.placeholder}>Attachment</Text>
+                                            :
+                                            <View style={styLeave.file}>
+                                                <Text style={styLeave.filename}>0.
+                                                    {this.state.file.name}
+                                                </Text>
+                                                <Icon 
+                                                name='ios-close-circle-outline' 
+                                                style={styLeave.closeImage}
+                                                onPress={() => this.setState({file: null})}
+                                                />
+                                            </View>
+                                    }
                                 </Col>
                                 <Col>
-                                    <Button style={styLeave.attachButton}>
+                                    <Button 
+                                    style={styLeave.attachButton}
+                                    onPress={() => {
+                                        DocumentPicker.getDocumentAsync()
+                                            .then((res) => {
+                                                this.setState({
+                                                    file: res
+                                                })
+                                            })
+                                    }}
+                                    >
                                         <Text>Add File</Text>
                                     </Button>
                                 </Col>

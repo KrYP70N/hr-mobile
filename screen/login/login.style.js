@@ -30,13 +30,7 @@ export default StyleSheet.create({
         marginBottom: offset.o2
     },
     label: {
-        ...typo.placeholder,
-        marginBottom: offset.o1,
-        paddingTop: offset.p1
-    },
-    input: {
-        marginBottom: offset.o1,
-        paddingTop: offset.p1
+        ...typo.placeholder
     },
     button: {
         ...button.primary,

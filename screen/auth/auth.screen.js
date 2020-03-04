@@ -11,6 +11,7 @@ import { KeyboardAvoidingView } from 'react-native'
 import Loading from '../../components/loading.component'
 import Overlay from '../../components/overlay.component'
 import { hydrate } from 'react-dom'
+import color from '../../constant/color'
 
 
 
@@ -22,8 +23,7 @@ export default class Auth extends Component {
             key: null,
             version: 1,
             auth: null,
-            loading: true,
-            overlay: false,
+            loading: false,
             secure: true
         }
 
@@ -37,24 +37,32 @@ export default class Auth extends Component {
         // submit key
         this.submitKey = () => {
             Keyboard.dismiss()
+            this.setState({
+                loading: true
+            })
             APIs.Auth(this.state.key, this.state.version)
                 .then((res) => {
                     if(res.status === 'success') {
-                        this.setState({
-                            overlay: true
-                        })
-                        AsyncStorage.setItem('@hrdata:data', JSON.stringify(res))
+                        // save api-infomation
+                        AsyncStorage.setItem('@hr:endPoint', JSON.stringify(res.data))
                         .then(() => {
-                            console.log(this.state.key)
                             this.setState({
-                                overlay: false
+                                loading: false
                             })
-                            this.props.navigation.navigate('Login', {data: res})
+                            this.props.navigation.navigate('Login')
                         })
                     } else {
+                        this.setState({
+                            loading: false
+                        })
                         Toast.show({
                             text: 'Invalid security key!',
-                            buttonText: 'Okay',
+                            textStyle: {
+                                textAlign: 'center'  
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
                             duration: 4000
                         })
                     }
@@ -66,32 +74,35 @@ export default class Auth extends Component {
 
     async componentDidMount () {
         try {
-            const key = await AsyncStorage.getItem('@hrdata:data')
-            if(key === null) {
-                this.setState({
-                    loading: false
-                })
-            } else {
-                this.setState({
-                    loading: false
-                })
-                AsyncStorage.getItem('@hrdata:data')
+            const key = await AsyncStorage.getItem('@hr:endPoint')
+            if(key !== null) {
+                AsyncStorage.getItem('@hr:endPoint')
                     .then((res) => {
-                        this.props.navigation.navigate('Login', {data: JSON.parse(res)})
+                        this.props.navigation.navigate('Login')
                     })
             }
         } catch (error) {
-            console.log('error')
+            Toast.show({
+                text: 'An Error occur! Please try again in later.',
+                textStyle: {
+                    textAlign: 'center'
+                },
+                style: {
+                    backgroundColor: color.primary
+                }
+            })
         }
     
     }
 
     render() {
+
         if(this.state.loading === true) {
             return (
                 <Loading />
             )
         }
+        
 
         return (
             <Container>
@@ -100,8 +111,8 @@ export default class Auth extends Component {
                         <Form style={styAuth.form}>
                             <Image source={require('../../assets/upload/logo.png')} styl/>
                             <Text style={styAuth.title}>Verification</Text>
-                            <Item last floatingLabel style={styAuth.item}>
-                                <Label style={styAuth.label}>Enter Your Security Key</Label>
+                            <Item fixedLabel style={styAuth.item}>
+                                <Label style={styAuth.label}>Security Key</Label>
                                 <Input 
                                 style={styAuth.input} 
                                 keyboardType='numeric'

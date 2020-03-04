@@ -19,7 +19,7 @@ export default class LeaveApprove extends Component {
     }
 
     componentDidMount () {
-        APIs.getLeaveType(this.state.auth, this.state.url, this.state.id)
+        APIs.getLeaveRequest(this.state.auth, this.state.url, this.state.id)
             .then((res) => {
                 if(res.status === 'success') {
                     this.setState({
@@ -34,7 +34,6 @@ export default class LeaveApprove extends Component {
     }
 
     render () {
-        console.log(this.state.leaves)
         const GetLeave = this.state.leaves.map((leave) => {
             return (
                 <Card key={leave['Obj id']}>

@@ -264,7 +264,7 @@ export default class APIs {
     }
 
     // get pending Leave
-    static getLeaveType = (auth, url, id) => {
+    static getLeaveRequest = (auth, url, id) => {
         return axios.create({
             headers: {
                 access_token: auth
