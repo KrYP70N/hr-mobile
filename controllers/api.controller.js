@@ -142,7 +142,7 @@ export default class APIs {
     }
 
     // attendance summary
-    static AttendanceSummary(id, auth, url) {
+    static AttendanceSummary(url, auth, id) {
         return axios.create({
             headers: {
                 access_token: auth

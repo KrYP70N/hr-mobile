@@ -12,31 +12,59 @@ import APIs from '../../controllers/api.controller'
 
 import offset from '../../constant/offset'
 import color from '../../constant/color'
+import { AsyncStorage, StatusBar, Platform } from 'react-native'
 
 export default class Attendance extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
+            url: null,
+            token: null,
+            id: null,
             data: null,
             dataTitle: null
         }
     }
 
     componentDidMount() {
-        APIs.AttendanceSummary(
-            this.props.route.params.id,
-            this.props.route.params.data.auth,
-            this.props.route.params.url
-        )
+
+
+        AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+            this.setState({
+                url: JSON.parse(res).ApiEndPoint
+            })
+            AsyncStorage.getItem('@hr:token')
             .then((res) => {
+                this.setState({
+                    token: JSON.parse(res).key,
+                    id: JSON.parse(res).id
+                })
+            })
+        })
+    }
+
+    componentDidUpdate() {
+
+        if(
+            this.state.url !== null &&
+            this.state.token !== null &&
+            this.state.id !== null &&
+            this.state.data === null
+        ) {
+            console.log(this.state.url)
+            console.log(this.state.id)
+            console.log(this.state.token)
+            APIs.AttendanceSummary(this.state.url, this.state.token, this.state.id)
+            .then((res) => {
+                console.log(res)
                 this.setState({
                     data: res.data
                 })
             })
-    }
+        }
 
-    componentDidUpdate() {
         if (this.state.data !== null && this.state.dataTitle === null) {
             let titles = []
             for (const key in this.state.data) {
@@ -73,11 +101,11 @@ export default class Attendance extends Component {
                 </Card>
             )
         })
-
         return (
             <Container>
                 <Header style={{
-                    backgroundColor: color.light
+                    backgroundColor: color.light,
+                    marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                 }}>
                     <Left style={{
                         display: 'flex',
@@ -105,25 +133,14 @@ export default class Attendance extends Component {
                             <CardItem>
                                 <Body style={styAttend.clock}>
                                     {/* <Text style={styAttend.time}>03:55 PM</Text> */}
-                                    <Clock
-                                        auth={this.props.route.params.data.auth}
-                                        url={this.props.route.params.url}
-                                        style={styAttend.time}
-                                        monthStyle={styAttend.date}
-                                        view="split"
-                                    />
+                                    <Clock style={styAttend.time} monthStyle={styAttend.date} navigation={this.props.navigation} view="split" />
                                 </Body>
                             </CardItem>
                         </Card>
 
                     </View>
                     {/* check in / out */}
-                    <CheckInOut
-                        data={this.props.route.params.data.profile['General Information']}
-                        auth={this.props.route.params.data.auth}
-                        userid={this.props.route.params.data.id}
-                        url={this.props.route.params.url}
-                    />
+                    <CheckInOut navigation={this.props.navigation}/>
 
                     <View style={[styAttend.container, {
                         marginBottom: offset.o3
