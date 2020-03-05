@@ -8,6 +8,7 @@ import Loading from '../../components/loading.component'
 import PayrollList from './_list.payroll.screen.'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
+import { AsyncStorage, Platform, StatusBar } from 'react-native'
 
 
 export default class Payroll extends Component {
@@ -15,6 +16,9 @@ export default class Payroll extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            url: null,
+            auth: null,
+            id: null,
             month: null,
             year: null,
             payroll: null
@@ -34,12 +38,32 @@ export default class Payroll extends Component {
             })
         }
 
-        // search payslip
-        this.searchPayroll = () => {
+        
+    }
+
+    
+    componentDidMount () {
+        AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+            this.setState({
+                url: JSON.parse(res).ApiEndPoint
+            })
+            AsyncStorage.getItem('@hr:token')
+            .then((res) => {
+                this.setState({
+                    auth: JSON.parse(res).key,
+                    id: JSON.parse(res).id
+                })
+            })
+        })
+    }
+
+    componentDidUpdate () {
+        if(this.state.payroll === null || this.state.year !== null || this.state.url !== null || this.state.id !== null) {
             APIs.yearPayroll(
-                this.props.route.params.id,
-                this.props.route.params.auth,
-                this.props.route.params.url,
+                this.state.url,
+                this.state.auth,
+                this.state.id,
                 this.state.year
             ).then((res) => {
                 if (res.status === 'success') {
@@ -58,7 +82,6 @@ export default class Payroll extends Component {
     render() {
 
         let date = new Date()
-
         let years = []
         for (let i = date.getFullYear(); i > 1986; i--) {
             years.push(i)
@@ -90,17 +113,16 @@ export default class Payroll extends Component {
             })
         }
 
-        if (this.state.payroll === null) {
-            this.searchPayroll()
+        if(this.state.url === null || this.state.auth === null && this.state.id === null && this.state.payroll === null) {
             return (
                 <Loading />
             )
         }
-
         return (
             <Container style={styPayroll.container}>
                 <Header style={{
-                        backgroundColor: color.light
+                        backgroundColor: color.light,
+                        marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                     }}>
                         <Left style={{
                             display: 'flex',
@@ -146,8 +168,8 @@ export default class Payroll extends Component {
                     year={this.state.year} 
                     navigation={this.props.navigation}
                     apidata={{
-                        auth: this.props.route.params.auth,
-                        url: this.props.route.params.url
+                        auth: this.state.auth,
+                        url: this.state.url
                     }}
                     />
                 </Content>

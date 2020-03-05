@@ -8,7 +8,7 @@ export default class APIs {
                 return { data: res.data.model, status: res.data.success }
             })
     }
-    
+
     // auth token
     static Token(url, db, user, password) {
         return axios.create({
@@ -51,7 +51,7 @@ export default class APIs {
             .then(function (res) {
                 let data = res["request"]["_response"]
                 data = data.slice(data.indexOf('"Job Position"'), data.length - 2)
-                
+
                 // reformat profileImage
                 let profileImage = res.data.data['Profile Picture']
 
@@ -81,7 +81,7 @@ export default class APIs {
                         personalData.push(JSON.parse(`{${data}}`))
                     }
                 })
-                
+
                 let infoCollection = {
                     "Profile Image": profileImage,
                     "General Information": generalData,
@@ -202,7 +202,7 @@ export default class APIs {
     }
 
     // yearly payroll record
-    static yearPayroll = (id, auth, url, year) => {
+    static yearPayroll = (url, auth, id, year) => {
         return axios.create({
             headers: {
                 access_token: auth
@@ -276,7 +276,33 @@ export default class APIs {
             })
     }
 
-    // get leave history
-    // static getLeaveHistory = (auth)
+    // cancel leave
+    static cancelLeave = (url, auth, id) => {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).post(`${url}/list/leaveRequest/${id}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
 
+    // get leave history
+    static leaveHistory = (url, auth, id, year, month) => {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).post(`${url}/list/leaveRequest/${id}/year/month`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
 }

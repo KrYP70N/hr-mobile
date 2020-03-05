@@ -9,6 +9,11 @@ export default StyleSheet.create({
         paddingLeft: offset.o1,
         paddingRight: offset.o1
     },
+    timeBanner: {
+        backgroundColor: color.primary,
+        padding: offset.o4,
+        marginBottom: offset.o2
+    },
     timeCard: {
         marginBottom: offset.o1
     },
@@ -20,11 +25,12 @@ export default StyleSheet.create({
     },
     date: {
         ...typo.parabraph,
-        color: color.tertiary,
+        color: color.light,
         marginBottom: offset.o1
     },
     time: {
-        ...typo.headline
+        ...typo.headline,
+        color: color.light
     },
     checkinTime: {
         paddingRight: offset.o1,

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, Container, Content, Row, Col, Form, Item, Label, Input, Picker, Button, Card, CardItem, Body, Badge } from 'native-base'
 import color from '../../constant/color'
 import styLeave from './leave.style'
-import { KeyboardAvoidingView } from 'react-native'
+import { KeyboardAvoidingView, AsyncStorage } from 'react-native'
 import po from './po'
 
 export default class LeaveHistory extends Component {
@@ -10,9 +10,13 @@ export default class LeaveHistory extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            url: null,
+            auth: null,
+            id: null,
             year: null,
             month: null,
-            status: 'all'
+            status: 'all',
+            leave: null
         }
 
         // handel year
@@ -37,6 +41,8 @@ export default class LeaveHistory extends Component {
         }
         
     }
+
+    
 
     render () {
 

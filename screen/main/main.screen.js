@@ -177,11 +177,7 @@ export default class Main extends Component {
                                 <TouchableNativeFeedback onPress={() =>
                                     po.menu[2].navigate ?
                                         this.props.navigation.navigate(
-                                            po.menu[2].navigate, {
-                                            auth: this.state.auth,
-                                            url: this.props.route.params.url,
-                                            id: this.props.route.params.id
-                                        }
+                                            po.menu[2].navigate
                                         ) : null
                                 }>
                                     <CardItem>
@@ -202,11 +198,7 @@ export default class Main extends Component {
                                 <TouchableNativeFeedback onPress={() =>
                                     po.menu[3].navigate ?
                                         this.props.navigation.navigate(
-                                            po.menu[3].navigate, {
-                                            data: this.state,
-                                            url: this.props.route.params.url,
-                                            id: this.props.route.params.id
-                                        }
+                                            po.menu[3].navigate
                                         ) : null
                                 }>
                                     <CardItem>
@@ -224,11 +216,7 @@ export default class Main extends Component {
                                 <TouchableNativeFeedback onPress={() =>
                                     po.menu[4].navigate ?
                                         this.props.navigation.navigate(
-                                            po.menu[4].navigate, {
-                                            auth: this.state.auth,
-                                            url: this.props.route.params.url,
-                                            id: this.props.route.params.id
-                                        }
+                                            po.menu[4].navigate
                                         ) : null
                                 }>
                                     <CardItem>

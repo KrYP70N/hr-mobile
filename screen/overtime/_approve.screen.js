@@ -66,6 +66,7 @@ export default class Approve extends Component {
 
         
         let requests = this.state.data.map((req) => {
+            console.log(req)
             return (
                 <Card key={Math.floor(Math.random()*3000)+req['date']+Math.floor(Math.random()*3000)} >
                     <CardItem>
@@ -78,7 +79,7 @@ export default class Approve extends Component {
                             <Text style={styOt.cardWarning}>{po.approve.staff.warning}</Text>
                             <Button 
                             style={styOt.ButtonSecondary}
-                            onPress={() => this.cancelOT(req['OT_Obj_Id'])}
+                            onPress={() => this.cancelOT(req['Obj Id'])}
                             >
                                 <Text>{po.approve.staff.button}</Text>
                             </Button>

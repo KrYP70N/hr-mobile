@@ -262,6 +262,11 @@ export default class CheckInOut extends Component {
                                 userLong: res.coords.longitude,
                             })
                         })
+                        .catch((error) => {
+                            this.setState({
+                                granted: 'error'
+                            })
+                        })
                     } else {
                         this.setState({
                             granted: false

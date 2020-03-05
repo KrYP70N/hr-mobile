@@ -10,20 +10,45 @@ import Approve from './_approve.screen'
 import History from './_history.screen'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
+import Loading from '../../components/loading.component'
+import { AsyncStorage } from 'react-native'
 
 
 export default class Overtime extends Component {
     constructor (props) {
         super(props)
         this.state = {
-            auth: this.props.route.params.data['auth'],
-            url: this.props.route.params.url,
-            id: this.props.route.params.id,
+            url: null,
+            auth: null,
+            id: null,
             token: 1
         }
     }
 
+    componentDidMount () {
+        AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+            this.setState({
+                url: JSON.parse(res).ApiEndPoint
+            })
+            AsyncStorage.getItem('@hr:token')
+            .then((res) => {
+                this.setState({
+                    auth: JSON.parse(res).key,
+                    id: JSON.parse(res).id
+                })
+            })
+        })
+    }
+
     render () {
+
+        if(this.state.url === null && this.state.auth === null && this.state.id === null) {
+            return (
+                <Loading />
+            )
+        }
+
         return (
             <Container>
                 <Header style={{

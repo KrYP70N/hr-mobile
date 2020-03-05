@@ -14,7 +14,8 @@ export default class LeaveApprove extends Component {
             id: this.props.id,
             auth: this.props.auth,
             url: this.props.url,
-            leaves: []
+            leaves: [],
+            count: this.props.count
         }
     }
 
@@ -34,6 +35,7 @@ export default class LeaveApprove extends Component {
     }
 
     render () {
+        console.log(this.state.count)
         const GetLeave = this.state.leaves.map((leave) => {
             return (
                 <Card key={leave['Obj id']}>

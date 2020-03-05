@@ -9,6 +9,8 @@ import LeaveHistory from './_history.screen'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
 import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
+import { AsyncStorage, Platform, StatusBar } from 'react-native'
 
 export default class Leave extends Component {
 
@@ -16,18 +18,41 @@ export default class Leave extends Component {
         super(props)
         
         this.state = {
-            id: this.props.route.params.id,
-            url: this.props.route.params.url,
-            auth: this.props.route.params.auth
+            url: null,
+            auth: null,
+            id: null,
+            count: 0
         }
     }
 
+    componentDidMount () {
+        AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+            this.setState({
+                url: JSON.parse(res).ApiEndPoint
+            })
+            AsyncStorage.getItem('@hr:token')
+            .then((res) => {
+                this.setState({
+                    auth: JSON.parse(res).key,
+                    id: JSON.parse(res).id
+                })
+            })
+        })
+    }
+
     render () {
+        if(this.state.url === null || this.state.auth === null || this.state.id === null) {
+            return (
+                <Loading />
+            )
+        }
 
         return (
             <Container>
                 <Header style={{
-                    backgroundColor: color.light
+                    backgroundColor: color.light,
+                    marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                 }}>
                     <Left style={{
                         display: 'flex',
@@ -46,9 +71,7 @@ export default class Leave extends Component {
                     <Right></Right>
                 </Header>
 
-                <Tabs onChangeTab={() => {
-                    console.log('change tabs')
-                }}>
+                <Tabs>
                     <Tab heading='Request' activeTabStyle={styLeave.tabStyle} tabStyle={styLeave.tabStyle}>
                         <LeaveRequest 
                             id={this.state.id}
@@ -56,11 +79,14 @@ export default class Leave extends Component {
                             auth={this.state.auth}
                         />
                     </Tab>
-                    <Tab heading='Approve' activeTabStyle={styLeave.tabStyle} tabStyle={styLeave.tabStyle}>
+                    <Tab
+                        
+                        heading='Approve' activeTabStyle={styLeave.tabStyle} tabStyle={styLeave.tabStyle}>
                         <LeaveApprove 
                             id={this.state.id}
                             url={this.state.url}
                             auth={this.state.auth}
+                            count={this.state.count}
                         />
                     </Tab>
                     <Tab heading='History' activeTabStyle={styLeave.tabStyle} tabStyle={styLeave.tabStyle}>

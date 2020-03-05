@@ -126,17 +126,8 @@ export default class Attendance extends Component {
 
                 <Content>
                     {/* time card */}
-                    <View style={[styAttend.container, {
-                        marginTop: offset.o1
-                    }]}>
-                        <Card style={styAttend.timeCard}>
-                            <CardItem>
-                                <Body style={styAttend.clock}>
-                                    {/* <Text style={styAttend.time}>03:55 PM</Text> */}
-                                    <Clock style={styAttend.time} monthStyle={styAttend.date} navigation={this.props.navigation} view="split" />
-                                </Body>
-                            </CardItem>
-                        </Card>
+                    <View style={styAttend.timeBanner}>
+                        <Clock style={styAttend.time} monthStyle={styAttend.date} navigation={this.props.navigation} view="split" />
 
                     </View>
                     {/* check in / out */}

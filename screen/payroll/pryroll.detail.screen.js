@@ -2,15 +2,17 @@ import React, { Component } from 'react'
 
 import po from './po'
 import styPayroll from './payroll.style'
-import { View, Container, Content, Text, Card, CardItem, Icon, Right, Body, List, ListItem, Left, Button, Toast } from 'native-base'
+import { View, Container, Content, Text, Card, CardItem, Icon, Right, Body, List, ListItem, Left, Button, Toast, Header } from 'native-base'
 import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 
 import color from '../../constant/color'
+import { StatusBar, Platform } from 'react-native'
+import offset from '../../constant/offset'
 
 export default class PayrollDetail extends Component {
 
-    constructor (prop) {
+    constructor(prop) {
         super(prop)
         this.state = {
             slipid: this.props.route.params.slipid,
@@ -20,38 +22,44 @@ export default class PayrollDetail extends Component {
         }
     }
 
-    componentDidMount () {
-        APIs.getPaySlip(this.state.slipid, this.state.auth, this.state.url)
-            .then((res) => {
-                if(res.status === 'success') {
-                    this.setState({
-                        data: res.data
-                    })
-                } else {
-                    Toast.show({
-                        text: 'Invalid request, Please try again in later!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        }
-                    })
-                }
-                
-            })
+    componentWillMount () {
+        console.log('hola')
     }
 
-    render () {
+    componentDidMount () {
         
-        if(this.state.data === null) {
+        APIs.getPaySlip(this.state.slipid, this.state.auth, this.state.url)
+        .then((res) => {
+            if (res.status === 'success') {
+                this.setState({
+                    data: res.data
+                })
+            } else {
+                Toast.show({
+                    text: 'Invalid request, Please try again in later!',
+                    textStyle: {
+                        textAlign: 'center'
+                    },
+                    style: {
+                        backgroundColor: color.primary
+                    }
+                })
+            }
+
+        })
+        
+    }
+
+    
+
+    render() {
+
+        if (this.state.data === null) {
             return (
                 <Loading />
             )
         }
 
-        console.log(this.state.data)
-        
         let silpdata = this.state.data.map((info) => {
             // console.log(info)
             return (
@@ -65,7 +73,27 @@ export default class PayrollDetail extends Component {
         return (
             <Container>
                 <Content>
-                    
+                    <Header style={{
+                        backgroundColor: color.light,
+                        marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+                    }}>
+                        <Left style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }}>
+                            <Icon name='ios-arrow-round-back' style={{
+                                fontSize: offset.o4,
+                                color: color.primary,
+                                marginRight: offset.o2
+                            }} onPress={() => { this.props.navigation.navigate('Main') }} />
+                            <Text style={{
+                                color: color.secondary
+                            }}>Payroll</Text>
+                        </Left>
+                        <Right></Right>
+                    </Header>
+
                     {/* banner */}
                     <View style={styPayroll.detailBanner}>
                         <Text style={styPayroll.detailSalary}>{this.state.data[this.state.data.length - 1].payslip_line_total} MMK</Text>
@@ -79,10 +107,10 @@ export default class PayrollDetail extends Component {
                                 {silpdata}
                             </List>
                         </Card>
-                        
+
                     </View>
 
-                    
+
                 </Content>
                 <Button style={styPayroll.stickyButton}>
                     <Text>Download Payslip</Text>
