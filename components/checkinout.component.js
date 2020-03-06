@@ -23,7 +23,7 @@ export default class CheckInOut extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            geofencing: null,
+            geofencing: true,
             granted: null,
             lat: 0,
             long: 0,
@@ -83,6 +83,15 @@ export default class CheckInOut extends Component {
                     { latitude: this.state.lat, longitude: this.state.long },
                     this.state.radius
                 )
+                
+                console.log('----------------')
+                console.log(this.state.userLat + '-' + this.state.userLong )
+                console.log(this.state.lat + '-' + this.state.long )
+                console.log(this.state.radius)
+                console.log(checkRange)
+                console.log('true')
+                console.log('----------------')
+
                 if(checkRange === true)  {
                     APIs.Checkin(this.state.url, this.state.token, this.state.id, {lat: this.state.lat, long: this.state.long})
                     .then((res) => {
@@ -98,9 +107,19 @@ export default class CheckInOut extends Component {
                                 duration: 3000
                             })
                         } else {
+                            Toast.show({
+                                text: 'You already check in!',
+                                style: {
+                                    backgroundColor: color.primary
+                                },
+                                textStyle: {
+                                    textAlign: 'center'
+                                },
+                                duration: 3000
+                            })
                             AsyncStorage.setItem('@hr:login', 'false')
                             .then(() => {
-                                this.props.navigation.navigate('Login')
+                                // this.props.navigation.navigate('Login')
                             })
                         }
                     })
@@ -214,19 +233,15 @@ export default class CheckInOut extends Component {
     componentDidUpdate () {
 
         // collect checkin info
-        if(
-            this.state.url !== null && 
-            this.state.token !== null && 
-            this.state.id !== null &&
-            this.state.geofencing === null) {
+        if(this.state.geofencing === true && this.state.lat === 0) {
+                
                 APIs.Profile(this.state.url, this.state.token, this.state.id)
                 .then((res) => {
                     let data = res.data['General Information']
                     this.setState({
-                        geofencing: ProfileModel.checkKey(data, 'Geo Fencing'),
-                        lat: ProfileModel.checkKey(data, 'Latitude'),
-                        long: ProfileModel.checkKey(data, 'Longtitude'),
-                        radius: ProfileModel.checkKey(data, 'Radius(m)')
+                        lat: data['Latitude'],
+                        long: data['Longtitude'],
+                        radius: data['Radius(m)']
                     })
                 })
         }

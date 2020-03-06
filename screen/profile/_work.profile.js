@@ -11,25 +11,101 @@ export default class WorkProfile extends Component {
     }
 
     render () {
+
+        let data = this.props.data
         
-        // let data = this.props.data
-        let InfoItems = this.props.data.map(data => {
-            return (
+        return (
+            <Card style={styProfile.workInfos}>
                 <CardItem style={styProfile.infoItem} key={ProfileModel.getKey(data)}>
                     <Body>
                         <Text style={styProfile.workLabel}>
-                            {ProfileModel.getKey(data)}
+                            Branch
                         </Text>
                         <Text style={styProfile.workInfo}>
-                            {ProfileModel.getVal(data)}
+                            {data['Branch']}
                         </Text>
                     </Body>
                 </CardItem>
-            )
-        })
-        return (
-            <Card style={styProfile.workInfos}>
-                { InfoItems }
+                <CardItem style={styProfile.infoItem} key={ProfileModel.getKey(data)}>
+                    <Body>
+                        <Text style={styProfile.workLabel}>
+                            Company
+                        </Text>
+                        <Text style={styProfile.workInfo}>
+                            {data['Company']}
+                        </Text>
+                    </Body>
+                </CardItem>
+                <CardItem style={styProfile.infoItem} key={ProfileModel.getKey(data)}>
+                    <Body>
+                        <Text style={styProfile.workLabel}>
+                            Deparment
+                        </Text>
+                        <Text style={styProfile.workInfo}>
+                            {data['Deparment']}
+                        </Text>
+                    </Body>
+                </CardItem>
+                <CardItem style={styProfile.infoItem} key={ProfileModel.getKey(data)}>
+                    <Body>
+                        <Text style={styProfile.workLabel}>
+                            Grade
+                        </Text>
+                        <Text style={styProfile.workInfo}>
+                            {data['Grade']}
+                        </Text>
+                    </Body>
+                </CardItem>
+                <CardItem style={styProfile.infoItem} key={ProfileModel.getKey(data)}>
+                    <Body>
+                        <Text style={styProfile.workLabel}>
+                            Join Date
+                        </Text>
+                        <Text style={styProfile.workInfo}>
+                            {data['Join Date']}
+                        </Text>
+                    </Body>
+                </CardItem>
+                <CardItem style={styProfile.infoItem} key={ProfileModel.getKey(data)}>
+                    <Body>
+                        <Text style={styProfile.workLabel}>
+                            Location
+                        </Text>
+                        <Text style={styProfile.workInfo}>
+                            {data['Location']}
+                        </Text>
+                    </Body>
+                </CardItem>
+                <CardItem style={styProfile.infoItem} key={ProfileModel.getKey(data)}>
+                    <Body>
+                        <Text style={styProfile.workLabel}>
+                            Service Year
+                        </Text>
+                        <Text style={styProfile.workInfo}>
+                            {data['Service Year']}
+                        </Text>
+                    </Body>
+                </CardItem>
+                <CardItem style={styProfile.infoItem} key={ProfileModel.getKey(data)}>
+                    <Body>
+                        <Text style={styProfile.workLabel}>
+                            Work Email
+                        </Text>
+                        <Text style={styProfile.workInfo}>
+                            {data['Work Email']}
+                        </Text>
+                    </Body>
+                </CardItem>
+                <CardItem style={styProfile.infoItem} key={ProfileModel.getKey(data)}>
+                    <Body>
+                        <Text style={styProfile.workLabel}>
+                            Work Phone
+                        </Text>
+                        <Text style={styProfile.workInfo}>
+                            {data['Work Phone']}
+                        </Text>
+                    </Body>
+                </CardItem>
             </Card>
             
         )

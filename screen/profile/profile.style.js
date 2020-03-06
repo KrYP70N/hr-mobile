@@ -23,7 +23,8 @@ export default StyleSheet.create({
         borderRadius: 40,
         borderWidth: 1.5,
         borderColor: color.primary,
-        marginBottom: offset.o1
+        marginBottom: offset.o1,
+        backgroundColor: color.primary
     },
     id: {
         ...typo.textSmall,

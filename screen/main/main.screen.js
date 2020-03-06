@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea, Header, Left, Right } from 'native-base'
-import { Image, AsyncStorage, Platform, StatusBar } from 'react-native'
+import { Image, AsyncStorage, Platform, StatusBar, BackHandler } from 'react-native'
 import { TouchableNativeFeedback } from 'react-native-gesture-handler'
 
 import po from './po'
@@ -19,6 +19,7 @@ import CheckInOut from '../../components/checkinout.component'
 import Clock from '../../components/time.component'
 
 import DB from '../../model/db.model'
+import offset from '../../constant/offset'
 
 export default class Main extends Component {
 
@@ -56,7 +57,15 @@ export default class Main extends Component {
                     })
             })
 
+        BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+    }
 
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+    }
+  
+    onBackPress = () => {
+        return true
     }
 
     componentDidUpdate() {
@@ -66,6 +75,7 @@ export default class Main extends Component {
             APIs.Profile(this.state.url, this.state.auth, this.state.id)
                 .then((res) => {
                     if (res.status === 'success') {
+                        console.log(res.data)
                         this.setState({
                             profile: res.data
                         })
@@ -115,31 +125,9 @@ export default class Main extends Component {
                                         }
                                 } style={styMain.profilePic} />
                                 <View>
-                                    <Text style={styMain.name}>
-                                        {this.state.profile['Employee Name']}{
-                                            ProfileModel.checkKey(
-                                                this.state.profile['General Information'], 'Employee Name'
-                                            ) === undefined ?
-                                                "UNKNOWN EMPLOYEE" :
-                                                ProfileModel.checkKey(
-                                                    this.state.profile['General Information'], 'Employee Name'
-                                                )
-                                        }
-                                    </Text>
-                                    <Text style={[styMain.pos]}>
-                                        {
-                                            ProfileModel.checkKey(
-                                                this.state.profile['General Information'], 'Job Position'
-                                            ) === undefined ?
-                                                "UNKNOWN POSITION" :
-                                                ProfileModel.checkKey(
-                                                    this.state.profile['General Information'], 'Job Position'
-                                                )
-                                        }
-                                    </Text>
-
+                                    <Text style={styMain.name}>{this.state.profile['General Information']['Employee Name']}</Text>
+                                    <Text style={[styMain.pos, {marginLeft: offset.o1}]}>{this.state.profile['General Information']['Job Position']}</Text>
                                 </View>
-
                             </Col>
                             <Col>
                                 <Icon name="ios-arrow-round-forward" style={styMain.profileDetail}></Icon>
