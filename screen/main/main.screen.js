@@ -75,7 +75,6 @@ export default class Main extends Component {
             APIs.Profile(this.state.url, this.state.auth, this.state.id)
                 .then((res) => {
                     if (res.status === 'success') {
-                        console.log(res.data)
                         this.setState({
                             profile: res.data
                         })

@@ -16,9 +16,11 @@ import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component';
 import DB from '../../model/db.model'
 import color from '../../constant/color';
+import { withNavigation } from 'react-navigation';
 
 
-export default class Login extends Component {
+
+class Login extends Component {
 
     constructor(props) {
         super(props)
@@ -92,7 +94,10 @@ export default class Login extends Component {
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
+
+        console.log(this.props.navigation)
+
         // check auth success?
         AsyncStorage.getItem('@hr:endPoint')
         .then((resEndPoint) => {
@@ -112,6 +117,17 @@ export default class Login extends Component {
                 })
             }
         })
+
+        this.focusListener = this.props.navigation.addListener("didFocus", () => {
+            // The screen is focused
+            // Call any action
+            console.log('hola')
+        });
+    }
+
+    componentWillUnmount() {
+        // Remove the event listener
+        this.focusListener.remove();
     }
 
     render() {
@@ -166,3 +182,5 @@ export default class Login extends Component {
         )
     }
 }
+
+export default withNavigation(Login)

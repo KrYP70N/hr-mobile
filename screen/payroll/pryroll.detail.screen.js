@@ -30,7 +30,6 @@ export default class PayrollDetail extends Component {
 
         APIs.getPaySlip(slipid, auth, url)
             .then((res) => {
-                console.log("Api data",res)
                 if (res.status === 'success') {
                     this.setState({
                         data: res.data
