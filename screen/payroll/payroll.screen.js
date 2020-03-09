@@ -59,7 +59,7 @@ export default class Payroll extends Component {
     }
 
     componentDidUpdate () {
-        if(this.state.payroll === null && this.state.year !== null && this.state.url !== null && this.state.id !== null) {
+        if(this.state.payroll === null || this.state.year !== null || this.state.url !== null || this.state.id !== null) {
             APIs.yearPayroll(
                 this.state.url,
                 this.state.auth,
@@ -113,7 +113,7 @@ export default class Payroll extends Component {
             })
         }
 
-        if(this.state.payroll === null) {
+        if(this.state.url === null || this.state.auth === null && this.state.id === null && this.state.payroll === null) {
             return (
                 <Loading />
             )
@@ -163,7 +163,6 @@ export default class Payroll extends Component {
                             <Text>Search</Text>
                         </Button>
                     </Form>
-
                     <PayrollList 
                     data={this.state.payroll} 
                     year={this.state.year} 
@@ -172,8 +171,7 @@ export default class Payroll extends Component {
                         auth: this.state.auth,
                         url: this.state.url
                     }}
-                    /> 
-
+                    />
                 </Content>
             </Container>
         )

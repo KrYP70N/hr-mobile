@@ -9,7 +9,7 @@ import {
     DrawerItem
 } from '@react-navigation/drawer'
 
-import {Image, TouchableOpacity} from 'react-native'
+import {Image} from 'react-native'
 import { View, Text, Button, Icon } from 'native-base';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import { NavigationActions } from 'react-navigation';
@@ -23,7 +23,6 @@ import Overtime from '../screen/overtime/overtime.screen'
 import Payroll from '../screen/payroll/payroll.screen'
 import PayrollDetail from '../screen/payroll/pryroll.detail.screen'
 import Leave from '../screen/leave/leave.screen'
-import SideMenu from '../router/SideMenu';
 
 import styNav from './navigation.style'
 
@@ -31,7 +30,30 @@ function CustomdrawerContent(props) {
     // console.log(props)
     return (
         <DrawerContentScrollView {...props}>
-            <SideMenu navigation = {props.navigation}/>     
+            <TouchableNativeFeedback style={styNav.item}>
+                <Image source={require('../assets/icon/user-icn.png')} style={styNav.image}/>
+                <Text>Profile</Text>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback style={styNav.item}>
+                <Image source={require('../assets/icon/attendance.png')} style={styNav.image}/>
+                <Text>Attendance</Text>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback style={styNav.item}>
+                <Image source={require('../assets/icon/leave.png')} style={styNav.image}/>
+                <Text>Leave</Text>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback style={styNav.item}>
+                <Image source={require('../assets/icon/ot.png')} style={styNav.image2}/>
+                <Text>Overtime</Text>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback style={styNav.item}>
+                <Image source={require('../assets/icon/payroll.png')} style={styNav.image3}/>
+                <Text>Payroll</Text>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback style={styNav.item}>
+                <Image source={require('../assets/icon/lgoout.png')} style={styNav.image2}/>
+                <Text>Logout</Text>
+            </TouchableNativeFeedback>
         </DrawerContentScrollView>
     )
 }

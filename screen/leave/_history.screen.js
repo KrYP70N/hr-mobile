@@ -4,9 +4,6 @@ import color from '../../constant/color'
 import styLeave from './leave.style'
 import { KeyboardAvoidingView, AsyncStorage } from 'react-native'
 import po from './po'
-import APIs from '../../controllers/api.controller'
-
-import LeaveHistoryList from './_list.history'
 
 export default class LeaveHistory extends Component {
 
@@ -45,45 +42,6 @@ export default class LeaveHistory extends Component {
         
     }
 
-    componentDidMount () {
-        AsyncStorage.getItem('@hr:endPoint')
-        .then((res) => {
-            this.setState({
-                url: JSON.parse(res).ApiEndPoint
-            })
-            AsyncStorage.getItem('@hr:token')
-            .then((res) => {
-                this.setState({
-                    auth: JSON.parse(res).key,
-                    id: JSON.parse(res).id
-                })
-            })  
-        })
-    }
-
-    componentDidUpdate () {
-        if(
-            this.state.url !== null &&
-            this.state.auth !== null && 
-            this.state.id !== null &&
-            this.state.year !== null &&
-            this.state.month !== null &&
-            this.state.leave === null
-        ) {
-            APIs.leaveHistory(this.state.url, this.state.auth, this.state.id, this.state.year, this.state.month)
-            .then((res) => {
-                if(res.status === 'success') {
-                    this.setState({
-                        leave: this.res
-                    })
-                } else {
-                    this.setState({
-                        leave: []
-                    })
-                }
-            })
-        }
-    }
     
 
     render () {
@@ -178,7 +136,24 @@ export default class LeaveHistory extends Component {
                         </Button>
                     </Form>
                     <View style={styLeave.resultBox}>
-                        <LeaveHistoryList list={this.state.leave}/>
+                        <Card>
+                            <CardItem>
+                                <Body>
+                                    <View style={styLeave.cardTitleContainer}>
+                                        <Text style={styLeave.cardTitle}>{po.history.card.title}</Text>
+                                        <Text style={styLeave.cardRthLabel}>05 Nov 2020</Text>
+                                    </View>
+                                    <View style={styLeave.cardTitleContainer}>
+                                        <Text style={styLeave.cardXSText}>{po.history.card.date}05 Nov 2020</Text>
+                                        <Badge style={styLeave.badgeSuccess}>
+                                            <Text>{po.history.card.badge.success}</Text>
+                                        </Badge>
+                                    </View>
+                                    <Text style={styLeave.cardSText}>{po.history.card.hour}5:00 PM to 8:00 PM</Text>
+                                </Body>
+                            </CardItem>
+                        </Card>
+                    
                     </View>
                 </Content>
             </Container>

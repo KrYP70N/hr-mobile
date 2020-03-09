@@ -13,8 +13,6 @@ import Overlay from '../../components/overlay.component'
 import { hydrate } from 'react-dom'
 import color from '../../constant/color'
 
-
-
 export default class Auth extends Component {
 
     constructor(props) {

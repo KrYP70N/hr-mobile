@@ -11,7 +11,7 @@ import History from './_history.screen'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import Loading from '../../components/loading.component'
-import { AsyncStorage, StatusBar, Platform } from 'react-native'
+import { AsyncStorage } from 'react-native'
 
 
 export default class Overtime extends Component {
@@ -52,8 +52,7 @@ export default class Overtime extends Component {
         return (
             <Container>
                 <Header style={{
-                    backgroundColor: color.light,
-                    marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+                    backgroundColor: color.light
                 }}>
                     <Left style={{
                         display: 'flex',

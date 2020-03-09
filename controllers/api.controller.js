@@ -49,27 +49,44 @@ export default class APIs {
             }
         }).get(`${url}/user/profile/${id}`)
             .then(function (res) {
-
                 let data = res["request"]["_response"]
-
-                data = data.slice(
-                    data.indexOf('"data":') + '"data":'.length,
-                    data.length - 1
-                )
-
-                data = data.replace(', "Work Information": "",','} %*% {');
-                data = data.replace(', "Personal Information": "",','} %*% {');
-
-                data = data.split("%*%");
+                data = data.slice(data.indexOf('"Job Position"'), data.length - 2)
 
                 // reformat profileImage
                 let profileImage = res.data.data['Profile Picture']
 
+                // reformat general information
+                let generalInfo = data.slice(0, data.indexOf("Work Information") - 3).split(', "')
+                let generalData = []
+                generalInfo.map((data) => {
+                    if(data.indexOf('false') === -1) {
+                        generalData.push(JSON.parse(`{"${data}}`))
+                    }
+                })
+
+                // reformat work info
+                let workInfo = data.slice(data.indexOf("Work Information") - 1, data.indexOf("Personal Information") - 3).split(',')
+                let workData = []
+                workInfo.map(data => {
+                    if(data.indexOf('false') === -1 && data.indexOf('""') === -1) {
+                        workData.push(JSON.parse(`{${data}}`))
+                    }
+                })
+
+                // reformat personal info
+                let personalInfo = data.slice(data.indexOf("Personal Information") - 1 , data.length).split(',')
+                let personalData = []
+                personalInfo.map(data => {
+                    if(data.indexOf('false') === -1 && data.indexOf('""') === -1) {
+                        personalData.push(JSON.parse(`{${data}}`))
+                    }
+                })
+
                 let infoCollection = {
                     "Profile Image": profileImage,
-                    "General Information": JSON.parse(data[0]),
-                    "Work Information": JSON.parse(data[1]),
-                    "Personal Information": JSON.parse(data[2])
+                    "General Information": generalData,
+                    "Work Information": workData,
+                    "Personal Information": personalData
                 }
 
                 return { data: infoCollection, status: 'success' }
@@ -280,7 +297,7 @@ export default class APIs {
             headers: {
                 access_token: auth
             }
-        }).get(`${url}/list/leaveRequest/${id}/${year}/${month}`)
+        }).post(`${url}/list/leaveRequest/${id}/year/month`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })

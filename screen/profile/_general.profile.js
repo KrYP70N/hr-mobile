@@ -10,29 +10,30 @@ export default class GeneralProfile extends Component {
         super(props)
      }
     render () {
+        console.log(this.props.data)
         return (
             <View style={styProfile.personalInfo}>
                 <Image source={
-                    this.props.profileImage[0] === false ? 
+                    this.props.profileImage === false ? 
                     require('../../assets/icon/user.png') :
                     {
                         uri: `data:${this.props.profileImage[1]};base64,${this.props.profileImage[0]}`
                     }
                 } style={styProfile.image}/>
                 <Text style={styProfile.id}>{
-                    this.props.data['Employee Code'] === undefined ?
+                    ProfileModel.checkKey(this.props.data, 'Employee Code') === undefined ?
                     'ID - UNKNOWN' : 
-                    this.props.data['Employee Code']
+                    ProfileModel.checkKey(this.props.data, 'Employee Code')
                 }</Text>
                 <Text style={styProfile.name}>{
-                    this.props.data['Employee Name'] === undefined ?
+                    ProfileModel.checkKey(this.props.data, 'Employee Name') === undefined ?
                     'UNKNOWN EMPLOYEE' : 
-                    this.props.data['Employee Name']
+                    ProfileModel.checkKey(this.props.data, 'Employee Name')
                 }</Text>
                 <Text style={styProfile.jobTitle}>{
-                    this.props.data['Job Position'] === undefined ?
-                    'UNKNOWN TITLE' : 
-                    this.props.data['Job Position']
+                    ProfileModel.checkKey(this.props.data, 'Job Position') === undefined ?
+                    'UNKNOWN POSITION' : 
+                    ProfileModel.checkKey(this.props.data, 'Job Position')
                 }</Text>
             </View>
         )

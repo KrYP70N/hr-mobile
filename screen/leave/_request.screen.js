@@ -5,7 +5,7 @@ import color from '../../constant/color'
 import styLeave from './leave.style'
 import { KeyboardAvoidingView } from 'react-native'
 
-import * as DocumentPicker from 'expo-document-picker';
+import * as DocumentPicker from 'expo-document-picker'
 
 import APIs from '../../controllers/api.controller'
 
@@ -36,14 +36,14 @@ export default class LeaveRequest extends Component {
         this.controlFrom = (data) => {
             let date = new Date(data)
             this.setState({
-                from: `${date.getFullYear()}-${date.getMonth() < 10 ? '0'+(date.getMonth() + 1) : date.getMonth() + 1}-${date.getDate() < 10 ? '0'+date.getDate() : date.getDate()}`
+                from: `${date.getFullYear()}-${date.getMonth() < 10 ? '0'+date.getMonth() : date.getMonth()}-${date.getDate() < 10 ? '0'+date.getDate() : date.getDate()}`
             })
         }
         // control to
         this.controlTo = (data) => {
             let date = new Date(data)
             this.setState({
-                to: `${date.getFullYear()}-${date.getMonth() < 10 ? '0'+(date.getMonth() + 1) : date.getMonth() + 1}-${date.getDate() < 10 ? '0'+date.getDate() : date.getDate()}`
+                to: `${date.getFullYear()}-${date.getMonth() < 10 ? '0'+date.getMonth() : date.getMonth()}-${date.getDate() < 10 ? '0'+date.getDate() : date.getDate()}`
             })
         }
         // control dayType
