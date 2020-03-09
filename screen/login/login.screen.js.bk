@@ -16,11 +16,11 @@ import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component';
 import DB from '../../model/db.model'
 import color from '../../constant/color';
-import Auth from './_auth.login'
+
 
 export default class Login extends Component {
 
-    constructor (props) {
+    constructor(props) {
         super(props)
         this.state = {
             apiUrl: null,
@@ -30,6 +30,7 @@ export default class Login extends Component {
             name: null,
             loading: false
         }
+
         // submit
         this.login = () => {
             // inject keyboard
@@ -91,26 +92,35 @@ export default class Login extends Component {
         }
     }
 
-    componentDidMount () {
+    async componentDidMount() {
+        // check auth success?
         AsyncStorage.getItem('@hr:endPoint')
-        .then((res) => {
-            if(res !== null) {
-                this.setState({
-                    apiUrl: DB.getEndPoint(res),
-                    db: DB.getName(res)
+        .then((resEndPoint) => {
+            if(resEndPoint === null) {
+                this.props.navigation.navigate('Auth')
+            } else {
+                AsyncStorage.getItem('@hr:login')
+                .then((res) => {
+                    if(res === 'true') {
+                        this.props.navigation.navigate('Main')
+                    } else {
+                        this.setState({
+                            apiUrl: DB.getEndPoint(resEndPoint),
+                            db: DB.getName(resEndPoint)
+                        })
+                    }
                 })
             }
         })
     }
 
-    render () {
-        if(this.state.apiUrl === null) {
+    render() {
+
+        if(this.state.db === null || this.state.apiUrl === null || this.state.loading === true) {
             return (
-                <Auth navigation={this.props.navigation}/>
+                <Loading />
             )
         }
-        
-
 
         return (
             <KeyboardAvoidingView behavior="height" style={styLogin.kbView}>

@@ -56,6 +56,7 @@ export default class LeaveRequest extends Component {
         this.submit = () => {
             APIs.requestLeave(this.state.auth, this.state.url, this.state.id, this.state.selectedLeaveType, this.state.from, this.state.to, this.state.dayType)
                 .then((res) => {
+                    console.log(this.state.auth, this.state.url, this.state.id, this.state.selectedLeaveType, this.state.from, this.state.to, this.state.dayType)
                     if(res.status === 'success') {
                         Toast.show({
                             text: 'Request Success',
@@ -92,7 +93,9 @@ export default class LeaveRequest extends Component {
 
         APIs.getLeaveType(this.state.auth, this.state.url)
             .then((res) => {
+                console.log(res)
                 if(res.status === 'success') {
+                    console.log(res.data)
                     this.setState({
                         leaveType: res.data
                     })

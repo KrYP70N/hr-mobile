@@ -35,6 +35,7 @@ export default class LeaveApprove extends Component {
     }
 
     render () {
+        console.log(this.state.count)
         const GetLeave = this.state.leaves.map((leave) => {
             return (
                 <Card key={leave['Obj id']}>

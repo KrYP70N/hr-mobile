@@ -14,9 +14,9 @@ export class SideMenu extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <TouchableOpacity style={styNav.item} onPress = {() => {this.props.navigation.navigate('Main')}}>
-                <Image source={require('../assets/icon/house.png')} style={styNav.image}/>
-                <Text>Main</Text>
+                 <TouchableOpacity style={styNav.item}>
+                <Image source={require('../assets/icon/user-icn.png')} style={styNav.image}/>
+                <Text>Profile</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styNav.item} onPress = {() => {this.props.navigation.navigate('Attendance')}}>
                 <Image source={require('../assets/icon/attendance.png')} style={styNav.image}/>

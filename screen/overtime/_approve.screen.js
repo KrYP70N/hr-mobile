@@ -56,6 +56,7 @@ export default class Approve extends Component {
     }
 
     render () {
+        console.log(this.state.token)
         if(this.state.token !== this.props.token) {
             this.setState({
                 token: this.props.token
@@ -65,6 +66,7 @@ export default class Approve extends Component {
 
         
         let requests = this.state.data.map((req) => {
+            console.log(req)
             return (
                 <Card key={Math.floor(Math.random()*3000)+req['date']+Math.floor(Math.random()*3000)} >
                     <CardItem>

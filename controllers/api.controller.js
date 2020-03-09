@@ -19,9 +19,11 @@ export default class APIs {
             }
         }).get(`${url}/api/auth/token`)
             .then(function (res) {
+                console.log(res)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -34,9 +36,11 @@ export default class APIs {
             }
         }).get(`${url}/getTime`)
             .then(function (res) {
+                console.log(res)
                 return { data: res.data["data"]["Current Server Time"], status: 'success' }
             })
             .catch(function (error) {
+                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }

@@ -45,6 +45,7 @@ export default class LeaveHistory extends Component {
     
 
     render () {
+        console.log(this.state)
         let currentYear = new Date().getFullYear()
         if(this.state.year === null) {
             this.setState({
