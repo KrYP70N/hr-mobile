@@ -1,38 +1,46 @@
-import React, { Component } from 'react'
-import { Image } from 'react-native'
-import { Container, Text, View, Card, CardItem, Body } from 'native-base'
+import React, { Component }  from 'react'
+import { Text, View } from 'native-base'
 
 import styProfile from './profile.style'
-import ProfileModel from '../../model/profile.model'
 
 export default class PersonalProfile extends Component {
-    constructor (props) {
-        super(props)
-    }
 
     render () {
+
+        let array = []
         
-        // let data = this.props.data
-        let InfoItems = this.props.data.map(data => {
+        for (const key in this.props.data) {
+            if (this.props.data.hasOwnProperty(key)) {
+                array.push(key)
+            }
+        }
+
+        let dataList = array.map(list => {
+            if(list === this.props.data[0]) {
+                return (
+                    <View style={[styProfile.dataListLast, {
+                        display: this.props.data[`${list}`] ? null : 'none'
+                    }]} key={list}>
+                        <Text style={styProfile.label}>{list}</Text>
+                        <Text>{this.props.data[`${list}`]}</Text>
+                    </View>    
+                )
+            }
             return (
-                <CardItem style={styProfile.infoItem} key={ProfileModel.getKey(data)}>
-                    <Body>
-                        <Text style={styProfile.workLabel}>
-                            {ProfileModel.getKey(data)}
-                        </Text>
-                        <Text style={styProfile.workInfo}>
-                            {ProfileModel.getVal(data)}
-                        </Text>
-                    </Body>
-                </CardItem>
+                <View style={[styProfile.dataList, {
+                    display: this.props.data[`${list}`] ? null : 'none'
+                }]} key={list}>
+                    <Text style={styProfile.label}>{list}</Text>
+                    <Text style={styProfile.dataValue}>{this.props.data[`${list}`]}</Text>
+                </View>
             )
         })
+
         return (
-            <View style={{marginBottom: 20}}>
-                <Text style={styProfile.sectionTitle}>Personal Infomation</Text>
-                <Card style={styProfile.workInfos}>
-                    { InfoItems }
-                </Card>
+            <View style={styProfile.personalInfo}>
+                <View style={styProfile.personalContainer}>
+                    {dataList}
+                </View>
             </View>
         )
     }

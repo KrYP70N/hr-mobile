@@ -15,7 +15,7 @@ export default class Heading extends Component {
     if (this.props.secondary) {
       return (
         <Header style={{
-          backgroundColor: color.primary,
+          backgroundColor: color.light,
           marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
         }}>
           <Left style={{
@@ -25,11 +25,11 @@ export default class Heading extends Component {
           }}>
             <Icon name='ios-arrow-round-back' style={{
               fontSize: offset.o3,
-              color: color.light,
+              color: color.primary,
               marginRight: offset.o2
             }} onPress={() => { this.props.navigation.navigate('Main') }} />
             <Text style={{
-              color: color.light,
+              color: color.secondary,
               fontSize: offset.o1 + 6
             }}>{this.props.title}</Text>
           </Left>

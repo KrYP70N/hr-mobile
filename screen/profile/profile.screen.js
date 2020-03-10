@@ -8,6 +8,7 @@ import { AsyncStorage } from 'react-native'
 import APIs from '../../controllers/api.controller'
 
 import GeneralProfile from './_general.profile'
+import PersonalProfile from './_personal.profile'
 
 export default class Profile extends Component {
   constructor(props) {
@@ -65,7 +66,9 @@ export default class Profile extends Component {
       <Container style={styProfile.topContainer}>
         <Content>
           <Heading secondary title="Profile" navigation={this.props.navigation} />
-          <GeneralProfile data={this.state.data['General Information']}/>
+          <GeneralProfile data={this.state.data['General Information']} dataWork={this.state.data['Work Information']} />
+          <Text style={styProfile.title}>Personal Information</Text>
+          <PersonalProfile data={this.state.data['Personal Information']}/>
         </Content>
       </Container>
     )
