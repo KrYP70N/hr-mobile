@@ -40,7 +40,6 @@ export default class Auth extends Component {
                         // save api-infomation
                         AsyncStorage.setItem('@hr:endPoint', JSON.stringify(res.data))
                         .then(() => {
-                            console.log(res.data)
                             this.setState({
                                 loading: false
                             })

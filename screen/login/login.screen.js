@@ -17,6 +17,7 @@ import Loading from '../../components/loading.component';
 import DB from '../../model/db.model'
 import color from '../../constant/color';
 import Auth from './_auth.login'
+import { Updates } from 'expo';
 
 export default class Login extends Component {
 
@@ -110,8 +111,6 @@ export default class Login extends Component {
             )
         }
         
-
-
         return (
             <KeyboardAvoidingView behavior="height" style={styLogin.kbView}>
                 <Container style={styLogin.container}>
@@ -146,7 +145,10 @@ export default class Login extends Component {
                     </Button>
 
                     <Button transparent style={styLogin.resetPwd} onPress={() => {
-                        alert('sorry, not avaliable!')
+                        AsyncStorage.removeItem('@hr:endPoint')
+                        .then(() => {
+                            Updates.reload()
+                        })
                     }}>
                         <Text style={styLogin.resetTxt}>Change Access Token?</Text>
                     </Button>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Image } from 'react-native'
+import { Image, Platform, StatusBar } from 'react-native'
 import { Container, Content, Card, CardItem, Body, Text, View, Header, Left, Right, Icon } from 'native-base'
 
 import styProfile from './profile.style'
@@ -17,13 +17,13 @@ export default class Profile extends Component {
     }
 
     render () {
-
+        StatusBar
         let profile_data = this.props.route.params['profile']
-
         return (
             <Container>
                 <Header style={{
-                    backgroundColor: color.light
+                    backgroundColor: color.light,
+                    marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                 }}>
                     <Left style={{
                         display: 'flex',

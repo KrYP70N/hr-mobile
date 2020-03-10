@@ -6,9 +6,9 @@ import styProfile from './profile.style'
 import ProfileModel from '../../model/profile.model'
 
 export default class GeneralProfile extends Component {
-     constructor (props) {
+    constructor (props) {
         super(props)
-     }
+    }
     render () {
         console.log(this.props.data)
         return (
