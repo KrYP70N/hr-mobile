@@ -3,59 +3,30 @@ import { StyleSheet } from 'react-native'
 import color from '../../constant/color'
 import typo from '../../constant/typography'
 import offset from '../../constant/offset'
-
 export default StyleSheet.create({
-    content: {
-        backgroundColor: color.lighter,
-        padding: offset.o1
+    topContainer: {
+        backgroundColor: color.lighter
+    },
+    header: {
+        backgroundColor: color.primary
     },
     personalInfo: {
+        marginTop: offset.o5,
+        padding: offset.o1
+    },
+    personalContainer: {
+        backgroundColor: color.light,
         display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center',
-        overflow: 'visible',
-        marginTop: offset.o3,
-        zIndex: 2
+        padding: offset.o2
     },
-    image: {
-        width: 80,
-        height: 80,
-        borderRadius: 40,
-        borderWidth: 1.5,
+    profileImage: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
         borderColor: color.primary,
-        marginBottom: offset.o1
-    },
-    id: {
-        ...typo.textSmall,
-        color: color.placeHolder,
-        marginBottom: offset.o1
-    },
-    name: {
-        ...typo.cardTitle,
-        color: color.primary,
-        marginBottom: offset.o1
-    },
-    sectionTitle: {
-        ...typo.cardTitle,
-        marginTop: offset.o2
-    },
-    jobTitle: {
-        ...typo.textSmall,
-        color: color.secondary
-    },
-    workInfos: {
-        marginTop: offset.o2
-    },
-    infoItem: {
-        borderBottomWidth: 1,
-        borderBottomColor: color.lighter
-    },
-    workLabel: {
-        ...typo.textSmall,
-        color: color.placeHolder
-    },
-    workInfo: {
-        ...typo.parabraph,
-        color: color.secondary
+        borderWidth: 2,
+        marginTop: - (offset.o5 + offset.o1),
+        backgroundColor: color.light
     }
 })

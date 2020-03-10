@@ -12,7 +12,7 @@ import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 import Time from '../../controllers/time.controller'
 
-import ProfileModel from '../../model/profile.model'
+// import ProfileModel from '../../model/profile.model'
 
 import Heading from '../../components/header.component'
 import CheckInOut from '../../components/checkinout.component'
@@ -62,8 +62,6 @@ export default class Main extends Component {
     if (this.state.profile === null && this.state.url !== null && this.state.id !== null) {
       APIs.Profile(this.state.url, this.state.auth, this.state.id)
         .then((res) => {
-          console.log('/////////////////////')
-          console.log(res.data)
           if (res.status === 'success') {
             this.setState({
               profile: res.data
@@ -85,7 +83,7 @@ export default class Main extends Component {
   render() {
     if (this.state.loading === true || this.state.profile === null) {
       return (
-        <Loading />
+        <Loading info='request profile data ...'/>
       )
     }
     return (
@@ -97,9 +95,7 @@ export default class Main extends Component {
 
           <TouchableNativeFeedback style={styMain.banner}
             onPress={() => {
-              this.props.navigation.navigate('Profile', {
-                profile: this.state.profile
-              })
+              this.props.navigation.navigate('Profile')
             }
             }>
             <Clock style={styMain.time} navigation={this.props.navigation} />
@@ -115,25 +111,19 @@ export default class Main extends Component {
                 } style={styMain.profilePic} />
                 <View>
                   <Text style={styMain.name}>
-                    {this.state.profile['Employee Name']}{
-                      ProfileModel.checkKey(
-                        this.state.profile['General Information'], 'Employee Name'
-                      ) === undefined ?
-                        "UNKNOWN EMPLOYEE" :
-                        ProfileModel.checkKey(
-                          this.state.profile['General Information'], 'Employee Name'
-                        )
+                    {/* emp name */}
+                    {
+                      this.state.profile['General Information']['Employee Name'] ?
+                      this.state.profile['General Information']['Employee Name'] :
+                      'Unknown User'
                     }
                   </Text>
                   <Text style={[styMain.pos]}>
+                    {/* emp position */}
                     {
-                      ProfileModel.checkKey(
-                        this.state.profile['General Information'], 'Job Position'
-                      ) === undefined ?
-                        "UNKNOWN POSITION" :
-                        ProfileModel.checkKey(
-                          this.state.profile['General Information'], 'Job Position'
-                        )
+                      this.state.profile['General Information']['Job Position'] ?
+                      this.state.profile['General Information']['Job Position'] :
+                      'Untitled Position'
                     }
                   </Text>
 

@@ -13,7 +13,6 @@ import po from './po'
 import Overlay from '../../components/overlay.component'
 
 import APIs from '../../controllers/api.controller'
-import Loading from '../../components/loading.component';
 import DB from '../../model/db.model'
 import color from '../../constant/color';
 import Auth from './_auth.login'
