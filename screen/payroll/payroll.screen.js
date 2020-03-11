@@ -21,7 +21,7 @@ export default class Payroll extends Component {
             id: null,
             month: null,
             year: null,
-            payroll: null
+            payroll: ""
         }
 
         // handel year
@@ -38,6 +38,25 @@ export default class Payroll extends Component {
             })
         }
 
+        // search
+        this.searchPayroll = () => {
+            APIs.yearPayroll(
+                this.state.url,
+                this.state.auth,
+                this.state.id,
+                this.state.year
+            ).then((res) => {
+                if (res.status === 'success') {
+                    this.setState({
+                        payroll: res.data
+                    })
+                } else {
+                    this.setState({
+                        payroll: []
+                    })
+                }
+            })
+        }
         
     }
 
@@ -59,23 +78,8 @@ export default class Payroll extends Component {
     }
 
     componentDidUpdate () {
-        if(this.state.payroll === null || this.state.year !== null || this.state.url !== null || this.state.id !== null) {
-            APIs.yearPayroll(
-                this.state.url,
-                this.state.auth,
-                this.state.id,
-                this.state.year
-            ).then((res) => {
-                if (res.status === 'success') {
-                    this.setState({
-                        payroll: res.data
-                    })
-                } else {
-                    this.setState({
-                        payroll: []
-                    })
-                }
-            })
+        if(this.state.payroll === "" && this.state.year !== null && this.state.url !== null && this.state.id !== null) {
+            this.searchPayroll()
         }
     }
 

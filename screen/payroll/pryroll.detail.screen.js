@@ -15,39 +15,39 @@ export default class PayrollDetail extends Component {
     constructor(prop) {
         super(prop)
         this.state = {
-            slipid: this.props.route.params.slipid,
             url: this.props.route.params.url,
             auth: this.props.route.params.auth,
             data: null
         }
     }
 
-    componentWillMount () {
-        console.log('hola')
-    }
-
     componentDidMount () {
         
-        APIs.getPaySlip(this.state.slipid, this.state.auth, this.state.url)
-        .then((res) => {
-            if (res.status === 'success') {
-                this.setState({
-                    data: res.data
-                })
-            } else {
-                Toast.show({
-                    text: 'Invalid request, Please try again in later!',
-                    textStyle: {
-                        textAlign: 'center'
-                    },
-                    style: {
-                        backgroundColor: color.primary
-                    }
-                })
-            }
+        this.props.navigation.addListener('focus', () => {
+            this.setState({
+                data: null
+            })
+            APIs.getPaySlip(this.props.route.params.slipid, this.state.auth, this.state.url)
+            .then((res) => {
+                if (res.status === 'success') {
+                    this.setState({
+                        data: res.data
+                    })
+                } else {
+                    Toast.show({
+                        text: 'Invalid request, Please try again in later!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        }
+                    })
+                }
 
+            })    
         })
-        
+
     }
 
     
