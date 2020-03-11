@@ -17,9 +17,15 @@
     "expo-document-picker": "~8.0.0",
     "expo-file-system": "~8.0.0",
     "expo-font": "~8.0.0",
+<<<<<<< HEAD
     "expo-intent-launcher": "~8.0.0",
     "geolib": "^3.2.1",
     "moment": "^2.24.0",
+=======
+    "expo-location": "~8.0.0",
+    "expo-permissions": "~8.0.0",
+    "geolib": "^3.2.1",
+>>>>>>> 9d1686e871ba85ad573fbef7bc05cadb1b8ef1a2
     "native-base": "^2.13.8",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
