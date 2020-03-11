@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea, Header, Left, Right } from 'native-base'
-import { Image, AsyncStorage, Platform, StatusBar } from 'react-native'
-import { TouchableNativeFeedback } from 'react-native-gesture-handler'
+import { Image, AsyncStorage, Platform, StatusBar, TouchableOpacity } from 'react-native'
+// import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import po from './po'
 import color from '../../constant/color'
@@ -93,7 +93,7 @@ export default class Main extends Component {
 
           <Heading navigation={this.props.navigation} />
 
-          <TouchableNativeFeedback style={styMain.banner}
+          <TouchableOpacity style={styMain.banner}
             onPress={() => {
               this.props.navigation.navigate('Profile')
             }
@@ -134,7 +134,7 @@ export default class Main extends Component {
                 <Icon name="ios-arrow-round-forward" style={styMain.profileDetail}></Icon>
               </Col>
             </Row>
-          </TouchableNativeFeedback>
+          </TouchableOpacity>
 
           {/* check in/out */}
           <View style={styMain.checkinout}>
@@ -145,7 +145,7 @@ export default class Main extends Component {
           <Row style={styMain.menuHolder}>
             <Col style={styMain.cardLft}>
               <Card style={!po.menu[1].navigate ? styMain.disabledMenu : null}>
-                <TouchableNativeFeedback onPress={() =>
+                <TouchableOpacity onPress={() =>
                   po.menu[1].navigate ?
                     this.props.navigation.navigate(
                       po.menu[1].navigate
@@ -157,12 +157,12 @@ export default class Main extends Component {
                       <Text>{po.menu[1].name}</Text>
                     </Body>
                   </CardItem>
-                </TouchableNativeFeedback>
+                </TouchableOpacity>
               </Card>
             </Col>
             <Col style={styMain.cardRight}>
               <Card style={!po.menu[2].navigate ? styMain.disabledMenu : null}>
-                <TouchableNativeFeedback onPress={() =>
+                <TouchableOpacity onPress={() =>
                   po.menu[2].navigate ?
                     this.props.navigation.navigate(
                       po.menu[2].navigate
@@ -175,7 +175,7 @@ export default class Main extends Component {
                       <Text>{po.menu[2].name}</Text>
                     </Body>
                   </CardItem>
-                </TouchableNativeFeedback>
+                </TouchableOpacity>
               </Card>
             </Col>
           </Row>
@@ -183,7 +183,7 @@ export default class Main extends Component {
 
             <Col style={styMain.cardLft}>
               <Card style={!po.menu[3].navigate ? styMain.disabledMenu : null}>
-                <TouchableNativeFeedback onPress={() =>
+                <TouchableOpacity onPress={() =>
                   po.menu[3].navigate ?
                     this.props.navigation.navigate(
                       po.menu[3].navigate
@@ -196,12 +196,12 @@ export default class Main extends Component {
                       <Text>{po.menu[3].name}</Text>
                     </Body>
                   </CardItem>
-                </TouchableNativeFeedback>
+                </TouchableOpacity>
               </Card>
             </Col>
             <Col style={styMain.cardRight}>
               <Card style={!po.menu[4].navigate ? styMain.disabledMenu : null}>
-                <TouchableNativeFeedback onPress={() =>
+                <TouchableOpacity onPress={() =>
                   po.menu[4].navigate ?
                     this.props.navigation.navigate(
                       po.menu[4].navigate
@@ -214,7 +214,7 @@ export default class Main extends Component {
                       <Text>{po.menu[4].name}</Text>
                     </Body>
                   </CardItem>
-                </TouchableNativeFeedback>
+                </TouchableOpacity>
               </Card>
             </Col>
           </Row>

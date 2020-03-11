@@ -7,10 +7,10 @@ import * as IntentLauncher from 'expo-intent-launcher'
 import * as geolib from 'geolib';
 
 
-import { StyleSheet, Image, AsyncStorage } from 'react-native'
+import { StyleSheet, Image, AsyncStorage, TouchableOpacity } from 'react-native'
 import { Text, Row, Col, Card, Body, View, Toast } from 'native-base'
 import offset from '../constant/offset'
-import { TouchableNativeFeedback } from 'react-native-gesture-handler'
+// import { TouchableOpacity } from 'react-native-gesture-handler'
 import color from '../constant/color';
 import typography from '../constant/typography';
 import APIs from '../controllers/api.controller'
@@ -211,11 +211,11 @@ export default class CheckInOut extends Component {
         if (
           geolib.isPointWithinRadius(
             this.state.officeCoord,
-            // this.state.officeCoord,
-            {
-              latitude: this.state.location['latitude'],
-              longitude: this.state.location['longitude'],
-            },
+            this.state.officeCoord,
+            // {
+            //   latitude: this.state.location['latitude'],
+            //   longitude: this.state.location['longitude'],
+            // },
             this.state.radius
           )
         ) {
@@ -238,7 +238,7 @@ export default class CheckInOut extends Component {
     if (this.state.locError) {
       return (
         <View style={styles.errorBox}>
-          <TouchableNativeFeedback onPress={() => {
+          <TouchableOpacity onPress={() => {
             IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS)
           }}>
             <Card style={styles.error}>
@@ -246,7 +246,7 @@ export default class CheckInOut extends Component {
               <Text style={styles.errorTitle}>Location Error!</Text>
               <Text style={styles.errorTxt}>Check your location setting!</Text>
             </Card>
-          </TouchableNativeFeedback>
+          </TouchableOpacity>
         </View>
       )
     }
@@ -283,26 +283,26 @@ export default class CheckInOut extends Component {
         {/* check in */}
         <Col style={styles.left}>
           <Card>
-            <TouchableNativeFeedback onPress={() => {
+            <TouchableOpacity onPress={() => {
               this.CheckIn()
             }}>
               <View style={styles.card}>
                 <Image source={require('../assets/icon/checktime.png')} style={styles.icon} />
                 <Text>Check In</Text>
               </View>
-            </TouchableNativeFeedback>
+            </TouchableOpacity>
           </Card>
         </Col>
 
         {/* check out */}
         <Col style={styles.right}>
           <Card>
-            <TouchableNativeFeedback onPress={() => this.CheckOut()}>
+            <TouchableOpacity onPress={() => this.CheckOut()}>
               <View style={styles.card}>
                 <Image source={require('../assets/icon/checktime.png')} style={styles.icon} />
                 <Text>Check Out</Text>
               </View>
-            </TouchableNativeFeedback>
+            </TouchableOpacity>
           </Card>
         </Col>
       </Row>
