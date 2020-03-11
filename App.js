@@ -33,6 +33,8 @@ export default class App extends React.Component {
         <Loading />
       )
     }
+    
+    <img src=""></img>
 
     return (
       <Root>

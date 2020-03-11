@@ -5,12 +5,15 @@ import { Text, Button, View, CardItem, Body, Card, Icon } from 'native-base'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 
+import HRFs from '../../controllers/download.controller'
+
 export default class PayrollList extends Component {
     constructor(props) {
         super(props)
     }
     render() {
-        console.log(this.props.data)
+        HRFs.createFolder()
+
         if (this.props.data.length > 0) {
             let slips = this.props.data.map((slip) => {
                 return (
