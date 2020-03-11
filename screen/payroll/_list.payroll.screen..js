@@ -9,8 +9,8 @@ export default class PayrollList extends Component {
     constructor(props) {
         super(props)
     }
-    
     render() {
+        console.log(this.props.data)
         if (this.props.data.length > 0) {
             let slips = this.props.data.map((slip) => {
                 return (
@@ -26,7 +26,10 @@ export default class PayrollList extends Component {
                                 <Text style={styPayroll.month}>{slip.date_to}</Text>
                                 <View style={styPayroll.titleHolder}>
                                     <Text style={styPayroll.salary}>Net Salary - {Math.floor(slip.amount)} MMK</Text>
-                                    <Button style={styPayroll.cardButton}>
+                                    <Button 
+                                    style={styPayroll.cardButton}
+                                    onPress={() => APIs.downloadPaySlip(this.props.apidata.url, this.props.apidata.auth, slip.payslip_id)}
+                                    >
                                         <Icon name="md-arrow-down" />
                                         <Text>PDF</Text>
                                     </Button>

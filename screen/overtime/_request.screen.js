@@ -55,9 +55,9 @@ export default class Request extends Component {
                 })
             } else {
                 APIs.OTRequest(
-                    this.props.data.id, 
-                    this.props.data.auth,
-                    this.props.data.url,
+                    this.props.id, 
+                    this.props.auth,
+                    this.props.url,
                     this.state.date,
                     this.state.hour,
                     this.state.description

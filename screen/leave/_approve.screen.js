@@ -1,42 +1,27 @@
 import React, { Component } from 'react'
+import { FlatList, AsyncStorage } from 'react-native'
 import { View, Text, Form, Item, Label, Picker, Input, Textarea, Row, Col, Button, Container, Content, Card, Body, CardItem, Toast } from 'native-base'
 
 import color from '../../constant/color'
 import styLeave from './leave.style'
 import { KeyboardAvoidingView } from 'react-native'
 import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
 
 export default class LeaveApprove extends Component {
-
-    constructor (props) {
+    constructor(props) {
         super(props)
         this.state = {
-            id: this.props.id,
-            auth: this.props.auth,
-            url: this.props.url,
             leaves: [],
-            count: this.props.count
+            count: '',
+            //count: this.props.count
         }
+        
     }
+  
 
-    componentDidMount () {
-        APIs.getLeaveRequest(this.state.auth, this.state.url, this.state.id)
-            .then((res) => {
-                if(res.status === 'success') {
-                    this.setState({
-                        leaves: res.data
-                    })
-                } else {
-                    Toast.show({
-                        text: 'Sever Error! Please try again in later.'
-                    })
-                }
-            })
-    }
-
-    render () {
-        console.log(this.state.count)
-        const GetLeave = this.state.leaves.map((leave) => {
+    render() {  
+        const GetLeave = this.props.leaves.map((leave) => {
             return (
                 <Card key={leave['Obj id']}>
                     <CardItem>

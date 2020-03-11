@@ -212,6 +212,22 @@ export default class APIs {
             })
     }
 
+    // download payslip
+    static downloadPaySlip = (url, auth, slipid) => {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).get(`${url}/download/payroll/${slipid}`)
+            .then(function (res) {
+                console.log(res.data)
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
     // get leave type
     static getLeaveType = (auth, url) => {
         return axios.create({

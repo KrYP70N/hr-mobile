@@ -86,7 +86,7 @@ export default class PayrollDetail extends Component {
                                 fontSize: offset.o4,
                                 color: color.primary,
                                 marginRight: offset.o2
-                            }} onPress={() => { this.props.navigation.navigate('Main') }} />
+                            }} onPress={() => { this.props.navigation.navigate('Payroll') }} />
                             <Text style={{
                                 color: color.secondary
                             }}>Payroll</Text>

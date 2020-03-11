@@ -1,53 +1,146 @@
-import React, { Component } from 'react'
-import { View, Text, Container, Tab, Tabs, Header, Left, Right, Icon } from 'native-base'
-
-import styLeave from './leave.style'
+import React, { Component } from 'react';
+import { Text, Platform, StatusBar, AsyncStorage,} from 'react-native';
+import { TabView, TabBar } from 'react-native-tab-view';
+import { Header, Left, Right, Container, Toast, Icon,} from 'native-base'
+import color from '../../constant/color'
+import offset from '../../constant/offset'
 import LeaveRequest from './_request.screen'
 import LeaveApprove from './_approve.screen'
 import LeaveHistory from './_history.screen'
-
-import offset from '../../constant/offset'
-import color from '../../constant/color'
-import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
-import { AsyncStorage, Platform, StatusBar } from 'react-native'
+import APIs from '../../controllers/api.controller'
+var LeaveScreen;
 
-export default class Leave extends Component {
-
+export default class TabViewExample extends Component {
     constructor(props) {
         super(props)
-        
+        LeaveScreen = this;
         this.state = {
             url: null,
             auth: null,
             id: null,
-            count: 0
+            index: 0,
+            routes: [
+                { key: 'first', title: 'Request' },
+                { key: 'second', title: 'Approve' },
+                { key: 'third', title: 'History' },
+            ],
+            leaveType: [],
+            leaves: [],
+        };
+
+    }
+    componentDidMount() {
+        AsyncStorage.getItem('@hr:endPoint')
+            .then((res) => {
+                const url = JSON.parse(res).ApiEndPoint
+                this.setState({ url: JSON.parse(res).ApiEndPoint })
+                AsyncStorage.getItem('@hr:token')
+                    .then((res) => {
+                        const auth = JSON.parse(res).key;
+                        const id = JSON.parse(res).id;
+                        this.setState({
+                            auth: JSON.parse(res).key,
+                            id: JSON.parse(res).id
+                        })
+                        this.getRequestData(auth, url);
+                        this.getApproveData(auth, id, url);
+                    })
+            })
+    }
+
+    _handleIndexChange = index => this.setState({ index });
+
+    _renderLabel = ({ route }) => (
+        <Text style={{ color: 'white' }}>{route.title}</Text>
+    );
+
+    getRequestData(auth, url) {
+        APIs.getLeaveType(auth, url)
+            .then((res) => {
+                if (res.status === 'success') {
+                    console.log(res.data)
+                    this.setState({
+                        leaveType: res.data
+                    })
+                    // select leave type
+                    this.setState({
+                        selectedLeaveType: res.data[0]['leave_type_id']
+                    })
+                } else {
+                    this.props.navigation.navigate('Login')
+                }
+            })
+    }
+
+    getApproveData(auth, id, url) {
+        APIs.getLeaveRequest(auth, url, id)
+            .then((res) => {
+                if (res.status === 'success') {
+                    this.setState({
+                        leaves: res.data
+                    })
+                } else {
+                    Toast.show({
+                        text: 'Sever Error! Please try again in later.'
+                    })
+                }
+            })
+    }
+
+    getHistoryData(auth, id, url) {
+
+    }
+
+    _renderTabBar = props => (
+        <TabBar
+            renderLabel={this._renderLabel}
+            {...props}
+            indicatorStyle={{ backgroundColor: '#000' }}
+            style={{ backgroundColor: color.primary }}
+            labelStyle={{ color: 'white' }}
+            onTabPress={({ route, preventDefault }) => {
+                if (route.key === 'first') {
+                    this.getRequestData(this.state.auth, this.state.url)
+                } else if (route.key === 'second') {
+                    this.getApproveData(this.state.auth, this.state.id, this.state.url)
+                } else if (route.key === 'third') {
+                    this.getHistoryData(this.state.auth, this.state.id, this.state.url)
+                }
+            }}
+        />
+    );
+
+    _renderScene = ({ route }) => {
+        switch (route.key) {
+            case 'first':
+                return(
+                    <LeaveRequest 
+                    auth = {this.state.auth}
+                    id = {this.state.id}
+                    url = {this.state.url}
+                    leaveType = {this.state.leaveType}
+                     />
+                )
+            case 'second':
+                console.log("Leaves;:::", this.state.leaves)
+                return(
+                    <LeaveApprove leaves = {this.state.leaves} />
+                )
+                
+            case 'third':
+                return <LeaveHistory />;
+            default:
+                return null;
         }
     }
 
-    componentDidMount () {
-        AsyncStorage.getItem('@hr:endPoint')
-        .then((res) => {
-            this.setState({
-                url: JSON.parse(res).ApiEndPoint
-            })
-            AsyncStorage.getItem('@hr:token')
-            .then((res) => {
-                this.setState({
-                    auth: JSON.parse(res).key,
-                    id: JSON.parse(res).id
-                })
-            })
-        })
-    }
-
-    render () {
-        if(this.state.url === null || this.state.auth === null || this.state.id === null) {
+    render() {
+        if (this.state.url === null || this.state.auth === null || this.state.id === null) {
             return (
                 <Loading />
             )
         }
-
         return (
             <Container>
                 <Header style={{
@@ -70,30 +163,16 @@ export default class Leave extends Component {
                     </Left>
                     <Right></Right>
                 </Header>
+                <TabView
+                    navigationState={this.state}
+                    renderScene={this._renderScene}
+                    renderTabBar={this._renderTabBar}
+                    onIndexChange={this._handleIndexChange}
 
-                <Tabs>
-                    <Tab heading='Request' activeTabStyle={styLeave.tabStyle} tabStyle={styLeave.tabStyle}>
-                        <LeaveRequest 
-                            id={this.state.id}
-                            url={this.state.url}
-                            auth={this.state.auth}
-                        />
-                    </Tab>
-                    <Tab
-                        
-                        heading='Approve' activeTabStyle={styLeave.tabStyle} tabStyle={styLeave.tabStyle}>
-                        <LeaveApprove 
-                            id={this.state.id}
-                            url={this.state.url}
-                            auth={this.state.auth}
-                            count={this.state.count}
-                        />
-                    </Tab>
-                    <Tab heading='History' activeTabStyle={styLeave.tabStyle} tabStyle={styLeave.tabStyle}>
-                        <LeaveHistory />
-                    </Tab>
-                </Tabs>
+                />
             </Container>
-        )
+        );
     }
 }
+
+export { LeaveScreen };

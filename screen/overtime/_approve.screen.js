@@ -13,30 +13,9 @@ export default class Approve extends Component {
             data: [],
             token: null
         }
+    }
 
-        this.getOTList = () => {
-            
-            APIs.OTPending(this.props.data.id, this.props.data.auth, this.props.data.url)
-            .then((res) => {
-                if(res.status === 'success') {
-                    this.setState({
-                        data: res.data
-                    })
-                } else {
-                    Toast.show({
-                        text: 'Network Error',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.danger
-                        }
-                    })
-                }
-            })
-        }
-
-        this.cancelOT = (data) => {
+    cancelOT = (data) => {
             APIs.OTCancel(data, this.props.data.auth, this.props.data.url, 'reject')
                 .then((res) => {
                     if(res.status === 'success') {
@@ -53,19 +32,9 @@ export default class Approve extends Component {
                     }
                 })
         }
-    }
 
-    render () {
-        console.log(this.state.token)
-        if(this.state.token !== this.props.token) {
-            this.setState({
-                token: this.props.token
-            })
-            this.getOTList()
-        }
-
-        
-        let requests = this.state.data.map((req) => {
+    render () {     
+        let requests = this.props.data.map((req) => {
             console.log(req)
             return (
                 <Card key={Math.floor(Math.random()*3000)+req['date']+Math.floor(Math.random()*3000)} >
