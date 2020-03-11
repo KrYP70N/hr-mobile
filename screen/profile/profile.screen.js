@@ -17,7 +17,9 @@ export default class Profile extends Component {
       url: null,
       auth: null,
       id: null,
-      data: null
+      data: null,
+      name: null,
+      random: null
     }
   }
 
@@ -38,6 +40,22 @@ export default class Profile extends Component {
         id: data['id']
       })
     })
+
+    this.props.navigation.addListener('focus', () => {
+      if(this.state.url !== null && this.state.auth !== null && this.state.id !== null) {
+        APIs.Profile(this.state.url, this.state.auth, this.state.id)
+        .then((res) => {
+          if(res.status === 'success') {
+            this.setState({
+              data: res.data
+            })
+          } else {
+            this.props.navigation.navigate('Login')
+          }
+        })
+      }
+    });
+
   }
 
   componentDidUpdate () {

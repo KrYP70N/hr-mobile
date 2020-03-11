@@ -1,15 +1,15 @@
 import * as React from 'react'
 
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer, useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import {
-    createDrawerNavigator,
-    DrawerContentScrollView,
-    DrawerItemList,
-    DrawerItem
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem
 } from '@react-navigation/drawer'
 
-import {Image, TouchableOpacity} from 'react-native'
+import { Image, TouchableOpacity } from 'react-native'
 import { View, Text, Button, Icon } from 'native-base';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import { NavigationActions } from 'react-navigation';
@@ -17,7 +17,7 @@ import { NavigationActions } from 'react-navigation';
 import Auth from '../screen/auth/auth.screen'
 import Login from '../screen/login/login.screen'
 import Main from '../screen/main/main.screen'
-import Profile from '../screen/profile/profile.screen'
+import ProfileScreen from '../screen/profile/profile.screen'
 import Attendance from '../screen/attendance/attendance.screen'
 import Overtime from '../screen/overtime/overtime.screen'
 import Payroll from '../screen/payroll/payroll.screen'
@@ -28,43 +28,56 @@ import SideMenu from '../router/SideMenu';
 import styNav from './navigation.style'
 
 function CustomdrawerContent(props) {
-    // console.log(props)
-    return (
-        <DrawerContentScrollView {...props}>
-            <SideMenu navigation = {props.navigation}/>     
-        </DrawerContentScrollView>
-    )
+  // console.log(props)
+  return (
+    <DrawerContentScrollView {...props}>
+      <SideMenu navigation={props.navigation} />
+    </DrawerContentScrollView>
+  )
 }
 
 const Drawer = createDrawerNavigator()
 
-function Navigation () {
-    return (
-        <NavigationContainer>
-            <Drawer.Navigator drawerContent={(props) => CustomdrawerContent(props)}>
-                {/* <Drawer.Screen name='Auth' component={Auth}
+
+// function Profile(props) {
+//   // useFocusEffect(
+//   //   React.useCallback(() => {
+//   //     // Do something when the screen is focuse
+//   //     return () => {
+//   //     };
+//   //   }, [])
+//   // );
+
+//   return <ProfileScreen navigation={props.navigation}/>
+// }
+
+function Navigation() {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator drawerContent={(props) => CustomdrawerContent(props)}>
+        {/* <Drawer.Screen name='Auth' component={Auth}
                 options={{
                     headerShown: false
                 }}
                 /> */}
-                <Drawer.Screen  name='Login' component={Login} 
-                options={{
-                    headerShown: false,
-                    navigationOptions: ({navigation}) => ({
-                        drawerLockMode: 'locked-closed'
-                    })
-                }}
-                />
-                <Drawer.Screen name='Main' component={Main}/>
-                <Drawer.Screen name='Profile' component={Profile} />
-                <Drawer.Screen name='Attendance' component={Attendance} />
-                <Drawer.Screen name='Overtime' component={Overtime} />
-                <Drawer.Screen name='Payroll' component={Payroll} />
-                <Drawer.Screen name='PayrollDetail' component={PayrollDetail} />
-                <Drawer.Screen name='Leave' component={Leave} />
-            </Drawer.Navigator>
-        </NavigationContainer>
-    )
+        <Drawer.Screen name='Login' component={Login}
+          options={{
+            headerShown: false,
+            navigationOptions: ({ navigation }) => ({
+              drawerLockMode: 'locked-closed'
+            })
+          }}
+        />
+        <Drawer.Screen name='Main' component={Main} />
+        <Drawer.Screen name='Profile' component={ProfileScreen} />
+        <Drawer.Screen name='Attendance' component={Attendance} />
+        <Drawer.Screen name='Overtime' component={Overtime} />
+        <Drawer.Screen name='Payroll' component={Payroll} />
+        <Drawer.Screen name='PayrollDetail' component={PayrollDetail} />
+        <Drawer.Screen name='Leave' component={Leave} />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  )
 }
 
 export default Navigation

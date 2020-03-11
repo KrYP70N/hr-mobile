@@ -28,8 +28,6 @@ export default class Attendance extends Component {
     }
 
     componentDidMount() {
-
-
         AsyncStorage.getItem('@hr:endPoint')
         .then((res) => {
             this.setState({
@@ -43,6 +41,21 @@ export default class Attendance extends Component {
                 })
             })
         })
+
+        this.props.navigation.addListener('focus', () => {
+            if(
+                this.state.url !== null &&
+                this.state.token !== null &&
+                this.state.id !== null
+            ) {
+                APIs.AttendanceSummary(this.state.url, this.state.token, this.state.id)
+                .then((res) => {
+                    this.setState({
+                        data: res.data
+                    })
+                })
+            }
+        })
     }
 
     componentDidUpdate() {
@@ -53,12 +66,8 @@ export default class Attendance extends Component {
             this.state.id !== null &&
             this.state.data === null
         ) {
-            console.log(this.state.url)
-            console.log(this.state.id)
-            console.log(this.state.token)
             APIs.AttendanceSummary(this.state.url, this.state.token, this.state.id)
             .then((res) => {
-                console.log(res)
                 this.setState({
                     data: res.data
                 })
@@ -89,7 +98,6 @@ export default class Attendance extends Component {
 
 
         let infos = this.state.dataTitle.map((title) => {
-            console.log()
             return (
                 <Card style={[styAttend.infoCard,
                 this.state.data[title][0][0] === null || this.state.data[title][0][0] === 0 ? { display: 'none' } : null
