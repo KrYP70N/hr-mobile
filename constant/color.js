@@ -7,5 +7,6 @@ export default {
     dark        :       '#2A484E',
     placeHolder :       '#A5A5A5',
     warning     :       '#FFB300',
-    danger      :       '#FF0000'
+    danger      :       '#FF0000',
+    indicator   :       '#35A9AC'
 }

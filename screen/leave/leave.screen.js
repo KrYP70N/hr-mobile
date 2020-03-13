@@ -20,7 +20,7 @@ export default class TabViewExample extends Component {
             index: 0,
             routes: [
                 { key: 'first', title: 'Request' },
-                { key: 'second', title: 'Approve' },
+                { key: 'second', title: 'Pending' },
                 { key: 'third', title: 'History' },
             ],
             leaveType: [],
@@ -57,7 +57,6 @@ export default class TabViewExample extends Component {
         APIs.getLeaveType(auth, url)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log(res.data)
                     this.setState({
                         leaveType: res.data
                     })
@@ -94,7 +93,7 @@ export default class TabViewExample extends Component {
         <TabBar
             renderLabel={this._renderLabel}
             {...props}
-            indicatorStyle={{ backgroundColor: '#000' }}
+            indicatorStyle={{ backgroundColor: color.indicator, height: 5 }}
             style={{ backgroundColor: color.primary }}
             labelStyle={{ color: 'white' }}
             onTabPress={({ route, preventDefault }) => {
@@ -121,7 +120,6 @@ export default class TabViewExample extends Component {
                      />
                 )
             case 'second':
-                console.log("Leaves;:::", this.state.leaves)
                 return(
                     <LeavePending leaves = {this.state.leaves} />
                 )

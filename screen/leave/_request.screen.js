@@ -58,8 +58,7 @@ export default class LeaveRequest extends Component {
     }
 
     submit(auth, id, url) {
-        //console.log("URL:: AUTH:: ID", auth + "::" + url + "::" + id)
-        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.from, this.state.to, this.state.dayType)
+        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.from, this.state.to, this.state.dayType, this.state.description)
             .then((res) => {
                 if (res.status === 'success') {
                     let date = new Date();
@@ -96,8 +95,7 @@ export default class LeaveRequest extends Component {
     }
 
     render() {
-        console.log("LeaveType:::", this.props.leaveType);
-
+        console.log(this.state.from)
         return (
             <Container>
                 <Content style={styLeave.container}>
@@ -133,8 +131,8 @@ export default class LeaveRequest extends Component {
                                 <Col style={styLeave.datePlaceholder}>
                                     <DatePicker
                                         defaultDate={new Date}
-                                        onDateChange = {this.fromDate}
-                                        //onDateChange={this.controlFrom.bind(this)}
+                                        // onDateChange = {this.fromDate}
+                                        onDateChange={this.controlFrom.bind(this)}
                                         
                                     />
                                 </Col>
@@ -167,7 +165,7 @@ export default class LeaveRequest extends Component {
                                 </Picker>
                             </Item>
                             <Textarea
-                                placeholderTextColor={"#00ffdd"}
+                                placeholderTextColor={color.placeHolder}
                                 rowSpan={6}
                                 bordered
                                 style={styLeave.textarea}
@@ -208,7 +206,7 @@ export default class LeaveRequest extends Component {
                                                 })
                                         }}
                                     >
-                                        <Text>Add File</Text>
+                                        <Text style={styLeave.buttonText}>Add File</Text>
                                     </Button>
                                 </Col>
                             </Row>
@@ -217,7 +215,7 @@ export default class LeaveRequest extends Component {
                     </KeyboardAvoidingView>
                 </Content>
                 <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
-                    <Text>Submit</Text>
+                    <Text style={styLeave.buttonText}>Submit</Text>
                 </Button>
             </Container>
         );

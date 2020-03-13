@@ -45,11 +45,6 @@ export default class LeaveHistory extends Component {
     
 
     render () {
-        console.log("History Screen")
-        // return(
-        //     <View><Text>History Screen</Text></View>
-        // )
-        console.log(this.state)
         let currentYear = new Date().getFullYear()
         if(this.state.year === null) {
             this.setState({

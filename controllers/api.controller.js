@@ -273,12 +273,13 @@ export default class APIs {
     }
 
     // request leave
-    static requestLeave = (auth, url, id, leaveType, from, to, dayType) => {
+    static requestLeave = (auth, url, id, leaveType, from, to, dayType, description) => {
+        console.log(from, to)
         return axios.create({
             headers: {
                 access_token: auth
             }
-        }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}`)
+        }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })

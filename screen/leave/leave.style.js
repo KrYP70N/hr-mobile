@@ -44,6 +44,9 @@ export default StyleSheet.create({
         left: 0,
         bottom: 0
     },
+    buttonText: {
+        color: color.light
+    },
     tabStyle: {
         backgroundColor: color.primary
     },
