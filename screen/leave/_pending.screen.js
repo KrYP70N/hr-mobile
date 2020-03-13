@@ -8,7 +8,7 @@ import { KeyboardAvoidingView } from 'react-native'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 
-export default class LeaveApprove extends Component {
+export default class LeavePending extends Component {
     constructor(props) {
         super(props)
         this.state = {

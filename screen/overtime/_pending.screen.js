@@ -5,7 +5,7 @@ import { Text, Container, Content, Card, CardItem, Body, Row, Col, Button, View,
 import APIs from '../../controllers/api.controller'
 import color from '../../constant/color'
 
-export default class Approve extends Component {
+export default class Pending extends Component {
 
     constructor (props) {
         super(props)

@@ -5,7 +5,7 @@ import { Header, Left, Right, Container, Toast, Icon,} from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import LeaveRequest from './_request.screen'
-import LeaveApprove from './_approve.screen'
+import LeavePending from './_pending.screen'
 import LeaveHistory from './_history.screen'
 import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
@@ -123,7 +123,7 @@ export default class TabViewExample extends Component {
             case 'second':
                 console.log("Leaves;:::", this.state.leaves)
                 return(
-                    <LeaveApprove leaves = {this.state.leaves} />
+                    <LeavePending leaves = {this.state.leaves} />
                 )
                 
             case 'third':
