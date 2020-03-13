@@ -79,7 +79,13 @@ export default class TabViewExample extends Component {
                     })
                 } else {
                     Toast.show({
-                        text: 'Sever Error! Please try again in later.'
+                        text: 'There is no pending leave request!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        }
                     })
                 }
             })
@@ -117,11 +123,11 @@ export default class TabViewExample extends Component {
                     id = {this.state.id}
                     url = {this.state.url}
                     leaveType = {this.state.leaveType}
-                     />
+                    />
                 )
             case 'second':
                 return(
-                    <LeavePending leaves = {this.state.leaves} />
+                    <LeavePending leaves = {this.state.leaves} navigation={this.props.navigation}/>
                 )
                 
             case 'third':
@@ -137,6 +143,7 @@ export default class TabViewExample extends Component {
                 <Loading />
             )
         }
+
         return (
             <Container>
                 <Header style={{

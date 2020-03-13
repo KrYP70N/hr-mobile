@@ -12,15 +12,82 @@ export default class LeavePending extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            url: null,
+            auth: null,
+            id: null,
             leaves: [],
-            count: '',
-            //count: this.props.count
+            count: ''
         }
-        
+
+        this.cancelOT = (id) => {
+            
+            APIs.leaveStatusUpdate(this.state.url, this.state.auth, id, 'cancel')
+            .then((res) => {
+                console.log(res.status)
+                if(res.status === 'success') {
+                    Toast.show({
+                        text: 'Cancel Success!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        }
+                    })
+                } else {
+                    Toast.show({
+                        text: 'Request fail! Please try again in later',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.danger
+                        }
+                    })
+                }
+            })
+
+            
+        }
+    }
+
+    componentDidMount () {
+        AsyncStorage.getItem('@hr:token')
+        .then((res) => {
+            let data = JSON.parse(res)
+            this.setState({
+                auth: data.key,
+                id: data.id
+            })
+        })
+        AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+            let data = JSON.parse(res)
+            this.setState({
+                url: data['ApiEndPoint']
+            })
+        })
+
+        this.props.navigation.addListener('focus', () => {
+            // alert('testing...')
+        })
+
     }
   
 
-    render() {  
+    render() {
+        if(this.state.url === null || this.state.auth === null || this.state.id === null) {
+            return (
+                <Loading />
+            )
+        }
+
+        if(this.props.leaves.length === 0)  {
+            return (
+                <Text>no data avaliable</Text>
+            )
+        }
+
         const GetLeave = this.props.leaves.map((leave) => {
             return (
                 <Card key={leave['Obj id']}>
@@ -35,15 +102,7 @@ export default class LeavePending extends Component {
                             <Button 
                             style={styLeave.ButtonSecondary}
                             onPress={() => {
-                                Toast.show({
-                                    text: 'Request fail! Please try again in later',
-                                    textStyle: {
-                                        textAlign: 'center'
-                                    },
-                                    style: {
-                                        backgroundColor: color.danger
-                                    }
-                                })
+                                this.cancelOT(leave['Obj id'])
                             }}
                             >
                                 <Text>Cancel Request</Text>
