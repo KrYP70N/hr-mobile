@@ -26,6 +26,36 @@ export default class APIs {
             })
     }
 
+    // token refresh
+    static RefreshToken(url, token) {
+        return axios.create({
+            headers: {
+                access_token: token
+            }
+        }).get(`${url}/refresh`)
+            .then(function (res) {
+                return { data: res.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // employee level
+    static Level(url, token, id) {
+        return axios.create({
+            headers: {
+                access_token: token
+            }
+        }).get(`${url}/employee/level/${id}`)
+            .then(function (res) {
+                return { data: res.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
     // time controller
     static Time(url, token) {
         return axios.create({
@@ -122,6 +152,21 @@ export default class APIs {
             })
     }
 
+    // monthly attendance
+    static MonthlyAttendance(url, auth, id, month) {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).get(`${url}/attendance/${month}/${id}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
     // attendance summary
     static AttendanceSummary(url, auth, id) {
         return axios.create({
@@ -168,12 +213,102 @@ export default class APIs {
     }
 
     // cancel ot
-    static OTCancel(otID, auth, url, status) {
+    static OTUpdateStatus(otID, auth, url, status) {
         return axios.create({
             headers: {
                 access_token: auth
             }
         }).post(`${url}/approve/overtime/${otID}?status=${status}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // monthly ot record
+    static OTMonthly(url, auth, id, year, month) {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).get(`${url}/list/overtime/${id}/${year}/${month}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // OT approval list (manager)
+    static OTApproval(url, auth, id) {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).post(`${url}/approvelist/overtime/${id}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // get leave type
+    static getLeaveType = (auth, url) => {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).get(`${url}/leave/types`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // request leave
+    static requestLeave = (auth, url, id, leaveType, from, to, dayType) => {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // leave monthly
+    static LeaveMonthly(url, auth, id, year, month) {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).get(`${url}/list/leaves/${id}/${year}/${month}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // leave approval list
+    static leavePending(url, auth, id) {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).get(`${url}/list/leaveRequest/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -212,7 +347,7 @@ export default class APIs {
             })
     }
 
-    // download payslip
+    // download payslip [pending ...]
     static downloadPaySlip = (url, auth, slipid) => {
         return axios.create({
             headers: {
@@ -228,35 +363,9 @@ export default class APIs {
             })
     }
 
-    // get leave type
-    static getLeaveType = (auth, url) => {
-        return axios.create({
-            headers: {
-                access_token: auth
-            }
-        }).get(`${url}/leave/types`)
-            .then(function (res) {
-                return { data: res.data.data, status: 'success' }
-            })
-            .catch(function (error) {
-                return { error: error, status: 'fail' }
-            })
-    }
+    
 
-    // request leave
-    static requestLeave = (auth, url, id, leaveType, from, to, dayType) => {
-        return axios.create({
-            headers: {
-                access_token: auth
-            }
-        }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}`)
-            .then(function (res) {
-                return { data: res.data.data, status: 'success' }
-            })
-            .catch(function (error) {
-                return { error: error, status: 'fail' }
-            })
-    }
+    
 
     // get pending Leave
     static getLeaveRequest = (auth, url, id) => {

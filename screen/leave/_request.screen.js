@@ -3,7 +3,7 @@ import { Form, Item, Label, Picker, Input, Textarea, Row, Col, Button, Container
 
 import color from '../../constant/color'
 import styLeave from './leave.style'
-import { View, Text, KeyboardAvoidingView, AsyncStorage} from 'react-native'
+import { View, Text, KeyboardAvoidingView, AsyncStorage } from 'react-native'
 
 import * as DocumentPicker from 'expo-document-picker'
 
@@ -12,7 +12,6 @@ var $this;
 var url;
 var auth;
 var id;
-import LeaveScreen from '../leave/leave.screen';
 
 export default class LeaveRequest extends Component {
 
@@ -28,27 +27,27 @@ export default class LeaveRequest extends Component {
             description: null,
             file: null,
             refresh: false,
+            fDate: new Date(),
         }
+        this.fromDate = this.fromDate.bind(this);
 
-        let date = new Date()
-        this.setState({
-            from: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
-            to: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`
-        })
+    }
 
+    fromDate(newDate){
+        this.setState({fDate: newDate})
     }
 
     controlFrom = (data) => {
         let date = new Date(data)
         this.setState({
-            from: `${date.getFullYear()}-${(date.getMonth() + 1)  < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`
+            from: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`
         })
     }
 
     controlTo = (data) => {
         let date = new Date(data)
         this.setState({
-            to: `${date.getFullYear()}-${(date.getMonth() + 1)  < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`
+            to: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`
         })
     }
 
@@ -58,11 +57,15 @@ export default class LeaveRequest extends Component {
         })
     }
 
-    submit() {
+    submit(auth, id, url) {
         //console.log("URL:: AUTH:: ID", auth + "::" + url + "::" + id)
-        APIs.requestLeave(this.props.auth, this.props.url, this.props.id, this.state.selectedLeaveType, this.state.from, this.state.to, this.state.dayType)
+        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.from, this.state.to, this.state.dayType)
             .then((res) => {
                 if (res.status === 'success') {
+                    let date = new Date();
+                    this.setState({
+                        selectedLeaveType: this.props.leaveType[0].name,
+                    })
                     Toast.show({
                         text: 'Request Success',
                         textStyle: {
@@ -73,6 +76,11 @@ export default class LeaveRequest extends Component {
                         }
                     })
                 } else {
+                    const d = new Date()
+                    this.setState({
+                        fDate: new Date(),
+                        selectedLeaveType: this.props.leaveType[0],
+                    })
                     Toast.show({
                         text: 'Request Fail! Please try again in later.',
                         textStyle: {
@@ -83,6 +91,7 @@ export default class LeaveRequest extends Component {
                         }
                     })
                 }
+
             })
     }
 
@@ -124,7 +133,9 @@ export default class LeaveRequest extends Component {
                                 <Col style={styLeave.datePlaceholder}>
                                     <DatePicker
                                         defaultDate={new Date}
-                                        onDateChange={this.controlFrom.bind(this)}
+                                        onDateChange = {this.fromDate}
+                                        //onDateChange={this.controlFrom.bind(this)}
+                                        
                                     />
                                 </Col>
                             </Row>
@@ -137,6 +148,7 @@ export default class LeaveRequest extends Component {
                                     <DatePicker
                                         defaultDate={new Date}
                                         onDateChange={this.controlTo.bind(this)}
+                                        
                                     />
                                 </Col>
                             </Row>
@@ -204,7 +216,7 @@ export default class LeaveRequest extends Component {
 
                     </KeyboardAvoidingView>
                 </Content>
-                <Button style={styLeave.submitButton} onPress={() => { this.submit() }}>
+                <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
                     <Text>Submit</Text>
                 </Button>
             </Container>

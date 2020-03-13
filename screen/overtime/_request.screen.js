@@ -64,6 +64,13 @@ export default class Request extends Component {
                 )
                 .then((res) => {
                     if(res.status === 'success') {
+                        const d = new Date();
+                        this.pickDate(d);
+                        this.setState({
+                            date: d,
+                            hour: 0,
+                            description: null,
+                        })
                         Toast.show({
                             text: 'Request Success!',
                             textStyle: {
@@ -75,6 +82,11 @@ export default class Request extends Component {
                             duration: 5000
                         })
                     } else {
+                        this.setState({
+                            date: null,
+                            hour: 0,
+                            description: null,
+                        })
                         Toast.show({
                             text: 'Network Error! Please try again in later.',
                             textStyle: {
@@ -117,6 +129,7 @@ export default class Request extends Component {
                                         <Input style={styOt.input} 
                                         keyboardType="number-pad"
                                         onChangeText={(data) => this.pickHour(data)}
+                                        value = {this.state.hour}
                                         />
                                     </Item>       
                                 </Col>
@@ -124,6 +137,7 @@ export default class Request extends Component {
                             
                             <Textarea rowSpan={5} bordered placeholder={po.request.textarea.label} placeholderTextColor={color.placeHolder} style={styOt.textarea}
                             onChangeText={(data) => {this.description(data)}}
+                            value = {this.state.description}
                             />   
                         </Form>
                     </Content>

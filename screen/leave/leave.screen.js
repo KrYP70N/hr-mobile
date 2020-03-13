@@ -9,12 +9,10 @@ import LeaveApprove from './_approve.screen'
 import LeaveHistory from './_history.screen'
 import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
-var LeaveScreen;
 
 export default class TabViewExample extends Component {
     constructor(props) {
         super(props)
-        LeaveScreen = this;
         this.state = {
             url: null,
             auth: null,
@@ -174,5 +172,3 @@ export default class TabViewExample extends Component {
         );
     }
 }
-
-export { LeaveScreen };

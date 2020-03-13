@@ -16,7 +16,7 @@ export default class Approve extends Component {
     }
 
     cancelOT = (data) => {
-            APIs.OTCancel(data, this.props.data.auth, this.props.data.url, 'reject')
+            APIs.OTUpdateStatus(data, this.props.data.auth, this.props.data.url, 'reject')
                 .then((res) => {
                     if(res.status === 'success') {
                         this.getOTList()
