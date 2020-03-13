@@ -3,7 +3,7 @@ import { View, Text, Content, Container, Toast, Tab, Header, Left, Right, Icon }
 import styOt from './overtime.style'
 import po from './po'
 import Request from './_request.screen'
-import Approve from './_approve.screen'
+import Pending from './_pending.screen'
 import History from './_history.screen'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
@@ -120,7 +120,7 @@ export default class Overtime extends Component {
             case 'second':
                 console.log("Data:::", this.state.data)
                 return(
-                    <Approve data = {this.state.data} />
+                    <Pending data = {this.state.data} />
                 )
                 
             case 'third':
