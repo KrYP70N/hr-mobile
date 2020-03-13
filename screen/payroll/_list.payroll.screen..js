@@ -12,7 +12,7 @@ export default class PayrollList extends Component {
         super(props)
     }
     render() {
-        HRFs.createFolder()
+        HRFs.downloadPDF()
 
         if (this.props.data.length > 0) {
             let slips = this.props.data.map((slip) => {
