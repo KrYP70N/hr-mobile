@@ -23,6 +23,8 @@ import Overtime from '../screen/overtime/overtime.screen'
 import Payroll from '../screen/payroll/payroll.screen'
 import PayrollDetail from '../screen/payroll/pryroll.detail.screen'
 import Leave from '../screen/leave/leave.screen'
+import LeaveApprove from '../screen/leave/_approve.screen';
+import OvertimeApprove from '../screen/overtime/_approve.screen';
 import SideMenu from '../router/SideMenu';
 
 import styNav from './navigation.style'
@@ -75,6 +77,8 @@ function Navigation() {
         <Drawer.Screen name='Payroll' component={Payroll} />
         <Drawer.Screen name='PayrollDetail' component={PayrollDetail} />
         <Drawer.Screen name='Leave' component={Leave} />
+        <Drawer.Screen name='LeaveApprove' component={LeaveApprove}/>
+        <Drawer.Screen name='OvertimeApprove' component={OvertimeApprove}/>
       </Drawer.Navigator>
     </NavigationContainer>
   )

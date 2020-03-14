@@ -4,6 +4,9 @@ import po from './po'
 import { Text, Container, Content, Card, CardItem, Body, Row, Col, Button, View, Toast } from 'native-base'
 import APIs from '../../controllers/api.controller'
 import color from '../../constant/color'
+import Loading from '../../components/loading.component'
+import { AsyncStorage } from 'react-native'
+import ParentOT from '../overtime/overtime.screen'
 
 export default class Pending extends Component {
 
@@ -11,15 +14,21 @@ export default class Pending extends Component {
         super(props)
         this.state = {
             data: [],
-            token: null
+            url: null,
+            token: null,
+            id: null
         }
     }
 
     cancelOT = (data) => {
-            APIs.OTUpdateStatus(data, this.props.data.auth, this.props.data.url, 'reject')
+            console.log(data)
+            console.log(this.state.auth)
+            console.log(this.state.url)
+            APIs.OTUpdateStatus(data, this.state.auth, this.state.url, 'reject')
                 .then((res) => {
                     if(res.status === 'success') {
-                        this.getOTList()
+                        this.getApproveData(this.state.auth, this.state.id, this.state.url);
+                        //this.getOTList()
                         Toast.show({
                             text: 'OT Cancel successful!',
                             textStyle: {
@@ -29,13 +38,62 @@ export default class Pending extends Component {
                                 backgroundColor: color.primary
                             }
                         })
+                    } else {
+                        console.log(res)
                     }
                 })
         }
 
+        getApproveData(auth, id, url) {
+            APIs.OTPending(id, auth, url)
+                .then((res) => {
+                    if (res.status === 'success') {
+                        this.setState({
+                            data: res.data
+                        })
+                    } else {
+                        Toast.show({
+                            text: 'Network Error',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.danger
+                            }
+                        })
+                    }
+                })
+        }
+    
+
+    componentDidMount () {
+
+        this.getApproveData(this.props.auth, this.props.id, this.props.url)
+        AsyncStorage.getItem('@hr:token')
+        .then((res) => {
+            let data = JSON.parse(res)
+            this.setState({
+                auth: data.key,
+                id: data.id
+            })
+        })
+        AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+            let data = JSON.parse(res)
+            this.setState({
+                url: data['ApiEndPoint']
+            })
+        })
+    }
+
     render () {     
-        let requests = this.props.data.map((req) => {
-            console.log(req)
+        console.log(this.state.data)
+        if(this.state.url === null || this.state.auth === null || this.state.id === null) {
+            return (
+                <Loading />
+            )
+        }
+        let requests = this.state.data.map((req) => {
             return (
                 <Card key={Math.floor(Math.random()*3000)+req['date']+Math.floor(Math.random()*3000)} >
                     <CardItem>

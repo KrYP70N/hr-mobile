@@ -179,8 +179,8 @@ export default class Main extends Component {
               </Card>
             </Col>
           </Row>
-          <Row style={styMain.menuHolder}>
 
+          <Row style={styMain.menuHolder}>
             <Col style={styMain.cardLft}>
               <Card style={!po.menu[3].navigate ? styMain.disabledMenu : null}>
                 <TouchableOpacity onPress={() =>
@@ -219,6 +219,44 @@ export default class Main extends Component {
             </Col>
           </Row>
 
+          <Row style={styMain.menuHolder}>
+            <Col style={styMain.cardLft}>
+              <Card style={!po.menu[5].navigate ? styMain.disabledMenu : null}>
+                <TouchableOpacity onPress={() =>
+                  po.menu[5].navigate ?
+                    this.props.navigation.navigate(
+                      po.menu[5].navigate
+                    ) : null
+                }>
+                  <CardItem>
+                    <Body style={styMain.menuBody}>
+                      {/* <Icon name={po.menu[3].icon} style={styMain.icon} /> */}
+                      <Image style={[styMain.imgIcn, { height: 45 }]} source={require('../../assets/icon/ot.png')} />
+                      <Text>{po.menu[5].name}</Text>
+                    </Body>
+                  </CardItem>
+                </TouchableOpacity>
+              </Card>
+            </Col>
+            <Col style={styMain.cardRight}>
+              <Card style={!po.menu[6].navigate ? styMain.disabledMenu : null}>
+                <TouchableOpacity onPress={() =>
+                  po.menu[6].navigate ?
+                    this.props.navigation.navigate(
+                      po.menu[6].navigate
+                    ) : null
+                }>
+                  <CardItem>
+                    <Body style={styMain.menuBody}>
+                      {/* <Icon name={po.menu[4].icon} style={styMain.icon} /> */}
+                      <Image style={[styMain.imgIcn, { height: 40 }]} source={require('../../assets/icon/payroll.png')} />
+                      <Text>{po.menu[6].name}</Text>
+                    </Body>
+                  </CardItem>
+                </TouchableOpacity>
+              </Card>
+            </Col>
+          </Row>
 
         </Content>
 

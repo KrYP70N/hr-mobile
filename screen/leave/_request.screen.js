@@ -8,6 +8,7 @@ import { View, Text, KeyboardAvoidingView, AsyncStorage } from 'react-native'
 import * as DocumentPicker from 'expo-document-picker'
 
 import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
 var $this;
 var url;
 var auth;
@@ -21,6 +22,7 @@ export default class LeaveRequest extends Component {
         this.state = {
             leaveType: [],
             selectedLeaveType: null,
+            today: `${new Date().getFullYear()}-${(new Date().getMonth() + 1) < 10 ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${new Date().getDate() < 10 ? '0' + new Date().getDate() : new Date().getDate()}`,
             from: null,
             to: null,
             dayType: false,
@@ -28,6 +30,7 @@ export default class LeaveRequest extends Component {
             file: null,
             refresh: false,
             fDate: new Date(),
+            placeHolder: 'testing'
         }
         this.fromDate = this.fromDate.bind(this);
 
@@ -58,8 +61,7 @@ export default class LeaveRequest extends Component {
     }
 
     submit(auth, id, url) {
-        //console.log("URL:: AUTH:: ID", auth + "::" + url + "::" + id)
-        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.from, this.state.to, this.state.dayType)
+        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.from, this.state.to, this.state.dayType, this.state.description)
             .then((res) => {
                 if (res.status === 'success') {
                     let date = new Date();
@@ -92,11 +94,28 @@ export default class LeaveRequest extends Component {
                     })
                 }
 
+                this.setState({
+                    from: this.state.from,
+                    to: this.state.to,
+                    description: null
+                })
             })
+    }
+    
+    componentDidMount () {
+        this.setState({
+            from: this.state.today,
+            to: this.state.today,
+        })
     }
 
     render() {
-        console.log("LeaveType:::", this.props.leaveType);
+
+        if(this.state.from === null || this.state.to === null) {
+            return (
+                <Loading />
+            )
+        }
 
         return (
             <Container>
@@ -109,8 +128,6 @@ export default class LeaveRequest extends Component {
                                 </Label>
                                 <Picker
                                     selectedValue={
-                                        // this.state.selectedLeaveType === null ?
-                                        // '...' :
                                         this.state.selectedLeaveType
                                     }
                                     onValueChange={(itemValue, itemPosition) =>
@@ -131,11 +148,21 @@ export default class LeaveRequest extends Component {
                                     <Text style={styLeave.datePlaceholder}>Start Date</Text>
                                 </Col>
                                 <Col style={styLeave.datePlaceholder}>
+                                    <Text style={{
+                                        position: "absolute",
+                                        fontSize: 16,
+                                        top: 10,
+                                        left: 25,
+                                        opacity: this.state.from === this.state.today ? 1 : 0
+                                    }}>
+                                    {new Date().getDate()}/{(new Date().getMonth() + 1)}/{new Date().getFullYear()}
+                                    </Text>
                                     <DatePicker
-                                        defaultDate={new Date}
-                                        onDateChange = {this.fromDate}
-                                        //onDateChange={this.controlFrom.bind(this)}
-                                        
+                                        placeHolderText=" "
+                                        onDateChange={this.controlFrom.bind(this)}
+                                        textStyle={{
+                                            color: this.state.from !== this.state.today ? color.secondary : 'transparent'
+                                        }}
                                     />
                                 </Col>
                             </Row>
@@ -145,10 +172,21 @@ export default class LeaveRequest extends Component {
                                     <Text style={styLeave.datePlaceholder}>End Date</Text>
                                 </Col>
                                 <Col style={styLeave.datePlaceholder}>
+                                    <Text style={{
+                                        position: "absolute",
+                                        fontSize: 16,
+                                        top: 10,
+                                        left: 25,
+                                        opacity: this.state.to === this.state.today ? 1 : 0
+                                    }}>
+                                    {new Date().getDate()}/{(new Date().getMonth() + 1)}/{new Date().getFullYear()}
+                                    </Text>
                                     <DatePicker
-                                        defaultDate={new Date}
+                                        placeHolderText=" "
                                         onDateChange={this.controlTo.bind(this)}
-                                        
+                                        textStyle={{
+                                            color: this.state.to !== this.state.today ? color.secondary : 'transparent'
+                                        }}
                                     />
                                 </Col>
                             </Row>
@@ -167,7 +205,7 @@ export default class LeaveRequest extends Component {
                                 </Picker>
                             </Item>
                             <Textarea
-                                placeholderTextColor={"#00ffdd"}
+                                placeholderTextColor={color.placeHolder}
                                 rowSpan={6}
                                 bordered
                                 style={styLeave.textarea}
@@ -208,7 +246,7 @@ export default class LeaveRequest extends Component {
                                                 })
                                         }}
                                     >
-                                        <Text>Add File</Text>
+                                        <Text style={styLeave.buttonText}>Add File</Text>
                                     </Button>
                                 </Col>
                             </Row>
@@ -217,10 +255,12 @@ export default class LeaveRequest extends Component {
                     </KeyboardAvoidingView>
                 </Content>
                 <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
-                    <Text>Submit</Text>
+                    <Text style={styLeave.buttonText}>Submit</Text>
                 </Button>
             </Container>
         );
 
     }
 }
+
+

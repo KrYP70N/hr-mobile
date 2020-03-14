@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import { View, Text, Content, Container, Toast, Tab, Header, Left, Right, Icon } from 'native-base'
 import styOt from './overtime.style'
 import po from './po'
@@ -9,13 +9,15 @@ import color from '../../constant/color'
 import offset from '../../constant/offset'
 import Loading from '../../components/loading.component'
 import { AsyncStorage } from 'react-native'
-import {TabView, TabBar} from 'react-native-tab-view';
-import APIs from '../../controllers/api.controller'
+import { TabView, TabBar } from 'react-native-tab-view';
+import APIs from '../../controllers/api.controller';
+var ParentOT;
 
 
 export default class Overtime extends Component {
-    constructor (props) {
+    constructor(props) {
         super(props)
+        ParentOT = this;
         this.state = {
             url: null,
             auth: null,
@@ -31,52 +33,52 @@ export default class Overtime extends Component {
         }
     }
 
-    componentDidMount () {
+    componentDidMount() {
         AsyncStorage.getItem('@hr:endPoint')
-        .then((res) => {
-            const url = JSON.parse(res).ApiEndPoint
-            this.setState({
-                url: JSON.parse(res).ApiEndPoint
-            })
-            AsyncStorage.getItem('@hr:token')
             .then((res) => {
-                const auth = JSON.parse(res).key;
-                const id = JSON.parse(res).id;
+                const url = JSON.parse(res).ApiEndPoint
                 this.setState({
-                    auth: JSON.parse(res).key,
-                    id: JSON.parse(res).id
+                    url: JSON.parse(res).ApiEndPoint
                 })
-                this.getApproveData(auth, id, url);
+                AsyncStorage.getItem('@hr:token')
+                    .then((res) => {
+                        const auth = JSON.parse(res).key;
+                        const id = JSON.parse(res).id;
+                        this.setState({
+                            auth: JSON.parse(res).key,
+                            id: JSON.parse(res).id
+                        })
+                        this.getApproveData(auth, id, url);
+                    })
             })
-        })
     }
 
-    getRequestData(auth, url){
+    getRequestData(auth, url) {
 
     }
 
     getApproveData(auth, id, url) {
         APIs.OTPending(id, auth, url)
-        .then((res) => {
-            if(res.status === 'success') {
-                this.setState({
-                    data: res.data
-                })
-            } else {
-                Toast.show({
-                    text: 'Network Error',
-                    textStyle: {
-                        textAlign: 'center'
-                    },
-                    style: {
-                        backgroundColor: color.danger
-                    }
-                })
-            }
-        })
+            .then((res) => {
+                if (res.status === 'success') {
+                    this.setState({
+                        data: res.data
+                    })
+                } else {
+                    Toast.show({
+                        text: 'Network Error',
+                        textStyle: { 
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.danger
+                        }
+                    })
+                }
+            })
     }
 
-    getHistoryData(auth, id, url){
+    getHistoryData(auth, id, url) {
 
     }
 
@@ -95,12 +97,12 @@ export default class Overtime extends Component {
             labelStyle={{ color: 'white' }}
             onTabPress={({ route, preventDefault }) => {
                 if (route.key === 'first') {
-                 
+
                     this.getRequestData(this.state.auth, this.state.url)
                 } else if (route.key === 'second') {
                     this.getApproveData(this.state.auth, this.state.id, this.state.url)
                 } else if (route.key === 'third') {
-                  this.getHistoryData(this.state.auth, this.state.id, this.state.url)
+                    this.getHistoryData(this.state.auth, this.state.id, this.state.url)
                 }
             }}
         />
@@ -109,20 +111,25 @@ export default class Overtime extends Component {
     _renderScene = ({ route }) => {
         switch (route.key) {
             case 'first':
-                return(
-                    <Request 
-                    auth = {this.state.auth}
-                    id = {this.state.id}
-                    url = {this.state.url}
+                return (
+                    <Request
+                        auth={this.state.auth}
+                        id={this.state.id}
+                        url={this.state.url}
                     //data = {this.state.data}
-                     />
+                    />
                 )
             case 'second':
                 console.log("Data:::", this.state.data)
-                return(
-                    <Pending data = {this.state.data} />
+                return (
+                    <Pending
+                        auth={this.state.auth}
+                        id={this.state.id}
+                        url={this.state.url}
+                    //data = {this.state.data}
+                    />
                 )
-                
+
             case 'third':
                 return <History />;
             default:
@@ -130,9 +137,9 @@ export default class Overtime extends Component {
         }
     }
 
-    render () {
+    render() {
 
-        if(this.state.url === null && this.state.auth === null && this.state.id === null) {
+        if (this.state.url === null && this.state.auth === null && this.state.id === null) {
             return (
                 <Loading />
             )
@@ -171,3 +178,5 @@ export default class Overtime extends Component {
         )
     }
 }
+
+export { ParentOT }

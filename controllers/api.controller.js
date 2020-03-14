@@ -212,7 +212,7 @@ export default class APIs {
             })
     }
 
-    // cancel ot
+    // update ot status
     static OTUpdateStatus(otID, auth, url, status) {
         return axios.create({
             headers: {
@@ -273,12 +273,12 @@ export default class APIs {
     }
 
     // request leave
-    static requestLeave = (auth, url, id, leaveType, from, to, dayType) => {
+    static requestLeave = (auth, url, id, leaveType, from, to, dayType, description) => {
         return axios.create({
             headers: {
                 access_token: auth
             }
-        }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}`)
+        }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -332,6 +332,21 @@ export default class APIs {
             })
     }
 
+    // update leave status
+    static leaveStatusUpdate(url, auth, leaveID, status) {
+        return axios.create({
+            headers: {
+                access_token: auth
+            }
+        }).post(`${url}/approve/leave/${leaveID}?status=${status}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
     // monthly payslip
     static getPaySlip = (slipid, auth, url) => {
         return axios.create({
@@ -355,17 +370,12 @@ export default class APIs {
             }
         }).get(`${url}/download/payroll/${slipid}`)
             .then(function (res) {
-                console.log(res.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
             })
     }
-
-    
-
-    
 
     // get pending Leave
     static getLeaveRequest = (auth, url, id) => {
@@ -374,21 +384,6 @@ export default class APIs {
                 access_token: auth
             }
         }).get(`${url}/list/leaveRequest/${id}`)
-            .then(function (res) {
-                return { data: res.data.data, status: 'success' }
-            })
-            .catch(function (error) {
-                return { error: error, status: 'fail' }
-            })
-    }
-
-    // cancel leave
-    static cancelLeave = (url, auth, id) => {
-        return axios.create({
-            headers: {
-                access_token: auth
-            }
-        }).post(`${url}/list/leaveRequest/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
