@@ -9,7 +9,7 @@ const data = [
    
 ];
 
-export default class Approve extends Component {
+export default class LeaveApprove extends Component {
     constructor(props) {
         super(props)
         this.state = {

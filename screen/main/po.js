@@ -41,8 +41,18 @@ export default {
             navigate :'Payroll'
         },
         {
+            icon: 'ios-calendar',
+            name: 'Leave Approve',
+            navigate: 'LeaveApprove'
+        },
+        {
+            icon: 'ios-walk',
+            name: 'Overtime Approve',
+            navigate: 'OvertimeApprove'
+        },
+        {
             icon: 'md-cash',
             name: 'Loan'
-        }
+        },
     ]
 }
