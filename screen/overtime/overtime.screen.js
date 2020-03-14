@@ -11,13 +11,11 @@ import Loading from '../../components/loading.component'
 import { AsyncStorage } from 'react-native'
 import { TabView, TabBar } from 'react-native-tab-view';
 import APIs from '../../controllers/api.controller';
-var ParentOT;
 
 
 export default class Overtime extends Component {
     constructor(props) {
         super(props)
-        ParentOT = this;
         this.state = {
             url: null,
             auth: null,
@@ -178,5 +176,3 @@ export default class Overtime extends Component {
         )
     }
 }
-
-export { ParentOT }

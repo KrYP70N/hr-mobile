@@ -47,7 +47,7 @@ export default {
         },
         {
             icon: 'ios-walk',
-            name: 'Overtime Approve',
+            name: 'OT Approve',
             navigate: 'OvertimeApprove'
         },
         {

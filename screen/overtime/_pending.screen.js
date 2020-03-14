@@ -6,7 +6,6 @@ import APIs from '../../controllers/api.controller'
 import color from '../../constant/color'
 import Loading from '../../components/loading.component'
 import { AsyncStorage } from 'react-native'
-import ParentOT from '../overtime/overtime.screen'
 
 export default class Pending extends Component {
 
