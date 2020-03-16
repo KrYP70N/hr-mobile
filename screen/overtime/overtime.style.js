@@ -107,5 +107,43 @@ export default {
         color: color.placeHolder,
         marginTop: offset.o2,
         marginBottom: offset.o2
-    }
+    },
+    leaveApproveContainer: {
+        flex: 1,
+    },
+    name: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    position:{fontSize: 14, marginTop: 3},
+    leaveApproveCard: {
+        backgroundColor: 'white',
+        borderRadius: 5,
+        shadowColor: '#000',
+        shadowRadius: 3,
+        elevation: 5,
+        shadowOpacity: 0.62,
+        padding: 20,
+        marginTop: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 5
+    },
+    leaveApproveBtn: {
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    date:{
+        fontSize: 12,
+        marginTop: 15,
+        color: '#000'
+    },
+    otHour: {
+      fontSize: 12,
+      marginTop: 5,
+      //color: color.placeHolder,
+    },
 }

@@ -248,7 +248,7 @@ export default class APIs {
             headers: {
                 access_token: auth
             }
-        }).post(`${url}/approvelist/overtime/${id}`)
+        }).get(`${url}/approvelist/overtime/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -302,13 +302,13 @@ export default class APIs {
             })
     }
 
-    // leave approval list
-    static leavePending(url, auth, id) {
+    // Leave Approval List Manager
+    static leaveApproval(url, auth, id) {
         return axios.create({
             headers: {
                 access_token: auth
             }
-        }).get(`${url}/list/leaveRequest/${id}`)
+        }).get(`${url}/approvelist/leave/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -377,7 +377,7 @@ export default class APIs {
             })
     }
 
-    // get pending Leave
+    // get pending Leave Lists
     static getLeaveRequest = (auth, url, id) => {
         return axios.create({
             headers: {

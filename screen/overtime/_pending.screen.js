@@ -7,6 +7,7 @@ import color from '../../constant/color'
 import Loading from '../../components/loading.component'
 import { AsyncStorage } from 'react-native'
 
+
 export default class Pending extends Component {
 
     constructor (props) {
@@ -20,9 +21,6 @@ export default class Pending extends Component {
     }
 
     cancelOT = (data) => {
-            console.log(data)
-            console.log(this.state.auth)
-            console.log(this.state.url)
             APIs.OTUpdateStatus(data, this.state.auth, this.state.url, 'reject')
                 .then((res) => {
                     if(res.status === 'success') {

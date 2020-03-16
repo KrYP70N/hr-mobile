@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Content, Container, Toast, Tab, Header, Left, Right, Icon } from 'native-base'
+import { View, Text, Content, Container, Toast, Tab, Header, Left, Right, Icon, Card, CardItem, Body, Row, Col, Button, } from 'native-base'
 import styOt from './overtime.style'
 import po from './po'
 import Request from './_request.screen'
@@ -28,6 +28,7 @@ export default class Overtime extends Component {
                 { key: 'third', title: 'History' },
             ],
             data: [],
+            refresh: false,
         }
     }
 
@@ -80,6 +81,28 @@ export default class Overtime extends Component {
 
     }
 
+    cancelOT = (data) => {
+        APIs.OTUpdateStatus(data, this.state.auth, this.state.url, 'reject')
+            .then((res) => {
+                if(res.status === 'success') {
+                    this.setState({refresh: !this.state.refresh})
+                    this.getApproveData(this.state.auth, this.state.id, this.state.url);
+                    //this.getOTList()
+                    Toast.show({
+                        text: 'OT Cancel successful!',
+                        textStyle: {
+                            textAlign: "center"
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        }
+                    })
+                } else {
+                    console.log(res)
+                }
+            })
+    }
+
     _handleIndexChange = index => this.setState({ index });
 
     _renderLabel = ({ route }) => (
@@ -95,7 +118,6 @@ export default class Overtime extends Component {
             labelStyle={{ color: 'white' }}
             onTabPress={({ route, preventDefault }) => {
                 if (route.key === 'first') {
-
                     this.getRequestData(this.state.auth, this.state.url)
                 } else if (route.key === 'second') {
                     this.getApproveData(this.state.auth, this.state.id, this.state.url)
@@ -119,15 +141,36 @@ export default class Overtime extends Component {
                 )
             case 'second':
                 console.log("Data:::", this.state.data)
+                let requests = this.state.data.map((req) => {
+                    return (
+                        <Card key={Math.floor(Math.random()*3000)+req['date']+Math.floor(Math.random()*3000)} >
+                            <CardItem>
+                                <Body>
+                                    <View style={styOt.cardTitleContainer}>
+                                        <Text style={styOt.cardTitle}>{po.approve.staff.cardTitle}</Text>
+                                    </View>
+                                    <Text style={styOt.cardXSText}>{po.approve.staff.label1}{req['date']}</Text>
+                                    <Text style={styOt.cardSText}>{po.approve.staff.label2}{req['hours']}</Text>
+                                    <Text style={styOt.cardWarning}>{po.approve.staff.warning}</Text>
+                                    <Button 
+                                    style={styOt.ButtonSecondary}
+                                    onPress={() => this.cancelOT(req['Obj Id'])}
+                                    >
+                                        <Text>{po.approve.staff.button}</Text>
+                                    </Button>
+                                </Body>
+                            </CardItem>
+                        </Card>
+                    )
+                })
+        
                 return (
-                    <Pending
-                        auth={this.state.auth}
-                        id={this.state.id}
-                        url={this.state.url}
-                    //data = {this.state.data}
-                    />
+                    <Container style={styOt.container}>
+                        <Content>
+                            {requests}
+                        </Content>
+                    </Container>
                 )
-
             case 'third':
                 return <History />;
             default:

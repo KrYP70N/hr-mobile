@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { Text, View, FlatList, StyleSheet, StatusBar, TouchableOpacity } from 'react-native'
-import { Icon, Header, Left, Right } from 'native-base'
+import { Icon, Header,Toast, Left, Right } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
+import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
+import styles from './leave.style';
 const data = [
     { name: 'Phoe Phoe', email: 'phoephoe@gmail.com' },
     { name: 'Thet Su', email: 'thetsu@gmail.com' },
@@ -15,13 +18,81 @@ export default class LeaveApprove extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            auth: '',
+            url: '',
+            id: '',
+            refresh: false,
             leaveLists: [],
         }
     }
-    componentDidMount() {
-        this.setState({ leaveLists: data })
-    }
+    // componentDidMount() {
+    //     AsyncStorage.getItem('@hr:endPoint')
+    //     .then((res) => {
+    //         const url = JSON.parse(res).ApiEndPoint
+    //         this.setState({
+    //             url: JSON.parse(res).ApiEndPoint
+    //         })
+    //         AsyncStorage.getItem('@hr:token')
+    //             .then((res) => {
+    //                 const auth = JSON.parse(res).key;
+    //                 const id = JSON.parse(res).id;
+    //                 this.setState({
+    //                     auth: JSON.parse(res).key,
+    //                     id: JSON.parse(res).id
+    //                 })
+    //                 this.getApproveLeaveList(auth, id, url);
+    //             })
+    //     })
+    // }
+
+    // getApproveLeaveList(auth, id, url){
+    //     APIs.OTApproval(url, auth, id)
+    //         .then((res) => {
+    //             if (res.status === 'success') {
+    //                 this.setState({
+    //                     leaveLists: res.data
+    //                 })
+    //             } else {
+    //                 console.log(res.error);
+    //                 Toast.show({
+    //                     text: 'Network Error',
+    //                     textStyle: { 
+    //                         textAlign: 'center'
+    //                     },
+    //                     style: {
+    //                         backgroundColor: color.danger
+    //                     }
+    //                 })
+    //             }
+    //         })
+    // }
+
+    // sendApproveRejectLeave(url, auth, leaveID, status){
+    //     APIs.leaveStatusUpdate(url, auth, leaveID, status)
+    //     .then((res) => {
+    //         if (res.status === 'success') {
+    //             this.setState({
+    //                 refresh: !this.state.refresh,
+    //                 leaveLists: res.data
+    //             })
+    //         } else {
+    //             console.log(res.error);
+    //             Toast.show({
+    //                 text: 'Network Error',
+    //                 textStyle: { 
+    //                     textAlign: 'center'
+    //                 },
+    //                 style: {
+    //                     backgroundColor: color.danger
+    //                 }
+    //             })
+    //         }
+    //     })
+
+    // }
+
     render() {
+        console.log("Leave Approve List::", this.state.leaveLists);
         return (
             <View style={styles.leaveApproveContainer}>
                 <Header style={{ backgroundColor: color.light, marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight}}>
@@ -43,16 +114,16 @@ export default class LeaveApprove extends Component {
                             <Text style={styles.date}>O7 April 2020 to 09 April 2020</Text>
                             <Text style = {styles.leaveText}>Casual Leave</Text>
                             <View style ={styles.leaveApproveBtn}>
-                                <TouchableOpacity>
+                                {/* <TouchableOpacity onPress = {() => {this.sendApproveRejectLeave(this.state.url, this.state.auth, item.leaveID, 'reject')}}>
                                 <View style = {{backgroundColor: color.placeHolder ,width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5}}>
-                                    <Text>Cancel</Text>
+                                    <Text>Reject</Text>
                                 </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress = {() => {this.sendApproveRejectLeave(this.state.url, this.state.auth, item.leaveID, 'approve')}}>
                                 <View style = {{marginLeft: 10,backgroundColor: color.primary,width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5}}>
                                     <Text style = {{color: 'white'}}>Approve</Text>
                                 </View>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </View>
                         </View>
                     }
@@ -63,45 +134,45 @@ export default class LeaveApprove extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    leaveApproveContainer: {
-        flex: 1,
-    },
-    name: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    position:{fontSize: 14, marginTop: 3},
-    leaveApproveCard: {
-        backgroundColor: 'white',
-        borderRadius: 5,
-        shadowColor: '#000',
-        shadowRadius: 3,
-        elevation: 5,
-        shadowOpacity: 0.62,
-        padding: 20,
-        marginTop: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        marginBottom: 5
-    },
-    leaveApproveBtn: {
-        flexDirection: 'row',
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 10,
-    },
-    date:{
-        fontSize: 12,
-        marginTop: 15,
-        color: '#000'
-    },
-    leaveText:{
-        color: '#ff0000',
-        fontSize: 14,
-        marginTop: 5,
-    }
-})
+// const styles = StyleSheet.create({
+//     leaveApproveContainer: {
+//         flex: 1,
+//     },
+//     name: {
+//         fontSize: 16,
+//         fontWeight: 'bold',
+//     },
+//     position:{fontSize: 14, marginTop: 3},
+//     leaveApproveCard: {
+//         backgroundColor: 'white',
+//         borderRadius: 5,
+//         shadowColor: '#000',
+//         shadowRadius: 3,
+//         elevation: 5,
+//         shadowOpacity: 0.62,
+//         padding: 20,
+//         marginTop: 10,
+//         marginLeft: 10,
+//         marginRight: 10,
+//         marginBottom: 5
+//     },
+//     leaveApproveBtn: {
+//         flexDirection: 'row',
+//         width: '100%',
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         marginTop: 10,
+//     },
+//     date:{
+//         fontSize: 12,
+//         marginTop: 15,
+//         color: '#000'
+//     },
+//     leaveText:{
+//         color: '#ff0000',
+//         fontSize: 14,
+//         marginTop: 5,
+//     },
+// })
 
 

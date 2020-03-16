@@ -120,5 +120,43 @@ export default StyleSheet.create({
         position: 'absolute',
         top: - (offset.o1 + offset.oh),
         right: - (offset.o1 + offset.oh)
-    }
+    },
+    leaveApproveContainer: {
+        flex: 1,
+    },
+    name: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    position:{fontSize: 14, marginTop: 3},
+    leaveApproveCard: {
+        backgroundColor: 'white',
+        borderRadius: 5,
+        shadowColor: '#000',
+        shadowRadius: 3,
+        elevation: 5,
+        shadowOpacity: 0.62,
+        padding: 20,
+        marginTop: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 5
+    },
+    leaveApproveBtn: {
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    date:{
+        fontSize: 12,
+        marginTop: 15,
+        color: '#000'
+    },
+    leaveText:{
+        color: '#ff0000',
+        fontSize: 14,
+        marginTop: 5,
+    },
 })
