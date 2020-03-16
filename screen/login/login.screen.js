@@ -17,6 +17,7 @@ import DB from '../../model/db.model'
 import color from '../../constant/color';
 import Auth from './_auth.login'
 import { Updates } from 'expo';
+import Loading from '../../components/loading.component';
 
 export default class Login extends Component {
 
@@ -28,7 +29,8 @@ export default class Login extends Component {
             hidePassword: true,
             user: null,
             name: null,
-            loading: false
+            loading: false,
+            auth: null
         }
         // submit
         this.login = () => {
@@ -101,15 +103,34 @@ export default class Login extends Component {
                 })
             }
         })
+
+        // check token
+        this.props.navigation.addListener('focus', () => {
+            AsyncStorage.getItem('@hr:token')
+            .then((res) => {
+                if(res !== null) {
+                    let data = JSON.parse(res)
+                    this.setState({
+                        auth: data.key
+                    })
+                }
+            })
+        })
     }
 
     render () {
+        
         if(this.state.apiUrl === null) {
             return (
                 <Auth navigation={this.props.navigation}/>
             )
         }
         
+
+        if(this.state.auth !== null) {
+            this.props.navigation.navigate('Main')
+        }
+
         return (
             <KeyboardAvoidingView behavior="height" style={styLogin.kbView}>
                 <Container style={styLogin.container}>

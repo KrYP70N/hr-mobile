@@ -39,27 +39,8 @@ export default class Main extends Component {
       },
       loading: true
     }
-  }
 
-  componentDidMount() {
-    AsyncStorage.getItem('@hr:token')
-      .then((res) => {
-        this.setState({
-          auth: DB.getToken(res),
-          id: DB.getUserId(res)
-        })
-        AsyncStorage.getItem('@hr:endPoint')
-          .then((res) => {
-            this.setState({
-              url: DB.getEndPoint(res)
-            })
-          })
-      })
-  }
-
-  componentDidUpdate() {
-    // profile request
-    if (this.state.profile === null && this.state.url !== null && this.state.id !== null) {
+    this.getProfile = () => {
       APIs.Profile(this.state.url, this.state.auth, this.state.id)
         .then((res) => {
           if (res.status === 'success') {
@@ -78,6 +59,38 @@ export default class Main extends Component {
         })
     }
 
+    this.checkToken = () => {
+      AsyncStorage.getItem('@hr:token')
+      .then((res) => {
+        this.setState({
+          auth: DB.getToken(res),
+          id: DB.getUserId(res)
+        })
+        AsyncStorage.getItem('@hr:endPoint')
+          .then((res) => {
+            this.setState({
+              url: DB.getEndPoint(res)
+            })
+          })
+      })
+    }
+  }
+
+  componentDidMount() {
+    this.checkToken()
+    this.props.navigation.addListener('focus', () => {
+      this.checkToken()
+      if (this.state.url !== null && this.state.id !== null) {
+        this.getProfile()
+      }
+    })
+  }
+
+  componentDidUpdate() {
+    // profile request
+    if (this.state.profile === null && this.state.url !== null && this.state.id !== null) {
+      this.getProfile()
+    }
   }
 
   render() {

@@ -4,6 +4,8 @@ import color from '../../constant/color'
 import styLeave from './leave.style'
 import { KeyboardAvoidingView, AsyncStorage } from 'react-native'
 import po from './po'
+import Loading from '../../components/loading.component'
+import APIs from '../../controllers/api.controller'
 
 export default class LeaveHistory extends Component {
 
@@ -42,9 +44,40 @@ export default class LeaveHistory extends Component {
         
     }
 
+    componentDidMount () {
+        // set default date month year
+        let date = new Date()
+        this.setState({
+            year: date.getFullYear(),
+            month: date.getMonth()
+        })
+
+        AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+            let data = JSON.parse(res)
+            this.setState({
+                url: data['ApiEndPoint']
+            })
+        })
+
+    }
+
     
 
     render () {
+
+        if(
+            this.state.month === null || 
+            this.state.year === null ||
+            this.state.url === null ||
+            this.state.auth === null || 
+            this.state.id === null
+        ) {
+            return (
+                <Loading />
+            )
+        }
+
         let currentYear = new Date().getFullYear()
         if(this.state.year === null) {
             this.setState({
