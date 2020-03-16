@@ -103,6 +103,7 @@ export default class APIs {
                 return { data: infoCollection, status: 'success' }
             })
             .catch(function (error) {
+                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -279,7 +280,9 @@ export default class APIs {
                 access_token: auth
             }
         }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`)
-            .then(function (res) {
+            .then(function (
+                
+            ) {
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
