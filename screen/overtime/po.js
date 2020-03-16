@@ -13,6 +13,9 @@ export default {
         hour: {
             label: 'Hours'
         },
+        toHour: {
+            label: 'To Hours'
+        },
         textarea: {
             label: 'reason'
         },
