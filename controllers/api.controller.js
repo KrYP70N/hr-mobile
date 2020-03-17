@@ -184,13 +184,14 @@ export default class APIs {
     }
 
     // request ot type
-    static OTRequest(id, auth, url, date, hour, description) {
+    static OTRequest(id, auth, url, request_date_from, request_date_to, description) {
         return axios.create({
             headers: {
                 access_token: auth
             }
-        }).post(`${url}/overtime/${id}?request_date=${date}&hour=${hour}&description=${description}`)
+        }).post(`${url}/overtime/${id}?request_date_from=${request_date_from}&request_date_to=${request_date_to}&description=${description}`)
             .then(function (res) {
+                console.log("OT Request Reply Message", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {

@@ -47,7 +47,7 @@ export default class Request extends Component {
 
         // submit
         this.submit = () => {
-            if (this.state.date === null || this.state.hour === 0) {
+            if (this.state.date === null) {
                 Toast.show({
                     text: 'Please fill all fields!',
                     position: 'bottom',
@@ -60,49 +60,54 @@ export default class Request extends Component {
                     }
                 })
             } else {
+                const request_from = this.state.date + " " + this.state.fromTime;
+                const request_to = this.state.date + " " + this.state.toTime;
+                console.log("Request From Field::", request_from)
+                console.log("Request From Field::", request_to)
                 APIs.OTRequest(
                     this.props.id,
                     this.props.auth,
                     this.props.url,
-                    this.state.date,
-                    this.state.hour,
+                    request_from,
+                    request_to,
                     this.state.description
                 )
                     .then((res) => {
                         if (res.status === 'success') {
+                            console.log("Request Screen Data::", res.data)
                             const d = new Date();
                             this.pickDate(d);
                             this.setState({
-                                date: d,
-                                hour: 0,
+                                //date: d,
+                               // hour: 0,
                                 description: null,
                             })
-                            Toast.show({
-                                text: 'Request Success!',
-                                textStyle: {
-                                    textAlign: 'center'
-                                },
-                                style: {
-                                    backgroundColor: color.primary
-                                },
-                                duration: 5000
-                            })
+                            // Toast.show({
+                            //     text: 'Request Success!',
+                            //     textStyle: {
+                            //         textAlign: 'center'
+                            //     },
+                            //     style: {
+                            //         backgroundColor: color.primary
+                            //     },
+                            //     duration: 5000
+                            // })
                         } else {
                             this.setState({
-                                date: null,
-                                hour: 0,
+                                //date: null,
+                               // hour: 0,
                                 description: null,
                             })
-                            Toast.show({
-                                text: 'Network Error! Please try again in later.',
-                                textStyle: {
-                                    textAlign: 'center'
-                                },
-                                style: {
-                                    backgroundColor: color.danger
-                                },
-                                duration: 5000
-                            })
+                            // Toast.show({
+                            //     text: 'Network Error! Please try again in later.',
+                            //     textStyle: {
+                            //         textAlign: 'center'
+                            //     },
+                            //     style: {
+                            //         backgroundColor: color.danger
+                            //     },
+                            //     duration: 5000
+                            // })
                         }
                     })
             }

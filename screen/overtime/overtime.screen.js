@@ -170,14 +170,15 @@ export default class Overtime extends Component {
                 console.log("Data:::", this.state.data)
                 let requests = this.state.data.map((req) => {
                     return (
-                        <Card key={Math.floor(Math.random() * 3000) + req['date'] + Math.floor(Math.random() * 3000)} >
+                        <Card key={req["Obj Id"]} >
                             <CardItem>
                                 <Body>
                                     <View style={styOt.cardTitleContainer}>
                                         <Text style={styOt.cardTitle}>{po.approve.staff.cardTitle}</Text>
                                     </View>
-                                    <Text style={styOt.cardXSText}>{po.approve.staff.label1}{req['date']}</Text>
-                                    <Text style={styOt.cardSText}>{po.approve.staff.label2}{req['hours']}</Text>
+                                    <Text style={styOt.cardXSText}>From : {`${req['date_from']}`}</Text>
+                                    <Text style={styOt.cardXSText}>To : {`${req['date_to']}`}</Text>
+                                    <Text style={styOt.cardSText}>{po.approve.staff.label2}{`${req['hour']} : ${req['minute']} `}</Text>
                                     <Text style={styOt.cardWarning}>{po.approve.staff.warning}</Text>
                                     <Button
                                         style={styOt.ButtonSecondary}
