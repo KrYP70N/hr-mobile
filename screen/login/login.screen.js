@@ -140,13 +140,17 @@ export default class Login extends Component {
                     <Text style={styLogin.title}>{po.title}</Text>
                     <Text style={styLogin.sub}>{po.sub}</Text>
 
-                    <Item fixedLabel style={styLogin.item}>
-                        <Label style={styLogin.label}>{po.label.name}</Label>
+                    <Item inlineLabel style={styLogin.item}>
+                        <Label style={styLogin.label}>
+                            <Icon name='ios-person' style={styLogin.icn}/>
+                        </Label>
                         <Input onChangeText={(key) => this.user(key)} />
                     </Item>
 
-                    <Item fixedLabel style={styLogin.password}>
-                        <Label style={styLogin.label}>{po.label.psw}</Label>
+                    <Item inlineLabel style={styLogin.password}>
+                        <Label style={styLogin.label}>
+                            <Icon name='ios-lock' style={styLogin.icn}/>
+                        </Label>
                         <Input secureTextEntry={this.state.hidePassword} style={styLogin.input}
                             onChangeText={(key) => { this.password(key) }}
                         />
