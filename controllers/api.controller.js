@@ -103,6 +103,7 @@ export default class APIs {
                 return { data: infoCollection, status: 'success' }
             })
             .catch(function (error) {
+                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -273,16 +274,18 @@ export default class APIs {
     }
 
     // request leave
-    static requestLeave = (auth, url, id, leaveType, from, to, dayType, description) => {
+    static requestLeave(auth, url, id, leaveType, from, to, dayType, description){
         return axios.create({
             headers: {
                 access_token: auth
             }
         }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`)
             .then(function (res) {
+                console.log("Response Data", res.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log("Response Data", error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -308,7 +311,7 @@ export default class APIs {
             headers: {
                 access_token: auth
             }
-        }).get(`${url}/approvelist/leave/${id}`)
+        }).get(`${url}/list/leaveRequest/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })

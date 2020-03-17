@@ -47,6 +47,7 @@ export default class Login extends Component {
                     })
                     if (res.status === 'success') {
                         AsyncStorage.setItem('@hr:token', JSON.stringify({
+                            // key: 'Bearer '+ res.data.access_token,
                             key: res.data.access_token,
                             id: res.data.employee_id
                         }))

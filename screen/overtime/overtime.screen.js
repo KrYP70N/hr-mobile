@@ -29,6 +29,12 @@ export default class Overtime extends Component {
             ],
             data: [],
             refresh: false,
+            date: 'OT Date',
+            fromTime: 'From Time',
+            toTime: 'To Time',
+            datetextColor: color.placeHolder,
+            fromtextColor: color.placeHolder,
+            totextColor: color.placeHolder,
         }
     }
 
@@ -52,21 +58,35 @@ export default class Overtime extends Component {
             })
     }
 
-    getRequestData(auth, url) {
-
+    getRequestData(auth, url, id) {
+        return (
+            <Request
+                auth={auth}
+                id={id}
+                url={url}
+                date='OT Date'
+                fromTime='From Time'
+                toTime='To Time'
+                datetextColor={color.placeHolder}
+                fromtextColor={color.placeHolder}
+                totextColor={color.placeHolder}
+            //data = {this.state.data}
+            />
+        )
     }
 
     getApproveData(auth, id, url) {
         APIs.OTPending(id, auth, url)
             .then((res) => {
                 if (res.status === 'success') {
+                    console.log("Pending List::", res.data)
                     this.setState({
                         data: res.data
                     })
                 } else {
                     Toast.show({
                         text: 'Network Error',
-                        textStyle: { 
+                        textStyle: {
                             textAlign: 'center'
                         },
                         style: {
@@ -82,10 +102,11 @@ export default class Overtime extends Component {
     }
 
     cancelOT = (data) => {
-        APIs.OTUpdateStatus(data, this.state.auth, this.state.url, 'reject')
+        APIs.OTUpdateStatus(data, this.state.auth, this.state.url, 'cancel')
             .then((res) => {
-                if(res.status === 'success') {
-                    this.setState({refresh: !this.state.refresh})
+                console.log("Return Message", res.data)
+                if (res.status === 'success') {
+                    this.setState({ refresh: !this.state.refresh })
                     this.getApproveData(this.state.auth, this.state.id, this.state.url);
                     //this.getOTList()
                     Toast.show({
@@ -118,7 +139,7 @@ export default class Overtime extends Component {
             labelStyle={{ color: 'white' }}
             onTabPress={({ route, preventDefault }) => {
                 if (route.key === 'first') {
-                    this.getRequestData(this.state.auth, this.state.url)
+                    this.getRequestData(this.state.auth, this.state.url, this.state.id)
                 } else if (route.key === 'second') {
                     this.getApproveData(this.state.auth, this.state.id, this.state.url)
                 } else if (route.key === 'third') {
@@ -136,6 +157,12 @@ export default class Overtime extends Component {
                         auth={this.state.auth}
                         id={this.state.id}
                         url={this.state.url}
+                        date={this.state.date}
+                        fromTime={this.state.fromTime}
+                        toTime={this.state.toTime}
+                        datetextColor={this.state.datetextColor}
+                        fromtextColor={this.state.fromtextColor}
+                        totextColor={this.state.totextColor}
                     //data = {this.state.data}
                     />
                 )
@@ -143,7 +170,7 @@ export default class Overtime extends Component {
                 console.log("Data:::", this.state.data)
                 let requests = this.state.data.map((req) => {
                     return (
-                        <Card key={Math.floor(Math.random()*3000)+req['date']+Math.floor(Math.random()*3000)} >
+                        <Card key={Math.floor(Math.random() * 3000) + req['date'] + Math.floor(Math.random() * 3000)} >
                             <CardItem>
                                 <Body>
                                     <View style={styOt.cardTitleContainer}>
@@ -152,9 +179,9 @@ export default class Overtime extends Component {
                                     <Text style={styOt.cardXSText}>{po.approve.staff.label1}{req['date']}</Text>
                                     <Text style={styOt.cardSText}>{po.approve.staff.label2}{req['hours']}</Text>
                                     <Text style={styOt.cardWarning}>{po.approve.staff.warning}</Text>
-                                    <Button 
-                                    style={styOt.ButtonSecondary}
-                                    onPress={() => this.cancelOT(req['Obj Id'])}
+                                    <Button
+                                        style={styOt.ButtonSecondary}
+                                        onPress={() => this.cancelOT(req['Obj Id'])}
                                     >
                                         <Text>{po.approve.staff.button}</Text>
                                     </Button>
@@ -163,7 +190,7 @@ export default class Overtime extends Component {
                         </Card>
                     )
                 })
-        
+
                 return (
                     <Container style={styOt.container}>
                         <Content>

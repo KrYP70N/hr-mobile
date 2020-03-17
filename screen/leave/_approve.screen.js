@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, FlatList, StyleSheet, StatusBar, TouchableOpacity } from 'react-native'
+import { Text, View, FlatList, StyleSheet, StatusBar, TouchableOpacity, AsyncStorage } from 'react-native'
 import { Icon, Header,Toast, Left, Right } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
@@ -25,71 +25,80 @@ export default class LeaveApprove extends Component {
             leaveLists: [],
         }
     }
-    // componentDidMount() {
-    //     AsyncStorage.getItem('@hr:endPoint')
-    //     .then((res) => {
-    //         const url = JSON.parse(res).ApiEndPoint
-    //         this.setState({
-    //             url: JSON.parse(res).ApiEndPoint
-    //         })
-    //         AsyncStorage.getItem('@hr:token')
-    //             .then((res) => {
-    //                 const auth = JSON.parse(res).key;
-    //                 const id = JSON.parse(res).id;
-    //                 this.setState({
-    //                     auth: JSON.parse(res).key,
-    //                     id: JSON.parse(res).id
-    //                 })
-    //                 this.getApproveLeaveList(auth, id, url);
-    //             })
-    //     })
-    // }
 
-    // getApproveLeaveList(auth, id, url){
-    //     APIs.OTApproval(url, auth, id)
-    //         .then((res) => {
-    //             if (res.status === 'success') {
-    //                 this.setState({
-    //                     leaveLists: res.data
-    //                 })
-    //             } else {
-    //                 console.log(res.error);
-    //                 Toast.show({
-    //                     text: 'Network Error',
-    //                     textStyle: { 
-    //                         textAlign: 'center'
-    //                     },
-    //                     style: {
-    //                         backgroundColor: color.danger
-    //                     }
-    //                 })
-    //             }
-    //         })
-    // }
+    componentDidMount(){
+        this.props.navigation.addListener('focus', () => {
+            this.onFocusFunction()
+          })
+    }
 
-    // sendApproveRejectLeave(url, auth, leaveID, status){
-    //     APIs.leaveStatusUpdate(url, auth, leaveID, status)
-    //     .then((res) => {
-    //         if (res.status === 'success') {
-    //             this.setState({
-    //                 refresh: !this.state.refresh,
-    //                 leaveLists: res.data
-    //             })
-    //         } else {
-    //             console.log(res.error);
-    //             Toast.show({
-    //                 text: 'Network Error',
-    //                 textStyle: { 
-    //                     textAlign: 'center'
-    //                 },
-    //                 style: {
-    //                     backgroundColor: color.danger
-    //                 }
-    //             })
-    //         }
-    //     })
+    onFocusFunction() {
+        AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+            const url = JSON.parse(res).ApiEndPoint
+            this.setState({
+                url: JSON.parse(res).ApiEndPoint
+            })
+            AsyncStorage.getItem('@hr:token')
+                .then((res) => {
+                    const auth = JSON.parse(res).key;
+                    const id = JSON.parse(res).id;
+                    this.setState({
+                        auth: JSON.parse(res).key,
+                        id: JSON.parse(res).id
+                    })
+                    this.getApproveLeaveList(auth, id, url);
+                })
+        })
+    }
 
-    // }
+    getApproveLeaveList(auth, id, url){
+        APIs.leaveApproval(url, auth, id)
+            .then((res) => {
+                if (res.status === 'success') {
+                    console.log("Leave Approve List", res.data)
+                    this.setState({
+                        leaveLists: res.data
+                    })
+                } else {
+                    console.log(res.error);
+                    Toast.show({
+                        text: 'Network Error',
+                        textStyle: { 
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.danger
+                        }
+                    })
+                }
+            })
+    }
+
+    sendApproveRejectLeave(url, auth, leaveID, status){
+        APIs.leaveStatusUpdate(url, auth, leaveID, status)
+        .then((res) => {
+            if (res.status === 'success') {
+                console.log("Leave Approve Return Message::", res.data)
+                this.setState({
+                    refresh: !this.state.refresh,
+                    leaveLists: res.data
+                })
+            } else {
+                console.log(res.error);
+                Toast.show({
+                    text: 'Network Error',
+                    textStyle: { 
+                        textAlign: 'center'
+                    },
+                    style: {
+                        backgroundColor: color.danger
+                    }
+                })
+            }
+        })
+
+    }
 
     render() {
         console.log("Leave Approve List::", this.state.leaveLists);
@@ -107,27 +116,29 @@ export default class LeaveApprove extends Component {
                 <FlatList
                     data={this.state.leaveLists}
                     showsVerticalScrollIndicator={false}
-                    renderItem={({ item }) =>
+                    renderItem={({ item, index }) =>
+                    
                         <View style={styles.leaveApproveCard}>
                             <Text style={styles.name}>{item.name}</Text>
+                            <Text style={styles.name}>{item["Obj id"]}</Text>
                             <Text style={styles.position}>Web Developer</Text>
                             <Text style={styles.date}>O7 April 2020 to 09 April 2020</Text>
                             <Text style = {styles.leaveText}>Casual Leave</Text>
                             <View style ={styles.leaveApproveBtn}>
-                                {/* <TouchableOpacity onPress = {() => {this.sendApproveRejectLeave(this.state.url, this.state.auth, item.leaveID, 'reject')}}>
+                                <TouchableOpacity onPress = {() => {this.sendApproveRejectLeave(this.state.url, this.state.auth, item["Obj id"], 'reject')}}>
                                 <View style = {{backgroundColor: color.placeHolder ,width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5}}>
                                     <Text>Reject</Text>
                                 </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress = {() => {this.sendApproveRejectLeave(this.state.url, this.state.auth, item.leaveID, 'approve')}}>
+                                <TouchableOpacity onPress = {() => {this.sendApproveRejectLeave(this.state.url, this.state.auth, item["Obj id"], 'confirm')}}>
                                 <View style = {{marginLeft: 10,backgroundColor: color.primary,width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5}}>
                                     <Text style = {{color: 'white'}}>Approve</Text>
                                 </View>
-                                </TouchableOpacity> */}
+                                </TouchableOpacity>
                             </View>
                         </View>
                     }
-                    keyExtractor={item => item.email}
+                    keyExtractor={(item, index) => index.toString()}
                 />
             </View>
         )

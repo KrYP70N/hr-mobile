@@ -79,7 +79,7 @@ export default class Auth extends Component {
                     textAlign: 'center'
                 },
                 style: {
-                    backgroundColor: color.primary
+                    backgrounfdColor: color.primary
                 }
             })
         }

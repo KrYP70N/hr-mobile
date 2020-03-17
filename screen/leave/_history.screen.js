@@ -6,6 +6,7 @@ import { KeyboardAvoidingView, AsyncStorage } from 'react-native'
 import po from './po'
 import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
+import offset from '../../constant/offset'
 
 export default class LeaveHistory extends Component {
 
@@ -18,7 +19,8 @@ export default class LeaveHistory extends Component {
             year: null,
             month: null,
             status: 'all',
-            leave: null
+            leave: null,
+            token: null
         }
 
         // handel year
@@ -31,7 +33,7 @@ export default class LeaveHistory extends Component {
         // handel month
         this.changeMonth = (month) => {
             this.setState({
-                month: month
+                month: month + 1 < 10 ? '0' + ( month + 1 ) : month + 1
             })
         }
 
@@ -42,6 +44,21 @@ export default class LeaveHistory extends Component {
             })
         }
         
+        // update ot list
+        this.updateOT = () => {
+            this.setState({
+                leave: null
+            })
+            APIs.LeaveMonthly(this.state.url, this.state.auth, this.state.id, this.state.year, this.state.month)
+            .then((res) => {
+                if(res.status === 'success') {
+                    let data = res.data.filter(list => list.state === this.state.status)
+                    this.setState({
+                        leave: data
+                    })
+                }
+            })
+        }
     }
 
     componentDidMount () {
@@ -49,7 +66,7 @@ export default class LeaveHistory extends Component {
         let date = new Date()
         this.setState({
             year: date.getFullYear(),
-            month: date.getMonth()
+            month: date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
         })
 
         AsyncStorage.getItem('@hr:endPoint')
@@ -60,31 +77,58 @@ export default class LeaveHistory extends Component {
             })
         })
 
+        AsyncStorage.getItem('@hr:token')
+        .then((res) => {
+            let data = JSON.parse(res)
+            this.setState({
+                auth: data['key'],
+                id: data['id']
+            })
+        })
     }
 
-    
+
+    componentDidUpdate () {
+        if(
+            this.state.month !== null && 
+            this.state.year !== null &&
+            this.state.url !== null &&
+            this.state.auth !== null && 
+            this.state.id !== null &&
+            this.state.leave === null
+        ) {
+            APIs.LeaveMonthly(this.state.url, this.state.auth, this.state.id, this.state.year, this.state.month)
+            .then((res) => {
+                if(res.status === 'success') {
+                    this.setState({
+                        leave: res.data
+                    })
+                } else {
+                    this.setState({
+                        leave: []
+                    })
+                }
+            })
+        }
+    }
 
     render () {
-
+        // loading data
         if(
             this.state.month === null || 
             this.state.year === null ||
             this.state.url === null ||
             this.state.auth === null || 
-            this.state.id === null
+            this.state.id === null ||
+            this.state.leave === null
         ) {
             return (
-                <Loading />
+                <Loading info='loading api data ...'/>
             )
         }
 
         let currentYear = new Date().getFullYear()
-        if(this.state.year === null) {
-            this.setState({
-                year: currentYear
-            })
-        }
-
+        
         // year render
         let years = []
         
@@ -94,7 +138,7 @@ export default class LeaveHistory extends Component {
 
         let getYear = years.map((year) => {
             return (
-                <Picker.Item label={year.toString()} value={year} key={year}/>
+                <Picker.Item label={year.toString()} value={year} key={year} />
             )
         })
 
@@ -107,11 +151,43 @@ export default class LeaveHistory extends Component {
                 <Picker.Item label={monthEng[month]} value={month} key={month}/>
             )
         })
-        if(this.state.month === null) {
-            this.setState({
-                month: currentMonth
-            })
-        }
+
+        // data render
+        let GetLeavesRequest = this.state.leave.map((leave) => {
+            let background;
+            if(leave.state === 'cancel') {
+                background = color.placeHolder
+            } else if(leave.state === 'reject') {
+                background = color.danger
+            } else {
+                background = color.primary
+            }
+            return (
+                <Card key={Math.floor(Math.random() * 1000)}>
+                    <CardItem>
+                        <Body>
+                            <View style={styLeave.cardTitleContainer}>
+                                <Text style={styLeave.cardTitle}>{leave.Leave_Type}</Text>
+                                <Text style={styLeave.cardRthLabel}>05 Nov 2020</Text>
+                            </View>
+                            <View style={styLeave.cardTitleContainer}>
+                                <Text style={styLeave.cardXSText}>From : {leave.date_from}</Text>
+                                <Badge style={[styLeave.badgeSuccess, {
+                                        backgroundColor: background
+                                    }
+                                ]}>
+                                    <Text>{leave.state}</Text>
+                                </Badge>
+                            </View>
+                            <Text style={[styLeave.cardXSText, {marginBottom: offset.o2}]}>To : {leave.date_to}</Text>
+                            <Text style={[styLeave.cardSText, {
+                                display: leave.Reason === null || leave.Reason === 'null' ? 'none' : 'flex'
+                            }]}>{leave.Reason}</Text>
+                        </Body>
+                    </CardItem>
+                </Card>
+            )
+        })
 
         return (
             <Container>
@@ -141,7 +217,7 @@ export default class LeaveHistory extends Component {
                                     <Picker mode="dialog" 
                                     placeholder="Status"
                                     textStyle={{color: color.primary}}
-                                    selectedValue={this.state.month}
+                                    selectedValue={Number(this.state.month) - 1}
                                     onValueChange={this.changeMonth.bind(this)}
                                     >
                                         {getMonth}
@@ -162,31 +238,18 @@ export default class LeaveHistory extends Component {
                                 <Picker.Item label="all" value="all"/>
                                 <Picker.Item label="success" value="success"/>
                                 <Picker.Item label="reject" value="reject"/>
+                                <Picker.Item label="cancel" value="cancel"/>
                             </Picker>
                         </Item>
-                        <Button style={styLeave.buttonPrimary}>
+                        <Button 
+                        style={styLeave.buttonPrimary}
+                        onPress={() => this.updateOT()}
+                        >
                             <Text>Search</Text>
                         </Button>
                     </Form>
                     <View style={styLeave.resultBox}>
-                        <Card>
-                            <CardItem>
-                                <Body>
-                                    <View style={styLeave.cardTitleContainer}>
-                                        <Text style={styLeave.cardTitle}>{po.history.card.title}</Text>
-                                        <Text style={styLeave.cardRthLabel}>05 Nov 2020</Text>
-                                    </View>
-                                    <View style={styLeave.cardTitleContainer}>
-                                        <Text style={styLeave.cardXSText}>{po.history.card.date}05 Nov 2020</Text>
-                                        <Badge style={styLeave.badgeSuccess}>
-                                            <Text>{po.history.card.badge.success}</Text>
-                                        </Badge>
-                                    </View>
-                                    <Text style={styLeave.cardSText}>{po.history.card.hour}5:00 PM to 8:00 PM</Text>
-                                </Body>
-                            </CardItem>
-                        </Card>
-                    
+                        { GetLeavesRequest }
                     </View>
                 </Content>
             </Container>
