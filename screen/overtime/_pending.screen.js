@@ -20,12 +20,12 @@ export default class Pending extends Component {
         }
     }
 
-    cancelOT = (data) => {
-            APIs.OTUpdateStatus(data, this.state.auth, this.state.url, 'reject')
+    cancelOT(data){
+        console.log("Click Cancel:::");
+            APIs.OTUpdateStatus(data, this.state.auth, this.state.url, 'cancel')
                 .then((res) => {
-                    if(res.status === 'success') {
-                        this.getApproveData(this.state.auth, this.state.id, this.state.url);
-                        //this.getOTList()
+                    console.log("Return Message", res.data)
+                    if(res.status === 'success') {  
                         Toast.show({
                             text: 'OT Cancel successful!',
                             textStyle: {
@@ -34,7 +34,10 @@ export default class Pending extends Component {
                             style: {
                                 backgroundColor: color.primary
                             }
-                        })
+                        })                   
+                        this.getApproveData(this.state.auth, this.state.id, this.state.url);
+                        //this.getOTList()
+                     
                     } else {
                         console.log(res)
                     }
@@ -45,6 +48,7 @@ export default class Pending extends Component {
             APIs.OTPending(id, auth, url)
                 .then((res) => {
                     if (res.status === 'success') {
+                        console.log("Pending List::", res.data)
                         this.setState({
                             data: res.data
                         })
@@ -103,7 +107,7 @@ export default class Pending extends Component {
                             <Text style={styOt.cardWarning}>{po.approve.staff.warning}</Text>
                             <Button 
                             style={styOt.ButtonSecondary}
-                            onPress={() => this.cancelOT(req['Obj Id'])}
+                            onPress={() => {this.cancelOT(req['Obj Id'])}}
                             >
                                 <Text>{po.approve.staff.button}</Text>
                             </Button>

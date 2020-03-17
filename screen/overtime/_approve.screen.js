@@ -25,7 +25,15 @@ export default class OvertimeApprove extends Component {
             overtimeList: [],
         }
     }
-    componentDidMount() {
+      
+      // add a focus listener onDidMount
+       componentDidMount () {
+      this.props.navigation.addListener('focus', () => {
+          this.onFocusFunction()
+        })
+      }
+      
+      onFocusFunction() {
         AsyncStorage.getItem('@hr:endPoint')
             .then((res) => {
                 const url = JSON.parse(res).ApiEndPoint
@@ -56,10 +64,11 @@ export default class OvertimeApprove extends Component {
         APIs.OTApproval(url, auth, id)
             .then((res) => {
                 if (res.status === 'success') {
-                    const OTList = [];
-                    OTList.push(res.data);
+                    console.log("OT Approve List", res.data)
+                    // const OTList = [];
+                    // OTList.push(res.data);
                     this.setState({
-                        overtimeList: OTList,
+                        overtimeList: res.data,
                     })
                 } else {
                     console.log("Error Message", res.error);
@@ -80,17 +89,17 @@ export default class OvertimeApprove extends Component {
         console.log("Click Reject Button");
         APIs.OTUpdateStatus(otID, auth, url, status)
             .then((res) => {
-                console.log("Return Reject Message", res.data)
+                console.log("Return Message", res.data)
                 if (res.status === 'success') {
                     this.setState({refresh : !this.state.refresh})
                     APIs.OTApproval(this.state.url, this.state.auth, this.state.id)
                         .then((res) => {
                             if (res.status === 'success') {
-                                const OTList = [];
-                                OTList.push(res.data);
+                                // const OTList = [];
+                                // OTList.push(res.data);
                                 this.setState({
                                     refresh: !this.state.refresh,
-                                    overtimeList: OTList,
+                                    overtimeList: res.data,
                                 })
                             } else {
                                 console.log("Error Message", res.error);
@@ -140,7 +149,7 @@ export default class OvertimeApprove extends Component {
                     <FlatList
                         data={this.state.overtimeList}
                         showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) =>
+                        renderItem={({ item, index}) =>
                             <View style={styles.leaveApproveCard}>
                                 <Text style={styles.name}>{item.employee_name}</Text>
                                 <Text style={styles.position}>Web Developer</Text>
@@ -164,7 +173,7 @@ export default class OvertimeApprove extends Component {
                                 </View>
                             </View>
                         }
-                        keyExtractor={item => item.employee_name}
+                        keyExtractor={(item, index) => index.toString()}
                     />
 
                 </View>

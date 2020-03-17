@@ -260,7 +260,7 @@ export default class Main extends Component {
                 <TouchableOpacity onPress={() =>
                   po.menu[6].navigate ?
                     this.props.navigation.navigate(
-                      po.menu[6].navigate
+                      po.menu[6].navigate,
                     ) : null
                 }>
                   <CardItem>

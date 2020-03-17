@@ -23,7 +23,6 @@ export default class LeavePending extends Component {
             
             APIs.leaveStatusUpdate(this.state.url, this.state.auth, id, 'cancel')
             .then((res) => {
-                console.log(res.status)
                 if(res.status === 'success') {
                     Toast.show({
                         text: 'Cancel Success!',
