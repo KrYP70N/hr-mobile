@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, Image } from 'react-native'
+import { Text, View, TouchableOpacity, Image, AsyncStorage } from 'react-native'
 import styNav from './navigation.style'
 
 export class SideMenu extends Component {
@@ -8,6 +8,16 @@ export class SideMenu extends Component {
   }
 
   goToLogin() {
+    AsyncStorage.removeItem('@hr:token')
+    .then((res) => {
+      console.log(res)
+      console.log('removed token')
+    })
+    AsyncStorage.removeItem('@hr:login')
+    .then((res) => {
+      console.log(res)
+      console.log('removed token')
+    })
     this.props.navigation.navigate('Login');
   }
 

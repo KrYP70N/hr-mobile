@@ -126,7 +126,6 @@ export default class Login extends Component {
             )
         }
         
-
         if(this.state.auth !== null) {
             this.props.navigation.navigate('Main')
         }

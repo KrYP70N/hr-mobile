@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea, Header, Left, Right } from 'native-base'
-import { Image, AsyncStorage, Platform, StatusBar, TouchableOpacity } from 'react-native'
+import { Image, AsyncStorage, Platform, StatusBar, TouchableOpacity, BackHandler, Modal, TouchableHighlight } from 'react-native'
 // import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import po from './po'
@@ -37,7 +37,8 @@ export default class Main extends Component {
         status: true,
         disabled: true
       },
-      loading: true
+      loading: true,
+      modal: false
     }
 
     this.getProfile = () => {
@@ -82,7 +83,9 @@ export default class Main extends Component {
       this.checkToken()
       if (this.state.url !== null && this.state.id !== null) {
         this.getProfile()
+        // renew token
       }
+
     })
   }
 
@@ -94,6 +97,7 @@ export default class Main extends Component {
   }
 
   render() {
+
     if (this.state.loading === true || this.state.profile === null) {
       return (
         <Loading info='request profile data ...'/>
