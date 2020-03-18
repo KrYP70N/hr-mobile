@@ -374,7 +374,7 @@ export default class APIs {
             }
         }).get(`${url}/download/payroll/${slipid}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }

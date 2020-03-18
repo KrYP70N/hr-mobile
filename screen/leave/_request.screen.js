@@ -6,6 +6,7 @@ import styLeave from './leave.style'
 import { View, Text, KeyboardAvoidingView, AsyncStorage } from 'react-native'
 
 import * as DocumentPicker from 'expo-document-picker'
+import * as FileSystem from 'expo-file-system';
 
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
@@ -242,6 +243,10 @@ export default class LeaveRequest extends Component {
                                                 .then((res) => {
                                                     this.setState({
                                                         file: res
+                                                    })
+                                                    FileSystem.readAsStringAsync(res.uri, {encoding : FileSystem.EncodingType.Base64})
+                                                    .then((res) => {
+                                                        console.log('testing ...')
                                                     })
                                                 })
                                         }}
