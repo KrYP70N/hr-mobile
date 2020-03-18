@@ -103,6 +103,8 @@ export default class Main extends Component {
         <Loading info='request profile data ...'/>
       )
     }
+
+    console.log("Main Here")
     return (
       <Container>
 

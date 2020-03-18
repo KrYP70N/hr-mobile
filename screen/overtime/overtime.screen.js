@@ -59,20 +59,28 @@ export default class Overtime extends Component {
     }
 
     getRequestData(auth, url, id) {
-        return (
-            <Request
-                auth={auth}
-                id={id}
-                url={url}
-                date='OT Date'
-                fromTime='From Time'
-                toTime='To Time'
-                datetextColor={color.placeHolder}
-                fromtextColor={color.placeHolder}
-                totextColor={color.placeHolder}
-            //data = {this.state.data}
-            />
-        )
+        this.setState({
+            date: 'OT Date',
+            fromTime: 'From Time',
+            toTime: 'To Time',
+            datetextColor: color.placeHolder,
+            fromtextColor: color.placeHolder,
+            totextColor: color.placeHolder,
+        })
+        // return (
+        //     <Request
+        //         auth={auth}
+        //         id={id}
+        //         url={url}
+        //         date='OT Date'
+        //         fromTime='From Time'
+        //         toTime='To Time'
+        //         datetextColor={color.placeHolder}
+        //         fromtextColor={color.placeHolder}
+        //         totextColor={color.placeHolder}
+        //     //data = {this.state.data}
+        //     />
+        // )
     }
 
     getApproveData(auth, id, url) {
@@ -147,11 +155,11 @@ export default class Overtime extends Component {
             labelStyle={{ color: 'white' }}
             onTabPress={({ route, preventDefault }) => {
                 if (route.key === 'first') {
-                    this.getRequestData(this.state.auth, this.state.url, this.state.id)
+                    //this.getRequestData(this.state.auth, this.state.url, this.state.id)
                 } else if (route.key === 'second') {
                     this.getApproveData(this.state.auth, this.state.id, this.state.url)
                 } else if (route.key === 'third') {
-                    this.getHistoryData(this.state.auth, this.state.id, this.state.url)
+                    //this.getHistoryData(this.state.auth, this.state.id, this.state.url)
                 }
             }}
         />
@@ -160,6 +168,7 @@ export default class Overtime extends Component {
     _renderScene = ({ route }) => {
         switch (route.key) {
             case 'first':
+                console.log("First Click")
                 return (
                     <Request
                         auth={this.state.auth}
@@ -174,8 +183,10 @@ export default class Overtime extends Component {
                     //data = {this.state.data}
                     />
                 )
+
             case 'second':
-                console.log("Data:::", this.state.data)
+                console.log("Second Click")
+                console.log("Scecond Data:::", this.state.data)
                 let requests = this.state.data.map((req) => {
                     return (
                         <Card key={req["Obj Id"]} >
@@ -208,6 +219,7 @@ export default class Overtime extends Component {
                     </Container>
                 )
             case 'third':
+                console.log("Third Click")
                 return <History />;
             default:
                 return null;
@@ -249,7 +261,7 @@ export default class Overtime extends Component {
                     renderScene={this._renderScene}
                     renderTabBar={this._renderTabBar}
                     onIndexChange={this._handleIndexChange}
-
+                    swipeEnabled = {false}
                 />
             </Container>
         )

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import po from './po'
 import styAttend from './attendance.style'
-import { View, Container, Content, Card, CardItem, Body, Text, Row, Col, Item, Icon, Header, Left, Right } from 'native-base'
+import { View, Container, Content, Card, CardItem, Body, Text, Row, Col, Item, Icon, Header, Left, Right, Toast } from 'native-base'
 import { TouchableNativeFeedback } from 'react-native-gesture-handler'
 
 import Loading from '../../components/loading.component'
@@ -68,9 +68,15 @@ export default class Attendance extends Component {
         ) {
             APIs.AttendanceSummary(this.state.url, this.state.token, this.state.id)
             .then((res) => {
-                this.setState({
-                    data: res.data
-                })
+                if(res.status === 'success') {
+                    this.setState({
+                        data: res.data
+                    })
+                } else {
+                    this.setState({
+                        data: []
+                    })
+                }
             })
         }
 
@@ -89,7 +95,6 @@ export default class Attendance extends Component {
 
 
     render() {
-
         if (this.state.data === null || this.state.dataTitle === null) {
             return (
                 <Loading />
