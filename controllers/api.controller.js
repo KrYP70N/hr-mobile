@@ -339,15 +339,18 @@ export default class APIs {
 
     // update leave status
     static leaveStatusUpdate(url, auth, leaveID, status) {
+        console.log("Leave Cancel URL:::", `${url}/approve/leave/${leaveID}?status=${status}`)
         return axios.create({
             headers: {
                 access_token: auth
             }
         }).post(`${url}/approve/leave/${leaveID}?status=${status}`)
             .then(function (res) {
+                console.log("Cancel Leave Return", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log("Return Error::", error)
                 return { error: error, status: 'fail' }
             })
     }

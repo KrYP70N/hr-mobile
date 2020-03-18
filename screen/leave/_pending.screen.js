@@ -19,11 +19,14 @@ export default class LeavePending extends Component {
             count: ''
         }
 
-        this.cancelOT = (id) => {
-            
-            APIs.leaveStatusUpdate(this.state.url, this.state.auth, id, 'cancel')
+        this.cancelOT = (cid) => {
+            console.log("url", this.state.url)
+            console.log("auth", this.state.auth)
+            console.log("id", this.state.id)
+            APIs.leaveStatusUpdate(this.state.url, this.state.auth, cid, 'cancel')
             .then((res) => {
                 if(res.status === 'success') {
+                    this.getApproveData(this.state.auth, this.state.id, this.state.url)
                     Toast.show({
                         text: 'Cancel Success!',
                         textStyle: {
@@ -50,27 +53,59 @@ export default class LeavePending extends Component {
         }
     }
 
+    getApproveData(auth, id, url) {
+        APIs.getLeaveRequest(auth, url, id)
+            .then((res) => {
+                if (res.status === 'success') {
+                    this.setState({
+                        leaves: res.data
+                    })
+                } else {
+                    Toast.show({
+                        text: 'There is no pending leave request!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        }
+                    })
+                }
+            })
+    }
+
     componentDidMount () {
-        AsyncStorage.getItem('@hr:token')
-        .then((res) => {
-            let data = JSON.parse(res)
-            this.setState({
-                auth: data.key,
-                id: data.id
-            })
-        })
         AsyncStorage.getItem('@hr:endPoint')
-        .then((res) => {
-            let data = JSON.parse(res)
-            this.setState({
-                url: data['ApiEndPoint']
+            .then((res) => {
+                const url = JSON.parse(res).ApiEndPoint
+                this.setState({ url: JSON.parse(res).ApiEndPoint })
+                AsyncStorage.getItem('@hr:token')
+                    .then((res) => {
+                        const auth = JSON.parse(res).key;
+                        const id = JSON.parse(res).id;
+                        this.setState({
+                            auth: JSON.parse(res).key,
+                            id: JSON.parse(res).id
+                        })
+                        //this.getRequestData(auth, url);
+                        this.getApproveData(auth, id, url);
+                    })
             })
-        })
-
-        this.props.navigation.addListener('focus', () => {
-            // alert('testing...')
-        })
-
+        // AsyncStorage.getItem('@hr:token')
+        // .then((res) => {
+        //     let data = JSON.parse(res)
+        //     this.setState({
+        //         auth: data.key,
+        //         id: data.id
+        //     })
+        // })
+        // AsyncStorage.getItem('@hr:endPoint')
+        // .then((res) => {
+        //     let data = JSON.parse(res)
+        //     this.setState({
+        //         url: data['ApiEndPoint']
+        //     })
+        // })
     }
   
 
@@ -87,7 +122,9 @@ export default class LeavePending extends Component {
             )
         }
 
-        const GetLeave = this.props.leaves.map((leave) => {
+        console.log("Cancel Leave Lists::", this.state.leaves)
+
+        const GetLeave = this.state.leaves.map((leave) => {
             return (
                 <Card key={leave['Obj id']}>
                     <CardItem>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, Platform, StatusBar, AsyncStorage,} from 'react-native';
+import { Platform, StatusBar, AsyncStorage,} from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
-import { Header, Left, Right, Container, Toast, Icon,} from 'native-base'
+//import { Header, Left, Right, Container, Toast, Icon,} from 'native-base'
+import { View, Text, Content, Container, Toast, Tab, Header, Left, Right, Icon, Card, CardItem, Body, Row, Col, Button, } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import LeaveRequest from './_request.screen'
@@ -9,6 +10,7 @@ import LeavePending from './_pending.screen'
 import LeaveHistory from './_history.screen'
 import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
+import styLeave from './leave.style'
 
 export default class TabViewExample extends Component {
     constructor(props) {
@@ -25,8 +27,44 @@ export default class TabViewExample extends Component {
             ],
             leaveType: [],
             leaves: [],
+            startDate: '',
+            endDate: '',
+            selectedLeaveType: ''
         };
 
+    }
+
+    cancelOT = (cid) => {
+        console.log("url", this.state.url)
+        console.log("auth", this.state.auth)
+        console.log("id", this.state.id)
+        APIs.leaveStatusUpdate(this.state.url, this.state.auth, cid, 'cancel')
+        .then((res) => {
+            if(res.status === 'success') {
+                this.getApproveData(this.state.auth, this.state.id, this.state.url)
+                Toast.show({
+                    text: 'Cancel Success!',
+                    textStyle: {
+                        textAlign: 'center'
+                    },
+                    style: {
+                        backgroundColor: color.primary
+                    }
+                })
+            } else {
+                Toast.show({
+                    text: 'Request fail! Please try again in later',
+                    textStyle: {
+                        textAlign: 'center'
+                    },
+                    style: {
+                        backgroundColor: color.danger
+                    }
+                })
+            }
+        })
+
+        
     }
     componentDidMount() {
         AsyncStorage.getItem('@hr:endPoint')
@@ -54,14 +92,13 @@ export default class TabViewExample extends Component {
     );
 
     getRequestData(auth, url) {
+        const d = new Date();
         APIs.getLeaveType(auth, url)
             .then((res) => {
                 if (res.status === 'success') {
                     this.setState({
-                        leaveType: res.data
-                    })
-                    // select leave type
-                    this.setState({
+                        leaveType: res.data,
+                        startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
                         selectedLeaveType: res.data[0]['leave_type_id']
                     })
                 } else {
@@ -122,13 +159,48 @@ export default class TabViewExample extends Component {
                     auth = {this.state.auth}
                     id = {this.state.id}
                     url = {this.state.url}
-                    leaveType = {this.state.leaveType}
+                    // leaveType = {this.state.leaveType}
+                    // startDate = {this.state.startDate}
+                    // selectedLeaveType = {this.state.selectedLeaveType}
                     />
                 )
             case 'second':
-                return(
-                    <LeavePending leaves = {this.state.leaves} navigation={this.props.navigation}/>
+                console.log("Panding Leave Lists", this.state.leaves)
+                const GetLeave = this.state.leaves.map((leave) => {
+                    return (
+                        <Card key={leave['Obj id']}>
+                            <CardItem>
+                                <Body>
+                                    <View style={styLeave.cardTitleContainer}>
+                                        <Text style={styLeave.cardTitle}>{leave['Leave Type']}</Text>
+                                    </View>
+                                    <Text style={styLeave.cardXSText}>{leave['date_from']} to {leave['date_to']}</Text>
+                                    <Text style={styLeave.cardSText}>Leave left - {leave['number of days']} Days</Text>
+                                    <Text style={styLeave.cardWarning}>Your request is pending</Text>
+                                    <Button 
+                                    style={styLeave.ButtonSecondary}
+                                    onPress={() => {
+                                        this.cancelOT(leave['Obj id'])
+                                    }}
+                                    >
+                                        <Text>Cancel Request</Text>
+                                    </Button>
+                                </Body>
+                            </CardItem>
+                        </Card>
+                    )
+                })
+        
+                return (
+                    <Container>
+                        <Content style={styLeave.container}>
+                            {GetLeave}
+                        </Content>
+                    </Container>
                 )
+                // return(
+                //     <LeavePending leaves = {this.state.leaves} navigation={this.props.navigation}/>
+                // )
                 
             case 'third':
                 return <LeaveHistory />;
@@ -143,6 +215,8 @@ export default class TabViewExample extends Component {
                 <Loading />
             )
         }
+
+        
 
         return (
             <Container>

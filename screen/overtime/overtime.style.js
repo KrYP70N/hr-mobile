@@ -146,4 +146,5 @@ export default {
       marginTop: 5,
       //color: color.placeHolder,
     },
+   
 }

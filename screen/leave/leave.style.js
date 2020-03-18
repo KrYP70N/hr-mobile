@@ -159,4 +159,10 @@ export default StyleSheet.create({
         fontSize: 14,
         marginTop: 5,
     },
+    pickerIcn: {
+        position: 'absolute',
+        right: offset.o1,
+        bottom: 0,
+        color: color.placeHolder
+    },
 })
