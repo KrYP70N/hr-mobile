@@ -7,20 +7,6 @@ export class SideMenu extends Component {
     super(props)
   }
 
-  goToLogin() {
-    AsyncStorage.removeItem('@hr:token')
-    .then((res) => {
-      console.log(res)
-      console.log('removed token')
-    })
-    AsyncStorage.removeItem('@hr:login')
-    .then((res) => {
-      console.log(res)
-      console.log('removed token')
-    })
-    this.props.navigation.navigate('Login');
-  }
-
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -44,7 +30,7 @@ export class SideMenu extends Component {
           <Image source={require('../assets/icon/payroll.png')} style={styNav.image3} />
           <Text>Payroll</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styNav.item} onPress={() => { this.goToLogin() }}>
+        <TouchableOpacity style={styNav.item} onPress={() => { this.props.navigation.navigate('Login') }}>
           <Image source={require('../assets/icon/lgoout.png')} style={styNav.image2} />
           <Text>Logout</Text>
         </TouchableOpacity>

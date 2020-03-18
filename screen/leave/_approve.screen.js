@@ -140,10 +140,10 @@ export default class LeaveApprove extends Component {
                     renderItem={({ item, index }) =>
 
                         <View style={styles.leaveApproveCard}>
-                            <Text style={styles.name}>{item.name}</Text>
+                            {/* <Text style={styles.name}>{item.name}</Text> */}
                             <Text style={styles.name}>{item["Obj id"]}</Text>
                             <Text style={styles.position}>Web Developer</Text>
-                            <Text style={styles.date}>O7 April 2020 to 09 April 2020</Text>
+                            <Text style={styles.date}>{`From ${item.date_from} To ${item.date_to}`}</Text>
                             <Text style={styles.leaveText}>Casual Leave</Text>
                             <View style={styles.leaveApproveBtn}>
                                 <TouchableOpacity onPress={() => { this.sendApproveRejectLeave(this.state.url, this.state.auth, item["Obj id"], 'reject') }}>
