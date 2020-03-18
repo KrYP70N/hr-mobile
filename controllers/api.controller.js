@@ -252,6 +252,7 @@ export default class APIs {
             }
         }).get(`${url}/approvelist/overtime/${id}`)
             .then(function (res) {
+                console.log("Response Controller OT Lists:::", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {

@@ -25,15 +25,9 @@ export default class OvertimeApprove extends Component {
             overtimeList: [],
         }
     }
-      
-      // add a focus listener onDidMount
-       componentDidMount () {
-      this.props.navigation.addListener('focus', () => {
-          this.onFocusFunction()
-        })
-      }
-      
-      onFocusFunction() {
+
+    componentDidMount() {
+        // this.props.navigation.addListener('focus', () => {
         AsyncStorage.getItem('@hr:endPoint')
             .then((res) => {
                 const url = JSON.parse(res).ApiEndPoint
@@ -48,30 +42,21 @@ export default class OvertimeApprove extends Component {
                             auth: JSON.parse(res).key,
                             id: JSON.parse(res).id
                         })
-                        console.log("auth::", auth);
-                        console.log("id::", id);
-                        console.log("url::", url);
                         this.getApproveStatus(url, auth, id);
                     })
             })
-        // this.setState({ leaveLists: data })
+        //})
     }
 
     getApproveStatus(url, auth, id) {
-        console.log("auth::", auth);
-        console.log("id::", id);
-        console.log("url::", url);
         APIs.OTApproval(url, auth, id)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("OT Approve List", res.data)
-                    // const OTList = [];
-                    // OTList.push(res.data);
                     this.setState({
+                        refresh: !this.state.refresh,
                         overtimeList: res.data,
                     })
                 } else {
-                    console.log("Error Message", res.error);
                     Toast.show({
                         text: 'Network Error',
                         textStyle: {
@@ -86,23 +71,29 @@ export default class OvertimeApprove extends Component {
     }
 
     sendApproveRejectOT(otID, auth, url, status) {
-        console.log("Click Reject Button");
         APIs.OTUpdateStatus(otID, auth, url, status)
             .then((res) => {
-                console.log("Return Message", res.data)
-                if (res.status === 'success') {
-                    this.setState({refresh : !this.state.refresh})
+                console.log("Return Message::", res.data)
+                if (res.data.error == false) {
+                    this.setState({ refresh: !this.state.refresh })
+                    Toast.show({
+                        text: res.data.message,
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        }
+                    })
                     APIs.OTApproval(this.state.url, this.state.auth, this.state.id)
                         .then((res) => {
                             if (res.status === 'success') {
-                                // const OTList = [];
-                                // OTList.push(res.data);
+                                console.log("Response Api OT Lists:::", res.data)
                                 this.setState({
                                     refresh: !this.state.refresh,
                                     overtimeList: res.data,
                                 })
                             } else {
-                                console.log("Error Message", res.error);
                                 Toast.show({
                                     text: 'Network Error',
                                     textStyle: {
@@ -115,9 +106,8 @@ export default class OvertimeApprove extends Component {
                             }
                         })
                 } else {
-                    console.log(res.error);
                     Toast.show({
-                        text: 'Network Error',
+                        text: res.data.message,
                         textStyle: {
                             textAlign: 'center'
                         },
@@ -132,7 +122,7 @@ export default class OvertimeApprove extends Component {
 
 
     render() {
-        console.log("Overtime list", this.state.overtimeList);
+        console.log("Overtime Render list::", this.state.overtimeList);
         return (
             <View style={styles.leaveApproveContainer}>
                 <Header style={{ backgroundColor: color.light, marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight }}>
@@ -144,17 +134,17 @@ export default class OvertimeApprove extends Component {
                     </Left>
                     <Right></Right>
                 </Header>
-
-                <View>
                     <FlatList
                         data={this.state.overtimeList}
                         showsVerticalScrollIndicator={false}
-                        renderItem={({ item, index}) =>
+                        renderItem={({ item, index }) =>
                             <View style={styles.leaveApproveCard}>
                                 <Text style={styles.name}>{item.employee_name}</Text>
                                 <Text style={styles.position}>Web Developer</Text>
-                                <Text style={styles.date}>Date - {item.overtime_date}</Text>
-                                <Text style={styles.otHour}>OT Hour - {item.overtime_hours} Hr</Text>
+                                <Text style={styles.date}>{`From - ${item.overtime_date_from}`}</Text>
+                                <Text style={styles.otHour}>{`To     - ${item.overtime_date_to}`}</Text>
+                                <Text style={styles.otHour}>{`OT Hour - ${item.overtime_hours}:${item.overtime_minute}`}</Text>
+                                <Text style={styles.name}>{item["OT reason"]}</Text>
                                 <View style={styles.leaveApproveBtn}>
                                     <TouchableOpacity
                                         onPress={() => { this.sendApproveRejectOT(item.Overtime_id, this.state.auth, this.state.url, 'reject') }}
@@ -175,8 +165,6 @@ export default class OvertimeApprove extends Component {
                         }
                         keyExtractor={(item, index) => index.toString()}
                     />
-
-                </View>
             </View>
         )
     }

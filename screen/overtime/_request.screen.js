@@ -62,8 +62,8 @@ export default class Request extends Component {
             } else {
                 const request_from = this.state.date + " " + this.state.fromTime;
                 const request_to = this.state.date + " " + this.state.toTime;
-                console.log("Request From Field::", request_from)
-                console.log("Request From Field::", request_to)
+                console.log("Date From::", request_from)
+                console.log("Date To::", request_to)
                 APIs.OTRequest(
                     this.props.id,
                     this.props.auth,
@@ -73,42 +73,50 @@ export default class Request extends Component {
                     this.state.description
                 )
                     .then((res) => {
-                        if (res.status === 'success') {
-                            console.log("Request Screen Data::", res.data)
+                        if(res.data.error == false){
                             const d = new Date();
                             this.pickDate(d);
                             this.setState({
-                                //date: d,
-                               // hour: 0,
+                                date: 'OT Date',
+                                datetextColor: color.placeHolder,
+                                fromTime: 'From Time',
+                                fromtextColor: color.placeHolder,
+                                toTime: 'To Time',
+                                totextColor: color.placeHolder,
                                 description: null,
                             })
-                            // Toast.show({
-                            //     text: 'Request Success!',
-                            //     textStyle: {
-                            //         textAlign: 'center'
-                            //     },
-                            //     style: {
-                            //         backgroundColor: color.primary
-                            //     },
-                            //     duration: 5000
-                            // })
-                        } else {
+                             Toast.show({
+                                text: res.data.message,
+                                textStyle: {
+                                    textAlign: 'center'
+                                },
+                                style: {
+                                    backgroundColor: color.primary
+                                },
+                                duration: 5000
+                            })
+                        }else{
                             this.setState({
-                                //date: null,
-                               // hour: 0,
+                                date: 'OT Date',
+                                datetextColor: color.placeHolder,
+                                fromTime: 'From Time',
+                                fromtextColor: color.placeHolder,
+                                toTime: 'To Time',
+                                totextColor: color.placeHolder,
                                 description: null,
                             })
-                            // Toast.show({
-                            //     text: 'Network Error! Please try again in later.',
-                            //     textStyle: {
-                            //         textAlign: 'center'
-                            //     },
-                            //     style: {
-                            //         backgroundColor: color.danger
-                            //     },
-                            //     duration: 5000
-                            // })
+                            Toast.show({
+                                text: res.data.message,
+                                textStyle: {
+                                    textAlign: 'center'
+                                },
+                                style: {
+                                    backgroundColor: color.danger
+                                },
+                                duration: 5000
+                            })
                         }
+                       
                     })
             }
         }
@@ -140,11 +148,9 @@ export default class Request extends Component {
     };
 
     pickTimeFrom = date => {
-        console.log("A date has been picked: ", date);
         let hours = date.getHours();
         let minutes = date.getMinutes();
         let seconds = date.getSeconds();
-        console.log(`Time:::${hours}:${minutes}:${seconds}`)
         this.setState({ fromTime: `${hours}:${minutes}:${seconds}`, fromtextColor: '#000' })
         this.hideTimePickerFrom();
     };
@@ -158,11 +164,9 @@ export default class Request extends Component {
     };
 
     pickTimeTo = date => {
-        console.log("A date has been picked: ", date);
         let hours = date.getHours();
         let minutes = date.getMinutes();
         let seconds = date.getSeconds();
-        console.log(`Time:::${hours}:${minutes}:${seconds}`)
         this.setState({ toTime: `${hours}:${minutes}:${seconds}`, totextColor: '#000' })
         this.hideTimePickerto();
     };
@@ -197,7 +201,7 @@ export default class Request extends Component {
                                   
                                 />
                                 <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                                    <Text style={{ paddingLeft: 10, color: this.state.fromtextColor }}>{this.state.date}</Text>
+                                    <Text style={{ paddingLeft: 10, color: this.state.datetextColor }}>{this.state.date}</Text>
                                     <Icon name={po.request.datePicker.icon} style={styOt.pickerIcn} onPress={() => { this.showDatePicker() }} />
                                 </View>
                                 <View style={{ width: '100%', height: 0.5, backgroundColor: '#000', }}></View>

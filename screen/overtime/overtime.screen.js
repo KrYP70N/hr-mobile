@@ -105,12 +105,12 @@ export default class Overtime extends Component {
         APIs.OTUpdateStatus(data, this.state.auth, this.state.url, 'cancel')
             .then((res) => {
                 console.log("Return Message", res.data)
-                if (res.status === 'success') {
+                if (res.data.error === false) {
                     this.setState({ refresh: !this.state.refresh })
                     this.getApproveData(this.state.auth, this.state.id, this.state.url);
                     //this.getOTList()
                     Toast.show({
-                        text: 'OT Cancel successful!',
+                        text: res.data.message,
                         textStyle: {
                             textAlign: "center"
                         },
@@ -119,7 +119,15 @@ export default class Overtime extends Component {
                         }
                     })
                 } else {
-                    console.log(res)
+                    Toast.show({
+                        text: res.data.message,
+                        textStyle: {
+                            textAlign: "center"
+                        },
+                        style: {
+                            backgroundColor: color.danger
+                        }
+                    })
                 }
             })
     }

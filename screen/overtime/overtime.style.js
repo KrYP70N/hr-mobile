@@ -137,12 +137,12 @@ export default {
         marginTop: 10,
     },
     date:{
-        fontSize: 12,
+        fontSize: 16,
         marginTop: 15,
         color: '#000'
     },
     otHour: {
-      fontSize: 12,
+      fontSize: 16,
       marginTop: 5,
       //color: color.placeHolder,
     },
