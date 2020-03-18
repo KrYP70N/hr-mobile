@@ -18,6 +18,7 @@ import color from '../../constant/color';
 import Auth from './_auth.login'
 import { Updates } from 'expo';
 import Loading from '../../components/loading.component';
+import moment from 'moment';
 
 export default class Login extends Component {
 
@@ -46,10 +47,14 @@ export default class Login extends Component {
                         loading: true
                     })
                     if (res.status === 'success') {
+                        let date = new Date()
+                        let exp_date = Number(moment(date).format('X')) + 60000
+
                         AsyncStorage.setItem('@hr:token', JSON.stringify({
                             // key: 'Bearer '+ res.data.access_token,
                             key: res.data.access_token,
-                            id: res.data.employee_id
+                            id: res.data.employee_id,
+                            epx: moment(exp_date)
                         }))
                         .then(() => {
                             AsyncStorage.setItem('@hr:login', 'true')
