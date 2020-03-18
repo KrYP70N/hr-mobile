@@ -19,6 +19,7 @@ import CheckInOut from '../../components/checkinout.component'
 import Clock from '../../components/time.component'
 
 import DB from '../../model/db.model'
+import moment from 'moment'
 
 export default class Main extends Component {
 
@@ -63,16 +64,57 @@ export default class Main extends Component {
     this.checkToken = () => {
       AsyncStorage.getItem('@hr:token')
       .then((res) => {
-        this.setState({
-          auth: DB.getToken(res),
-          id: DB.getUserId(res)
-        })
-        AsyncStorage.getItem('@hr:endPoint')
+        console.log(res)
+        let current_date = new Date()
+        let data = JSON.parse(res)
+        let exp = data.exp
+        
+        let dif = moment(exp).diff(moment(new Date()), 'hours')
+
+        if(dif < 9)  {
+          this.setState({
+            loading: true
+          })
+          
+          // check url 
+          AsyncStorage.getItem('@hr:endPoint')
           .then((res) => {
+            let url = JSON.parse(res)
             this.setState({
-              url: DB.getEndPoint(res)
+              url: url.ApiEndPoint
+            })
+            APIs.RefreshToken(url.ApiEndPoint, data.key)
+            .then((res) => {
+              if(res.status === 'success') {
+                let date = new Date()
+                let exp_date = moment(date).add(60000, 'seconds')
+                AsyncStorage.setItem('@hr:token', JSON.stringify({
+                    // key: 'Bearer '+ res.data.access_token,
+                    key: res.data.access_token,
+                    id: res.data.employee_id,
+                    exp: exp_date
+                }))
+              } else {
+                this.props.navigation.navigate('Login')
+              }
+              this.setState({
+                loading: false
+              })
             })
           })
+
+        } else {
+          this.setState({
+            auth: DB.getToken(res),
+            id: DB.getUserId(res)
+          })
+          AsyncStorage.getItem('@hr:endPoint')
+            .then((res) => {
+              this.setState({
+                url: DB.getEndPoint(res)
+              })
+            })
+        }
       })
     }
   }
@@ -83,7 +125,6 @@ export default class Main extends Component {
       this.checkToken()
       if (this.state.url !== null && this.state.id !== null) {
         this.getProfile()
-        // renew token
       }
 
     })
@@ -104,7 +145,6 @@ export default class Main extends Component {
       )
     }
 
-    console.log("Main Here")
     return (
       <Container>
 

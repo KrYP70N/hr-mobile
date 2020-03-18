@@ -48,13 +48,12 @@ export default class Login extends Component {
                     })
                     if (res.status === 'success') {
                         let date = new Date()
-                        let exp_date = Number(moment(date).format('X')) + 60000
-
+                        let exp_date = moment(date).add(60000, 'seconds')
                         AsyncStorage.setItem('@hr:token', JSON.stringify({
                             // key: 'Bearer '+ res.data.access_token,
                             key: res.data.access_token,
                             id: res.data.employee_id,
-                            epx: moment(exp_date)
+                            exp: exp_date
                         }))
                         .then(() => {
                             AsyncStorage.setItem('@hr:login', 'true')
