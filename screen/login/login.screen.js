@@ -28,7 +28,7 @@ export default class Login extends Component {
             db: null,
             hidePassword: true,
             user: null,
-            name: null,
+            password: null,
             loading: false,
             auth: null
         }
@@ -56,6 +56,10 @@ export default class Login extends Component {
                             .then(() => {
                                 this.setState({
                                     loading: false
+                                })
+                                this.setState({
+                                    user: null,
+                                    password: null
                                 })
                                 this.props.navigation.navigate('Main')
                             })
@@ -107,14 +111,9 @@ export default class Login extends Component {
 
         // check token
         this.props.navigation.addListener('focus', () => {
-            AsyncStorage.getItem('@hr:token')
-            .then((res) => {
-                if(res !== null) {
-                    let data = JSON.parse(res)
-                    this.setState({
-                        auth: data.key
-                    })
-                }
+            this.setState({
+                user: null,
+                password: null
             })
         })
     }
@@ -145,7 +144,7 @@ export default class Login extends Component {
                         <Label style={styLogin.label}>
                             <Icon name='ios-person' style={styLogin.icn}/>
                         </Label>
-                        <Input onChangeText={(key) => this.user(key)} />
+                        <Input value={this.state.user} onChangeText={(key) => this.user(key)} />
                     </Item>
 
                     <Item inlineLabel style={styLogin.password}>
@@ -153,6 +152,7 @@ export default class Login extends Component {
                             <Icon name='ios-lock' style={styLogin.icn}/>
                         </Label>
                         <Input secureTextEntry={this.state.hidePassword} style={styLogin.input}
+                            value={this.state.password}
                             onChangeText={(key) => { this.password(key) }}
                         />
                         <Icon active name={
