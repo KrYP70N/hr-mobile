@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Container, Content, Row, Col, Form, Item, Label, Input, Picker, Button, Card, CardItem, Body, Badge } from 'native-base'
+import { View, Text, Container, Content, Row, Col, Form, Item, Label, Input, Picker, Button, Card, CardItem, Body, Badge, Icon } from 'native-base'
 import color from '../../constant/color'
 import styLeave from './leave.style'
 import { KeyboardAvoidingView, AsyncStorage } from 'react-native'
@@ -19,7 +19,7 @@ export default class LeaveHistory extends Component {
             year: null,
             month: null,
             status: 'all',
-            leave: null,
+            leave: [],
             token: null
         }
 
@@ -45,16 +45,23 @@ export default class LeaveHistory extends Component {
         }
         
         // update ot list
-        this.updateOT = () => {
-            this.setState({
-                leave: null
-            })
+        this.updateLeave = () => {
             APIs.LeaveMonthly(this.state.url, this.state.auth, this.state.id, this.state.year, this.state.month)
             .then((res) => {
                 if(res.status === 'success') {
-                    let data = res.data.filter(list => list.state === this.state.status)
+                    if(this.state.status !== 'all') {
+                        let data = res.data.filter(list => list.state === this.state.status)
+                        this.setState({
+                            leave: data
+                        })
+                    } else {
+                        this.setState({
+                            leave: res.data
+                        })
+                    }
+                } else {
                     this.setState({
-                        leave: data
+                        leave: []
                     })
                 }
             })
@@ -87,28 +94,9 @@ export default class LeaveHistory extends Component {
         })
     }
 
-
     componentDidUpdate () {
-        if(
-            this.state.month !== null && 
-            this.state.year !== null &&
-            this.state.url !== null &&
-            this.state.auth !== null && 
-            this.state.id !== null &&
-            this.state.leave === null
-        ) {
-            APIs.LeaveMonthly(this.state.url, this.state.auth, this.state.id, this.state.year, this.state.month)
-            .then((res) => {
-                if(res.status === 'success') {
-                    this.setState({
-                        leave: res.data
-                    })
-                } else {
-                    this.setState({
-                        leave: []
-                    })
-                }
-            })
+        if(this.state.url !== null && this.state.id !== null && this.state.token !== null) {
+            console.log('hola')
         }
     }
 
@@ -119,8 +107,7 @@ export default class LeaveHistory extends Component {
             this.state.year === null ||
             this.state.url === null ||
             this.state.auth === null || 
-            this.state.id === null ||
-            this.state.leave === null
+            this.state.id === null
         ) {
             return (
                 <Loading info='loading api data ...'/>
@@ -162,6 +149,7 @@ export default class LeaveHistory extends Component {
             } else {
                 background = color.primary
             }
+            console.log(leave)
             return (
                 <Card key={Math.floor(Math.random() * 1000)}>
                     <CardItem>
@@ -236,20 +224,25 @@ export default class LeaveHistory extends Component {
                                 onValueChange={this.changeStatus.bind(this)}
                             >
                                 <Picker.Item label="all" value="all"/>
-                                <Picker.Item label="success" value="success"/>
+                                <Picker.Item label="confirm" value="confirm"/>
                                 <Picker.Item label="reject" value="reject"/>
                                 <Picker.Item label="cancel" value="cancel"/>
                             </Picker>
                         </Item>
                         <Button 
                         style={styLeave.buttonPrimary}
-                        onPress={() => this.updateOT()}
+                        onPress={() => this.updateLeave()}
                         >
                             <Text>Search</Text>
                         </Button>
                     </Form>
                     <View style={styLeave.resultBox}>
                         { GetLeavesRequest }
+
+                        <View>
+                            <Icon name='info'/>
+                            <Text>There is no data for {this.state.year}!</Text>
+                        </View>
                     </View>
                 </Content>
             </Container>

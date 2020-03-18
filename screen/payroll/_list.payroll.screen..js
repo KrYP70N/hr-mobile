@@ -4,7 +4,6 @@ import styPayroll from './payroll.style'
 import { Text, Button, View, CardItem, Body, Card, Icon } from 'native-base'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
-import * as FileSystem from 'expo-file-system';
 import * as WebBrowser from 'expo-web-browser';
 
 export default class PayrollList extends Component {
@@ -15,20 +14,9 @@ export default class PayrollList extends Component {
             console.log(url, auth, slipid)
             APIs.downloadPaySlip(url, auth, slipid)
             .then((res) => {
-                // FileSystem.downloadAsync(
-                //         'http://techslides.com/demos/sample-videos/small.mp4',
-                //         FileSystem.documentDirectory + 'small.mp4'
-                //       )
-                //         .then(({ uri }) => {
-                //               console.log('Finished downloading to ', uri);
-                //     })
-                //     .catch(error => {
-                //           console.error(error);
-                //         })
-                let url =  'https://lfhs.lfcisd.net/UserFiles/Servers/Server_904/File/ECCastillo/Color%20Theory%20Worksheet.pdf'
-                
-                WebBrowser.openBrowserAsync(url)
-
+                // console.log(res.data.data['Payslip PDF'][0])
+                WebBrowser.openBrowserAsync(res.data.data['Payslip PDF'][0])
+                // Linking.openURL(res.data.data['Payslip PDF'][0])
             })
         }
     }

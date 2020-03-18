@@ -64,7 +64,6 @@ export default class Main extends Component {
     this.checkToken = () => {
       AsyncStorage.getItem('@hr:token')
       .then((res) => {
-        console.log(res)
         let current_date = new Date()
         let data = JSON.parse(res)
         let exp = data.exp
