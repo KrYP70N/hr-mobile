@@ -4,15 +4,22 @@ import styOt from './overtime.style'
 import po from './po'
 import { View, Text, Container, Content, Row, Col, Form, Item, Label, Input, Picker, Button, Card, CardItem, Body, Badge } from 'native-base'
 import color from '../../constant/color'
+import APIs from '../../controllers/api.controller'
+import { AsyncStorage } from 'react-native'
+import Loading from '../../components/loading.component'
 
 export default class History extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
+            url: null,
+            auth: null,
+            id: null,
             year: null,
             month: null,
-            status: 'all'
+            status: 'all',
+            record: null
         }
 
         // handel year
@@ -35,11 +42,72 @@ export default class History extends Component {
                 status: status
             })
         }
+
+        // handel otlist
+        this.getOT = () => {
+
+            let month = this.state.month + 1 < 10 ? '0' + (this.state.month + 1) : this.state.month + 1 
+
+            console.log(month)
+
+            APIs.OTMonthly(this.state.url, this.state.auth, this.state.id, this.state.year, month)
+            .then((res) => {
+                console.log(res.data)
+                this.setState({
+                    record : res.data
+                })
+                
+                // if(this.state.status === 'all') {
+                //     this.setState({
+                //         record : res.data
+                //     })
+                // } else {
+                //     let data = res.data.filter(list => list.state.indexOf(this.state.status) !== -1)
+                //     this.setState({
+                //         record : data
+                //     })
+                // }
+
+            })
+        }
         
     }
 
-    render () {
+    componentDidMount () {
+        // get url
+        AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+            let data = JSON.parse(res)
+            this.setState({
+                url: data['ApiEndPoint']
+            })
+        })
 
+        // get key && id
+        AsyncStorage.getItem('@hr:token')
+        .then((res) => {
+            let data = JSON.parse(res)
+            this.setState({
+                auth: data['key'],
+                id: data['id']
+            })
+        })
+    }
+
+    componentDidUpdate () {
+        if(
+            this.state.url !== null && 
+            this.state.auth !== null && 
+            this.state.id !== null && 
+            this.state.year !== null && 
+            this.state.record === null) {
+            this.getOT()
+        }
+
+    }
+
+
+    render () {
         let currentYear = new Date().getFullYear()
         if(this.state.year === null) {
             this.setState({
@@ -74,6 +142,48 @@ export default class History extends Component {
                 month: currentMonth
             })
         }
+
+        if(this.state.record === null) {
+            return (
+                <Loading />
+            )
+        }
+
+        let records = this.state.record.map((record, idx) => {
+            let badge_color = color.primary
+
+            if(record.state === 'cancel') {
+                badge_color = color.placeHolder
+            } else if(record.state === 'refuse') {
+                badge_color = color.danger
+            }
+
+            return (
+                <Card key={idx.toString()}>
+                    <CardItem>
+                        <Body>
+                            <View style={styOt.cardTitleContainer}>
+                                <Text style={styOt.cardTitle}>Name will here</Text>
+                            </View>
+                            <View style={styOt.cardTitleContainer}>
+                                <Text style={styOt.cardXSText}>OT Hours - {record.hour}:{record.minute}</Text>
+                                <Badge style={[styOt.badgeSuccess, {
+                                    backgroundColor: badge_color
+                                }]}>
+                                    <Text>{record.state}</Text>
+                                </Badge>
+                            </View>
+                            <View style={styOt.cardTitleContainer}>
+                                <Text style={styOt.cardXSText}>From - {record.date_from}</Text>
+                            </View>
+                            <View style={styOt.cardTitleContainer}>
+                                <Text style={styOt.cardXSText}>To - {record.date_to}</Text>
+                            </View>
+                        </Body>
+                    </CardItem>
+                </Card>
+            )
+        })
 
         return (
             <Container>
@@ -122,33 +232,25 @@ export default class History extends Component {
                                 onValueChange={this.changeStatus.bind(this)}
                             >
                                 <Picker.Item label="all" value="all"/>
-                                <Picker.Item label="success" value="success"/>
-                                <Picker.Item label="reject" value="reject"/>
+                                <Picker.Item label="confirm" value="confirm"/>
+                                <Picker.Item label="refuse" value="refuse"/>
+                                <Picker.Item label="cancel" value="cancel"/>
                             </Picker>
                         </Item>
-                        <Button style={styOt.buttonPrimary}>
+                        <Button style={styOt.buttonPrimary}
+                            onPress={this.getOT}
+                        >
                             <Text>Search</Text>
                         </Button>
                     </Form>
                     <View style={styOt.resultBox}>
-                        <Card>
-                            <CardItem>
-                                <Body>
-                                    <View style={styOt.cardTitleContainer}>
-                                        <Text style={styOt.cardTitle}>{po.history.card.title}</Text>
-                                        <Text style={styOt.cardRthLabel}>05 Nov 2020</Text>
-                                    </View>
-                                    <View style={styOt.cardTitleContainer}>
-                                        <Text style={styOt.cardXSText}>{po.history.card.date}05 Nov 2020</Text>
-                                        <Badge style={styOt.badgeSuccess}>
-                                            <Text>{po.history.card.badge.success}</Text>
-                                        </Badge>
-                                    </View>
-                                    <Text style={styOt.cardSText}>{po.history.card.hour}5:00 PM to 8:00 PM</Text>
-                                </Body>
-                            </CardItem>
-                        </Card>
-                    
+                        {records}
+                    </View>
+                    <View style={{
+                        display: this.state.record.length === 0 ? 'flex' : 'none',
+                        alignItems: 'center'
+                    }}>
+                        <Text>There is no data for {this.state.month + 1}-{this.state.year}</Text>
                     </View>
                 </Content>
             </Container>
