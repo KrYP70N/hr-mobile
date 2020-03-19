@@ -19,7 +19,7 @@ export default class LeaveHistory extends Component {
             year: null,
             month: null,
             status: 'all',
-            leave: [],
+            leave: null,
             token: null
         }
 
@@ -95,8 +95,8 @@ export default class LeaveHistory extends Component {
     }
 
     componentDidUpdate () {
-        if(this.state.url !== null && this.state.id !== null && this.state.token !== null) {
-            console.log('hola')
+        if(this.state.url !== null && this.state.id !== null && this.state.auth !== null && this.state.leave === null) {
+            this.updateLeave()
         }
     }
 
@@ -107,7 +107,8 @@ export default class LeaveHistory extends Component {
             this.state.year === null ||
             this.state.url === null ||
             this.state.auth === null || 
-            this.state.id === null
+            this.state.id === null ||
+            this.state.leave === null
         ) {
             return (
                 <Loading info='loading api data ...'/>
@@ -239,8 +240,10 @@ export default class LeaveHistory extends Component {
                     <View style={styLeave.resultBox}>
                         { GetLeavesRequest }
 
-                        <View>
-                            <Icon name='info'/>
+                        <View style={{
+                            display: this.state.leave.length === 0 ? 'flex' : 'none'
+                        }}>
+                            <Icon name='ios-info'/>
                             <Text>There is no data for {this.state.year}!</Text>
                         </View>
                     </View>
