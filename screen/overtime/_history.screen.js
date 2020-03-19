@@ -92,6 +92,20 @@ export default class History extends Component {
                 id: data['id']
             })
         })
+
+        let currentYear = new Date().getFullYear()
+        if(this.state.year === null) {
+            this.setState({
+                year: currentYear
+            })
+        }
+
+        if(this.state.month === null) {
+            this.setState({
+                month: new Date().getMonth()
+            })
+        }
+
     }
 
     componentDidUpdate () {
@@ -108,16 +122,11 @@ export default class History extends Component {
 
 
     render () {
-        let currentYear = new Date().getFullYear()
-        if(this.state.year === null) {
-            this.setState({
-                year: currentYear
-            })
-        }
+       
 
         // year render
         let years = []
-        
+        let currentYear = new Date().getFullYear()
         for(let i=currentYear; i>1986; i--) {
             years.push(i)
         }
@@ -137,12 +146,7 @@ export default class History extends Component {
                 <Picker.Item label={monthEng[month]} value={month} key={month}/>
             )
         })
-        if(this.state.month === null) {
-            this.setState({
-                month: currentMonth
-            })
-        }
-
+       
         if(this.state.record === null) {
             return (
                 <Loading />
