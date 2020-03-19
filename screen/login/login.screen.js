@@ -40,6 +40,7 @@ export default class Login extends Component {
             this.setState({
                 loading: true
             })
+            console.log(this.state.apiUrl, this.state.db, this.state.user, this.state.password)
             APIs.Token(this.state.apiUrl, this.state.db, this.state.user, this.state.password)
                 .then((res) => {
                     // display loading

@@ -39,23 +39,26 @@ export default class Overtime extends Component {
     }
 
     componentDidMount() {
-        AsyncStorage.getItem('@hr:endPoint')
-            .then((res) => {
-                const url = JSON.parse(res).ApiEndPoint
-                this.setState({
-                    url: JSON.parse(res).ApiEndPoint
-                })
-                AsyncStorage.getItem('@hr:token')
-                    .then((res) => {
-                        const auth = JSON.parse(res).key;
-                        const id = JSON.parse(res).id;
-                        this.setState({
-                            auth: JSON.parse(res).key,
-                            id: JSON.parse(res).id
-                        })
-                        this.getApproveData(auth, id, url);
+        this.props.navigation.addListener('focus', () => {
+            this.setState({ refresh: !this.state.refresh, index: 0})
+            AsyncStorage.getItem('@hr:endPoint')
+                .then((res) => {
+                    const url = JSON.parse(res).ApiEndPoint
+                    this.setState({
+                        url: JSON.parse(res).ApiEndPoint
                     })
-            })
+                    AsyncStorage.getItem('@hr:token')
+                        .then((res) => {
+                            const auth = JSON.parse(res).key;
+                            const id = JSON.parse(res).id;
+                            this.setState({
+                                auth: JSON.parse(res).key,
+                                id: JSON.parse(res).id
+                            })
+                            this.getApproveData(auth, id, url);
+                        })
+                })
+        })
     }
 
     getRequestData(auth, url, id) {
@@ -66,8 +69,9 @@ export default class Overtime extends Component {
             datetextColor: color.placeHolder,
             fromtextColor: color.placeHolder,
             totextColor: color.placeHolder,
+            refresh: !this.state.refresh,
         })
-       
+
     }
 
     getApproveData(auth, id, url) {
@@ -182,7 +186,7 @@ export default class Overtime extends Component {
                                     <View style={styOt.cardTitleContainer}>
                                         <Text style={styOt.cardTitle}>{po.approve.staff.cardTitle}</Text>
                                     </View>
-                                    <Text style = {{marginBottom: 5}}>{`${req["Employee_Name"]} (${req["Job Position"]})`}</Text>
+                                    <Text style={{ marginBottom: 5 }}>{`${req["Employee_Name"]} (${req["Job Position"]})`}</Text>
                                     <Text style={styOt.cardXSText}>From : {`${req['date_from']}`}</Text>
                                     <Text style={styOt.cardXSText}>To : {`${req['date_to']}`}</Text>
                                     <Text style={styOt.cardSText}>{po.approve.staff.label2}{`${req['hour']} : ${req['minute']} `}</Text>
@@ -215,6 +219,7 @@ export default class Overtime extends Component {
     }
 
     render() {
+        console.log("Reach OT Screen")
         if (this.state.url === null && this.state.auth === null && this.state.id === null) {
             return (
                 <Loading />
@@ -248,7 +253,9 @@ export default class Overtime extends Component {
                     renderScene={this._renderScene}
                     renderTabBar={this._renderTabBar}
                     onIndexChange={this._handleIndexChange}
-                    swipeEnabled = {false}
+                    swipeEnabled={false}
+                    lazy = {true}
+                    //initialRouteName = {'Request'}
                 />
             </Container>
         )

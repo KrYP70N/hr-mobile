@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar, AsyncStorage,} from 'react-native';
+import { Platform, StatusBar, AsyncStorage, } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 //import { Header, Left, Right, Container, Toast, Icon,} from 'native-base'
 import { View, Text, Content, Container, Toast, Tab, Header, Left, Right, Icon, Card, CardItem, Body, Row, Col, Button, } from 'native-base'
@@ -39,50 +39,52 @@ export default class TabViewExample extends Component {
         console.log("auth", this.state.auth)
         console.log("id", this.state.id)
         APIs.leaveStatusUpdate(this.state.url, this.state.auth, cid, 'cancel')
-        .then((res) => {
-            if(res.status === 'success') {
-                this.getApproveData(this.state.auth, this.state.id, this.state.url)
-                Toast.show({
-                    text: 'Cancel Success!',
-                    textStyle: {
-                        textAlign: 'center'
-                    },
-                    style: {
-                        backgroundColor: color.primary
-                    }
-                })
-            } else {
-                Toast.show({
-                    text: 'Request fail! Please try again in later',
-                    textStyle: {
-                        textAlign: 'center'
-                    },
-                    style: {
-                        backgroundColor: color.danger
-                    }
-                })
-            }
-        })
+            .then((res) => {
+                if (res.status === 'success') {
+                    this.getApproveData(this.state.auth, this.state.id, this.state.url)
+                    Toast.show({
+                        text: 'Cancel Success!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        }
+                    })
+                } else {
+                    Toast.show({
+                        text: 'Request fail! Please try again in later',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.danger
+                        }
+                    })
+                }
+            })
 
-        
+
     }
     componentDidMount() {
-        AsyncStorage.getItem('@hr:endPoint')
-            .then((res) => {
-                const url = JSON.parse(res).ApiEndPoint
-                this.setState({ url: JSON.parse(res).ApiEndPoint })
-                AsyncStorage.getItem('@hr:token')
-                    .then((res) => {
-                        const auth = JSON.parse(res).key;
-                        const id = JSON.parse(res).id;
-                        this.setState({
-                            auth: JSON.parse(res).key,
-                            id: JSON.parse(res).id
+        this.props.navigation.addListener('focus', () => {
+            AsyncStorage.getItem('@hr:endPoint')
+                .then((res) => {
+                    const url = JSON.parse(res).ApiEndPoint
+                    this.setState({ url: JSON.parse(res).ApiEndPoint })
+                    AsyncStorage.getItem('@hr:token')
+                        .then((res) => {
+                            const auth = JSON.parse(res).key;
+                            const id = JSON.parse(res).id;
+                            this.setState({
+                                auth: JSON.parse(res).key,
+                                id: JSON.parse(res).id
+                            })
+                            this.getRequestData(auth, url);
+                            this.getApproveData(auth, id, url);
                         })
-                        this.getRequestData(auth, url);
-                        this.getApproveData(auth, id, url);
-                    })
-            })
+                })
+        })
     }
 
     _handleIndexChange = index => this.setState({ index });
@@ -154,14 +156,11 @@ export default class TabViewExample extends Component {
     _renderScene = ({ route }) => {
         switch (route.key) {
             case 'first':
-                return(
-                    <LeaveRequest 
-                    auth = {this.state.auth}
-                    id = {this.state.id}
-                    url = {this.state.url}
-                    // leaveType = {this.state.leaveType}
-                    // startDate = {this.state.startDate}
-                    // selectedLeaveType = {this.state.selectedLeaveType}
+                return (
+                    <LeaveRequest
+                        auth={this.state.auth}
+                        id={this.state.id}
+                        url={this.state.url}
                     />
                 )
             case 'second':
@@ -174,15 +173,15 @@ export default class TabViewExample extends Component {
                                     <View style={styLeave.cardTitleContainer}>
                                         <Text style={styLeave.cardTitle}>{leave['Leave Type']}</Text>
                                     </View>
-                                    <Text style = {{marginBottom: 5}}>{`${leave["Employee_Name"]} (${leave["Job Position"]})`}</Text>
+                                    <Text style={{ marginBottom: 5 }}>{`${leave["Employee_Name"]} (${leave["Job Position"]})`}</Text>
                                     <Text style={styLeave.cardXSText}>{leave['date_from']} to {leave['date_to']}</Text>
                                     <Text style={styLeave.cardSText}>Leave left - {leave['number of days']} Days</Text>
                                     <Text style={styLeave.cardWarning}>Your request is pending</Text>
-                                    <Button 
-                                    style={styLeave.ButtonSecondary}
-                                    onPress={() => {
-                                        this.cancelOT(leave['Obj id'])
-                                    }}
+                                    <Button
+                                        style={styLeave.ButtonSecondary}
+                                        onPress={() => {
+                                            this.cancelOT(leave['Obj id'])
+                                        }}
                                     >
                                         <Text>Cancel Request</Text>
                                     </Button>
@@ -191,7 +190,7 @@ export default class TabViewExample extends Component {
                         </Card>
                     )
                 })
-        
+
                 return (
                     <Container>
                         <Content style={styLeave.container}>
@@ -199,10 +198,10 @@ export default class TabViewExample extends Component {
                         </Content>
                     </Container>
                 )
-                // return(
-                //     <LeavePending leaves = {this.state.leaves} navigation={this.props.navigation}/>
-                // )
-                
+            // return(
+            //     <LeavePending leaves = {this.state.leaves} navigation={this.props.navigation}/>
+            // )
+
             case 'third':
                 return <LeaveHistory />;
             default:
@@ -217,7 +216,7 @@ export default class TabViewExample extends Component {
             )
         }
 
-        
+
 
         return (
             <Container>
