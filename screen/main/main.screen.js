@@ -146,11 +146,8 @@ export default class Main extends Component {
 
     return (
       <Container>
-
+        <Heading navigation={this.props.navigation} />
         <Content>
-
-          <Heading navigation={this.props.navigation} />
-
           <TouchableOpacity style={styMain.banner}
             onPress={() => {
               this.props.navigation.navigate('Profile')

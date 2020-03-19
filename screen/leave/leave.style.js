@@ -71,7 +71,7 @@ export default StyleSheet.create({
         marginBottom: offset.o1
     },
     cardTitle: {
-        ...typo.cardTitle
+        ...typo.cardTitle,
     },
     cardRthLabel: {
         ...typo.cardRthLabel
@@ -128,7 +128,7 @@ export default StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
-    position:{fontSize: 14, marginTop: 3},
+    position:{fontSize: 14, marginTop: 3, color: color.placeHolder},
     leaveApproveCard: {
         backgroundColor: 'white',
         borderRadius: 5,
@@ -150,13 +150,12 @@ export default StyleSheet.create({
         marginTop: 10,
     },
     date:{
-        fontSize: 12,
-        marginTop: 15,
-        color: '#000'
+        fontSize: 14,
+        marginTop: 10,
+        color: '#656565'
     },
     leaveText:{
-        color: '#ff0000',
-        fontSize: 14,
+        fontSize: 16,
         marginTop: 5,
     },
     pickerIcn: {
@@ -165,4 +164,5 @@ export default StyleSheet.create({
         bottom: 0,
         color: color.placeHolder
     },
+
 })

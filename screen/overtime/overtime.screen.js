@@ -186,7 +186,7 @@ export default class Overtime extends Component {
                                     <View style={styOt.cardTitleContainer}>
                                         <Text style={styOt.cardTitle}>{po.approve.staff.cardTitle}</Text>
                                     </View>
-                                    <Text style={{ marginBottom: 5 }}>{`${req["Employee_Name"]} (${req["Job Position"]})`}</Text>
+                                    {/* <Text style={{ marginBottom: 5 }}>{`${req["Employee_Name"]} (${req["Job Position"]})`}</Text> */}
                                     <Text style={styOt.cardXSText}>From : {`${req['date_from']}`}</Text>
                                     <Text style={styOt.cardXSText}>To : {`${req['date_to']}`}</Text>
                                     <Text style={styOt.cardSText}>{po.approve.staff.label2}{`${req['hour']} : ${req['minute']} `}</Text>

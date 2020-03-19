@@ -140,9 +140,8 @@ export default class LeaveApprove extends Component {
                     renderItem={({ item, index }) =>
 
                         <View style={styles.leaveApproveCard}>
-                            <Text style={styles.name}>{item.Employee_Name}</Text>
-                            <Text style={styles.name}>{item["Job Position"]}</Text>
-                            {/* <Text style={styles.position}>Web Developer</Text> */}
+                            <Text style={styles.name}>{`${item.Employee_Name}`}</Text>
+                            <Text style = {styles.position}>{`(${item["Job Position"]})`}</Text>
                             <Text style={styles.date}>{`From ${item.date_from} To ${item.date_to}`}</Text>
                             <Text style={styles.leaveText}>{item["Leave Type"]}</Text>
                             <View style={styles.leaveApproveBtn}>

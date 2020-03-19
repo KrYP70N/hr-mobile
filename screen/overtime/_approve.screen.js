@@ -135,37 +135,37 @@ export default class OvertimeApprove extends Component {
                     </Left>
                     <Right></Right>
                 </Header>
-                    <FlatList
-                        data={this.state.overtimeList}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({ item, index }) =>
-                            <View style={styles.leaveApproveCard}>
-                                <Text style={styles.name}>{item.employee_name}</Text>
-                                <Text style={styles.position}>{item["Job Position"]}</Text>
-                                <Text style={styles.date}>{`From - ${item.overtime_date_from}`}</Text>
-                                <Text style={styles.otHour}>{`To     - ${item.overtime_date_to}`}</Text>
-                                <Text style={styles.otHour}>{`OT Hour - ${item.overtime_hours}:${item.overtime_minute}`}</Text>
-                                <Text style={styles.name}>{item["OT reason"]}</Text>
-                                <View style={styles.leaveApproveBtn}>
-                                    <TouchableOpacity
-                                        onPress={() => { this.sendApproveRejectOT(item.Overtime_id, this.state.auth, this.state.url, 'reject') }}
-                                    >
-                                        <View style={{ backgroundColor: color.placeHolder, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
-                                            <Text>Reject</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={() => { this.sendApproveRejectOT(item.Overtime_id, this.state.auth, this.state.url, 'confirm') }}
-                                    >
-                                        <View style={{ marginLeft: 10, backgroundColor: color.primary, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
-                                            <Text style={{ color: 'white' }}>Approve</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
+                <FlatList
+                    data={this.state.overtimeList}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item, index }) =>
+                        <View style={styles.leaveApproveCard}>
+                            <Text style={styles.name}>{item.employee_name}</Text>
+                            <Text style={styles.position}>{`(${item["Job Position"]})`}</Text>
+                            <Text style={styles.date}>{`From - ${item.overtime_date_from}`}</Text>
+                            <Text style={styles.toDate}>{`To     - ${item.overtime_date_to}`}</Text>
+                            <Text style={styles.otHour}>{`OT Hours - ${item.overtime_hours}:${item.overtime_minute}`}</Text>
+                            
+                            <View style={styles.leaveApproveBtn}>
+                                <TouchableOpacity
+                                    onPress={() => { this.sendApproveRejectOT(item.Overtime_id, this.state.auth, this.state.url, 'reject') }}
+                                >
+                                    <View style={{ backgroundColor: color.placeHolder, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
+                                        <Text>Reject</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => { this.sendApproveRejectOT(item.Overtime_id, this.state.auth, this.state.url, 'confirm') }}
+                                >
+                                    <View style={{ marginLeft: 10, backgroundColor: color.primary, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
+                                        <Text style={{ color: 'white' }}>Approve</Text>
+                                    </View>
+                                </TouchableOpacity>
                             </View>
-                        }
-                        keyExtractor={(item, index) => index.toString()}
-                    />
+                        </View>
+                    }
+                    keyExtractor={(item, index) => index.toString()}
+                />
             </View>
         )
     }
