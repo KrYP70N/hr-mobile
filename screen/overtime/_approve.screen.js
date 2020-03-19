@@ -141,7 +141,7 @@ export default class OvertimeApprove extends Component {
                         renderItem={({ item, index }) =>
                             <View style={styles.leaveApproveCard}>
                                 <Text style={styles.name}>{item.employee_name}</Text>
-                                <Text style={styles.position}>Web Developer</Text>
+                                <Text style={styles.position}>{item["Job Position"]}</Text>
                                 <Text style={styles.date}>{`From - ${item.overtime_date_from}`}</Text>
                                 <Text style={styles.otHour}>{`To     - ${item.overtime_date_to}`}</Text>
                                 <Text style={styles.otHour}>{`OT Hour - ${item.overtime_hours}:${item.overtime_minute}`}</Text>

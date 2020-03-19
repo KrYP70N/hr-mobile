@@ -67,20 +67,7 @@ export default class Overtime extends Component {
             fromtextColor: color.placeHolder,
             totextColor: color.placeHolder,
         })
-        // return (
-        //     <Request
-        //         auth={auth}
-        //         id={id}
-        //         url={url}
-        //         date='OT Date'
-        //         fromTime='From Time'
-        //         toTime='To Time'
-        //         datetextColor={color.placeHolder}
-        //         fromtextColor={color.placeHolder}
-        //         totextColor={color.placeHolder}
-        //     //data = {this.state.data}
-        //     />
-        // )
+       
     }
 
     getApproveData(auth, id, url) {
@@ -195,6 +182,7 @@ export default class Overtime extends Component {
                                     <View style={styOt.cardTitleContainer}>
                                         <Text style={styOt.cardTitle}>{po.approve.staff.cardTitle}</Text>
                                     </View>
+                                    <Text style = {{marginBottom: 5}}>{`${req["Employee_Name"]} (${req["Job Position"]})`}</Text>
                                     <Text style={styOt.cardXSText}>From : {`${req['date_from']}`}</Text>
                                     <Text style={styOt.cardXSText}>To : {`${req['date_to']}`}</Text>
                                     <Text style={styOt.cardSText}>{po.approve.staff.label2}{`${req['hour']} : ${req['minute']} `}</Text>
@@ -227,7 +215,6 @@ export default class Overtime extends Component {
     }
 
     render() {
-
         if (this.state.url === null && this.state.auth === null && this.state.id === null) {
             return (
                 <Loading />

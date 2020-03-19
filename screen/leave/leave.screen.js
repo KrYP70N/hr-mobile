@@ -174,6 +174,7 @@ export default class TabViewExample extends Component {
                                     <View style={styLeave.cardTitleContainer}>
                                         <Text style={styLeave.cardTitle}>{leave['Leave Type']}</Text>
                                     </View>
+                                    <Text style = {{marginBottom: 5}}>{`${leave["Employee_Name"]} (${leave["Job Position"]})`}</Text>
                                     <Text style={styLeave.cardXSText}>{leave['date_from']} to {leave['date_to']}</Text>
                                     <Text style={styLeave.cardSText}>Leave left - {leave['number of days']} Days</Text>
                                     <Text style={styLeave.cardWarning}>Your request is pending</Text>
