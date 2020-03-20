@@ -8,7 +8,7 @@ import History from './_history.screen'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import Loading from '../../components/loading.component'
-import { AsyncStorage } from 'react-native'
+import { AsyncStorage, Platform, StatusBar } from 'react-native'
 import { TabView, TabBar } from 'react-native-tab-view';
 import APIs from '../../controllers/api.controller';
 
@@ -228,8 +228,10 @@ export default class Overtime extends Component {
 
         return (
             <Container>
+                <Content>
                 <Header style={{
-                    backgroundColor: color.light
+                    backgroundColor: color.light,
+                    marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                 }}>
                     <Left style={{
                         display: 'flex',
@@ -257,6 +259,7 @@ export default class Overtime extends Component {
                     lazy = {true}
                     //initialRouteName = {'Request'}
                 />
+                </Content>
             </Container>
         )
     }

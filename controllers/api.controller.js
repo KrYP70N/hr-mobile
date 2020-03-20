@@ -11,6 +11,7 @@ export default class APIs {
 
     // auth token
     static Token(url, db, user, password) {
+        console.log(url, db, user, password)
         return axios.create({
             headers: {
                 db: db,
@@ -22,15 +23,17 @@ export default class APIs {
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
 
     // token refresh
     static RefreshToken(url, token) {
+        console.log(url, token)
         return axios.create({
             headers: {
-                access_token: token
+                'Authorization': token
             }
         }).get(`${url}/refresh`)
             .then(function (res) {
@@ -45,7 +48,7 @@ export default class APIs {
     static Level(url, token, id) {
         return axios.create({
             headers: {
-                access_token: token
+                'Authorization': token
             }
         }).get(`${url}/employee/level/${id}`)
             .then(function (res) {
@@ -60,7 +63,7 @@ export default class APIs {
     static Time(url, token) {
         return axios.create({
             headers: {
-                access_token: token
+                'Authorization': token
             }
         }).get(`${url}/getTime`)
             .then(function (res) {
@@ -75,7 +78,7 @@ export default class APIs {
     static Profile(url, auth, id) {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/user/profile/${id}`)
             .then(function (res) {
@@ -112,7 +115,7 @@ export default class APIs {
     static Checkin(url, auth, id, coord) {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
@@ -127,7 +130,7 @@ export default class APIs {
     static Checkout(url, auth, id, coord) {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).post(coord === undefined ? `${url}/checkout/${id}` : `${url}/checkout/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
@@ -142,7 +145,7 @@ export default class APIs {
     static CheckStatus(id, auth, url) {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/checkinout/status/${id}`)
             .then(function (res) {
@@ -157,7 +160,7 @@ export default class APIs {
     static MonthlyAttendance(url, auth, id, month) {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/attendance/${month}/${id}`)
             .then(function (res) {
@@ -172,7 +175,7 @@ export default class APIs {
     static AttendanceSummary(url, auth, id) {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/attendance/summary/${id}`)
             .then(function (res) {
@@ -187,7 +190,7 @@ export default class APIs {
     static OTRequest(id, auth, url, request_date_from, request_date_to, description) {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).post(`${url}/overtime/${id}?request_date_from=${request_date_from}&request_date_to=${request_date_to}&description=${description}`)
             .then(function (res) {
@@ -203,7 +206,7 @@ export default class APIs {
     static OTPending(id, auth, url) {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/list/OTRequest/${id}`)
             .then(function (res) {
@@ -218,7 +221,7 @@ export default class APIs {
     static OTUpdateStatus(otID, auth, url, status) {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).post(`${url}/approve/overtime/${otID}?status=${status}`)
             .then(function (res) {
@@ -233,7 +236,7 @@ export default class APIs {
     static OTMonthly(url, auth, id, year, month) {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/list/overtime/${id}/${year}/${month}`)
             .then(function (res) {
@@ -248,7 +251,7 @@ export default class APIs {
     static OTApproval(url, auth, id) {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/approvelist/overtime/${id}`)
             .then(function (res) {
@@ -264,7 +267,7 @@ export default class APIs {
     static getLeaveType = (auth, url) => {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/leave/types`)
             .then(function (res) {
@@ -276,10 +279,10 @@ export default class APIs {
     }
 
     // request leave
-    static requestLeave(auth, url, id, leaveType, from, to, dayType, description){
+    static requestLeave(auth, url, id, leaveType, from, to, dayType, description, file){
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`)
             .then(function (res) {
@@ -296,7 +299,7 @@ export default class APIs {
     static LeaveMonthly(url, auth, id, year, month) {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/list/leaves/${id}/${year}/${month}`)
             .then(function (res) {
@@ -311,7 +314,7 @@ export default class APIs {
     static leaveApproval(url, auth, id) {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/list/leaveRequest/${id}`)
             .then(function (res) {
@@ -326,7 +329,7 @@ export default class APIs {
     static yearPayroll = (url, auth, id, year) => {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/payroll/${id}/${year}`)
             .then(function (res) {
@@ -342,7 +345,7 @@ export default class APIs {
         console.log("Leave Cancel URL:::", `${url}/approve/leave/${leaveID}?status=${status}`)
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).post(`${url}/approve/leave/${leaveID}?status=${status}`)
             .then(function (res) {
@@ -359,7 +362,7 @@ export default class APIs {
     static getPaySlip = (slipid, auth, url) => {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/payroll/${slipid}`)
             .then(function (res) {
@@ -374,7 +377,7 @@ export default class APIs {
     static downloadPaySlip = (url, auth, slipid) => {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/download/payroll/${slipid}`)
             .then(function (res) {
@@ -389,7 +392,7 @@ export default class APIs {
     static getLeaveRequest = (auth, url, id) => {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).get(`${url}/list/leaveRequest/${id}`)
             .then(function (res) {
@@ -404,13 +407,31 @@ export default class APIs {
     static leaveHistory = (url, auth, id, year, month) => {
         return axios.create({
             headers: {
-                access_token: auth
+                'Authorization': auth
             }
         }).post(`${url}/list/leaveRequest/${id}/year/month`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // post receivedPayroll
+    static sendReceived = (url, auth, payrollID) => {
+        console.log(url, auth, payrollID)
+        axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).post(`${url}/payroll/receive/${payrollID}&status=received`)
+            .then(function (res) {
+                console.log('success')
+                return { data: res.data, status: 'success' }
+            })
+            .catch(function (error) {
+                console.log('error')
                 return { error: error, status: 'fail' }
             })
     }

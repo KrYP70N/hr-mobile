@@ -65,9 +65,9 @@ function Navigation() {
         <Drawer.Screen name='Login' component={Login}
           options={{
             headerShown: false,
-            navigationOptions: ({ navigation }) => ({
-              drawerLockMode: 'locked-closed'
-            })
+            navigationOptions: () => ({
+              drawerLockMode: 'locked-open',
+            }),
           }}
         />
         <Drawer.Screen name='Main' component={Main} />

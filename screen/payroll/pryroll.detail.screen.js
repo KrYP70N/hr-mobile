@@ -17,7 +17,16 @@ export default class PayrollDetail extends Component {
         this.state = {
             url: this.props.route.params.url,
             auth: this.props.route.params.auth,
-            data: null
+            data: null,
+            receive: null
+        }
+
+        this.slipReceived = () => {
+            // console.log(this.state.url, this.state.auth, this.props.route.params.slipid)
+            APIs.sendReceived(this.state.url, this.state.auth, this.props.route.params.slipid)
+            .then((res) => {
+                console.log(res.status)
+            })
         }
     }
 
@@ -31,7 +40,8 @@ export default class PayrollDetail extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     this.setState({
-                        data: res.data
+                        data: res.data,
+                        receive: res.data[0]['state']
                     })
                 } else {
                     Toast.show({
@@ -53,7 +63,6 @@ export default class PayrollDetail extends Component {
     
 
     render() {
-
         if (this.state.data === null) {
             return (
                 <Loading />
@@ -112,9 +121,20 @@ export default class PayrollDetail extends Component {
 
 
                 </Content>
-                <Button style={styPayroll.stickyButton}>
-                    <Text>Download Payslip</Text>
-                </Button>
+                <View style={styPayroll.floatingButton}>
+                    <Button style={[styPayroll.stickyButton]}>
+                        <Text>Download</Text>
+                    </Button>
+                    <Button style={[styPayroll.stickyButton, {
+                        borderLeftWidth: 1,
+                        borderColor: '#fff',
+                        display: this.state.receive === 'receive' ?  'flex' : 'none'
+                    }]} 
+                    onPress={this.slipReceived}
+                    >
+                        <Text>Receive</Text>
+                    </Button>
+                </View>
             </Container>
         )
     }

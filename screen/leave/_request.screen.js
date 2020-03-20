@@ -31,6 +31,7 @@ export default class LeaveRequest extends Component {
             startDate: '',
             endDate: '',
             isEndDateVisible: false,
+            binary: null
         }
 
     }
@@ -43,12 +44,12 @@ export default class LeaveRequest extends Component {
 
     submit(auth, id, url) {
         console.log(this.state.selectedLeaveType);
-        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description)
+        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
             .then((res) => {
-               
+
                 if (res.data.error == false) {
                     console.log("Success Request Leave::", res.data)
-                    this.setState({refresh: !this.state.refresh, description: null})
+                    this.setState({ refresh: !this.state.refresh, description: null })
                     this.getRequestData(auth, url);
                     Toast.show({
                         text: res.data.message,
@@ -60,7 +61,7 @@ export default class LeaveRequest extends Component {
                         }
                     })
                 } else {
-                    this.setState({refresh: !this.state.refresh, description: null})
+                    this.setState({ refresh: !this.state.refresh, description: null })
                     this.getRequestData(auth, url);
                     Toast.show({
                         //text: res.data.message,
@@ -85,7 +86,7 @@ export default class LeaveRequest extends Component {
                     // })
                 }
 
-               
+
             })
     }
 
@@ -145,6 +146,8 @@ export default class LeaveRequest extends Component {
 
     render() {
 
+        console.log(this.state.file)
+
         if (this.state.startDate === null || this.state.endDate === null) {
             return (
                 <Loading />
@@ -153,8 +156,8 @@ export default class LeaveRequest extends Component {
 
         return (
             <Container>
-                <Content style={styLeave.container}>
-                    <KeyboardAvoidingView behavior='height'>
+                    <Content style={styLeave.container}>
+            <KeyboardAvoidingView behavior='padding'>
                         <Form>
                             <Item picker fixedLabel last>
                                 <Label>
@@ -185,9 +188,9 @@ export default class LeaveRequest extends Component {
                                     onCancel={this.hideDatePicker}
 
                                 />
-                                <View style={{  flexDirection: 'row',marginTop: 20, justifyContent: 'space-between', alignItems: 'center', paddingLeft: 15}}>
-                                    <Text style = {{color: color.placeHolder}}>Start Date</Text>
-                                    <View style={{ flexDirection: 'row', width : 150}}>
+                                <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-between', alignItems: 'center', paddingLeft: 15 }}>
+                                    <Text style={{ color: color.placeHolder }}>Start Date</Text>
+                                    <View style={{ flexDirection: 'row', width: 150 }}>
                                         <Text style={{ paddingLeft: 10, }}>{this.state.startDate}</Text>
                                         <Icon name={po.request.datePicker.icon} style={styLeave.pickerIcn} onPress={() => { this.showDatePicker() }} />
                                     </View>
@@ -203,9 +206,9 @@ export default class LeaveRequest extends Component {
                                     onCancel={this.hideEndDatePicker}
 
                                 />
-                                <View style={{  flexDirection: 'row',marginTop: 20, justifyContent: 'space-between', alignItems: 'center', paddingLeft: 15}}>
-                                    <Text style = {{color: color.placeHolder}}>End Date</Text>
-                                    <View style={{ flexDirection: 'row', width : 150}}>
+                                <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-between', alignItems: 'center', paddingLeft: 15 }}>
+                                    <Text style={{ color: color.placeHolder }}>End Date</Text>
+                                    <View style={{ flexDirection: 'row', width: 150 }}>
                                         <Text style={{ paddingLeft: 10, }}>{this.state.endDate}</Text>
                                         <Icon name={po.request.datePicker.icon} style={styLeave.pickerIcn} onPress={() => { this.showEndDatePicker() }} />
                                     </View>
@@ -251,7 +254,7 @@ export default class LeaveRequest extends Component {
                                                 <Icon
                                                     name='ios-close-circle-outline'
                                                     style={styLeave.closeImage}
-                                                    onPress={() => this.setState({ file: null })}
+                                                    onPress={() => this.setState({ file: null, binary: null })}
                                                 />
                                             </View>
                                     }
@@ -262,13 +265,19 @@ export default class LeaveRequest extends Component {
                                         onPress={() => {
                                             DocumentPicker.getDocumentAsync()
                                                 .then((res) => {
-                                                    this.setState({
-                                                        file: res
-                                                    })
-                                                    FileSystem.readAsStringAsync(res.uri, { encoding: FileSystem.EncodingType.Base64 })
-                                                        .then((res) => {
-                                                            console.log('testing ...')
+                                                    if (res.type === 'success') {
+                                                        this.setState({
+                                                            file: res
                                                         })
+                                                        FileSystem.readAsStringAsync(res.uri, {
+                                                            encoding: FileSystem.EncodingType.Base64
+                                                        })
+                                                            .then((res) => {
+                                                                this.setState({
+                                                                    binary: res
+                                                                })
+                                                            })
+                                                    }
                                                 })
                                         }}
                                     >
@@ -278,11 +287,11 @@ export default class LeaveRequest extends Component {
                             </Row>
                         </Form>
 
-                    </KeyboardAvoidingView>
-                </Content>
-                <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
-                    <Text style={styLeave.buttonText}>Submit</Text>
-                </Button>
+                        </KeyboardAvoidingView>
+                    </Content>
+                    <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
+                        <Text style={styLeave.buttonText}>Submit</Text>
+                    </Button>
             </Container>
         );
 

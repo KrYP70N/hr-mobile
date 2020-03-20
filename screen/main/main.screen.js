@@ -88,8 +88,8 @@ export default class Main extends Component {
                 let date = new Date()
                 let exp_date = moment(date).add(60000, 'seconds')
                 AsyncStorage.setItem('@hr:token', JSON.stringify({
-                    // key: 'Bearer '+ res.data.access_token,
-                    key: res.data.access_token,
+                    key: 'Bearer '+ res.data.access_token,
+                    // key: res.data.access_token,
                     id: res.data.employee_id,
                     exp: exp_date
                 }))
@@ -137,7 +137,6 @@ export default class Main extends Component {
   }
 
   render() {
-
     if (this.state.loading === true || this.state.profile === null) {
       return (
         <Loading info='request profile data ...'/>

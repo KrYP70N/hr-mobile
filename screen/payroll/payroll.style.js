@@ -104,12 +104,14 @@ export default StyleSheet.create({
         marginBottom: offset.o2,
         color: color.secondary
     },
+    floatingButton: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
     stickyButton: {
         ...button.primary,
-        width: '100%',
-        position: 'absolute',
-        bottom: 0,
-        left: 0
+        flex: 1,
+        borderRadius: 0
     },
     noData: {
         padding: offset.o3,
