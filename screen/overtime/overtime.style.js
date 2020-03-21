@@ -80,7 +80,8 @@ export default {
     cardSText: {
         ...typo.parabraph,
         color: color.placeHolder,
-        marginBottom: offset.o1
+        marginBottom: offset.o1,
+        marginTop: offset.oh,
     },
     cardWarning: {
         ...typo.parabraph,
@@ -115,7 +116,7 @@ export default {
         fontSize: 16,
         fontWeight: 'bold',
     },
-    position:{fontSize: 14, marginTop: 3},
+    position:{fontSize: 14, marginTop: 3, color: color.placeHolder},
     leaveApproveCard: {
         backgroundColor: 'white',
         borderRadius: 5,
@@ -137,14 +138,17 @@ export default {
         marginTop: 10,
     },
     date:{
-        fontSize: 16,
+        fontSize: 14,
         marginTop: 15,
-        color: '#000'
+        color: '#656565'
+    },
+    toDate:{
+        fontSize: 14,
+        color: '#656565'
     },
     otHour: {
       fontSize: 16,
       marginTop: 5,
-      //color: color.placeHolder,
     },
    
 }
