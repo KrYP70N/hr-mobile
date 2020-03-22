@@ -50,7 +50,7 @@ export default class Auth extends Component {
                             loading: false
                         })
                         Toast.show({
-                            text: 'Invalid security key!',
+                            text: 'Invalid sit key!',
                             textStyle: {
                                 textAlign: 'center'  
                             },
@@ -103,10 +103,9 @@ export default class Auth extends Component {
                             <Image source={require('../../assets/upload/logo.png')} styl/>
                             <Text style={styAuth.title}>Verification</Text>
                             <Item fixedLabel style={styAuth.item}>
-                                <Label style={styAuth.label}>Security Key</Label>
+                                <Label style={styAuth.label}>Sit Key</Label>
                                 <Input 
-                                style={styAuth.input} 
-                                keyboardType='numeric'
+                                style={styAuth.input}
                                 onChangeText={(data) => this.keyHandle(data)}
                                 secureTextEntry={this.state.secure}
                                 />
