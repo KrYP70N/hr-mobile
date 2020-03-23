@@ -33,7 +33,6 @@ export default class LeaveRequest extends Component {
             isEndDateVisible: false,
             binary: null
         }
-
     }
 
     dayType = (data) => {
@@ -43,10 +42,36 @@ export default class LeaveRequest extends Component {
     }
 
     submit(auth, id, url) {
-        console.log(this.state.selectedLeaveType);
-        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
-            .then((res) => {
+        let fd = new FormData()
 
+        fd.append('attac', {
+            uri: this.state.file,
+            type: 'application/pdf',
+            name: Math.floor(Math.random() * 100000)
+        })
+
+        fetch(`${url}/leave/${id}/${auth}`, {
+            method: 'POST',
+            headers: new Headers({
+                'Authorization': auth
+            }),
+            body: JSON.stringify({
+                from_date: this.state.startDate,
+                to_date: this.state.endDate,
+                half_day: this.state.dayType,
+                description: description,
+                attac: fd
+            })
+        })
+        .then(function (res) {
+            console.log(res, 'success')
+        })
+        .catch(function (error) {
+            console.log(error, 'error')
+        })
+
+        /*APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.file)
+            .then((res) => {
                 if (res.data.error == false) {
                     console.log("Success Request Leave::", res.data)
                     this.setState({ refresh: !this.state.refresh, description: null })
@@ -73,21 +98,9 @@ export default class LeaveRequest extends Component {
                             backgroundColor: color.danger
                         }
                     })
-                    // this.setState({refresh: !this.state.refresh})
-                    // this.getRequestData(url,id)
-                    // Toast.show({
-                    //     text: 'Request Fail! Please try again in later.',
-                    //     textStyle: {
-                    //         textAlign: 'center'
-                    //     },
-                    //     style: {
-                    //         backgroundColor: color.danger
-                    //     }
-                    // })
                 }
-
-
-            })
+            })*/
+            
     }
 
     getRequestData(auth, url) {
@@ -266,6 +279,7 @@ export default class LeaveRequest extends Component {
                                             DocumentPicker.getDocumentAsync()
                                                 .then((res) => {
                                                     if (res.type === 'success') {
+                                                        console.log(res)
                                                         this.setState({
                                                             file: res
                                                         })

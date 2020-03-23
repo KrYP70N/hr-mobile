@@ -1,3 +1,4 @@
+import React from 'react'
 import axios from 'axios'
 
 export default class APIs {
@@ -280,19 +281,53 @@ export default class APIs {
 
     // request leave
     static requestLeave(auth, url, id, leaveType, from, to, dayType, description, file){
-        return axios.create({
-            headers: {
-                'Authorization': auth
-            }
-        }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`)
-            .then(function (res) {
-                console.log("Response Data", res.data)
-                return { data: res.data.data, status: 'success' }
+        console.log(file)
+        // return axios.create({
+        //     headers: {
+        //         'Authorization': auth,
+        //         'Content-Type' : 'multipart/form-data'
+        //     }
+        // }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}&attac=${file.attac}`)
+        //     .then(function (res) {
+        //         console.log("Response Data", res.data)
+        //         return { data: res.data.data, status: 'success' }
+        //     })
+        //     .catch(function (error) {
+        //         console.log("Response Data", error)
+        //         return { error: error, status: 'fail' }
+        //     })
+
+        const data = new FormData()
+        data.append('attac', {
+            uri: file,
+            type: 'application/pdf',
+            name: Math.floor(Math.random() * 100000)
+        })
+
+        console.log(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`)
+
+        return fetch(`${url}/leave/${id}/${leaveType}`, {
+            method: 'POST',
+            headers: new Headers({
+                'Authorization': auth,
+                'Content-Type' : 'multipart/form-data'
+            }),
+            body: JSON.stringify({
+                from_date: from,
+                to_date: to,
+                half_day: dayType,
+                description: description,
+                attac: data
             })
-            .catch(function (error) {
-                console.log("Response Data", error)
-                return { error: error, status: 'fail' }
-            })
+        })
+        .then(function (res) {
+            console.log("Response Data", res.data)
+            return { data: res.data.data, status: 'success' }
+        })
+        .catch(function (error) {
+            console.log("Response Data", error)
+            return { error: error, status: 'fail' }
+        })
     }
 
     // leave monthly
