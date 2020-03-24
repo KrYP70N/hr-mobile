@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Navigation from './router/navigation'
 
 import Loading from './components/loading.component'
+import { BackHandler } from 'react-native';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -25,6 +26,7 @@ export default class App extends React.Component {
     setTimeout(() => {
       this.setState({ isReady: true });
     }, 4000)
+
   }
 
   render() {
@@ -34,7 +36,9 @@ export default class App extends React.Component {
       )
     }
     
-    <img src=""></img>
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      console.log(this.props)
+    })
 
     return (
       <Root>
