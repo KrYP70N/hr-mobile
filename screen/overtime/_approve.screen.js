@@ -166,6 +166,22 @@ export default class OvertimeApprove extends Component {
                     }
                     keyExtractor={(item, index) => index.toString()}
                 />
+                <View style={{
+                    display: this.state.overtimeList.length === 0 ? 'none' : 'flex',
+                    alignItems: "center",
+                    position: "absolute",
+                    top: 100,
+                    width: '100%',
+                    opacity: this.state.overtimeList.length === 0 ? 1 : 0
+                }}>
+                    <Icon name='ios-information-circle-outline' style={{
+                        color: color.placeHolder,
+                        fontSize: 40
+                    }}/>
+                    <Text style={{
+                        color: color.placeHolder
+                    }}>You have no overtime approval list!</Text>
+                </View>
             </View>
         )
     }

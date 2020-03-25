@@ -160,6 +160,22 @@ export default class LeaveApprove extends Component {
                     }
                     keyExtractor={(item, index) => index.toString()}
                 />
+                <View style={{
+                    display: this.state.leaveLists.length === 0 ? 'flex' : 'none',
+                    alignItems: "center",
+                    position: "absolute",
+                    top: 100,
+                    width: '100%',
+                    opacity: this.state.leaveLists.length === 0 ? 1 : 0
+                }}>
+                    <Icon name='ios-information-circle-outline' style={{
+                        color: color.placeHolder,
+                        fontSize: 40
+                    }}/>
+                    <Text style={{
+                        color: color.placeHolder
+                    }}>You have no leave approval list!</Text>
+                </View>
             </View>
         )
     }
