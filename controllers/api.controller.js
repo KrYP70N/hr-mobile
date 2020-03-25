@@ -19,14 +19,15 @@ export default class APIs {
                 login: user,
                 password: password
             }
-        }).get(`${url}/api/auth/token`)
-        // }).get(`http://18.136.2.16:8071/api/auth/token`)
+        // }).get(`${url}/api/auth/token`)
+        }).get(`http://18.136.2.16:8071/api/auth/token`)
             .then(function (res) {
                 console.log(res.data)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
                 console.log(`${url}/api/auth/token`)
+                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
