@@ -228,8 +228,7 @@ export default class Overtime extends Component {
 
         return (
             <Container>
-                <Content>
-                <Header style={{
+            <Header style={{
                     backgroundColor: color.light,
                     marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                 }}>
@@ -249,17 +248,16 @@ export default class Overtime extends Component {
                     </Left>
                     <Right></Right>
                 </Header>
-
-                <TabView
-                    navigationState={this.state}
-                    renderScene={this._renderScene}
-                    renderTabBar={this._renderTabBar}
-                    onIndexChange={this._handleIndexChange}
-                    swipeEnabled={false}
-                    lazy = {true}
-                    //initialRouteName = {'Request'}
-                />
-                </Content>
+                
+            <TabView
+                navigationState={this.state}
+                renderScene={this._renderScene}
+                renderTabBar={this._renderTabBar}
+                onIndexChange={this._handleIndexChange}
+                swipeEnabled={false}
+                lazy = {true}
+                //initialRouteName = {'Request'}
+            />
             </Container>
         )
     }

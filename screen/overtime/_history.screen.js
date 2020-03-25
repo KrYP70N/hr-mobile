@@ -225,22 +225,6 @@ export default class History extends Component {
                                 </Item>
                             </Col>
                         </Row>
-                        <Item picker style={styOt.picker}>
-                            <Label style={styOt.label}>
-                                <Text>Status</Text>
-                            </Label>
-                            <Picker mode="dialog" 
-                                placeholder="Status"
-                                textStyle={{color: color.primary}}
-                                selectedValue={this.state.status}
-                                onValueChange={this.changeStatus.bind(this)}
-                            >
-                                <Picker.Item label="all" value="all"/>
-                                <Picker.Item label="confirm" value="confirm"/>
-                                <Picker.Item label="refuse" value="refuse"/>
-                                <Picker.Item label="cancel" value="cancel"/>
-                            </Picker>
-                        </Item>
                         <Button style={styOt.buttonPrimary}
                             onPress={this.getOT}
                         >

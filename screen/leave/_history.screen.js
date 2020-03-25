@@ -214,7 +214,7 @@ export default class LeaveHistory extends Component {
                                 </Item>
                             </Col>
                         </Row>
-                        <Item picker style={styLeave.picker}>
+                        {/* <Item picker style={styLeave.picker}>
                             <Label style={styLeave.label}>
                                 <Text style={styLeave.placeholder}>Status</Text>
                             </Label>
@@ -229,7 +229,7 @@ export default class LeaveHistory extends Component {
                                 <Picker.Item label="reject" value="reject"/>
                                 <Picker.Item label="cancel" value="cancel"/>
                             </Picker>
-                        </Item>
+                        </Item> */}
                         <Button 
                         style={styLeave.buttonPrimary}
                         onPress={() => this.updateLeave()}
