@@ -20,6 +20,7 @@ export default class APIs {
             }
         }).get(`${url}/api/auth/token`)
             .then(function (res) {
+                console.log(res)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
@@ -275,7 +276,6 @@ export default class APIs {
 
     // request leave
     static requestLeave(auth, url, id, leaveType, from, to, dayType, description, file) {
-        console.log(file.length, '<<<<<')
         let fd = new FormData()
         
         for(let i=0; i<file.length; i++) {

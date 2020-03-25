@@ -211,11 +211,11 @@ export default class CheckInOut extends Component {
         if (
           geolib.isPointWithinRadius(
             this.state.officeCoord,
-            this.state.officeCoord,
-            // {
-            //   latitude: this.state.location['latitude'],
-            //   longitude: this.state.location['longitude'],
-            // },
+            // this.state.officeCoord,
+            {
+              latitude: this.state.location['latitude'],
+              longitude: this.state.location['longitude'],
+            },
             this.state.radius
           )
         ) {

@@ -25,7 +25,22 @@ export default class PayrollDetail extends Component {
             // console.log(this.state.url, this.state.auth, this.props.route.params.slipid)
             APIs.sendReceived(this.state.url, this.state.auth, this.props.route.params.slipid)
             .then((res) => {
-                console.log(res.status)
+                Toast.show({
+                    text: 'Submit success!',
+                    textStyle: {
+                        textAlign: 'center'
+                    },
+                    style: {
+                        backgroundColor: color.primary
+                    }
+                })
+            })
+        }
+
+        this.downloadPaySlip = () => {
+            APIs.downloadPaySlip(url, auth, this.props.route.params.slipid)
+            .then((res) => {
+                WebBrowser.openBrowserAsync(res.data.data['Payslip PDF'][0])
             })
         }
     }
@@ -122,7 +137,11 @@ export default class PayrollDetail extends Component {
 
                 </Content>
                 <View style={styPayroll.floatingButton}>
-                    <Button style={[styPayroll.stickyButton]}>
+                    <Button style={[styPayroll.stickyButton]}
+                        onPress={
+                            this.downloadSlip
+                        }
+                    >
                         <Text>Download</Text>
                     </Button>
                     <Button style={[styPayroll.stickyButton, {
