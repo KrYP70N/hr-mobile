@@ -96,7 +96,7 @@ export default class APIs {
                 let profileImage = res.data.data['Profile Picture']
 
 
-                
+
                 let infoCollection = {
                     "Profile Image": profileImage,
                     "General Information": JSON.parse(dataArray[0]),
@@ -272,6 +272,7 @@ export default class APIs {
             }
         }).get(`${url}/leave/types`)
             .then(function (res) {
+                console.log(res)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
@@ -280,54 +281,47 @@ export default class APIs {
     }
 
     // request leave
-    static requestLeave(auth, url, id, leaveType, from, to, dayType, description, file){
+    static requestLeave(auth, url, id, leaveType, from, to, dayType, description, file) {
         console.log(file)
-        // return axios.create({
-        //     headers: {
-        //         'Authorization': auth,
-        //         'Content-Type' : 'multipart/form-data'
-        //     }
-        // }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}&attac=${file.attac}`)
-        //     .then(function (res) {
-        //         console.log("Response Data", res.data)
-        //         return { data: res.data.data, status: 'success' }
-        //     })
-        //     .catch(function (error) {
-        //         console.log("Response Data", error)
-        //         return { error: error, status: 'fail' }
-        //     })
-
-        const data = new FormData()
-        data.append('attac', {
-            uri: file,
-            type: 'application/pdf',
-            name: Math.floor(Math.random() * 100000)
-        })
-
-        console.log(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`)
-
-        return fetch(`${url}/leave/${id}/${leaveType}`, {
-            method: 'POST',
-            headers: new Headers({
-                'Authorization': auth,
-                'Content-Type' : 'multipart/form-data'
-            }),
-            body: JSON.stringify({
-                from_date: from,
-                to_date: to,
-                half_day: dayType,
-                description: description,
-                attac: data
-            })
-        })
-        .then(function (res) {
-            console.log("Response Data", res.data)
-            return { data: res.data.data, status: 'success' }
-        })
-        .catch(function (error) {
-            console.log("Response Data", error)
-            return { error: error, status: 'fail' }
-        })
+    //     return axios.create({
+    //         headers: {
+    //             'Authorization': auth
+    //         },
+    //         data: {
+    //             attac: file
+    //         }
+    //     }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`)
+    //         .then(function (res) {
+    //             console.log("Response Data", res.data)
+    //             return { data: res.data.data, status: 'success' }
+    //         })
+    //         .catch(function (error) {
+    //             console.log("Response Data", error)
+    //             return { error: error, status: 'fail' }
+    //         })
+    // }
+    
+    // // method 2
+    let fd = new FormData()
+    fd.append(
+        'attac' , file
+    )
+    fd.append(
+        'attac2' , file
+    )
+    return axios.post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`,
+        fd, {
+            headers: {
+                'Authorization': auth
+            }
+        }
+    )
+    .then(function(res) {
+        return { data: res.data.data, status: 'success' }
+    })
+    .catch(function (error) {
+        return { error: error, status: 'fail' }
+    })
     }
 
     // leave monthly

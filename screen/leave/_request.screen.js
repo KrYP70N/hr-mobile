@@ -42,42 +42,43 @@ export default class LeaveRequest extends Component {
     }
 
     submit(auth, id, url) {
-        let fd = new FormData()
+        // let fd = new FormData()
 
-        fd.append('attac', {
-            uri: this.state.file,
-            type: 'application/pdf',
-            name: Math.floor(Math.random() * 100000)
-        })
+        // fd.append('attac', {
+        //     uri: this.state.file,
+        //     type: 'application/pdf',
+        //     name: Math.floor(Math.random() * 100000)
+        // })
 
-        fetch(`${url}/leave/${id}/${auth}`, {
-            method: 'POST',
-            headers: new Headers({
-                'Authorization': auth
-            }),
-            body: JSON.stringify({
-                from_date: this.state.startDate,
-                to_date: this.state.endDate,
-                half_day: this.state.dayType,
-                description: description,
-                attac: fd
-            })
-        })
-        .then(function (res) {
-            console.log(res, 'success')
-        })
-        .catch(function (error) {
-            console.log(error, 'error')
-        })
+        // fetch(`${url}/leave/${id}/${auth}`, {
+        //     method: 'POST',
+        //     headers: new Headers({
+        //         'Authorization': auth
+        //     }),
+        //     body: JSON.stringify({
+        //         from_date: this.state.startDate,
+        //         to_date: this.state.endDate,
+        //         half_day: this.state.dayType,
+        //         description: this.state.description,
+        //         // attac: fd
+        //     })
+        // })
+        // .then(function (res) {
+        //     console.log(res, 'success')
+        // })
+        // .catch(function (error) {
+        //     console.log(error, 'error')
+        // })
 
-        /*APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.file)
+        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
             .then((res) => {
                 if (res.data.error == false) {
                     console.log("Success Request Leave::", res.data)
                     this.setState({ refresh: !this.state.refresh, description: null })
                     this.getRequestData(auth, url);
                     Toast.show({
-                        text: res.data.message,
+                        //text: res.data.message,
+                        text: 'error 1',
                         textStyle: {
                             textAlign: 'center'
                         },
@@ -90,7 +91,7 @@ export default class LeaveRequest extends Component {
                     this.getRequestData(auth, url);
                     Toast.show({
                         //text: res.data.message,
-                        text: res.error + "",
+                        text: 'error 2',
                         textStyle: {
                             textAlign: 'center'
                         },
@@ -99,7 +100,7 @@ export default class LeaveRequest extends Component {
                         }
                     })
                 }
-            })*/
+            })
             
     }
 
@@ -297,6 +298,7 @@ export default class LeaveRequest extends Component {
                                     >
                                         <Text style={styLeave.buttonText}>Add File</Text>
                                     </Button>
+                                
                                 </Col>
                             </Row>
                         </Form>
