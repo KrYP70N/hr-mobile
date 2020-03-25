@@ -19,12 +19,13 @@ export default class APIs {
                 login: user,
                 password: password
             }
-        }).get(`${url}/api/auth/token`)
+        }).get(`${url}api/auth/token`)
             .then(function (res) {
+                console.log(res.data)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log(error)
+                console.log(`${url}/api/auth/token`)
                 return { error: error, status: 'fail' }
             })
     }
@@ -68,21 +69,25 @@ export default class APIs {
             }
         }).get(`${url}/getTime`)
             .then(function (res) {
+                console.log('time success')
                 return { data: res.data["data"]["Current Server Time"], status: 'success' }
             })
             .catch(function (error) {
+                console.log('time error')
                 return { error: error, status: 'fail' }
             })
     }
 
     // user controller
     static Profile(url, auth, id) {
+        console.log(url, auth, id)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).get(`${url}/user/profile/${id}`)
             .then(function (res) {
+                console.log('profile success')
                 let data = res["request"]["_response"]
 
                 let dataStr = data.slice(data.indexOf('"data":') + '"data":'.length, data.length - 1)
@@ -107,7 +112,7 @@ export default class APIs {
                 return { data: infoCollection, status: 'success' }
             })
             .catch(function (error) {
-                console.log(error)
+                console.log('profile error')
                 return { error: error, status: 'fail' }
             })
     }
