@@ -54,13 +54,15 @@ export default class LeaveRequest extends Component {
             .then((res) => {
                 // console.log(url.replace('https', 'http'))
                 // console.log(res)
-                console.log(res, "<<<<:::::::::")
+                if(res.status == "success"){
                 if (res.data.error == false) {
                     const d = new Date();
                     this.setState({ refresh: !this.state.refresh, 
                         startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
                         endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
-                        selectedLeaveType: res.data[0]['leave_type_id'],
+                        //selectedLeaveType: res.data[0]['leave_type_id'],
+                        file: [],
+                        binary: [],
                         description: null
                      })
                     this.getRequestData(auth, url);
@@ -80,7 +82,9 @@ export default class LeaveRequest extends Component {
                     this.setState({ refresh: !this.state.refresh, 
                         startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
                         endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
-                        selectedLeaveType: res.data[0]['leave_type_id'],
+                        //selectedLeaveType: res.data[0]['leave_type_id'],
+                        binary: [],
+                        file: [],
                         description: null })
                     this.getRequestData(auth, url);
                     Toast.show({
@@ -95,6 +99,7 @@ export default class LeaveRequest extends Component {
                         }
                     })
                 }
+            }
                 this.setState({
                     loading: false,
                     loadingTxt: ''
@@ -107,6 +112,7 @@ export default class LeaveRequest extends Component {
                     loadingTxt: ''
                 })
             })
+        
     }
 
     getRequestData(auth, url) {

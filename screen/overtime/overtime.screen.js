@@ -141,7 +141,7 @@ export default class Overtime extends Component {
         <TabBar
             renderLabel={this._renderLabel}
             {...props}
-            indicatorStyle={{ backgroundColor: '#000' }}
+            indicatorStyle={{ backgroundColor: color.indicator, height: 5 }}
             style={{ backgroundColor: color.primary }}
             labelStyle={{ color: 'white' }}
             onTabPress={({ route, preventDefault }) => {
@@ -159,7 +159,6 @@ export default class Overtime extends Component {
     _renderScene = ({ route }) => {
         switch (route.key) {
             case 'first':
-                console.log("First Click")
                 return (
                     <Request
                         auth={this.state.auth}
@@ -176,8 +175,6 @@ export default class Overtime extends Component {
                 )
 
             case 'second':
-                console.log("Second Click")
-                console.log("Scecond Data:::", this.state.data)
                 let requests = this.state.data.map((req) => {
                     return (
                         <Card key={req["Obj Id"]} >

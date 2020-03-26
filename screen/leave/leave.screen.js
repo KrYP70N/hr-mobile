@@ -251,7 +251,7 @@ export default class TabViewExample extends Component {
                     renderScene={this._renderScene}
                     renderTabBar={this._renderTabBar}
                     onIndexChange={this._handleIndexChange}
-
+                    swipeEnabled = {false}
                 />
             </Container>
         );
