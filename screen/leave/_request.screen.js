@@ -50,10 +50,11 @@ export default class LeaveRequest extends Component {
             loading: true,
             loadingTxt: 'requesting your leave ...'
         })
-        APIs.requestLeave(auth, url.replace('https', 'http'), id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
+        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
             .then((res) => {
-                console.log(url.replace('https', 'http'))
-                console.log(res)
+                // console.log(url.replace('https', 'http'))
+                // console.log(res)
+                console.log(res, "<<<<:::::::::")
                 if (res.data.error == false) {
 
                     this.setState({ refresh: !this.state.refresh, description: null })
@@ -90,6 +91,7 @@ export default class LeaveRequest extends Component {
                 })
             })
             .catch((error) => {
+                console.log(error)
                 this.setState({
                     loading: false,
                     loadingTxt: ''

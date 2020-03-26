@@ -277,10 +277,8 @@ export default class APIs {
 
     // request leave
     static requestLeave(auth, url, id, leaveType, from, to, dayType, description, file) {
+        console.log(auth, "<<<< here")
         let fd = new FormData()
-        
-        console.log(url)
-
         for(let i=0; i<file.length; i++) {
             fd.append(
                 'attac', file[i]
