@@ -4,11 +4,12 @@ import { Text, Header, Left, Right, Container, Content } from 'native-base'
 import Heading from '../../components/header.component'
 import styProfile from './profile.style'
 import Loading from '../../components/loading.component'
-import { AsyncStorage } from 'react-native'
+import { AsyncStorage, BackHandler } from 'react-native'
 import APIs from '../../controllers/api.controller'
 
 import GeneralProfile from './_general.profile'
 import PersonalProfile from './_personal.profile'
+import { BaseRouter } from '@react-navigation/native'
 
 export default class Profile extends Component {
   constructor(props) {
@@ -23,7 +24,19 @@ export default class Profile extends Component {
     }
   }
 
+
+  backAction = () => {
+    if(this.props.navigation.params.backScreen == "MainScreen"){
+      this.props.navigation.goBack();
+      return false;
+    }else{
+      return true;
+    }
+  };
+
+
   componentDidMount () {
+    this.backHandler = BackHandler.addEventListener("hardwareBackPress", this.backAction)
     // request endpoint
     AsyncStorage.getItem('@hr:endPoint')
     .then((res) => {
@@ -59,6 +72,9 @@ export default class Profile extends Component {
       }
     });
 
+  }
+  componentWillUnmount() {
+    this.backHandler.remove();
   }
 
   componentDidUpdate () {

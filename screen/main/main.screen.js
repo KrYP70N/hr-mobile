@@ -39,7 +39,8 @@ export default class Main extends Component {
         disabled: true
       },
       loading: true,
-      modal: false
+      modal: false,
+      lowestLevel: true
     }
 
     this.getProfile = () => {
@@ -67,61 +68,37 @@ export default class Main extends Component {
         let current_date = new Date()
         let data = JSON.parse(res)
         let exp = data.exp
-        
-        let dif = moment(exp).diff(moment(new Date()), 'hours')
-
-        if(dif < 9)  {
-          this.setState({
-            loading: true
-          })
-          
-          // check url 
-          AsyncStorage.getItem('@hr:endPoint')
-          .then((res) => {
-            let url = JSON.parse(res)
+        this.setState({
+        auth: DB.getToken(res),
+        id: DB.getUserId(res)
+        })
+        AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
             this.setState({
-              url: url.ApiEndPoint
+            url: DB.getEndPoint(res)
             })
-            APIs.RefreshToken(url.ApiEndPoint, data.key)
-            .then((res) => {
-              if(res.status === 'success') {
-                let date = new Date()
-                let exp_date = moment(date).add(60000, 'seconds')
-                AsyncStorage.setItem('@hr:token', JSON.stringify({
-                    key: 'Bearer '+ res.data.access_token,
-                    // key: res.data.access_token,
-                    id: res.data.employee_id,
-                    exp: exp_date
-                }))
-              } else {
-                this.props.navigation.navigate('Login')
-              }
-              this.setState({
-                loading: false
-              })
-            })
-          })
-
-        } else {
-          this.setState({
-            auth: DB.getToken(res),
-            id: DB.getUserId(res)
-          })
-          AsyncStorage.getItem('@hr:endPoint')
-            .then((res) => {
-              this.setState({
-                url: DB.getEndPoint(res)
-              })
-            })
-        }
+        })
       })
     }
+
+    this.isLowest = () => {
+        APIs.Level(this.state.url, this.state.auth, this.state.id)
+        .then((res) => {
+            console.log(res.data.lowest_level)
+            this.setState({
+                lowestLevel: res.data.lowest_level
+            })
+        })
+        .catch((error) => {
+            this.props.navigation.navigate('Login')
+        })
+    }
+
   }
 
   componentDidMount() {
     this.checkToken()
     this.props.navigation.addListener('focus', () => {
-      this.checkToken()
       if (this.state.url !== null && this.state.id !== null) {
         this.getProfile()
       }
@@ -133,6 +110,7 @@ export default class Main extends Component {
     // profile request
     if (this.state.profile === null && this.state.url !== null && this.state.id !== null) {
       this.getProfile()
+      this.isLowest()
     }
   }
 
@@ -273,7 +251,9 @@ export default class Main extends Component {
             </Col>
           </Row>
 
-          <Row style={styMain.menuHolder}>
+          <Row style={[styMain.menuHolder, {
+              display: this.state.lowestLevel === true ? 'none' : 'flex'
+          }]}>
             <Col style={styMain.cardLft}>
               <Card style={!po.menu[5].navigate ? styMain.disabledMenu : null}>
                 <TouchableOpacity onPress={() =>
@@ -285,7 +265,7 @@ export default class Main extends Component {
                   <CardItem>
                     <Body style={styMain.menuBody}>
                       {/* <Icon name={po.menu[3].icon} style={styMain.icon} /> */}
-                      <Image style={[styMain.imgIcn, { height: 45 }]} source={require('../../assets/icon/ot.png')} />
+                      <Image style={[styMain.imgIcn, {width: 50, height: 42 }]} source={require('../../assets/icon/approve-leave.png')} />
                       <Text>{po.menu[5].name}</Text>
                     </Body>
                   </CardItem>
@@ -303,7 +283,7 @@ export default class Main extends Component {
                   <CardItem>
                     <Body style={styMain.menuBody}>
                       {/* <Icon name={po.menu[4].icon} style={styMain.icon} /> */}
-                      <Image style={[styMain.imgIcn, { height: 40 }]} source={require('../../assets/icon/payroll.png')} />
+                      <Image style={[styMain.imgIcn, { width: 45, height: 43 }]} source={require('../../assets/icon/approve-ot.png')} />
                       <Text>{po.menu[6].name}</Text>
                     </Body>
                   </CardItem>

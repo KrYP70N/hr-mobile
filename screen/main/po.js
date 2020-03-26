@@ -42,12 +42,12 @@ export default {
         },
         {
             icon: 'ios-calendar',
-            name: 'Leave Approve',
+            name: 'Approve Leave ',
             navigate: 'LeaveApprove'
         },
         {
             icon: 'ios-walk',
-            name: 'OT Approve',
+            name: 'Approve OT',
             navigate: 'OvertimeApprove'
         },
         {
