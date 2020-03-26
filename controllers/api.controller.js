@@ -20,7 +20,6 @@ export default class APIs {
             }
         }).get(`${url}/api/auth/token`)
             .then(function (res) {
-                console.log(res)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
@@ -277,13 +276,22 @@ export default class APIs {
 
     // request leave
     static requestLeave(auth, url, id, leaveType, from, to, dayType, description, file) {
-        console.log(auth, "<<<< here")
+        
+        console.log(file.length, 'file :::')
+
         let fd = new FormData()
         for(let i=0; i<file.length; i++) {
-            fd.append(
-                'attac', file[i]
-            )
+            if(i === 0) {
+                fd.append(
+                    'attac', file[i]
+                )
+            } else {
+                fd.append(
+                    `attac${i + 1}`, file[i]
+                )
+            }
         }
+
 
         return axios.post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`,
             file.length === 0 ? null : fd, {
