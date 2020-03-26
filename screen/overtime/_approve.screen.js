@@ -27,7 +27,7 @@ export default class OvertimeApprove extends Component {
     }
 
     componentDidMount() {
-        // this.props.navigation.addListener('focus', () => {
+         this.props.navigation.addListener('focus', () => {
         AsyncStorage.getItem('@hr:endPoint')
             .then((res) => {
                 const url = JSON.parse(res).ApiEndPoint
@@ -45,7 +45,7 @@ export default class OvertimeApprove extends Component {
                         this.getApproveStatus(url, auth, id);
                     })
             })
-        //})
+        })
     }
 
     getApproveStatus(url, auth, id) {
@@ -123,7 +123,7 @@ export default class OvertimeApprove extends Component {
 
     render() {
         console.log("Overtime Approve Screen")
-        console.log("Overtime Render list::", this.state.overtimeList);
+        console.log("Overtime Render list::", this.state.overtimeList.length);
         return (
             <Container>
                 <Header style={{ backgroundColor: color.light, marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight }}>
@@ -137,9 +137,18 @@ export default class OvertimeApprove extends Component {
                 </Header>
                 <Content>
 
-                    <View style={[
-                        styles.leaveApproveContainer
-                    ]}>
+                   {this.state.overtimeList.length === 0 ? <View style = {{flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 15}}>
+                    <Icon name='ios-information-circle-outline' style={{
+                                color: color.placeHolder,
+                                fontSize: 40
+                            }} />
+                            <Text style={{
+                                color: color.placeHolder
+                            }}>You have no overtime approval list!</Text>
+                   </View>: 
+                //    <View style={[
+                //         styles.leaveApproveContainer
+                //     ]}>
 
                         <FlatList
                             data={this.state.overtimeList}
@@ -172,7 +181,7 @@ export default class OvertimeApprove extends Component {
                             }
                             keyExtractor={(item, index) => index.toString()}
                         />
-                        <View style={{
+                        /* <View style={{
                             display: this.state.overtimeList.length === 0 ? 'none' : 'flex',
                             alignItems: "center",
                             // position: "absolute",
@@ -187,8 +196,10 @@ export default class OvertimeApprove extends Component {
                             <Text style={{
                                 color: color.placeHolder
                             }}>You have no overtime approval list!</Text>
-                        </View>
-                    </View>
+                        </View>*/
+                    
+                    }
+                    
 
                 </Content>
             </Container>
