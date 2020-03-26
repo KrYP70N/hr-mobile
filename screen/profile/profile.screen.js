@@ -53,6 +53,9 @@ export default class Profile extends Component {
             this.props.navigation.navigate('Login')
           }
         })
+        .catch((error) => {
+          this.props.navigation.navigate('Login')
+        })
       }
     });
 
@@ -69,6 +72,9 @@ export default class Profile extends Component {
         } else {
           this.props.navigation.navigate('Login')
         }
+      })
+      .catch((error) => {
+        this.props.navigation.navigate('Login')
       })
     }
   }

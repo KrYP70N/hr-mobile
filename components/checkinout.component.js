@@ -61,6 +61,9 @@ export default class CheckInOut extends Component {
             })
           }
         })
+        .catch((error) => {
+          this.props.navigation.navigate('Login')
+        })
       } else {
         // geo false
         APIs.Checkin(this.state.url, this.state.auth, this.state.id)
@@ -86,6 +89,9 @@ export default class CheckInOut extends Component {
               }
             })
           }
+        })
+        .catch((error) => {
+          this.props.navigation.navigate('Login')
         })
       }
     }
@@ -119,6 +125,9 @@ export default class CheckInOut extends Component {
             })
           }
         })
+        .catch((error) => {
+          this.props.navigation.navigate('Login')
+        })
       } else {
         // geo false
         APIs.Checkout(this.state.url, this.state.auth, this.state.id)
@@ -144,6 +153,9 @@ export default class CheckInOut extends Component {
               }
             })
           }
+        })
+        .catch((error) => {
+          this.props.navigation.navigate('Login')
         })
       }
     }
@@ -201,6 +213,9 @@ export default class CheckInOut extends Component {
               longitude: res.data['General Information']['Longtitude']
             }
           })
+        })
+        .catch((error) => {
+          this.props.navigation.navigate('Login')
         })
     }
 

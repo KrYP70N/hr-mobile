@@ -9,6 +9,7 @@ import * as FileSystem from 'expo-file-system';
 import po from './po'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
+import { ScrollView } from 'react-native-gesture-handler'
 var $this;
 var url;
 var auth;
@@ -32,7 +33,9 @@ export default class LeaveRequest extends Component {
             startDate: '',
             endDate: '',
             isEndDateVisible: false,
-            binary: []
+            binary: [],
+            loading: false,
+            loadingTxt: ''
         }
     }
 
@@ -43,14 +46,21 @@ export default class LeaveRequest extends Component {
     }
 
     submit(auth, id, url) {
-        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
+        this.setState({
+            loading: true,
+            loadingTxt: 'requesting your leave ...'
+        })
+        APIs.requestLeave(auth, url.replace('https', 'http'), id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
             .then((res) => {
-        
+                console.log(url.replace('https', 'http'))
+                console.log(res)
                 if (res.data.error == false) {
+
                     this.setState({ refresh: !this.state.refresh, description: null })
                     this.getRequestData(auth, url);
                     Toast.show({
                         text: res.data.message,
+                        duration: 5000,
                         // text: 'an error occur, please try again in later',
                         textStyle: {
                             textAlign: 'center'
@@ -63,6 +73,7 @@ export default class LeaveRequest extends Component {
                     this.setState({ refresh: !this.state.refresh, description: null })
                     this.getRequestData(auth, url);
                     Toast.show({
+                        duration: 5000,
                         text: res.data.message,
                         // text: 'an error occur, please try again in later',
                         textStyle: {
@@ -73,8 +84,17 @@ export default class LeaveRequest extends Component {
                         }
                     })
                 }
+                this.setState({
+                    loading: false,
+                    loadingTxt: ''
+                })
             })
-
+            .catch((error) => {
+                this.setState({
+                    loading: false,
+                    loadingTxt: ''
+                })
+            })
     }
 
     getRequestData(auth, url) {
@@ -152,9 +172,9 @@ export default class LeaveRequest extends Component {
 
     render() {
 
-        if (this.state.startDate === null || this.state.endDate === null || this.state.attachment === null) {
+        if (this.state.startDate === null || this.state.endDate === null || this.state.attachment === null || this.state.loading === true) {
             return (
-                <Loading />
+                <Loading info={this.state.loadingTxt}/>
             )
         }
 
@@ -242,7 +262,10 @@ export default class LeaveRequest extends Component {
             <Container>
                 <Content style={styLeave.container}>
                     <KeyboardAvoidingView behavior='padding'>
-                        <Form>
+                        <ScrollView>
+                        <Form style={{
+                            paddingBottom: 100
+                        }}>
                             <Item picker fixedLabel last>
                                 <Label>
                                     <Text style={styLeave.placeholder}>Leave Type</Text>
@@ -329,6 +352,7 @@ export default class LeaveRequest extends Component {
                             <AttachButton />
                         </Form>
 
+                        </ScrollView>
                     </KeyboardAvoidingView>
                 </Content>
                 <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>

@@ -7,8 +7,10 @@ import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 
 import color from '../../constant/color'
-import { StatusBar, Platform } from 'react-native'
+import { StatusBar, Platform, Linking } from 'react-native'
 import offset from '../../constant/offset'
+
+import * as WebBrowser from 'expo-web-browser';
 
 export default class PayrollDetail extends Component {
 
@@ -38,9 +40,10 @@ export default class PayrollDetail extends Component {
         }
 
         this.downloadPaySlip = () => {
-            APIs.downloadPaySlip(url, auth, this.props.route.params.slipid)
+            APIs.downloadPaySlip(this.state.url, this.state.auth, this.props.route.params.slipid)
             .then((res) => {
-                WebBrowser.openBrowserAsync(res.data.data['Payslip PDF'][0])
+                // WebBrowser.openBrowserAsync(res.data.data['Payslip PDF'][0])
+                Linking.openURL(res.data.data['Payslip PDF'][0])
             })
         }
     }
@@ -139,7 +142,7 @@ export default class PayrollDetail extends Component {
                 <View style={styPayroll.floatingButton}>
                     <Button style={[styPayroll.stickyButton]}
                         onPress={
-                            this.downloadSlip
+                            this.downloadPaySlip
                         }
                     >
                         <Text>Download</Text>

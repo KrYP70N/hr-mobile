@@ -36,6 +36,9 @@ export default class Clock extends Component {
                         console.log('error')
                     }
                 })
+                .catch((error) => {
+                    this.props.navigation.navigate('Login')
+                })
             })
         })
     }

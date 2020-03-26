@@ -49,9 +49,9 @@ export default class APIs {
             headers: {
                 'Authorization': token
             }
-        }).get(`${url}/employee/level/${id}`)
+        }).get(`${url}/employee/level/${id}?employeeID=${id}`)
             .then(function (res) {
-                return { data: res.data, status: 'success' }
+                return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -270,6 +270,7 @@ export default class APIs {
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -278,8 +279,9 @@ export default class APIs {
     static requestLeave(auth, url, id, leaveType, from, to, dayType, description, file) {
         let fd = new FormData()
         
+        console.log(url)
+
         for(let i=0; i<file.length; i++) {
-            console.log(file[i])
             fd.append(
                 'attac', file[i]
             )
