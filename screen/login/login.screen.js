@@ -118,13 +118,81 @@ export default class Login extends Component {
         this.props.navigation.addListener('focus', () => {
             this.setState({
                 user: null,
-                password: null
+                password: null,
+                loading: true
+            })
+
+            AsyncStorage.getItem('@hr:token')
+            .then((res) => {
+                if(res !== null) {
+                    // Object {
+                    //     "exp": "2020-03-27T00:49:11.717Z",
+                    //     "id": 468,
+                    //     "key": "Bearer access_token_a986e72b5a2c27fa32933c15fbc2a1e430c48ec0",
+                    //   }
+                    let data = JSON.parse(res)
+                    let diff = moment(data.exp).diff(moment(new Date()), 'hours')
+                    if(diff < 17 && diff > 0) {
+                        // refresh
+                        let token = data.key
+                        let id = data.id
+
+                        AsyncStorage.getItem('@hr:endPoint')
+                        .then((res) => {
+                            let dataEndPoint = JSON.parse(res)
+                            let url = dataEndPoint.ApiEndPoint
+
+                            APIs.RefreshToken(url, token)
+                            .then((res) => {
+                                data.key = `Bearer ${res.data.access_token}`
+                                AsyncStorage.setItem('@hr:token', JSON.stringify(data))
+                                .then(() => {
+                                    this.props.navigation.navigate('Main')
+                                })
+                            })
+                            .catch(() => {
+                                this.setState({
+                                    loading: false
+                                })
+                            })
+                        })
+                        
+                    } else if(diff <= 0) {
+
+                        // expired
+
+                        AsyncStorage.removeItem('@hr:token')
+                        .then(() => {
+                            console.log('session expired')
+                            this.setState({
+                                loading: false
+                            })
+                        })
+                    } else {
+                        this.setState({
+                            loading: false
+                        })
+                        this.props.navigation.navigate('Main')
+                    }
+                } else {
+                    // logouted
+                    console.log('logouted ...')
+                    this.setState({
+                        loading: false
+                    })
+                }
             })
         })
     }
 
     render () {
         
+        if(this.state.loading === true) {
+            return (
+                <Loading info='collect user data ...' />
+            )
+        }
+
         if(this.state.apiUrl === null) {
             return (
                 <Auth navigation={this.props.navigation}/>
