@@ -244,8 +244,13 @@ export default class LeaveHistory extends Component {
                             display: this.state.leave.length === 0 ? 'flex' : 'none',
                             alignItems: "center"
                         }}>
-                            <Icon name='ios-information-circle-outline'/>
-                            <Text>There is no data for {this.state.year}!</Text>
+                            <Icon name='ios-information-circle-outline' style={{
+                                color: color.placeHolder,
+                                fontSize: 40
+                            }}/>
+                            <Text style={{
+                                color: color.placeHolder
+                            }}>There is no leave request for {this.state.month}-{this.state.year}!</Text>
                         </View>
                     </View>
                 </Content>

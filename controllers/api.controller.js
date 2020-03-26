@@ -12,7 +12,6 @@ export default class APIs {
 
     // auth token
     static Token(url, db, user, password) {
-        console.log(url, db, user, password)
         return axios.create({
             headers: {
                 db: db,
@@ -21,19 +20,16 @@ export default class APIs {
             }
         }).get(`${url}/api/auth/token`)
             .then(function (res) {
-                console.log(res.data)
+                console.log(res)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log(`${url}/api/auth/token`)
-                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
 
     // token refresh
     static RefreshToken(url, token) {
-        console.log(url, token)
         return axios.create({
             headers: {
                 'Authorization': token
@@ -280,46 +276,28 @@ export default class APIs {
 
     // request leave
     static requestLeave(auth, url, id, leaveType, from, to, dayType, description, file) {
-        console.log(file)
-    //     return axios.create({
-    //         headers: {
-    //             'Authorization': auth
-    //         },
-    //         data: {
-    //             attac: file
-    //         }
-    //     }).post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`)
-    //         .then(function (res) {
-    //             console.log("Response Data", res.data)
-    //             return { data: res.data.data, status: 'success' }
-    //         })
-    //         .catch(function (error) {
-    //             console.log("Response Data", error)
-    //             return { error: error, status: 'fail' }
-    //         })
-    // }
-    
-    // // method 2
-    let fd = new FormData()
-    fd.append(
-        'attac' , file
-    )
-    fd.append(
-        'attac2' , file
-    )
-    return axios.post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`,
-        fd, {
+        let fd = new FormData()
+        
+        for(let i=0; i<file.length; i++) {
+            console.log(file[i])
+            fd.append(
+                'attac', file[i]
+            )
+        }
+
+        return axios.post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`,
+            file.length === 0 ? null : fd, {
             headers: {
                 'Authorization': auth
             }
         }
-    )
-    .then(function(res) {
-        return { data: res.data.data, status: 'success' }
-    })
-    .catch(function (error) {
-        return { error: error, status: 'fail' }
-    })
+        )
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
     }
 
     // leave monthly
@@ -369,18 +347,15 @@ export default class APIs {
 
     // update leave status
     static leaveStatusUpdate(url, auth, leaveID, status) {
-        console.log("Leave Cancel URL:::", `${url}/approve/leave/${leaveID}?status=${status}`)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).post(`${url}/approve/leave/${leaveID}?status=${status}`)
             .then(function (res) {
-                console.log("Cancel Leave Return", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log("Return Error::", error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -447,18 +422,15 @@ export default class APIs {
 
     // post receivedPayroll
     static sendReceived = (url, auth, payrollID) => {
-        console.log(url, auth, payrollID)
         axios.create({
             headers: {
                 'Authorization': auth
             }
         }).post(`${url}/payroll/receive/${payrollID}&status=received`)
             .then(function (res) {
-                console.log('success')
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log('error')
                 return { error: error, status: 'fail' }
             })
     }

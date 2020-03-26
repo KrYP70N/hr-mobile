@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import styOt from './overtime.style'
 import po from './po'
-import { View, Text, Container, Content, Row, Col, Form, Item, Label, Input, Picker, Button, Card, CardItem, Body, Badge } from 'native-base'
+import { View, Text, Container, Content, Row, Col, Form, Item, Label, Input, Picker, Button, Card, CardItem, Body, Badge, Icon } from 'native-base'
 import color from '../../constant/color'
 import APIs from '../../controllers/api.controller'
 import { AsyncStorage } from 'react-native'
@@ -238,7 +238,13 @@ export default class History extends Component {
                         display: this.state.record.length === 0 ? 'flex' : 'none',
                         alignItems: 'center'
                     }}>
-                        <Text>There is no data for {this.state.month + 1}-{this.state.year}</Text>
+                        <Icon name='ios-information-circle-outline' style={{
+                            color: color.placeHolder,
+                            fontSize: 40
+                        }}/>
+                        <Text style={{
+                            color: color.placeHolder
+                        }}>There is no overtime request for {this.state.month + 1}-{this.state.year}</Text>
                     </View>
                 </Content>
             </Container>

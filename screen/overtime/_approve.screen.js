@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, FlatList, StatusBar, TouchableOpacity, AsyncStorage } from 'react-native'
-import { Icon, Header, Left, Right, Toast } from 'native-base'
+import { Icon, Header, Left, Right, Toast, Container, Content } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
@@ -58,12 +58,12 @@ export default class OvertimeApprove extends Component {
                     })
                 } else {
                     Toast.show({
-                        text: 'Network Error',
+                        text: 'You have no overtime approval list!',
                         textStyle: {
                             textAlign: 'center'
                         },
                         style: {
-                            backgroundColor: color.danger
+                            backgroundColor: color.primary
                         }
                     })
                 }
@@ -125,7 +125,7 @@ export default class OvertimeApprove extends Component {
         console.log("Overtime Approve Screen")
         console.log("Overtime Render list::", this.state.overtimeList);
         return (
-            <View style={styles.leaveApproveContainer}>
+            <Container>
                 <Header style={{ backgroundColor: color.light, marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight }}>
                     <Left style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                         <Icon name='ios-arrow-round-back' style={{
@@ -135,38 +135,64 @@ export default class OvertimeApprove extends Component {
                     </Left>
                     <Right></Right>
                 </Header>
-                <FlatList
-                    data={this.state.overtimeList}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({ item, index }) =>
-                        <View style={styles.leaveApproveCard}>
-                            <Text style={styles.name}>{item.employee_name}</Text>
-                            <Text style={styles.position}>{`(${item["Job Position"]})`}</Text>
-                            <Text style={styles.date}>{`From - ${item.overtime_date_from}`}</Text>
-                            <Text style={styles.toDate}>{`To     - ${item.overtime_date_to}`}</Text>
-                            <Text style={styles.otHour}>{`OT Hours - ${item.overtime_hours}:${item.overtime_minute}`}</Text>
-                            
-                            <View style={styles.leaveApproveBtn}>
-                                <TouchableOpacity
-                                    onPress={() => { this.sendApproveRejectOT(item.Overtime_id, this.state.auth, this.state.url, 'reject') }}
-                                >
-                                    <View style={{ backgroundColor: color.placeHolder, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
-                                        <Text>Reject</Text>
+                <Content>
+
+                    <View style={[
+                        styles.leaveApproveContainer
+                    ]}>
+
+                        <FlatList
+                            data={this.state.overtimeList}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={({ item, index }) =>
+                                <View style={styles.leaveApproveCard}>
+                                    <Text style={styles.name}>{item.employee_name}</Text>
+                                    <Text style={styles.position}>{`(${item["Job Position"]})`}</Text>
+                                    <Text style={styles.date}>{`From - ${item.overtime_date_from}`}</Text>
+                                    <Text style={styles.toDate}>{`To     - ${item.overtime_date_to}`}</Text>
+                                    <Text style={styles.otHour}>{`OT Hours - ${item.overtime_hours}:${item.overtime_minute}`}</Text>
+
+                                    <View style={styles.leaveApproveBtn}>
+                                        <TouchableOpacity
+                                            onPress={() => { this.sendApproveRejectOT(item.Overtime_id, this.state.auth, this.state.url, 'reject') }}
+                                        >
+                                            <View style={{ backgroundColor: color.placeHolder, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
+                                                <Text>Reject</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => { this.sendApproveRejectOT(item.Overtime_id, this.state.auth, this.state.url, 'confirm') }}
+                                        >
+                                            <View style={{ marginLeft: 10, backgroundColor: color.primary, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
+                                                <Text style={{ color: 'white' }}>Approve</Text>
+                                            </View>
+                                        </TouchableOpacity>
                                     </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={() => { this.sendApproveRejectOT(item.Overtime_id, this.state.auth, this.state.url, 'confirm') }}
-                                >
-                                    <View style={{ marginLeft: 10, backgroundColor: color.primary, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
-                                        <Text style={{ color: 'white' }}>Approve</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
+                                </View>
+                            }
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                        <View style={{
+                            display: this.state.overtimeList.length === 0 ? 'none' : 'flex',
+                            alignItems: "center",
+                            // position: "absolute",
+                            // top: 100,
+                            // width: '100%',
+                            // opacity: this.state.overtimeList.length === 0 ? 1 : 0
+                        }}>
+                            <Icon name='ios-information-circle-outline' style={{
+                                color: color.placeHolder,
+                                fontSize: 40
+                            }} />
+                            <Text style={{
+                                color: color.placeHolder
+                            }}>You have no overtime approval list!</Text>
                         </View>
-                    }
-                    keyExtractor={(item, index) => index.toString()}
-                />
-            </View>
+                    </View>
+
+                </Content>
+            </Container>
+
         )
     }
 }

@@ -24,7 +24,7 @@ export default class Overtime extends Component {
             index: 0,
             routes: [
                 { key: 'first', title: 'Request' },
-                { key: 'second', title: 'Approve' },
+                { key: 'second', title: 'Pending' },
                 { key: 'third', title: 'History' },
             ],
             data: [],
@@ -207,6 +207,19 @@ export default class Overtime extends Component {
                     <Container style={styOt.container}>
                         <Content>
                             {requests}
+                            <View style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                display: this.state.data.length === 0 || this.state.data === null ? 'flex' : 'none'
+                            }}>
+                                <Icon name='ios-information-circle-outline' style={{
+                                    color: color.placeHolder,
+                                    fontSize: 40
+                                }}/>
+                                <Text style={{
+                                    color: color.placeHolder
+                                }}>There is no pending overtime request!</Text>
+                            </View>
                         </Content>
                     </Container>
                 )

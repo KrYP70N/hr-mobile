@@ -1,3 +1,5 @@
+
+
 import React, { Component } from 'react'
 
 import po from './po'
@@ -12,7 +14,7 @@ import APIs from '../../controllers/api.controller'
 
 import offset from '../../constant/offset'
 import color from '../../constant/color'
-import { AsyncStorage, StatusBar, Platform } from 'react-native'
+import { AsyncStorage, StatusBar, Platform, BackHandler } from 'react-native'
 
 export default class Attendance extends Component {
 
@@ -28,6 +30,7 @@ export default class Attendance extends Component {
     }
 
     componentDidMount() {
+       
         AsyncStorage.getItem('@hr:endPoint')
         .then((res) => {
             this.setState({
@@ -59,7 +62,6 @@ export default class Attendance extends Component {
     }
 
     componentDidUpdate() {
-
         if(
             this.state.url !== null &&
             this.state.token !== null &&
@@ -93,14 +95,12 @@ export default class Attendance extends Component {
         }
     }
 
-
     render() {
         if (this.state.data === null || this.state.dataTitle === null) {
             return (
                 <Loading />
             )
         }
-
 
         let infos = this.state.dataTitle.map((title) => {
             return (

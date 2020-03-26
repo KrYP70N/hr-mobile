@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Form, Item, Label, Picker, Input, Textarea, Row, Col, Button, Container, Content, DatePicker, Toast, Icon } from 'native-base'
 import color from '../../constant/color'
 import styLeave from './leave.style'
-import { View, Text, KeyboardAvoidingView, AsyncStorage } from 'react-native'
+import { View, Text, KeyboardAvoidingView, AsyncStorage, SegmentedControlIOS } from 'react-native'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system';
@@ -21,17 +21,18 @@ export default class LeaveRequest extends Component {
         $this = this;
         this.state = {
             leaveType: [],
+            attachment: null,
             selectedLeaveType: null,
             dayType: false,
             description: null,
-            file: null,
+            file: [],
             refresh: false,
             placeHolder: 'testing',
             isStartDateVisible: false,
             startDate: '',
             endDate: '',
             isEndDateVisible: false,
-            binary: null
+            binary: []
         }
     }
 
@@ -42,43 +43,15 @@ export default class LeaveRequest extends Component {
     }
 
     submit(auth, id, url) {
-        // let fd = new FormData()
-
-        // fd.append('attac', {
-        //     uri: this.state.file,
-        //     type: 'application/pdf',
-        //     name: Math.floor(Math.random() * 100000)
-        // })
-
-        // fetch(`${url}/leave/${id}/${auth}`, {
-        //     method: 'POST',
-        //     headers: new Headers({
-        //         'Authorization': auth
-        //     }),
-        //     body: JSON.stringify({
-        //         from_date: this.state.startDate,
-        //         to_date: this.state.endDate,
-        //         half_day: this.state.dayType,
-        //         description: this.state.description,
-        //         // attac: fd
-        //     })
-        // })
-        // .then(function (res) {
-        //     console.log(res, 'success')
-        // })
-        // .catch(function (error) {
-        //     console.log(error, 'error')
-        // })
-
         APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
             .then((res) => {
+        
                 if (res.data.error == false) {
-                    console.log("Success Request Leave::", res.data)
                     this.setState({ refresh: !this.state.refresh, description: null })
                     this.getRequestData(auth, url);
                     Toast.show({
-                        //text: res.data.message,
-                        text: 'error 1',
+                        text: res.data.message,
+                        // text: 'an error occur, please try again in later',
                         textStyle: {
                             textAlign: 'center'
                         },
@@ -90,8 +63,8 @@ export default class LeaveRequest extends Component {
                     this.setState({ refresh: !this.state.refresh, description: null })
                     this.getRequestData(auth, url);
                     Toast.show({
-                        //text: res.data.message,
-                        text: 'error 2',
+                        text: res.data.message,
+                        // text: 'an error occur, please try again in later',
                         textStyle: {
                             textAlign: 'center'
                         },
@@ -101,7 +74,7 @@ export default class LeaveRequest extends Component {
                     })
                 }
             })
-            
+
     }
 
     getRequestData(auth, url) {
@@ -124,6 +97,14 @@ export default class LeaveRequest extends Component {
 
     componentDidMount() {
         this.getRequestData(this.props.auth, this.props.url)
+    }
+
+    componentDidUpdate() {
+        if (this.state.leaveType.length > 0 && this.state.attachment === null) {
+            this.setState({
+                attachment: this.state.leaveType[0].image
+            })
+        }
     }
 
     showDatePicker = () => {
@@ -158,20 +139,109 @@ export default class LeaveRequest extends Component {
         this.hideEndDatePicker();
     }
 
+    changeLeaveType = (val, pos) => {
+        let attachNumber = this.state.leaveType[pos].image
+        this.setState({
+            selectedLeaveType: val,
+            attachment: attachNumber,
+            file: [],
+            binary: []
+        })
+
+    }
+
     render() {
 
-        console.log(this.state.file)
-
-        if (this.state.startDate === null || this.state.endDate === null) {
+        if (this.state.startDate === null || this.state.endDate === null || this.state.attachment === null) {
             return (
                 <Loading />
             )
         }
 
+        let AttachButton = () => {
+            let attach = []
+            for(let i=0; i<this.state.attachment; i++) {
+                attach.push(i)
+            }
+            let data = attach.map((a, id) => {
+                return (
+                    <Row style={styLeave.attachRow} key={id}>
+                        <Col>
+                            {
+                                this.state.file[id] === undefined ?
+                                    <Text style={styLeave.placeholder}>Attachment</Text>
+                                    :
+                                    <View style={styLeave.file}>
+                                        <Text style={styLeave.filename}>
+                                                    {this.state.file[id].name}
+                                        </Text>
+                                        <Icon
+                                            name='ios-close-circle-outline'
+                                            style={styLeave.closeImage}
+                                            onPress={() =>
+                                            {
+                                                let getFile = this.state.file
+                                                getFile[id] = undefined
+                                                let getBinary = this.state.binary
+                                                getBinary[id] = undefined
+                                                this.setState({
+                                                    file: getFile,
+                                                    binary: getBinary
+                                                })
+                                            }
+                                            }
+                                        />
+                                    </View>
+                            }
+                        </Col>
+                        <Col>
+                            <Button
+                                style={styLeave.attachButton}
+                                onPress={() => {
+                                    DocumentPicker.getDocumentAsync()
+                                        .then((res) => {
+                                            if (res.type === 'success') {
+
+                                                let getFile = this.state.file
+
+                                                getFile[id] = res
+
+                                                this.setState({
+                                                    file: getFile
+                                                })
+                                                FileSystem.readAsStringAsync(res.uri, {
+                                                    encoding: FileSystem.EncodingType.Base64
+                                                })
+                                                .then((res) => {
+                                                    let getBinary = this.state.binary
+                                                    getBinary[id] = res
+                                                    this.setState({
+                                                        binary: getBinary
+                                                    })
+                                                })
+                                            }
+                                        })
+                                }}
+                            >
+                                <Text style={styLeave.buttonText}>Add File</Text>
+                            </Button>
+
+                        </Col>
+                    </Row>
+
+                )
+            })
+            return (
+                <View>
+                    {data}
+                </View>
+            )
+        }
+
         return (
             <Container>
-                    <Content style={styLeave.container}>
-            <KeyboardAvoidingView behavior='padding'>
+                <Content style={styLeave.container}>
+                    <KeyboardAvoidingView behavior='padding'>
                         <Form>
                             <Item picker fixedLabel last>
                                 <Label>
@@ -182,7 +252,8 @@ export default class LeaveRequest extends Component {
                                         this.state.selectedLeaveType
                                     }
                                     onValueChange={(itemValue, itemPosition) =>
-                                        this.setState({ selectedLeaveType: itemValue })}  //, choosenIndex: itemPosition
+                                        this.changeLeaveType(itemValue, itemPosition)
+                                    }
                                 >
                                     {
                                         this.state.leaveType.map((type) => {
@@ -255,63 +326,16 @@ export default class LeaveRequest extends Component {
                                     })
                                 }}
                             />
-                            <Row style={styLeave.attachRow}>
-                                <Col>
-                                    {
-                                        this.state.file === null ?
-                                            <Text style={styLeave.placeholder}>Attachment</Text>
-                                            :
-                                            <View style={styLeave.file}>
-                                                <Text style={styLeave.filename}>0.
-                                                    {this.state.file.name}
-                                                </Text>
-                                                <Icon
-                                                    name='ios-close-circle-outline'
-                                                    style={styLeave.closeImage}
-                                                    onPress={() => this.setState({ file: null, binary: null })}
-                                                />
-                                            </View>
-                                    }
-                                </Col>
-                                <Col>
-                                    <Button
-                                        style={styLeave.attachButton}
-                                        onPress={() => {
-                                            DocumentPicker.getDocumentAsync()
-                                                .then((res) => {
-                                                    if (res.type === 'success') {
-                                                        console.log(res)
-                                                        this.setState({
-                                                            file: res
-                                                        })
-                                                        FileSystem.readAsStringAsync(res.uri, {
-                                                            encoding: FileSystem.EncodingType.Base64
-                                                        })
-                                                            .then((res) => {
-                                                                this.setState({
-                                                                    binary: res
-                                                                })
-                                                            })
-                                                    }
-                                                })
-                                        }}
-                                    >
-                                        <Text style={styLeave.buttonText}>Add File</Text>
-                                    </Button>
-                                
-                                </Col>
-                            </Row>
+                            <AttachButton />
                         </Form>
 
-                        </KeyboardAvoidingView>
-                    </Content>
-                    <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
-                        <Text style={styLeave.buttonText}>Submit</Text>
-                    </Button>
+                    </KeyboardAvoidingView>
+                </Content>
+                <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
+                    <Text style={styLeave.buttonText}>Submit</Text>
+                </Button>
             </Container>
         );
 
     }
 }
-
-

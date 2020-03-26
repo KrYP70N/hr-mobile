@@ -35,9 +35,6 @@ export default class TabViewExample extends Component {
     }
 
     cancelOT = (cid) => {
-        console.log("url", this.state.url)
-        console.log("auth", this.state.auth)
-        console.log("id", this.state.id)
         APIs.leaveStatusUpdate(this.state.url, this.state.auth, cid, 'cancel')
             .then((res) => {
                 if (res.status === 'success') {
@@ -164,7 +161,6 @@ export default class TabViewExample extends Component {
                     />
                 )
             case 'second':
-                console.log("Panding Leave Lists", this.state.leaves)
                 const GetLeave = this.state.leaves.map((leave) => {
                     return (
                         <Card key={leave['Obj id']}>
@@ -195,6 +191,18 @@ export default class TabViewExample extends Component {
                     <Container>
                         <Content style={styLeave.container}>
                             {GetLeave}
+                            <View style={{
+                        display: this.state.leaves.length === 0 ? 'flex' : 'none',
+                        alignItems: 'center'
+                    }}>
+                        <Icon name='ios-information-circle-outline' style={{
+                            color: color.placeHolder,
+                            fontSize: 40
+                        }}/>
+                        <Text style={{
+                            color: color.placeHolder
+                        }}>There is no pending leave request!</Text>
+                    </View>
                         </Content>
                     </Container>
                 )
