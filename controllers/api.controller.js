@@ -20,7 +20,6 @@ export default class APIs {
                 password: password
             }
         }).get(`${url}/api/auth/token`)
-        // }).get(`http://18.136.2.16:8071/api/auth/token`)
             .then(function (res) {
                 console.log(res.data)
                 return { data: res.data, status: 'success' }
@@ -71,25 +70,21 @@ export default class APIs {
             }
         }).get(`${url}/getTime`)
             .then(function (res) {
-                console.log('time success')
                 return { data: res.data["data"]["Current Server Time"], status: 'success' }
             })
             .catch(function (error) {
-                console.log('time error')
                 return { error: error, status: 'fail' }
             })
     }
 
     // user controller
     static Profile(url, auth, id) {
-        console.log(url, auth, id)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).get(`${url}/user/profile/${id}`)
             .then(function (res) {
-                console.log('profile success')
                 let data = res["request"]["_response"]
 
                 let dataStr = data.slice(data.indexOf('"data":') + '"data":'.length, data.length - 1)
@@ -114,7 +109,6 @@ export default class APIs {
                 return { data: infoCollection, status: 'success' }
             })
             .catch(function (error) {
-                console.log('profile error')
                 return { error: error, status: 'fail' }
             })
     }
@@ -202,7 +196,6 @@ export default class APIs {
             }
         }).post(`${url}/overtime/${id}?request_date_from=${request_date_from}&request_date_to=${request_date_to}&description=${description}`)
             .then(function (res) {
-                console.log("OT Request Reply Message", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
@@ -263,7 +256,6 @@ export default class APIs {
             }
         }).get(`${url}/approvelist/overtime/${id}`)
             .then(function (res) {
-                console.log("Response Controller OT Lists:::", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
@@ -279,7 +271,6 @@ export default class APIs {
             }
         }).get(`${url}/leave/types`)
             .then(function (res) {
-                console.log(res)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {

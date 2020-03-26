@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea, Header, Left, Right } from 'native-base'
-import { Image, AsyncStorage, Platform, StatusBar, TouchableOpacity, BackHandler, Modal, TouchableHighlight } from 'react-native'
+import { Image, AsyncStorage, Platform, StatusBar, TouchableOpacity, BackHandler, Alert, StyleSheet} from 'react-native'
+
 // import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import po from './po'
@@ -17,12 +18,14 @@ import Time from '../../controllers/time.controller'
 import Heading from '../../components/header.component'
 import CheckInOut from '../../components/checkinout.component'
 import Clock from '../../components/time.component'
+import Modal from 'react-native-modal';
 
 import DB from '../../model/db.model'
 import moment from 'moment'
 
 export default class Main extends Component {
-
+  _didFocusSubscription;
+  _willBlurSubscription;
   constructor(props) {
     super(props)
     this.state = {
@@ -39,8 +42,13 @@ export default class Main extends Component {
         disabled: true
       },
       loading: true,
-      modal: false
+      modal: false,
+      isModalVisible: false,
     }
+
+    this._didFocusSubscription = props.navigation.addListener('didFocus', payload =>
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
+    );
 
     this.getProfile = () => {
       APIs.Profile(this.state.url, this.state.auth, this.state.id)
@@ -118,7 +126,18 @@ export default class Main extends Component {
     }
   }
 
+  backAction = () => {
+    this.setState({
+      isModalVisible: true
+    })
+    return true;
+  };
+
   componentDidMount() {
+    this._willBlurSubscription = this.props.navigation.addListener('willBlur', payload =>
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
+  );
+    //this.backHandler = BackHandler.addEventListener("hardwareBackPress", this.backAction)
     this.checkToken()
     this.props.navigation.addListener('focus', () => {
       this.checkToken()
@@ -129,11 +148,32 @@ export default class Main extends Component {
     })
   }
 
+  componentWillUnmount() {
+    this._didFocusSubscription && this._didFocusSubscription.remove();
+    this._willBlurSubscription && this._willBlurSubscription.remove();
+    // this.backHandler.remove();
+    // this.setState({
+    //   isModalVisible: false
+    // })
+  }
+
+  handleBackPress = () => {
+    BackHandler.exitApp(); // works best when the goBack is async
+    return true;
+  };
+
   componentDidUpdate() {
     // profile request
     if (this.state.profile === null && this.state.url !== null && this.state.id !== null) {
       this.getProfile()
     }
+  }
+
+  exitFromApp(){
+    this.setState({
+      isModalVisible: false
+    })
+    BackHandler.exitApp();
   }
 
   render() {
@@ -313,8 +353,49 @@ export default class Main extends Component {
           </Row>
 
         </Content>
+        <Modal isVisible={this.state.isModalVisible} >
+          <View style={styles.ModelViewContainer}>
+            <Text style={[styles.lanTitle, styles.lanTitleMM]}>{'Are you sure want to exit?'}</Text>
+            <View style={styles.ModalTextContainer}>
+              <TouchableOpacity style={styles.CancelOpacityContainer}
+                onPress={() => this.setState({ isModalVisible: false })} >
+                <Text style={styles.modalTextStyle} >
+                  {'Cancel'}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.OkOpacityContainer}
+                onPress={() => { this.exitFromApp() }} >
+                <Text style={styles.modalTextStyle} >
+                  {'OK'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
 
       </Container>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  ModelViewContainer: { width: '75%', height: 130, backgroundColor: '#f2f2f2', borderWidth: 1, borderColor: '#f2f2f2', borderRadius: 20, marginLeft: 'auto', marginRight: 'auto', elevation: 5, shadowColor: '#000000', shadowOpacity: 1, shadowOffset: { height: 10, width: 10 },},
+  lanTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 15,
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  lanTitleMM: {
+    fontSize: 14,
+    marginTop: 15,
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  ModalTextContainer: {flexDirection: 'row', justifyContent: 'space-between', width: '100%', flex: 1, alignItems: 'center',},
+  CancelOpacityContainer: {marginLeft: 10,width: '45%',height: 40, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center', elevation: 5, shadowColor: '#000000', shadowOpacity: 1,shadowOffset: { height: 10, width: 10 },},
+  OkOpacityContainer: {marginRight: 10,width: '45%',height: 40, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center', elevation: 5, shadowColor: '#000000', shadowOpacity: 1,shadowOffset: { height: 10, width: 10 },},
+  modalTextStyle: {color: color.primary, textAlign: 'center',},
+
+})
