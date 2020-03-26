@@ -30,7 +30,13 @@ export class SideMenu extends Component {
           <Image source={require('../assets/icon/payroll.png')} style={styNav.image3} />
           <Text>Payroll</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styNav.item} onPress={() => { this.props.navigation.navigate('Login') }}>
+        <TouchableOpacity style={styNav.item} onPress={() => {
+          AsyncStorage.removeItem('@hr:token')
+          .then(() => {
+            console.log('token removed')
+            this.props.navigation.navigate('Login')
+          })
+        }}>
           <Image source={require('../assets/icon/lgoout.png')} style={styNav.image2} />
           <Text>Logout</Text>
         </TouchableOpacity>

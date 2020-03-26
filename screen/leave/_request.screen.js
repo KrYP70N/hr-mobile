@@ -50,13 +50,19 @@ export default class LeaveRequest extends Component {
             loading: true,
             loadingTxt: 'requesting your leave ...'
         })
-        APIs.requestLeave(auth, url.replace('https', 'http'), id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
+        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
             .then((res) => {
-                console.log(url.replace('https', 'http'))
-                console.log(res)
+                // console.log(url.replace('https', 'http'))
+                // console.log(res)
+                console.log(res, "<<<<:::::::::")
                 if (res.data.error == false) {
-
-                    this.setState({ refresh: !this.state.refresh, description: null })
+                    const d = new Date();
+                    this.setState({ refresh: !this.state.refresh, 
+                        startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
+                        endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
+                        selectedLeaveType: res.data[0]['leave_type_id'],
+                        description: null
+                     })
                     this.getRequestData(auth, url);
                     Toast.show({
                         text: res.data.message,
@@ -70,7 +76,12 @@ export default class LeaveRequest extends Component {
                         }
                     })
                 } else {
-                    this.setState({ refresh: !this.state.refresh, description: null })
+                    const d = new Date();
+                    this.setState({ refresh: !this.state.refresh, 
+                        startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
+                        endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
+                        selectedLeaveType: res.data[0]['leave_type_id'],
+                        description: null })
                     this.getRequestData(auth, url);
                     Toast.show({
                         duration: 5000,
@@ -90,6 +101,7 @@ export default class LeaveRequest extends Component {
                 })
             })
             .catch((error) => {
+                console.log(error)
                 this.setState({
                     loading: false,
                     loadingTxt: ''
