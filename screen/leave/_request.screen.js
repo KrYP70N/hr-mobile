@@ -52,8 +52,6 @@ export default class LeaveRequest extends Component {
         })
         APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
             .then((res) => {
-                // console.log(url.replace('https', 'http'))
-                // console.log(res)
                 if(res.status == "success"){
                 if (res.data.error == false) {
                     const d = new Date();
@@ -177,8 +175,17 @@ export default class LeaveRequest extends Component {
         this.hideEndDatePicker();
     }
 
-    changeLeaveType = (val, pos) => {
-        let attachNumber = this.state.leaveType[pos].image
+    getIndex(value, leaveTypes){
+        for(var i = 0; i < leaveTypes.length; i++) {
+            if(leaveTypes[i]["leave_type_id"] === value) {
+                return i;
+            }
+        }
+    }
+
+    changeLeaveType (val, pos){
+        const index = this.getIndex(val, this.state.leaveType);
+        const attachNumber = this.state.leaveType[index].image
         this.setState({
             selectedLeaveType: val,
             attachment: attachNumber,
@@ -292,10 +299,9 @@ export default class LeaveRequest extends Component {
                                     selectedValue={
                                         this.state.selectedLeaveType
                                     }
-                                    onValueChange={(itemValue, itemPosition) =>
-                                        this.changeLeaveType(itemValue, itemPosition)
-                                    }
-                                >
+                                    onValueChange={(value, index) => {
+                                        this.changeLeaveType(value, index)
+                                    }}>
                                     {
                                         this.state.leaveType.map((type) => {
                                             return (
