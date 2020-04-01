@@ -23,6 +23,10 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "ios": {
+      "bundleIdentifier": "com.innovixhr.hrmobile",
+      "buildNumber": "1"
+    },
     "android": {
       "package": "com.innovixhr.hrmobile",
       "versionCode": 1
