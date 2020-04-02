@@ -103,7 +103,7 @@ export default class Auth extends Component {
                             <Image source={require('../../assets/upload/logo.png')} styl/>
                             <Text style={styAuth.title}>Verification</Text>
                             <Item fixedLabel style={styAuth.item}>
-                                <Label style={styAuth.label}>Sit Key</Label>
+                                <Label style={styAuth.label}>Enter Your Access Token</Label>
                                 <Input 
                                 style={styAuth.input}
                                 onChangeText={(data) => this.keyHandle(data)}

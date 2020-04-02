@@ -8,7 +8,7 @@ import Loading from '../../components/loading.component'
 import PayrollList from './_list.payroll.screen.'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
-import { AsyncStorage, Platform, StatusBar } from 'react-native'
+import { AsyncStorage, Platform, StatusBar, SafeAreaView } from 'react-native'
 
 
 export default class Payroll extends Component {
@@ -57,28 +57,28 @@ export default class Payroll extends Component {
                 }
             })
         }
-        
+
     }
 
-    
-    componentDidMount () {
+
+    componentDidMount() {
         AsyncStorage.getItem('@hr:endPoint')
-        .then((res) => {
-            this.setState({
-                url: JSON.parse(res).ApiEndPoint
-            })
-            AsyncStorage.getItem('@hr:token')
             .then((res) => {
                 this.setState({
-                    auth: JSON.parse(res).key,
-                    id: JSON.parse(res).id
+                    url: JSON.parse(res).ApiEndPoint
                 })
+                AsyncStorage.getItem('@hr:token')
+                    .then((res) => {
+                        this.setState({
+                            auth: JSON.parse(res).key,
+                            id: JSON.parse(res).id
+                        })
+                    })
             })
-        })
     }
 
-    componentDidUpdate () {
-        if(this.state.payroll === "" && this.state.year !== null && this.state.url !== null && this.state.id !== null) {
+    componentDidUpdate() {
+        if (this.state.payroll === "" && this.state.year !== null && this.state.url !== null && this.state.id !== null) {
             this.searchPayroll()
         }
     }
@@ -117,16 +117,17 @@ export default class Payroll extends Component {
             })
         }
 
-        if(this.state.url === null || this.state.auth === null && this.state.id === null && this.state.payroll === null) {
+        if (this.state.url === null || this.state.auth === null && this.state.id === null && this.state.payroll === null) {
             return (
                 <Loading />
             )
         }
         return (
-            <Container style={styPayroll.container}>
-                <Header style={{
+            <SafeAreaView style={{ flex: 1 }}>
+                <Container style={styPayroll.container}>
+                    <Header style={{
                         backgroundColor: color.light,
-                        marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+                        marginTop: Platform.OS === 'ios' ? -40 : StatusBar.currentHeight
                     }}>
                         <Left style={{
                             display: 'flex',
@@ -145,39 +146,40 @@ export default class Payroll extends Component {
                         <Right></Right>
                     </Header>
 
-                <Content>
-                    <Form style={styPayroll.form}>
-                        <Row style={styPayroll.fieldSet}>
-                            <Col style={styPayroll.right}>
-                                <Item picker>
-                                    <Label>
-                                        <Text>Select Year</Text>
-                                    </Label>
-                                    <Picker
-                                        mode="dialog"
-                                        selectedValue={this.state.year}
-                                        onValueChange={this.changeYear.bind(this)}
-                                    >
-                                        {getYear}
-                                    </Picker>
-                                </Item>
-                            </Col>
-                        </Row>
-                        <Button style={styPayroll.buttonLg} onPress={this.searchPayroll}>
-                            <Text>Search</Text>
-                        </Button>
-                    </Form>
-                    <PayrollList 
-                    data={this.state.payroll} 
-                    year={this.state.year} 
-                    navigation={this.props.navigation}
-                    apidata={{
-                        auth: this.state.auth,
-                        url: this.state.url
-                    }}
-                    />
-                </Content>
-            </Container>
+                    <Content>
+                        <Form style={styPayroll.form}>
+                            <Row style={styPayroll.fieldSet}>
+                                <Col style={styPayroll.right}>
+                                    <Item picker>
+                                        <Label>
+                                            <Text>Select Year</Text>
+                                        </Label>
+                                        <Picker
+                                            mode="dialog"
+                                            selectedValue={this.state.year}
+                                            onValueChange={this.changeYear.bind(this)}
+                                        >
+                                            {getYear}
+                                        </Picker>
+                                    </Item>
+                                </Col>
+                            </Row>
+                            <Button style={styPayroll.buttonLg} onPress={this.searchPayroll}>
+                                <Text>Search</Text>
+                            </Button>
+                        </Form>
+                        <PayrollList
+                            data={this.state.payroll}
+                            year={this.state.year}
+                            navigation={this.props.navigation}
+                            apidata={{
+                                auth: this.state.auth,
+                                url: this.state.url
+                            }}
+                        />
+                    </Content>
+                </Container>
+            </SafeAreaView>
         )
     }
 }

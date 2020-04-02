@@ -17,7 +17,6 @@ import color from '../../constant/color'
 import { AsyncStorage, StatusBar, Platform, BackHandler } from 'react-native'
 
 export default class Attendance extends Component {
-
     constructor(props) {
         super(props)
         this.state = {

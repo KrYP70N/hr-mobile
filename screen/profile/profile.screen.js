@@ -4,7 +4,7 @@ import { Text, Header, Left, Right, Container, Content, Icon } from 'native-base
 import Heading from '../../components/header.component'
 import styProfile from './profile.style'
 import Loading from '../../components/loading.component'
-import { AsyncStorage, BackHandler } from 'react-native'
+import { AsyncStorage, BackHandler, StatusBar, SafeAreaView } from 'react-native'
 import APIs from '../../controllers/api.controller'
 
 import GeneralProfile from './_general.profile'
@@ -105,12 +105,13 @@ export default class Profile extends Component {
     }
 
     return (
+      <SafeAreaView style = {{flex: 1}}>
       <Container style={styProfile.topContainer}>
         <Content>
           {/* <Heading secondary title="Profile" navigation={this.props.navigation} /> */}
           <Header style={{
             backgroundColor: color.light,
-            marginTop: Platform.OS === 'ios' ? -30 : StatusBar.currentHeight
+            marginTop: Platform.OS === 'ios' ? -40 : StatusBar.currentHeight
             // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
           }}>
             <Left style={{
@@ -125,7 +126,7 @@ export default class Profile extends Component {
               }} onPress={() => { this.props.navigation.navigate('Main') }} />
               <Text style={{
                 color: color.secondary
-              }}>Payroll</Text>
+              }}>Profile</Text>
             </Left>
             <Right></Right>
           </Header>
@@ -135,6 +136,7 @@ export default class Profile extends Component {
           <PersonalProfile data={this.state.data['Personal Information']} />
         </Content>
       </Container>
+      </SafeAreaView>
     )
   }
 
