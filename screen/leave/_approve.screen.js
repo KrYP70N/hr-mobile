@@ -129,7 +129,7 @@ export default class LeaveApprove extends Component {
                         <Icon name='ios-arrow-round-back' style={{
                             fontSize: offset.o4, color: color.primary, marginRight: offset.o2
                         }} onPress={() => { this.props.navigation.navigate('Main') }} />
-                        <Text style={{ color: color.secondary }}>Leave Approve</Text>
+                        <Text style={{ color: color.secondary }}>Approve Leave</Text>
                     </Left>
                     <Right></Right>
                 </Header>

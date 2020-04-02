@@ -16,7 +16,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -25,7 +25,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.innovixhr.hrmobile",
-      "buildNumber": "1"
+      "buildNumber": "2"
     },
     "android": {
       "package": "com.innovixhr.hrmobile",

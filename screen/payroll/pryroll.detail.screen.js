@@ -7,7 +7,7 @@ import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 
 import color from '../../constant/color'
-import { StatusBar, Platform, Linking } from 'react-native'
+import { StatusBar, Platform, Linking, SafeAreaView} from 'react-native'
 import offset from '../../constant/offset'
 
 import * as WebBrowser from 'expo-web-browser';
@@ -98,6 +98,7 @@ export default class PayrollDetail extends Component {
         })
 
         return (
+            <SafeAreaView style = {{flex: 1}}>
             <Container>
                 <Content>
                     <Header style={{
@@ -158,6 +159,7 @@ export default class PayrollDetail extends Component {
                     </Button>
                 </View>
             </Container>
+            </SafeAreaView>
         )
     }
 }
