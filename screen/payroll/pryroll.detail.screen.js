@@ -98,12 +98,15 @@ export default class PayrollDetail extends Component {
         })
 
         return (
-            <SafeAreaView style = {{flex: 1}}>
-            <Container>
+            <SafeAreaView style = {{
+                flex: 1,
+                //marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+            }}>
+            <Container style = {{backgroundColor: color.lighter}}>
                 <Content>
                     <Header style={{
                         backgroundColor: color.light,
-                        marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+                        marginTop: Platform.OS === 'ios' ? -40 : StatusBar.currentHeight
                     }}>
                         <Left style={{
                             display: 'flex',

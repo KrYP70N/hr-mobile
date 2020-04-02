@@ -217,7 +217,7 @@ export default class Login extends Component {
                         <Label style={styLogin.label}>
                             <Icon name='ios-person' style={styLogin.icn}/>
                         </Label>
-                        <Input value={this.state.user} onChangeText={(key) => this.user(key)} placeholder='user name'/>
+                        <Input value={this.state.user} onChangeText={(key) => this.user(key)} placeholder='User Name'/>
                     </Item>
 
                     <Item inlineLabel style={styLogin.password}>
@@ -227,7 +227,7 @@ export default class Login extends Component {
                         <Input secureTextEntry={this.state.hidePassword} style={styLogin.input}
                             value={this.state.password}
                             onChangeText={(key) => { this.password(key) }}
-                            placeholder='password'
+                            placeholder='Password'
                         />
                         <Icon active name={
                             this.state.hidePassword === true ? 'ios-eye-off' : 'ios-eye'

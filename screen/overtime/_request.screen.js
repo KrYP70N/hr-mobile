@@ -3,7 +3,7 @@ import styOt from './overtime.style'
 import po from './po'
 import { Container, Content, Form, Text, Item, Input, Label, Icon, Row, Col, Button, Textarea, DatePicker, View, Toast } from 'native-base'
 import color from '../../constant/color'
-import { KeyboardAvoidingView, TouchableOpacity } from 'react-native'
+import { KeyboardAvoidingView, TouchableOpacity, SafeAreaView } from 'react-native'
 
 import APIs from '../../controllers/api.controller'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -175,23 +175,11 @@ export default class Request extends Component {
 
     render() {
         return (
+            <SafeAreaView style = {{flex: 1}}>
             <Container>
                 <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
                     <Content style={styOt.container}>
                         <Form>
-                            {/* <View style={styOt.datepicker}>
-                                <DatePicker
-                                    locale={"en"}
-                                    timeZoneOffsetInMinutes={undefined}
-                                    modalTransparent={false}
-                                    placeHolderText={po.request.datePicker.placeHolder}
-                                    placeHolderTextStyle={{ color: color.placeHolder, marginBottom: -10 }}
-                                    textStyle={{ color: color.secondary, marginBottom: -10 }}
-                                    onDateChange={(newDate) => this.pickDate(newDate)}
-                                />
-                                <Icon name={po.request.datePicker.icon} style={styOt.pickerIcn} />
-                            </View> */}
-
                             <View style={{ position: 'relative' }}>
                                 <DateTimePickerModal
                                     isVisible={this.state.isDatePickerVisible}
@@ -256,6 +244,7 @@ export default class Request extends Component {
                 </KeyboardAvoidingView>
                
             </Container>
+            </SafeAreaView>
         )
     }
 }

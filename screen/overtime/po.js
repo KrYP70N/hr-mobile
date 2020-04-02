@@ -17,9 +17,9 @@ export default {
             label: 'To Hours'
         },
         textarea: {
-            label: 'reason'
+            label: 'Reason for OT'
         },
-        buttonText: 'submit'
+        buttonText: 'Submit'
     },
     approve: {
         staff: {
