@@ -27,6 +27,7 @@ export default class TabViewExample extends Component {
             ],
             leaveType: [],
             leaves: [],
+            refresh: false,
             startDate: '',
             endDate: '',
             selectedLeaveType: ''
@@ -65,6 +66,7 @@ export default class TabViewExample extends Component {
     }
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
+            this.setState({ refresh: !this.state.refresh, index: 0})
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
                     const url = JSON.parse(res).ApiEndPoint
@@ -98,7 +100,8 @@ export default class TabViewExample extends Component {
                     this.setState({
                         leaveType: res.data,
                         startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
-                        selectedLeaveType: res.data[0]['leave_type_id']
+                        selectedLeaveType: res.data[0]['leave_type_id'],
+                        refresh: !this.state.refresh,
                     })
                 } else {
                     this.props.navigation.navigate('Login')
@@ -110,6 +113,7 @@ export default class TabViewExample extends Component {
         APIs.getLeaveRequest(auth, url, id)
             .then((res) => {
                 if (res.status === 'success') {
+                    console.log("Leave Pending List::", res.data)
                     this.setState({
                         leaves: res.data
                     })
@@ -144,7 +148,7 @@ export default class TabViewExample extends Component {
                 } else if (route.key === 'second') {
                     this.getApproveData(this.state.auth, this.state.id, this.state.url)
                 } else if (route.key === 'third') {
-                    this.getHistoryData(this.state.auth, this.state.id, this.state.url)
+                    //this.getHistoryData(this.state.auth, this.state.id, this.state.url)
                 }
             }}
         />
@@ -161,6 +165,7 @@ export default class TabViewExample extends Component {
                     />
                 )
             case 'second':
+                console.log("Leves Pending:::", this.state.leaves)
                 const GetLeave = this.state.leaves.map((leave) => {
                     return (
                         <Card key={leave['Obj id']}>
