@@ -133,6 +133,7 @@ export default class Login extends Component {
                     //   }
                     let data = JSON.parse(res)
                     let diff = moment(data.exp).diff(moment(new Date()), 'hours')
+                    console.log(diff)
                     if(diff < 17 && diff > 0) {
                         // refresh
                         let token = data.key
@@ -158,10 +159,9 @@ export default class Login extends Component {
                             })
                         })
                         
-                    } else if(diff <= 0) {
-
+                    // } else if(diff <= 0) {
+                    } else if(diff > 50) {
                         // expired
-
                         AsyncStorage.removeItem('@hr:token')
                         .then(() => {
                             console.log('session expired')

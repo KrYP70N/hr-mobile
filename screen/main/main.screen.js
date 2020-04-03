@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea, Header, Left, Right } from 'native-base'
+import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea, Header, Left, Right, Toast } from 'native-base'
 import { Image, AsyncStorage, Platform, StatusBar, TouchableOpacity, BackHandler, Modal, TouchableHighlight } from 'react-native'
 // import { TouchableOpacity } from 'react-native-gesture-handler'
 
@@ -54,11 +54,18 @@ export default class Main extends Component {
               loading: false
             })
           } else {
-            AsyncStorage.setItem('@hr:login', 'false')
+            // AsyncStorage.setItem('@hr:login', 'false')
+            Toast.show({
+              text: 'Connection time out. Please check your internet connection!',
+              textStyle: {
+                textAlign: 'center'
+              },
+              style: {
+                backgroundColor: color.primary
+              },
+              duration: 6000
+            })
           }
-        })
-        .catch((error) => {
-          this.props.navigation.navigate('Login')
         })
     }
 
@@ -84,13 +91,22 @@ export default class Main extends Component {
     this.isLowest = () => {
         APIs.Level(this.state.url, this.state.auth, this.state.id)
         .then((res) => {
-            console.log(res.data.lowest_level)
-            this.setState({
-                lowestLevel: res.data.lowest_level
-            })
-        })
-        .catch((error) => {
-            this.props.navigation.navigate('Login')
+            if(res.status === 'success') {
+              this.setState({
+                  lowestLevel: res.data.lowest_level
+              })
+            } else {
+              Toast.show({
+                text: 'Connection time out. Please check your internet connection!',
+                textStyle: {
+                  textAlign: 'center'
+                },
+                style: {
+                  backgroundColor: color.primary
+                },
+                duration: 6000
+              })
+            }
         })
     }
 

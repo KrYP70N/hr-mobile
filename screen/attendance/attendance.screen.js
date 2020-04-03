@@ -52,9 +52,23 @@ export default class Attendance extends Component {
             ) {
                 APIs.AttendanceSummary(this.state.url, this.state.token, this.state.id)
                 .then((res) => {
-                    this.setState({
-                        data: res.data
-                    })
+                    if(res.status === 'success') {
+                        this.setState({
+                            data: res.data
+                        })
+                    } else {
+                        Toast.show({
+                            text: 'Connection time out. Please check your internet connection!',
+                            textStyle: {
+                              textAlign: 'center'
+                            },
+                            style: {
+                              backgroundColor: color.primary
+                            },
+                            duration: 6000
+                          })
+                    }
+                    
                 })
             }
         })
@@ -74,6 +88,16 @@ export default class Attendance extends Component {
                         data: res.data
                     })
                 } else {
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                          textAlign: 'center'
+                        },
+                        style: {
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
+                      })
                     this.setState({
                         data: []
                     })

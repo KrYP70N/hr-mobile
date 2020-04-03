@@ -50,13 +50,14 @@ export default class TabViewExample extends Component {
                     })
                 } else {
                     Toast.show({
-                        text: 'Request fail! Please try again in later',
+                        text: 'Connection time out. Please check your internet connection!',
                         textStyle: {
-                            textAlign: 'center'
+                          textAlign: 'center'
                         },
                         style: {
-                            backgroundColor: color.danger
-                        }
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
                     })
                 }
             })
@@ -101,7 +102,16 @@ export default class TabViewExample extends Component {
                         selectedLeaveType: res.data[0]['leave_type_id']
                     })
                 } else {
-                    this.props.navigation.navigate('Login')
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                          textAlign: 'center'
+                        },
+                        style: {
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
+                      })
                 }
             })
     }
@@ -115,13 +125,14 @@ export default class TabViewExample extends Component {
                     })
                 } else {
                     Toast.show({
-                        text: 'There is no pending leave request!',
+                        text: 'Connection time out. Please check your internet connection!',
                         textStyle: {
-                            textAlign: 'center'
+                          textAlign: 'center'
                         },
                         style: {
-                            backgroundColor: color.primary
-                        }
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
                     })
                 }
             })

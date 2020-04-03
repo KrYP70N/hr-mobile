@@ -63,6 +63,16 @@ export default class LeaveHistory extends Component {
                     this.setState({
                         leave: []
                     })
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                          textAlign: 'center'
+                        },
+                        style: {
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
+                      })
                 }
             })
         }

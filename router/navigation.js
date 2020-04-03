@@ -56,7 +56,7 @@ const Drawer = createDrawerNavigator()
 function Navigation() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator drawerContent={(props) => CustomdrawerContent(props)}>
+      <Drawer.Navigator drawerContent={(props) => CustomdrawerContent(props)} edgeWidth={0}>
         {/* <Drawer.Screen name='Auth' component={Auth}
                 options={{
                     headerShown: false
@@ -65,9 +65,7 @@ function Navigation() {
         <Drawer.Screen name='Login' component={Login}
           options={{
             headerShown: false,
-            navigationOptions: () => ({
-              drawerLockMode: 'locked-open',
-            }),
+            edgeWidth: 0
           }}
         />
         <Drawer.Screen name='Main' component={Main} />

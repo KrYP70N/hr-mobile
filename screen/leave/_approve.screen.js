@@ -58,13 +58,14 @@ export default class LeaveApprove extends Component {
                     })
                 } else {
                     Toast.show({
-                        text: 'Network Error',
+                        text: 'Connection time out. Please check your internet connection!',
                         textStyle: {
-                            textAlign: 'center'
+                          textAlign: 'center'
                         },
                         style: {
-                            backgroundColor: color.danger
-                        }
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
                     })
                 }
             })
@@ -73,7 +74,18 @@ export default class LeaveApprove extends Component {
     sendApproveRejectLeave(url, auth, leaveID, status) {
         APIs.leaveStatusUpdate(url, auth, leaveID, status)
             .then((res) => {
-                console.log("Return Message::", res.data)
+                if(res.status !== 'success') {
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                          textAlign: 'center'
+                        },
+                        style: {
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
+                      })
+                }
                 if (res.data.error == false) {
                     this.setState({ refresh: !this.state.refresh })
                     Toast.show({
@@ -95,14 +107,15 @@ export default class LeaveApprove extends Component {
                                 })
                             } else {
                                 Toast.show({
-                                    text: 'Network Error',
+                                    text: 'Connection time out. Please check your internet connection!',
                                     textStyle: {
-                                        textAlign: 'center'
+                                      textAlign: 'center'
                                     },
                                     style: {
-                                        backgroundColor: color.danger
-                                    }
-                                })
+                                      backgroundColor: color.primary
+                                    },
+                                    duration: 6000
+                                  })
                             }
                         })
                 } else {

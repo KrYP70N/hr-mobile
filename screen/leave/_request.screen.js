@@ -100,14 +100,18 @@ export default class LeaveRequest extends Component {
                             }
                         })
                     }
+                } else {
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                          textAlign: 'center'
+                        },
+                        style: {
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
+                      })
                 }
-                this.setState({
-                    loading: false,
-                    loadingTxt: ''
-                })
-            })
-            .catch((error) => {
-                console.log(error)
                 this.setState({
                     loading: false,
                     loadingTxt: ''
@@ -129,7 +133,16 @@ export default class LeaveRequest extends Component {
                         description: null,
                     })
                 } else {
-                    $this.props.navigation.navigate('Login')
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                          textAlign: 'center'
+                        },
+                        style: {
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
+                      })
                 }
             })
     }
