@@ -406,6 +406,7 @@ export default class APIs {
             }
         }).get(`${url}/list/leaveRequest/${id}`)
             .then(function (res) {
+                console.log("API LEAVE DATA::", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {

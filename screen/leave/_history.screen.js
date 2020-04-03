@@ -167,7 +167,7 @@ export default class LeaveHistory extends Component {
                         <Body>
                             <View style={styLeave.cardTitleContainer}>
                                 <Text style={styLeave.cardTitle}>{leave.Leave_Type}</Text>
-                                <Text style={styLeave.cardRthLabel}>05 Nov 2020</Text>
+                                {/* <Text style={styLeave.cardRthLabel}>05 Nov 2020</Text> */}
                             </View>
                             <View style={styLeave.cardTitleContainer}>
                                 <Text style={styLeave.cardXSText}>From : {leave.date_from}</Text>
