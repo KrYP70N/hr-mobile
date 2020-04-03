@@ -51,12 +51,12 @@ export default class CheckInOut extends Component {
             })
           } else {
             Toast.show({
-              text: 'OPP! Connection error, Try again later.',
+              text: 'You already check in!',
               textStyle: {
                 textAlign: 'center'
               },
               style: {
-                backgroundColor: color.danger
+                backgroundColor: color.primary
               }
             })
           }
@@ -80,12 +80,12 @@ export default class CheckInOut extends Component {
             })
           } else {
             Toast.show({
-              text: 'OPP! Connection error, Try again later.',
+              text: 'You already check in!',
               textStyle: {
                 textAlign: 'center'
               },
               style: {
-                backgroundColor: color.danger
+                backgroundColor: color.primary
               }
             })
           }
@@ -115,7 +115,7 @@ export default class CheckInOut extends Component {
             })
           } else {
             Toast.show({
-              text: 'OPP! Connection error, Try again later.',
+              text: 'You already check out!',
               textStyle: {
                 textAlign: 'center'
               },
@@ -144,7 +144,7 @@ export default class CheckInOut extends Component {
             })
           } else {
             Toast.show({
-              text: 'OPP! Connection error, Try again later.',
+              text: 'You already check out!',
               textStyle: {
                 textAlign: 'center'
               },

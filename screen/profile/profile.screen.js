@@ -38,7 +38,7 @@ export default class Profile extends Component {
 
 
   componentDidMount() {
-    this.backHandler = BackHandler.addEventListener("hardwareBackPress", this.backAction)
+    // this.backHandler = BackHandler.addEventListener("hardwareBackPress", this.backAction)
     // request endpoint
     AsyncStorage.getItem('@hr:endPoint')
       .then((res) => {
@@ -75,9 +75,9 @@ export default class Profile extends Component {
     });
 
   }
-  componentWillUnmount() {
-    this.backHandler.remove();
-  }
+  // componentWillUnmount() {
+  //   this.backHandler.remove();
+  // }
 
   componentDidUpdate() {
     if (this.state.url !== null && this.state.auth !== null && this.state.id !== null && this.state.data === null) {
