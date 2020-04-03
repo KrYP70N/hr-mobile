@@ -24,18 +24,41 @@ export default class PayrollDetail extends Component {
         }
 
         this.slipReceived = () => {
-            // console.log(this.state.url, this.state.auth, this.props.route.params.slipid)
             APIs.sendReceived(this.state.url, this.state.auth, this.props.route.params.slipid)
             .then((res) => {
-                Toast.show({
-                    text: 'Submit success!',
-                    textStyle: {
-                        textAlign: 'center'
-                    },
-                    style: {
-                        backgroundColor: color.primary
-                    }
-                })
+                if(res.status === 'success') {
+                    APIs.getPaySlip(this.props.route.params.slipid, this.state.auth, this.state.url)
+                    .then((res) => {
+                        if (res.status === 'success') {
+                            this.setState({
+                                data: res.data,
+                                receive: res.data[0]['state']
+                            })
+                             
+                            Toast.show({
+                                text: 'Submit success!',
+                                textStyle: {
+                                    textAlign: 'center'
+                                },
+                                style: {
+                                    backgroundColor: color.primary
+                                }
+                            })
+                        } else {
+                            Toast.show({
+                                text: 'Invalid request, Please try again in later!',
+                                textStyle: {
+                                    textAlign: 'center'
+                                },
+                                style: {
+                                    backgroundColor: color.primary
+                                }
+                            })
+                        }
+
+                    })  
+
+                }
             })
         }
 
@@ -95,6 +118,7 @@ export default class PayrollDetail extends Component {
     
 
     render() {
+        console.log(this.state.receive)
         if (this.state.data === null) {
             return (
                 <Loading />
@@ -117,8 +141,7 @@ export default class PayrollDetail extends Component {
                 //marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
             }}>
             <Container style = {{backgroundColor: color.lighter}}>
-                <Content>
-                    <Header style={{
+            <Header style={{
                         backgroundColor: color.light,
                         marginTop: Platform.OS === 'ios' ? -40 : 0
                     }}>
@@ -139,6 +162,8 @@ export default class PayrollDetail extends Component {
                         <Right></Right>
                     </Header>
 
+                <Content>
+                    
                     {/* banner */}
                     <View style={styPayroll.detailBanner}>
                         <Text style={styPayroll.detailSalary}>{this.state.data[this.state.data.length - 1].payslip_line_total} MMK</Text>
@@ -168,7 +193,7 @@ export default class PayrollDetail extends Component {
                     <Button style={[styPayroll.stickyButton, {
                         borderLeftWidth: 1,
                         borderColor: '#fff',
-                        display: this.state.receive === 'receive' ?  'flex' : 'none'
+                        display: this.state.receive === 'receive' ?  'none' : 'flex'
                     }]} 
                     onPress={this.slipReceived}
                     >

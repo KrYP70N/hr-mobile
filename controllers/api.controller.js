@@ -431,15 +431,18 @@ export default class APIs {
 
     // post receivedPayroll
     static sendReceived = (url, auth, payrollID) => {
-        axios.create({
+        console.log(url, auth, payrollID)
+        return axios.create({
             headers: {
                 'Authorization': auth
             }
-        }).post(`${url}/payroll/receive/${payrollID}&status=received`)
+        }).post(`${url}/payroll/receive/${payrollID}?status=receive`)
             .then(function (res) {
+                console.log(res)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log("error", '<<<<')
                 return { error: error, status: 'fail' }
             })
     }
