@@ -16,7 +16,7 @@ export default class Heading extends Component {
       return (
         <Header style={{
           backgroundColor: color.light,
-          marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+          // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
         }}>
           <Left style={{
             display: 'flex',
@@ -42,7 +42,7 @@ export default class Heading extends Component {
 
     return (
       <Header style={[styMain.header, {
-        marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+        // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
       }]}>
         <Left>
           <Icon name='menu' style={styMain.headerMenu}

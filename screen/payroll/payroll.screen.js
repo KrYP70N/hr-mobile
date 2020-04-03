@@ -127,7 +127,7 @@ export default class Payroll extends Component {
                 <Container style={styPayroll.container}>
                     <Header style={{
                         backgroundColor: color.light,
-                        marginTop: Platform.OS === 'ios' ? -40 : StatusBar.currentHeight
+                        marginTop: Platform.OS === 'ios' ? -40 : 0
                     }}>
                         <Left style={{
                             display: 'flex',

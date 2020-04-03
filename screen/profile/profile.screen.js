@@ -107,11 +107,9 @@ export default class Profile extends Component {
     return (
       <SafeAreaView style = {{flex: 1}}>
       <Container style={styProfile.topContainer}>
-        <Content>
-          {/* <Heading secondary title="Profile" navigation={this.props.navigation} /> */}
-          <Header style={{
+      <Header style={{
             backgroundColor: color.light,
-            marginTop: Platform.OS === 'ios' ? -40 : StatusBar.currentHeight
+            marginTop: Platform.OS === 'ios' ? -40 : 0
             // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
           }}>
             <Left style={{
@@ -131,6 +129,9 @@ export default class Profile extends Component {
             <Right></Right>
           </Header>
 
+        <Content>
+          {/* <Heading secondary title="Profile" navigation={this.props.navigation} /> */}
+          
           <GeneralProfile data={this.state.data['General Information']} dataWork={this.state.data['Work Information']} />
           <Text style={styProfile.title}>Personal Information</Text>
           <PersonalProfile data={this.state.data['Personal Information']} />

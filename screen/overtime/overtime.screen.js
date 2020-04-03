@@ -177,7 +177,7 @@ export default class Overtime extends Component {
             case 'second':
                 let requests = this.state.data.map((req) => {
                     return (
-                        <Card key={req["Obj Id"]} >
+                        <Card key={req["Obj Id"]}>
                             <CardItem>
                                 <Body>
                                     <View style={styOt.cardTitleContainer}>
@@ -201,9 +201,11 @@ export default class Overtime extends Component {
                 })
 
                 return (
-                    <Container style={styOt.container}>
-                        <Content>
+                    <Container >
+                        <Content style={{padding: 10}}>
+                            <View style={{paddingBottom: 30}}>
                             {requests}
+                            </View>
                             <View style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -240,7 +242,7 @@ export default class Overtime extends Component {
             <Container>
             <Header style={{
                     backgroundColor: color.light,
-                    marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+                    // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                 }}>
                     <Left style={{
                         display: 'flex',

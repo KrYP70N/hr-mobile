@@ -102,7 +102,7 @@ export default class Auth extends Component {
                         <Form style={styAuth.form}>
                             <Image source={require('../../assets/upload/logo.png')} styl/>
                             <Text style={styAuth.title}>Verification</Text>
-                            <Item fixedLabel style={styAuth.item}>
+                            <Item stackedLabel style={styAuth.item}>
                                 <Label style={styAuth.label}>Enter Your Access Token</Label>
                                 <Input 
                                 style={styAuth.input}
@@ -110,7 +110,7 @@ export default class Auth extends Component {
                                 secureTextEntry={this.state.secure}
                                 />
                                 <Icon name={this.state.secure ? 'ios-eye-off' : 'ios-eye'} 
-                                style={styAuth.icon} 
+                                style={styAuth.icon}
                                 onPress={() => {
                                     this.setState({
                                         secure: !this.state.secure

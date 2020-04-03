@@ -106,7 +106,7 @@ export default class PayrollDetail extends Component {
                 <Content>
                     <Header style={{
                         backgroundColor: color.light,
-                        marginTop: Platform.OS === 'ios' ? -40 : StatusBar.currentHeight
+                        marginTop: Platform.OS === 'ios' ? -40 : 0
                     }}>
                         <Left style={{
                             display: 'flex',

@@ -117,7 +117,7 @@ export default class Attendance extends Component {
             <Container>
                 <Header style={{
                     backgroundColor: color.light,
-                    marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+                    // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                 }}>
                     <Left style={{
                         display: 'flex',

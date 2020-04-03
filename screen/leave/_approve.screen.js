@@ -124,7 +124,7 @@ export default class LeaveApprove extends Component {
         console.log("Leave Approve List::", this.state.leaveLists);
         return (
             <View style={styles.leaveApproveContainer}>
-                <Header style={{ backgroundColor: color.light, marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight }}>
+                <Header style={{ backgroundColor: color.light}}>
                     <Left style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                         <Icon name='ios-arrow-round-back' style={{
                             fontSize: offset.o4, color: color.primary, marginRight: offset.o2
