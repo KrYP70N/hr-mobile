@@ -58,14 +58,15 @@ export default class OvertimeApprove extends Component {
                     })
                 } else {
                     Toast.show({
-                        text: 'You have no overtime approval list!',
+                        text: 'Connection time out. Please check your internet connection!',
                         textStyle: {
-                            textAlign: 'center'
+                          textAlign: 'center'
                         },
                         style: {
-                            backgroundColor: color.primary
-                        }
-                    })
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
+                      })
                 }
             })
     }
@@ -73,7 +74,20 @@ export default class OvertimeApprove extends Component {
     sendApproveRejectOT(otID, auth, url, status) {
         APIs.OTUpdateStatus(otID, auth, url, status)
             .then((res) => {
-                console.log("Return Message::", res.data)
+
+                if(res.status !== success) {
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                          textAlign: 'center'
+                        },
+                        style: {
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
+                      })
+                }
+
                 if (res.data.error == false) {
                     this.setState({ refresh: !this.state.refresh })
                     Toast.show({
