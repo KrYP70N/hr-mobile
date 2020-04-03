@@ -52,21 +52,23 @@ export default class History extends Component {
 
             APIs.OTMonthly(this.state.url, this.state.auth, this.state.id, this.state.year, month)
             .then((res) => {
-                console.log(res.data)
-                this.setState({
-                    record : res.data
-                })
-                
-                // if(this.state.status === 'all') {
-                //     this.setState({
-                //         record : res.data
-                //     })
-                // } else {
-                //     let data = res.data.filter(list => list.state.indexOf(this.state.status) !== -1)
-                //     this.setState({
-                //         record : data
-                //     })
-                // }
+
+                if(res.status === 'success') {
+                    this.setState({
+                        record : res.data
+                    })
+                } else {
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                          textAlign: 'center'
+                        },
+                        style: {
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
+                      })
+                }
 
             })
         }

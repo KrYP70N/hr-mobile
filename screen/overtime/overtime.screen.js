@@ -84,14 +84,15 @@ export default class Overtime extends Component {
                     })
                 } else {
                     Toast.show({
-                        text: 'Network Error',
+                        text: 'Connection time out. Please check your internet connection!',
                         textStyle: {
-                            textAlign: 'center'
+                          textAlign: 'center'
                         },
                         style: {
-                            backgroundColor: color.danger
-                        }
-                    })
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
+                      })
                 }
             })
     }
@@ -127,6 +128,19 @@ export default class Overtime extends Component {
                             backgroundColor: color.danger
                         }
                     })
+                }
+
+                if(res.status !== 'success') {
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                          textAlign: 'center'
+                        },
+                        style: {
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
+                      })
                 }
             })
     }

@@ -54,6 +54,16 @@ export default class Payroll extends Component {
                     this.setState({
                         payroll: []
                     })
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                          textAlign: 'center'
+                        },
+                        style: {
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
                 }
             })
         }

@@ -43,7 +43,21 @@ export default class PayrollDetail extends Component {
             APIs.downloadPaySlip(this.state.url, this.state.auth, this.props.route.params.slipid)
             .then((res) => {
                 // WebBrowser.openBrowserAsync(res.data.data['Payslip PDF'][0])
-                Linking.openURL(res.data.data['Payslip PDF'][0])
+
+                if(res.status === 'success') {
+                    Linking.openURL(res.data.data['Payslip PDF'][0])
+                } else {
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                          textAlign: 'center'
+                        },
+                        style: {
+                          backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
+                }
             })
         }
     }

@@ -116,7 +116,18 @@ export default class Request extends Component {
                                 duration: 5000
                             })
                         }
-                       
+                        if(res.status !== 'success') {
+                            Toast.show({
+                                text: 'Connection time out. Please check your internet connection!',
+                                textStyle: {
+                                  textAlign: 'center'
+                                },
+                                style: {
+                                  backgroundColor: color.primary
+                                },
+                                duration: 6000
+                              })
+                        }
                     })
             }
         }

@@ -39,7 +39,16 @@ export default class Pending extends Component {
                         //this.getOTList()
                      
                     } else {
-                        console.log(res)
+                        Toast.show({
+                            text: 'Connection time out. Please check your internet connection!',
+                            textStyle: {
+                              textAlign: 'center'
+                            },
+                            style: {
+                              backgroundColor: color.primary
+                            },
+                            duration: 6000
+                          })
                     }
                 })
         }
@@ -54,14 +63,15 @@ export default class Pending extends Component {
                         })
                     } else {
                         Toast.show({
-                            text: 'Network Error',
+                            text: 'Connection time out. Please check your internet connection!',
                             textStyle: {
-                                textAlign: 'center'
+                              textAlign: 'center'
                             },
                             style: {
-                                backgroundColor: color.danger
-                            }
-                        })
+                              backgroundColor: color.primary
+                            },
+                            duration: 6000
+                          })
                     }
                 })
         }
@@ -119,7 +129,7 @@ export default class Pending extends Component {
 
         return (
             <Container style={styOt.container}>
-                <Content>
+                <Content>ƒ
                     {requests}
                 </Content>
             </Container>
