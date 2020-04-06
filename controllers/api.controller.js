@@ -142,7 +142,6 @@ export default class APIs {
 
     // checkinout status
     static CheckStatus(id, auth, url) {
-        console.log(id, auth, url)
         return axios.create({
             headers: {
                 'Authorization': auth
