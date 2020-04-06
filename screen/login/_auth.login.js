@@ -118,7 +118,7 @@ export default class Auth extends Component {
                                 {
                                     display: this.state.error === true ? 'flex' : 'none'
                                 }
-                            ]}>Invalid sit key!</Text>
+                            ]}>Invalid Access Token!</Text>
                             <Button style={styAuth.button} onPress={() => {this.submitKey()}}>
                                 <Text style={styAuth.textButton}>
                                     Submit</Text>
