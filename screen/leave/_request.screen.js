@@ -53,6 +53,7 @@ export default class LeaveRequest extends Component {
         APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
             .then((res) => {
                 if (res.status == "success") {
+                    console.log("Leve Request Success",res.data);
                     if (res.data.error == false) {
                         const d = new Date();
                         this.setState({
@@ -101,16 +102,17 @@ export default class LeaveRequest extends Component {
                         })
                     }
                 } else {
+                    console.log("Not Success Leave Request ::", res.data)
                     Toast.show({
                         text: 'Connection time out. Please check your internet connection!',
                         textStyle: {
-                          textAlign: 'center'
+                            textAlign: 'center'
                         },
                         style: {
-                          backgroundColor: color.primary
+                            backgroundColor: color.primary
                         },
                         duration: 6000
-                      })
+                    })
                 }
                 this.setState({
                     loading: false,
@@ -136,13 +138,13 @@ export default class LeaveRequest extends Component {
                     Toast.show({
                         text: 'Connection time out. Please check your internet connection!',
                         textStyle: {
-                          textAlign: 'center'
+                            textAlign: 'center'
                         },
                         style: {
-                          backgroundColor: color.primary
+                            backgroundColor: color.primary
                         },
                         duration: 6000
-                      })
+                    })
                 }
             })
     }
@@ -312,6 +314,10 @@ export default class LeaveRequest extends Component {
                                             <Text style={styLeave.placeholder}>Leave Type</Text>
                                         </Label>
                                         <Picker
+
+                                            iosIcon={
+                                                <Icon name="arrow-down" />
+                                            }
                                             selectedValue={
                                                 this.state.selectedLeaveType
                                             }
@@ -337,9 +343,9 @@ export default class LeaveRequest extends Component {
 
                                         />
                                         <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-between', alignItems: 'center', paddingLeft: 15 }}>
-                                            <Text style={{ color: color.placeHolder },styLeave.placeholder}>Start Date</Text>
+                                            <Text style={{ color: color.placeHolder }, styLeave.placeholder}>Start Date</Text>
                                             <View style={{ flexDirection: 'row', width: 150 }}>
-                                                <Text style={{ paddingLeft: 10, fontSize: 16}}>{this.state.startDate}</Text>
+                                                <Text style={{ paddingLeft: 10, fontSize: 16 }}>{this.state.startDate}</Text>
                                                 <Icon name={po.request.datePicker.icon} style={styLeave.pickerIcn} onPress={() => { this.showDatePicker() }} />
                                             </View>
                                         </View>
@@ -357,7 +363,7 @@ export default class LeaveRequest extends Component {
                                         <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-between', alignItems: 'center', paddingLeft: 15 }}>
                                             <Text style={{ color: color.placeHolder }, styLeave.placeholder}>End Date</Text>
                                             <View style={{ flexDirection: 'row', width: 150 }}>
-                                                <Text style={{ paddingLeft: 10,fontSize: 16 }}>{this.state.endDate}</Text>
+                                                <Text style={{ paddingLeft: 10, fontSize: 16 }}>{this.state.endDate}</Text>
                                                 <Icon name={po.request.datePicker.icon} style={styLeave.pickerIcn} onPress={() => { this.showEndDatePicker() }} />
                                             </View>
                                         </View>
@@ -369,6 +375,9 @@ export default class LeaveRequest extends Component {
                                             <Text style={styLeave.placeholder}>Day Type</Text>
                                         </Label>
                                         <Picker
+                                            iosIcon={
+                                                <Icon name="arrow-down" />
+                                            }
                                             onValueChange={(itemValue, itemPosition) =>
                                                 this.setState({ dayType: itemValue })}
                                             selectedValue={this.state.dayType}
@@ -390,14 +399,17 @@ export default class LeaveRequest extends Component {
                                         }}
                                     />
                                     <AttachButton />
+                                    <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
+                                        <Text style={styLeave.buttonText}>Submit</Text>
+                                    </Button>
                                 </Form>
 
                             </ScrollView>
                         </KeyboardAvoidingView>
                     </Content>
-                    <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
+                    {/* <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
                         <Text style={styLeave.buttonText}>Submit</Text>
-                    </Button>
+                    </Button> */}
                 </Container>
             </SafeAreaView>
         );

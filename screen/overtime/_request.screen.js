@@ -211,6 +211,7 @@ export default class Request extends Component {
                                     isVisible={this.state.isTimePickerFromVisible}
                                     mode="time"
                                     display="spinner"
+                                    headerTextIOS = "Pick a time"
                                     onConfirm={this.pickTimeFrom}
                                     onCancel={this.hideTimePickerFrom}
                                     is24Hour={true} //24 hour fomat in android
@@ -227,6 +228,7 @@ export default class Request extends Component {
                                 <DateTimePickerModal
                                     isVisible={this.state.isTimePickerToVisible}
                                     mode="time"
+                                    headerTextIOS = "Pick a time"
                                     display="spinner"
                                     onConfirm={this.pickTimeTo}
                                     onCancel={this.hideTimePickerto}
@@ -247,11 +249,14 @@ export default class Request extends Component {
                                 onChangeText={(data) => { this.description(data) }}
                                 value={this.state.description}
                             />
-                        </Form>
-                    </Content>
-                    <Button style={styOt.button} onPress={this.submit}>
+                             <Button style={styOt.button} onPress={this.submit}>
                         <Text>{po.request.buttonText}</Text>
                     </Button>
+                        </Form>
+                    </Content>
+                    {/* <Button style={styOt.button} onPress={this.submit}>
+                        <Text>{po.request.buttonText}</Text>
+                    </Button> */}
                 </KeyboardAvoidingView>
                
             </Container>

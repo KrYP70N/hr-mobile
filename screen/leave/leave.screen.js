@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Platform, StatusBar, AsyncStorage, } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 //import { Header, Left, Right, Container, Toast, Icon,} from 'native-base'
-import { View, Text, Content, Container, Toast, Tab, Header, Left, Right, Icon, Card, CardItem, Body, Row, Col, Button, } from 'native-base'
+import { View, Text, Content, Container, Toast, Tab, Header, Left, Right, Icon, Card, CardItem, Body, Row, Col,
+     Button, Picker, Form, Item, Label, Badge} from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import LeaveRequest from './_request.screen'
@@ -30,9 +31,71 @@ export default class TabViewExample extends Component {
             refresh: false,
             startDate: '',
             endDate: '',
-            selectedLeaveType: ''
+            selectedLeaveType: '',
+            leaveHistoryLists: [],
+            year: null,
+            month: null,
+            status: 'all',
+            token: null,
         };
 
+    }
+
+     // handel year
+     chageYear = (year) => {
+        this.setState({
+            year: year
+        })
+    }
+    
+    // handel month
+    changeMonth = (month) => {
+        this.setState({
+            month: month + 1 < 10 ? '0' + ( month + 1 ) : month + 1
+        })
+    }
+
+    // handel status
+    changeStatus = (status) => {
+        this.setState({
+            status: status
+        })
+    }
+    
+    // update ot list
+    updateLeave = () => {
+        console.log("Year", this.state.year)
+        console.log("Year", this.state.month)
+
+        APIs.LeaveMonthly(this.state.url, this.state.auth, this.state.id, this.state.year, this.state.month)
+        .then((res) => {
+            if(res.status === 'success') {
+                if(this.state.status !== 'all') {
+                    let data = res.data.filter(list => list.state === this.state.status)
+                    this.setState({
+                        leaveHistoryLists: data
+                    })
+                } else {
+                    this.setState({
+                        leaveHistoryLists: res.data
+                    })
+                }
+            } else {
+                this.setState({
+                    leaveHistoryLists: []
+                })
+                Toast.show({
+                    text: 'Connection time out. Please check your internet connection!',
+                    textStyle: {
+                      textAlign: 'center'
+                    },
+                    style: {
+                      backgroundColor: color.primary
+                    },
+                    duration: 6000
+                  })
+            }
+        })
     }
 
     cancelOT = (cid) => {
@@ -53,10 +116,10 @@ export default class TabViewExample extends Component {
                     Toast.show({
                         text: 'Connection time out. Please check your internet connection!',
                         textStyle: {
-                          textAlign: 'center'
+                            textAlign: 'center'
                         },
                         style: {
-                          backgroundColor: color.primary
+                            backgroundColor: color.primary
                         },
                         duration: 6000
                     })
@@ -66,8 +129,16 @@ export default class TabViewExample extends Component {
 
     }
     componentDidMount() {
+
         this.props.navigation.addListener('focus', () => {
-            this.setState({ refresh: !this.state.refresh, index: 0})
+            let date = new Date()
+            this.setState({
+                refresh: !this.state.refresh,
+                index: 0,
+                year: date.getFullYear(),
+                month: date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+            })
+
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
                     const url = JSON.parse(res).ApiEndPoint
@@ -82,6 +153,7 @@ export default class TabViewExample extends Component {
                             })
                             this.getRequestData(auth, url);
                             this.getApproveData(auth, id, url);
+                            this.getHistoryData(auth, id, url);
                         })
                 })
         })
@@ -108,13 +180,13 @@ export default class TabViewExample extends Component {
                     Toast.show({
                         text: 'Connection time out. Please check your internet connection!',
                         textStyle: {
-                          textAlign: 'center'
+                            textAlign: 'center'
                         },
                         style: {
-                          backgroundColor: color.primary
+                            backgroundColor: color.primary
                         },
                         duration: 6000
-                      })
+                    })
                 }
             })
     }
@@ -131,10 +203,10 @@ export default class TabViewExample extends Component {
                     Toast.show({
                         text: 'Connection time out. Please check your internet connection!',
                         textStyle: {
-                          textAlign: 'center'
+                            textAlign: 'center'
                         },
                         style: {
-                          backgroundColor: color.primary
+                            backgroundColor: color.primary
                         },
                         duration: 6000
                     })
@@ -143,7 +215,35 @@ export default class TabViewExample extends Component {
     }
 
     getHistoryData(auth, id, url) {
-
+        APIs.LeaveMonthly(url, auth, id, this.state.year, this.state.month)
+            .then((res) => {
+                if (res.status === 'success') {
+                    if (this.state.status !== 'all') {
+                        let data = res.data.filter(list => list.state === this.state.status)
+                        this.setState({
+                            leaveHistoryLists: data
+                        })
+                    } else {
+                        this.setState({
+                            leaveHistoryLists: res.data
+                        })
+                    }
+                } else {
+                    this.setState({
+                        leaveHistoryLists: []
+                    })
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
+                }
+            })
     }
 
     _renderTabBar = props => (
@@ -158,8 +258,8 @@ export default class TabViewExample extends Component {
                     this.getRequestData(this.state.auth, this.state.url)
                 } else if (route.key === 'second') {
                     this.getApproveData(this.state.auth, this.state.id, this.state.url)
-                } else if (route.key === 'third') {
-                    //this.getHistoryData(this.state.auth, this.state.id, this.state.url)
+                } else if (route.key === 'third'){
+                    this.getHistoryData(this.state.auth, this.state.id, this.state.url)
                 }
             }}
         />
@@ -208,26 +308,168 @@ export default class TabViewExample extends Component {
                         <Content style={styLeave.container}>
                             {GetLeave}
                             <View style={{
-                        display: this.state.leaves.length === 0 ? 'flex' : 'none',
-                        alignItems: 'center'
-                    }}>
-                        <Icon name='ios-information-circle-outline' style={{
-                            color: color.placeHolder,
-                            fontSize: 40
-                        }}/>
-                        <Text style={{
-                            color: color.placeHolder
-                        }}>There is no pending leave request!</Text>
-                    </View>
+                                display: this.state.leaves.length === 0 ? 'flex' : 'none',
+                                alignItems: 'center'
+                            }}>
+                                <Icon name='ios-information-circle-outline' style={{
+                                    color: color.placeHolder,
+                                    fontSize: 40
+                                }} />
+                                <Text style={{
+                                    color: color.placeHolder
+                                }}>There is no pending leave request!</Text>
+                            </View>
                         </Content>
                     </Container>
                 )
-            // return(
-            //     <LeavePending leaves = {this.state.leaves} navigation={this.props.navigation}/>
-            // )
+
 
             case 'third':
-                return <LeaveHistory />;
+                if (
+                    this.state.month === null ||
+                    this.state.year === null ||
+                    this.state.url === null ||
+                    this.state.auth === null ||
+                    this.state.id === null ||
+                    this.state.leaveHistoryLists === null
+                ) {
+                    return (
+                        <Loading info='loading api data ...' />
+                    )
+                }
+
+                let currentYear = new Date().getFullYear()
+
+                // year render
+                let years = []
+
+                for (let i = currentYear; i > 1986; i--) {
+                    years.push(i)
+                }
+
+                let getYear = years.map((year) => {
+                    return (
+                        <Picker.Item label={year.toString()} value={year} key={year} />
+                    )
+                })
+
+                // month render
+                let currentMonth = new Date().getMonth()
+                let months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+                let monthEng = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                let getMonth = months.map((month) => {
+                    return (
+                        <Picker.Item label={monthEng[month]} value={month} key={month} />
+                    )
+                })
+
+                // data render
+                let GetLeavesRequest = this.state.leaveHistoryLists.map((leave) => {
+                    let background;
+                    if (leave.state === 'cancel') {
+                        background = color.placeHolder
+                    } else if (leave.state === 'reject') {
+                        background = color.danger
+                    } else {
+                        background = color.primary
+                    }
+                    console.log(leave)
+                    return (
+                        <Card key={Math.floor(Math.random() * 1000)}>
+                            <CardItem>
+                                <Body>
+                                    <View style={styLeave.cardTitleContainer}>
+                                        <Text style={styLeave.cardTitle}>{leave.Leave_Type}</Text>
+                                        {/* <Text style={styLeave.cardRthLabel}>05 Nov 2020</Text> */}
+                                    </View>
+                                    <View style={styLeave.cardTitleContainer}>
+                                        <Text style={styLeave.dateFromText}>From : {leave.date_from}</Text>
+                                        <Badge style={[styLeave.badgeSuccess, {
+                                            backgroundColor: background
+                                        }
+                                        ]}>
+                                            <Text>{leave.state}</Text>
+                                        </Badge>
+                                    </View>
+                                    <Text style={[styLeave.dateFromText, { marginBottom: offset.o2 }]}>To : {leave.date_to}</Text>
+                                    <Text style={[styLeave.cardReasonText, {
+                                        display: leave.Reason === null || leave.Reason === 'null' ? 'none' : 'flex'
+                                    }]}>{leave.Reason}</Text>
+                                </Body>
+                            </CardItem>
+                        </Card>
+                    )
+                })
+
+                return (
+                    <Container>
+                        <Content style={styLeave.overlay}>
+                            <Form style={styLeave.container}>
+                                <Row>
+                                    <Col style={styLeave.left}>
+                                        <Item picker style={styLeave.picker}>
+                                            <Label style={styLeave.label}>
+                                                <Text style={styLeave.placeholder}>Year</Text>
+                                            </Label>
+                                            <Picker mode="dialog"
+                                            iosIcon={
+                                                <Icon name="arrow-down" />
+                                            }
+                                                placeholder="Status"
+                                                textStyle={{ color: color.primary }}
+                                                selectedValue={this.state.year}
+                                                onValueChange={this.chageYear.bind(this)}
+                                            >
+                                                {getYear}
+                                            </Picker>
+                                        </Item>
+                                    </Col>
+                                    <Col style={styLeave.right}>
+                                        <Item picker style={styLeave.picker}>
+                                            <Label style={styLeave.label}>
+                                                <Text style={styLeave.placeholder}>Month</Text>
+                                            </Label>
+                                            <Picker mode="dialog"
+                                            iosIcon={
+                                                <Icon name="arrow-down" />
+                                            }
+                                                placeholder="Status"
+                                                textStyle={{ color: color.primary }}
+                                                selectedValue={Number(this.state.month) - 1}
+                                                onValueChange={this.changeMonth.bind(this)}
+                                            >
+                                                {getMonth}
+                                            </Picker>
+                                        </Item>
+                                    </Col>
+                                </Row>
+
+                                <Button
+                                    style={styLeave.buttonPrimary}
+                                    onPress={() => this.updateLeave()}
+                                >
+                                    <Text>Search</Text>
+                                </Button>
+                            </Form>
+                            <View style={styLeave.resultBox}>
+                                {GetLeavesRequest}
+
+                                <View style={{
+                                    display: this.state.leaveHistoryLists.length === 0 ? 'flex' : 'none',
+                                    alignItems: "center"
+                                }}>
+                                    <Icon name='ios-information-circle-outline' style={{
+                                        color: color.placeHolder,
+                                        fontSize: 40
+                                    }} />
+                                    <Text style={{
+                                        color: color.placeHolder
+                                    }}>There is no leave request for {this.state.month}-{this.state.year}!</Text>
+                                </View>
+                            </View>
+                        </Content>
+                    </Container>
+                )
             default:
                 return null;
         }
@@ -267,7 +509,7 @@ export default class TabViewExample extends Component {
                     renderScene={this._renderScene}
                     renderTabBar={this._renderTabBar}
                     onIndexChange={this._handleIndexChange}
-                    swipeEnabled = {false}
+                    swipeEnabled={false}
                 />
             </Container>
         );
