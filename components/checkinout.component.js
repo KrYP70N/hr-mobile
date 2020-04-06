@@ -29,139 +29,202 @@ export default class CheckInOut extends Component {
       geofencing: null,
       officeCoord: null,
       radius: null,
-      withinRadius: 'wait'
+      withinRadius: 'wait',
+      status: null
     }
     // check in control
     this.CheckIn = () => {
-      if(this.state.geofencing) {
-        // geo true
-        APIs.Checkin(this.state.url, this.state.auth, this.state.id, {
-          lat: this.state.location['latitude'],
-          long: this.state.location['longitude']
-        }).then((res) => {
-          if(res.status === 'success') {
-            Toast.show({
-              text: 'Success check in!',
-              textStyle: {
-                textAlign: 'center'
-              },
-              style: {
-                backgroundColor: color.primary
-              }
+
+      const fun = () => {
+        if (this.state.geofencing) {
+          // geo true
+          APIs.Checkin(this.state.url, this.state.auth, this.state.id, {
+            lat: this.state.location['latitude'],
+            long: this.state.location['longitude']
+          }).then((res) => {
+            if (res.status === 'success') {
+              Toast.show({
+                text: 'Success check in!',
+                textStyle: {
+                  textAlign: 'center'
+                },
+                style: {
+                  backgroundColor: color.primary
+                }
+              })
+            } else {
+              Toast.show({
+                text: 'You already check in!',
+                textStyle: {
+                  textAlign: 'center'
+                },
+                style: {
+                  backgroundColor: color.primary
+                }
+              })
+            }
+            this.CheckStatus()
+          })
+            .catch((error) => {
+              this.props.navigation.navigate('Login')
             })
-          } else {
-            Toast.show({
-              text: 'You already check in!',
-              textStyle: {
-                textAlign: 'center'
-              },
-              style: {
-                backgroundColor: color.primary
+        } else {
+          // geo false
+          APIs.Checkin(this.state.url, this.state.auth, this.state.id)
+            .then((res) => {
+              if (res.status === 'success') {
+                Toast.show({
+                  text: 'Success check in!',
+                  textStyle: {
+                    textAlign: 'center'
+                  },
+                  style: {
+                    backgroundColor: color.primary
+                  }
+                })
+              } else {
+                Toast.show({
+                  text: 'You already check in!',
+                  textStyle: {
+                    textAlign: 'center'
+                  },
+                  style: {
+                    backgroundColor: color.primary
+                  }
+                })
               }
+              this.CheckStatus()
             })
-          }
-        })
-        .catch((error) => {
-          this.props.navigation.navigate('Login')
-        })
-      } else {
-        // geo false
-        APIs.Checkin(this.state.url, this.state.auth, this.state.id)
-        .then((res) => {
-          if(res.status === 'success') {
-            Toast.show({
-              text: 'Success check in!',
-              textStyle: {
-                textAlign: 'center'
-              },
-              style: {
-                backgroundColor: color.primary
-              }
+            .catch((error) => {
+              this.props.navigation.navigate('Login')
             })
-          } else {
-            Toast.show({
-              text: 'You already check in!',
-              textStyle: {
-                textAlign: 'center'
-              },
-              style: {
-                backgroundColor: color.primary
-              }
-            })
-          }
-        })
-        .catch((error) => {
-          this.props.navigation.navigate('Login')
-        })
+        }
       }
+
+      if (this.state.status.Multiple_checkinout === true) {
+        fun()
+      } else {
+        if (this.state.status.Checkin !== true) {
+          fun()
+        } else {
+          Toast.show({
+            text: "You're already checked in!",
+            textStyle: {
+              textAlign: 'center'
+            },
+            style: {
+              backgroundColor: color.primary
+            },
+            duration: 6000
+          })
+        }
+      }
+
     }
     // checkout control
     this.CheckOut = () => {
-      if(this.state.geofencing) {
-        // geo true
-        APIs.Checkout(this.state.url, this.state.auth, this.state.id, {
-          lat: this.state.location['latitude'],
-          long: this.state.location['longitude']
-        }).then((res) => {
-          if(res.status === 'success') {
-            Toast.show({
-              text: 'Success check out!',
-              textStyle: {
-                textAlign: 'center'
-              },
-              style: {
-                backgroundColor: color.primary
+      const fun = () => {
+        if (this.state.geofencing) {
+          // geo true
+          APIs.Checkout(this.state.url, this.state.auth, this.state.id, {
+            lat: this.state.location['latitude'],
+            long: this.state.location['longitude']
+          }).then((res) => {
+            if (res.status === 'success') {
+              Toast.show({
+                text: 'Success check out!',
+                textStyle: {
+                  textAlign: 'center'
+                },
+                style: {
+                  backgroundColor: color.primary
+                }
+              })
+            } else {
+              Toast.show({
+                text: 'You already check out!',
+                textStyle: {
+                  textAlign: 'center'
+                },
+                style: {
+                  backgroundColor: color.danger
+                }
+              })
+            }
+          })
+            .catch((error) => {
+              this.props.navigation.navigate('Login')
+            })
+        } else {
+          // geo false
+          APIs.Checkout(this.state.url, this.state.auth, this.state.id)
+            .then((res) => {
+              if (res.status === 'success') {
+                Toast.show({
+                  text: 'Success check out!',
+                  textStyle: {
+                    textAlign: 'center'
+                  },
+                  style: {
+                    backgroundColor: color.primary
+                  }
+                })
+              } else {
+                Toast.show({
+                  text: 'You already check out!',
+                  textStyle: {
+                    textAlign: 'center'
+                  },
+                  style: {
+                    backgroundColor: color.danger
+                  }
+                })
               }
             })
-          } else {
-            Toast.show({
-              text: 'You already check out!',
-              textStyle: {
-                textAlign: 'center'
-              },
-              style: {
-                backgroundColor: color.danger
-              }
+            .catch((error) => {
+              this.props.navigation.navigate('Login')
             })
-          }
-        })
-        .catch((error) => {
-          this.props.navigation.navigate('Login')
-        })
-      } else {
-        // geo false
-        APIs.Checkout(this.state.url, this.state.auth, this.state.id)
-        .then((res) => {
-          if(res.status === 'success') {
-            Toast.show({
-              text: 'Success check out!',
-              textStyle: {
-                textAlign: 'center'
-              },
-              style: {
-                backgroundColor: color.primary
-              }
-            })
-          } else {
-            Toast.show({
-              text: 'You already check out!',
-              textStyle: {
-                textAlign: 'center'
-              },
-              style: {
-                backgroundColor: color.danger
-              }
-            })
-          }
-        })
-        .catch((error) => {
-          this.props.navigation.navigate('Login')
-        })
+        }
       }
+      if (this.state.status.Multiple_checkinout === true) {
+        fun()
+      } else {
+        if (this.state.status.Checkout !== true) {
+          fun()
+        } else {
+          Toast.show({
+            text: "You're already checked out!",
+            textStyle: {
+              textAlign: 'center'
+            },
+            style: {
+              backgroundColor: color.primary
+            },
+            duration: 6000
+          })
+        }
+      }
+    }
+
+    // check status 
+    this.CheckStatus = () => {
+      APIs.CheckStatus(this.state.id, this.state.auth, this.state.url)
+        .then((res) => {
+          if (res.status === 'success') {
+            this.setState({
+              status: res.data
+            })
+          } else {
+            this.setState({
+              status: null
+            })
+          }
+        })
     }
   }
 
   async componentDidMount() {
+
     if (Platform.OS === 'android' && !Constants.isDevice) {
       this.setState({
         locError: true
@@ -217,6 +280,11 @@ export default class CheckInOut extends Component {
         .catch((error) => {
           this.props.navigation.navigate('Login')
         })
+
+      if (this.state.status === null) {
+        this.CheckStatus()
+      }
+
     }
 
     if (this.state.location !== null && this.state.geofencing === true) {
@@ -245,6 +313,8 @@ export default class CheckInOut extends Component {
 
       }, 2000)
     }
+
+
 
   }
 
@@ -292,6 +362,18 @@ export default class CheckInOut extends Component {
       )
     }
 
+    if (this.state.status === null) {
+      return (
+        <View style={styles.errorBox}>
+          <Card style={styles.error}>
+            <Image source={require('../assets/icon/location-3.png')} style={styles.errImg} />
+            <Text style={styles.errorTitle}>loading data ...</Text>
+            <Text style={styles.errorTxt}></Text>
+          </Card>
+        </View>
+      )
+    }
+
     return (
       <Row style={styles.cardRow}>
 
@@ -302,8 +384,17 @@ export default class CheckInOut extends Component {
               this.CheckIn()
             }}>
               <View style={styles.card}>
-                <Image source={require('../assets/icon/checktime.png')} style={styles.icon} />
-                <Text>Check In</Text>
+                <Image
+                  source={require('../assets/icon/checktime.png')}
+                  style={[styles.icon, {
+                    opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
+                  }]}
+                />
+                <Text
+                  style={{
+                    opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
+                  }}
+                >Check In</Text>
               </View>
             </TouchableOpacity>
           </Card>
@@ -314,8 +405,15 @@ export default class CheckInOut extends Component {
           <Card>
             <TouchableOpacity onPress={() => this.CheckOut()}>
               <View style={styles.card}>
-                <Image source={require('../assets/icon/checktime.png')} style={styles.icon} />
-                <Text>Check Out</Text>
+                <Image
+                  source={require('../assets/icon/checktime.png')}
+                  style={[styles.icon, {
+                    opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
+                  }]}
+                />
+                <Text style={{
+                  opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
+                }}>Check Out</Text>
               </View>
             </TouchableOpacity>
           </Card>

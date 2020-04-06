@@ -116,9 +116,11 @@ export default class APIs {
             }
         }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
+                console.log(res)
                 return { data: res, status: 'success' }
             })
             .catch(function (error) {
+                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -140,6 +142,7 @@ export default class APIs {
 
     // checkinout status
     static CheckStatus(id, auth, url) {
+        console.log(id, auth, url)
         return axios.create({
             headers: {
                 'Authorization': auth

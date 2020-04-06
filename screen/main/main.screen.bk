@@ -1,8 +1,10 @@
+
+
 import React, { Component } from 'react'
-import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea, Header, Left, Right, Toast } from 'native-base'
-import { Image, AsyncStorage, Platform, StatusBar, TouchableOpacity, BackHandler, Modal, TouchableHighlight } from 'react-native'
+import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea, Header, Left, Right } from 'native-base'
+import { Image, AsyncStorage, Platform, StatusBar, TouchableOpacity, BackHandler, Alert, StyleSheet} from 'react-native'
+
 // import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useFocusEffect } from '@react-navigation/native';
 
 import po from './po'
 import color from '../../constant/color'
@@ -18,6 +20,7 @@ import Time from '../../controllers/time.controller'
 import Heading from '../../components/header.component'
 import CheckInOut from '../../components/checkinout.component'
 import Clock from '../../components/time.component'
+import Modal from 'react-native-modal';
 
 import DB from '../../model/db.model'
 import moment from 'moment'
@@ -41,7 +44,8 @@ export default class Main extends Component {
       },
       loading: true,
       modal: false,
-      lowestLevel: true
+      isModalVisible: false,
+
     }
 
     this.getProfile = () => {
@@ -55,18 +59,11 @@ export default class Main extends Component {
               loading: false
             })
           } else {
-            // AsyncStorage.setItem('@hr:login', 'false')
-            Toast.show({
-              text: 'Connection time out. Please check your internet connection!',
-              textStyle: {
-                textAlign: 'center'
-              },
-              style: {
-                backgroundColor: color.primary
-              },
-              duration: 6000
-            })
+            AsyncStorage.setItem('@hr:login', 'false')
           }
+        })
+        .catch((error) => {
+          this.props.navigation.navigate('Login')
         })
     }
 
@@ -76,49 +73,65 @@ export default class Main extends Component {
         let current_date = new Date()
         let data = JSON.parse(res)
         let exp = data.exp
-        this.setState({
-        auth: DB.getToken(res),
-        id: DB.getUserId(res)
-        })
-        AsyncStorage.getItem('@hr:endPoint')
-        .then((res) => {
+        
+        let dif = moment(exp).diff(moment(new Date()), 'hours')
+
+        if(dif < 9)  {
+          this.setState({
+            loading: true
+          })
+          
+          // check url 
+          AsyncStorage.getItem('@hr:endPoint')
+          .then((res) => {
+            let url = JSON.parse(res)
             this.setState({
-            url: DB.getEndPoint(res)
+              url: url.ApiEndPoint
             })
-        })
+            APIs.RefreshToken(url.ApiEndPoint, data.key)
+            .then((res) => {
+              if(res.status === 'success') {
+                let date = new Date()
+                let exp_date = moment(date).add(60000, 'seconds')
+                AsyncStorage.setItem('@hr:token', JSON.stringify({
+                    key: 'Bearer '+ res.data.access_token,
+                    // key: res.data.access_token,
+                    id: res.data.employee_id,
+                    exp: exp_date
+                }))
+              } else {
+                this.props.navigation.navigate('Login')
+              }
+              this.setState({
+                loading: false
+              })
+            })
+          })
+
+        } else {
+          this.setState({
+            auth: DB.getToken(res),
+            id: DB.getUserId(res)
+          })
+          AsyncStorage.getItem('@hr:endPoint')
+            .then((res) => {
+              this.setState({
+                url: DB.getEndPoint(res)
+              })
+            })
+        }
       })
     }
-
-    this.isLowest = () => {
-        APIs.Level(this.state.url, this.state.auth, this.state.id)
-        .then((res) => {
-            if(res.status === 'success') {
-              this.setState({
-                  lowestLevel: res.data.lowest_level
-              })
-            } else {
-              Toast.show({
-                text: 'Connection time out. Please check your internet connection!',
-                textStyle: {
-                  textAlign: 'center'
-                },
-                style: {
-                  backgroundColor: color.primary
-                },
-                duration: 6000
-              })
-            }
-        })
-    }
-
   }
 
   componentDidMount() {
     this.checkToken()
     this.props.navigation.addListener('focus', () => {
+      this.checkToken()
       if (this.state.url !== null && this.state.id !== null) {
         this.getProfile()
       }
+
     })
   }
 
@@ -126,7 +139,6 @@ export default class Main extends Component {
     // profile request
     if (this.state.profile === null && this.state.url !== null && this.state.id !== null) {
       this.getProfile()
-      this.isLowest()
     }
   }
 
@@ -143,7 +155,7 @@ export default class Main extends Component {
         <Content>
           <TouchableOpacity style={styMain.banner}
             onPress={() => {
-              this.props.navigation.navigate('Profile')
+              this.props.navigation.navigate('Profile', {screenName: 'MainScreen'})
             }
             }>
             <Clock style={styMain.time} navigation={this.props.navigation} />
@@ -267,9 +279,7 @@ export default class Main extends Component {
             </Col>
           </Row>
 
-          <Row style={[styMain.menuHolder, {
-              display: this.state.lowestLevel === true ? 'none' : 'flex'
-          }]}>
+          <Row style={styMain.menuHolder}>
             <Col style={styMain.cardLft}>
               <Card style={!po.menu[5].navigate ? styMain.disabledMenu : null}>
                 <TouchableOpacity onPress={() =>
@@ -281,7 +291,7 @@ export default class Main extends Component {
                   <CardItem>
                     <Body style={styMain.menuBody}>
                       {/* <Icon name={po.menu[3].icon} style={styMain.icon} /> */}
-                      <Image style={[styMain.imgIcn, {width: 50, height: 42 }]} source={require('../../assets/icon/approve-leave.png')} />
+                      <Image style={[styMain.imgIcn, { height: 45 }]} source={require('../../assets/icon/ot.png')} />
                       <Text>{po.menu[5].name}</Text>
                     </Body>
                   </CardItem>
@@ -299,7 +309,7 @@ export default class Main extends Component {
                   <CardItem>
                     <Body style={styMain.menuBody}>
                       {/* <Icon name={po.menu[4].icon} style={styMain.icon} /> */}
-                      <Image style={[styMain.imgIcn, { width: 45, height: 43 }]} source={require('../../assets/icon/approve-ot.png')} />
+                      <Image style={[styMain.imgIcn, { height: 40 }]} source={require('../../assets/icon/payroll.png')} />
                       <Text>{po.menu[6].name}</Text>
                     </Body>
                   </CardItem>
@@ -307,10 +317,9 @@ export default class Main extends Component {
               </Card>
             </Col>
           </Row>
-
         </Content>
-
       </Container>
     )
   }
 }
+

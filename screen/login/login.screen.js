@@ -4,7 +4,7 @@ import Constants from 'expo-constants'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions';
 
-import { KeyboardAvoidingView, Image, Keyboard, AsyncStorage } from 'react-native'
+import { KeyboardAvoidingView, Image, Keyboard, AsyncStorage, BackHandler } from 'react-native'
 import { View, Text, Container, Form, Content, Item, Label, Input, Button, Footer, Icon, Toast } from 'native-base'
 
 import styLogin from './login.style'
@@ -134,7 +134,7 @@ export default class Login extends Component {
                     let data = JSON.parse(res)
                     let diff = moment(data.exp).diff(moment(new Date()), 'hours')
                     console.log(diff)
-                    if(diff < 17 && diff > 0) {
+                    if(diff < 50 && diff > 0) {
                         // refresh
                         let token = data.key
                         let id = data.id
@@ -160,7 +160,7 @@ export default class Login extends Component {
                         })
                         
                     // } else if(diff <= 0) {
-                    } else if(diff > 50) {
+                    } else if(diff <= 0) {
                         // expired
                         AsyncStorage.removeItem('@hr:token')
                         .then(() => {
