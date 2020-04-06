@@ -30,7 +30,11 @@ export default StyleSheet.create({
     },
     item: {
         marginLeft: 0,
-        marginBottom: offset.o5
+        marginBottom: offset.o1
+    },
+    errdisplay: {
+        color: color.danger,
+        marginBottom: offset.o3
     },
     label: {
         color: color.placeHolder
