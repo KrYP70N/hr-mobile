@@ -1,3 +1,4 @@
+//no use this page
 import React, { Component } from 'react'
 import { View, Text, Container, Content, Row, Col, Form, Item, Label, Input, Picker, Button, Card, CardItem, Body, Badge, Icon } from 'native-base'
 import color from '../../constant/color'
@@ -19,7 +20,7 @@ export default class LeaveHistory extends Component {
             year: null,
             month: null,
             status: 'all',
-            leave: null,
+            leave: this.props.leaveLists,
             token: null
         }
 

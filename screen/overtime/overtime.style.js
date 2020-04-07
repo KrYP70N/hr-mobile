@@ -28,12 +28,17 @@ export default {
     picker: {
         marginBottom: offset.o4
     },
+    // button: {
+    //     ...button.primary,
+    //     width: '100%',
+    //     position: 'absolute',
+    //     bottom: 0,
+    //     left: 0
+    // },
     button: {
         ...button.primary,
         width: '100%',
-        position: 'absolute',
-        bottom: 0,
-        left: 0
+        marginTop: 20,
     },
     buttonPrimary: {
         ...button.primary
@@ -74,14 +79,20 @@ export default {
         ...typo.cardRthLabel
     },
     cardXSText: {
-        ...typo.textSmall,
-        color: color.placeHolder
+        fontSize: 15,
+        color: color.dark,
+        fontWeight: 'bold',
     },
     cardSText: {
         ...typo.parabraph,
         color: color.placeHolder,
         marginBottom: offset.o1,
         marginTop: offset.oh,
+    },
+    dateFromText: {
+        fontSize: 14,
+        //fontWeight: 'bold',
+
     },
     cardWarning: {
         ...typo.parabraph,

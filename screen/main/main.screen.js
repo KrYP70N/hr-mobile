@@ -114,11 +114,25 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
-    this.checkToken()
     this.props.navigation.addListener('focus', () => {
-      if (this.state.url !== null && this.state.id !== null) {
-        this.getProfile()
-      }
+      this.setState({
+        url: null,
+        auth: null,
+        id: null,
+        profile: null,
+        checkin: {
+          status: true,
+          disabled: false
+        },
+        checkout: {
+          status: true,
+          disabled: true
+        },
+        loading: true,
+        modal: false,
+        lowestLevel: true
+      })
+      this.checkToken()
     })
   }
 

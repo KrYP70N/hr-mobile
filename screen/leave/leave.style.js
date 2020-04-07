@@ -40,10 +40,15 @@ export default StyleSheet.create({
     submitButton: {
         ...button.primary,
         width: '100%',
-        position: 'absolute',
-        left: 0,
-        bottom: 0
+        marginTop: 20,
     },
+    // submitButton: {
+    //     ...button.primary,
+    //     width: '100%',
+    //     position: 'absolute',
+    //     left: 0,
+    //     bottom: 0
+    // },
     buttonText: {
         color: color.light
     },
@@ -79,6 +84,16 @@ export default StyleSheet.create({
     cardXSText: {
         ...typo.textSmall,
         color: color.placeHolder
+    },
+    dateFromText: {
+        fontSize: 14,
+        //fontWeight: 'bold',
+
+    },
+    cardReasonText: {
+        ...typo.parabraph,
+        //color: color.placeHolder,
+        marginBottom: offset.o1
     },
     cardSText: {
         ...typo.parabraph,

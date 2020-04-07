@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
-import { View, Text, Content, Container, Toast, Tab, Header, Left, Right, Icon, Card, CardItem, Body, Row, Col, Button, } from 'native-base'
+import {
+    View, Text, Content, Container, Toast, Tab, Header, Left, Right, Icon,
+    Card, CardItem, Body, Row, Col, Button, Form, Item, Label,
+    Input, Picker, Badge,
+} from 'native-base'
 import styOt from './overtime.style'
 import po from './po'
 import Request from './_request.screen'
@@ -35,12 +39,88 @@ export default class Overtime extends Component {
             datetextColor: color.placeHolder,
             fromtextColor: color.placeHolder,
             totextColor: color.placeHolder,
+            //for History
+            year: null,
+            month: null,
+            status: 'all',
+            record: [],
         }
+    }
+
+    //for History
+    // handel year
+    chageYear = (year) => {
+        this.setState({
+            year: year
+        })
+    }
+
+    // handel month
+    changeMonth = (month) => {
+        this.setState({
+            month: month + 1 < 10 ? '0' + ( month + 1 ) : month + 1
+        })
+    }
+
+    // handel status
+    changeStatus = (status) => {
+        this.setState({
+            status: status
+        })
+    }
+
+    // handel otlist
+    getOT = () => {
+
+        // let month = this.state.month + 1 < 10 ? '0' + (this.state.month + 1) : this.state.month + 1 
+
+        // console.log(month)
+
+        APIs.OTMonthly(this.state.url, this.state.auth, this.state.id, this.state.year, this.state.month)
+            .then((res) => {
+
+                if (res.status === 'success') {
+                    console.log("Submit Get OT History Data", res.data)
+                    this.setState({
+                        record: res.data
+                    })
+                } else {
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
+                }
+
+            })
     }
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
-            this.setState({ refresh: !this.state.refresh, index: 0})
+            let currentdate = new Date();
+            this.setState({
+                refresh: !this.state.refresh, index: 0,
+                year: currentdate.getFullYear(),
+                month: currentdate.getMonth() + 1 < 10 ? '0' + (currentdate.getMonth() + 1) : currentdate.getMonth() + 1
+            })
+
+            // let currentYear = new Date().getFullYear()
+            // if (this.state.year === null) {
+            //     this.setState({
+            //         year: currentYear
+            //     })
+            // }
+
+            // if (this.state.month === null) {
+            //     this.setState({
+            //         month: new Date().getMonth()
+            //     })
+            // }
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
                     const url = JSON.parse(res).ApiEndPoint
@@ -56,6 +136,7 @@ export default class Overtime extends Component {
                                 id: JSON.parse(res).id
                             })
                             this.getApproveData(auth, id, url);
+                            this.getHistoryData(auth, id, url);
                         })
                 })
         })
@@ -86,19 +167,40 @@ export default class Overtime extends Component {
                     Toast.show({
                         text: 'Connection time out. Please check your internet connection!',
                         textStyle: {
-                          textAlign: 'center'
+                            textAlign: 'center'
                         },
                         style: {
-                          backgroundColor: color.primary
+                            backgroundColor: color.primary
                         },
                         duration: 6000
-                      })
+                    })
                 }
             })
     }
 
     getHistoryData(auth, id, url) {
+        APIs.OTMonthly(url, auth, id, this.state.year, this.state.month)
+            .then((res) => {
 
+                if (res.status === 'success') {
+                    console.log("OT HIstory Data::", res.data);
+                    this.setState({
+                        record: res.data
+                    })
+                } else {
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
+                }
+
+            })
     }
 
     cancelOT = (data) => {
@@ -130,17 +232,17 @@ export default class Overtime extends Component {
                     })
                 }
 
-                if(res.status !== 'success') {
+                if (res.status !== 'success') {
                     Toast.show({
                         text: 'Connection time out. Please check your internet connection!',
                         textStyle: {
-                          textAlign: 'center'
+                            textAlign: 'center'
                         },
                         style: {
-                          backgroundColor: color.primary
+                            backgroundColor: color.primary
                         },
                         duration: 6000
-                      })
+                    })
                 }
             })
     }
@@ -164,7 +266,7 @@ export default class Overtime extends Component {
                 } else if (route.key === 'second') {
                     this.getApproveData(this.state.auth, this.state.id, this.state.url)
                 } else if (route.key === 'third') {
-                    //this.getHistoryData(this.state.auth, this.state.id, this.state.url)
+                    this.getHistoryData(this.state.auth, this.state.id, this.state.url)
                 }
             }}
         />
@@ -216,9 +318,9 @@ export default class Overtime extends Component {
 
                 return (
                     <Container >
-                        <Content style={{padding: 10}}>
-                            <View style={{paddingBottom: 30}}>
-                            {requests}
+                        <Content style={{ padding: 10 }}>
+                            <View style={{ paddingBottom: 30 }}>
+                                {requests}
                             </View>
                             <View style={{
                                 display: 'flex',
@@ -228,7 +330,7 @@ export default class Overtime extends Component {
                                 <Icon name='ios-information-circle-outline' style={{
                                     color: color.placeHolder,
                                     fontSize: 40
-                                }}/>
+                                }} />
                                 <Text style={{
                                     color: color.placeHolder
                                 }}>There is no pending overtime request!</Text>
@@ -237,8 +339,150 @@ export default class Overtime extends Component {
                     </Container>
                 )
             case 'third':
-                console.log("Third Click")
-                return <History />;
+        
+                if (
+                    this.state.month === null ||
+                    this.state.year === null ||
+                    this.state.url === null ||
+                    this.state.auth === null ||
+                    this.state.id === null ||
+                    this.state.leaveHistoryLists === null
+                ) {
+                    return (
+                        <Loading info='loading api data ...' />
+                    )
+                }
+
+                console.log("REcord:::", this.state.record);
+
+                let currentYear = new Date().getFullYear()
+
+                // year render
+                let years = []
+
+                for (let i = currentYear; i > 1986; i--) {
+                    years.push(i)
+                }
+
+                let getYear = years.map((year) => {
+                    return (
+                        <Picker.Item label={year.toString()} value={year} key={year} />
+                    )
+                })
+
+                // month render
+                let currentMonth = new Date().getMonth()
+                let months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+                let monthEng = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                let getMonth = months.map((month) => {
+                    return (
+                        <Picker.Item label={monthEng[month]} value={month} key={month} />
+                    )
+                })
+
+                let records = this.state.record.map((record, idx) => {
+                    let badge_color = color.primary
+
+                    if (record.state === 'cancel') {
+                        badge_color = color.placeHolder
+                    } else if (record.state === 'refuse') {
+                        badge_color = color.danger
+                    }
+
+                    return (
+                        <Card key={idx.toString()}>
+                            <CardItem>
+                                <Body>
+                                    {/* <View style={styOt.cardTitleContainer}>
+                                        <Text style={styOt.cardTitle}>Employee_Name</Text>
+                                    </View> */}
+                                    <View style={styOt.cardTitleContainer}>
+                                        <Text style={styOt.cardXSText}>OT Hours - {record.hour}:{record.minute}</Text>
+                                        <Badge style={[styOt.badgeSuccess, {
+                                            backgroundColor: badge_color
+                                        }]}>
+                                            <Text>{record.state}</Text>
+                                        </Badge>
+                                    </View>
+                                    <View style={styOt.cardTitleContainer}>
+                                        <Text style={styOt.dateFromText}>From - {record.date_from}</Text>
+                                    </View>
+                                    <View style={styOt.cardTitleContainer}>
+                                        <Text style={styOt.dateFromText}>To - {record.date_to}</Text>
+                                    </View>
+                                </Body>
+                            </CardItem>
+                        </Card>
+                    )
+                })
+
+                return (
+                    <Container>
+                        <Content style={styOt.overlay}>
+                            <Form style={styOt.container}>
+                                <Row>
+                                    <Col style={styOt.left}>
+                                        <Item picker style={styOt.picker}>
+                                            <Label style={styOt.label}>
+                                                <Text>Year</Text>
+                                            </Label>
+                                            <Picker mode="dialog"
+                                                iosIcon={
+                                                    <Icon name="arrow-down" />
+                                                }
+                                                placeholder="Status"
+                                                textStyle={{ color: color.primary }}
+                                                selectedValue={this.state.year}
+                                                onValueChange={this.chageYear.bind(this)}
+                                            >
+                                                {getYear}
+                                            </Picker>
+                                        </Item>
+                                    </Col>
+                                    <Col style={styOt.right}>
+                                        <Item picker style={styOt.picker}>
+                                            <Label style={styOt.label}>
+                                                <Text>Month</Text>
+                                            </Label>
+                                            <Picker
+                                                iosIcon={
+                                                    <Icon name="arrow-down" />
+                                                }
+                                                mode="dialog"
+                                                placeholder="Status"
+                                                textStyle={{ color: color.primary }}
+                                                selectedValue={Number(this.state.month) - 1}
+                                                onValueChange={this.changeMonth.bind(this)}
+                                            >
+                                                {getMonth}
+                                            </Picker>
+                                        </Item>
+                                    </Col>
+                                </Row>
+                                <Button style={styOt.buttonPrimary}
+                                    onPress={this.getOT}
+                                >
+                                    <Text>Search</Text>
+                                </Button>
+                            </Form>
+                            <View style={styOt.resultBox}>
+                                {records}
+                            </View>
+                            <View style={{
+                                display: this.state.record.length === 0 ? 'flex' : 'none',
+                                alignItems: 'center'
+                            }}>
+                                <Icon name='ios-information-circle-outline' style={{
+                                    color: color.placeHolder,
+                                    fontSize: 40
+                                }} />
+                                <Text style={{
+                                    color: color.placeHolder
+                                }}>There is no overtime request for {this.state.month}-{this.state.year}</Text>
+                            </View>
+                        </Content>
+                    </Container>
+                )
             default:
                 return null;
         }
@@ -254,7 +498,7 @@ export default class Overtime extends Component {
 
         return (
             <Container>
-            <Header style={{
+                <Header style={{
                     backgroundColor: color.light,
                     // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                 }}>
@@ -274,16 +518,16 @@ export default class Overtime extends Component {
                     </Left>
                     <Right></Right>
                 </Header>
-                
-            <TabView
-                navigationState={this.state}
-                renderScene={this._renderScene}
-                renderTabBar={this._renderTabBar}
-                onIndexChange={this._handleIndexChange}
-                swipeEnabled={false}
-                lazy = {true}
+
+                <TabView
+                    navigationState={this.state}
+                    renderScene={this._renderScene}
+                    renderTabBar={this._renderTabBar}
+                    onIndexChange={this._handleIndexChange}
+                    swipeEnabled={false}
+                    lazy={true}
                 //initialRouteName = {'Request'}
-            />
+                />
             </Container>
         )
     }
