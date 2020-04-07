@@ -48,7 +48,8 @@ export default StyleSheet.create({
     },
     pos: {
         ...typo.textSmall,
-        color: color.light
+        color: color.light,
+        marginLeft: 5
     },
     profileDetail: {
         ...typo.icnLight,
