@@ -82,6 +82,7 @@ export default class CheckInOut extends Component {
                     backgroundColor: color.primary
                   }
                 })
+                this.CheckStatus()
               } else {
                 Toast.show({
                   text: 'You already check in!',
@@ -151,6 +152,8 @@ export default class CheckInOut extends Component {
                 }
               })
             }
+
+            this.CheckStatus()
           })
             .catch((error) => {
               this.props.navigation.navigate('Login')
@@ -180,6 +183,7 @@ export default class CheckInOut extends Component {
                   }
                 })
               }
+              this.CheckStatus()
             })
             .catch((error) => {
               this.props.navigation.navigate('Login')
@@ -191,7 +195,6 @@ export default class CheckInOut extends Component {
       } else {
         if (this.state.status.Checkout !== true) {
           fun()
-        } else {
           Toast.show({
             text: "You're already checked out!",
             textStyle: {

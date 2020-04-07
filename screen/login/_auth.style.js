@@ -4,6 +4,7 @@ import offset from '../../constant/offset'
 import typo from '../../constant/typography'
 import button from '../../constant/button'
 import color from '../../constant/color'
+import { Left } from 'native-base'
 
 export default StyleSheet.create({
     container: {
@@ -30,7 +31,13 @@ export default StyleSheet.create({
     },
     item: {
         marginLeft: 0,
-        marginBottom: offset.o5
+        marginBottom: offset.o1
+    },
+    errdisplay: {
+        width: '100%',
+        color: color.danger,
+        marginBottom: offset.o3,
+        textAlign: 'left'
     },
     label: {
         color: color.placeHolder

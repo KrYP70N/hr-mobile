@@ -18,7 +18,8 @@ export default class Auth extends Component {
             key: null,
             version: 1,
             loading: false,
-            secure: true
+            secure: true,
+            error: false
         }
 
         // key handle
@@ -41,23 +42,15 @@ export default class Auth extends Component {
                         AsyncStorage.setItem('@hr:endPoint', JSON.stringify(res.data))
                         .then(() => {
                             this.setState({
-                                loading: false
+                                loading: false,
+                                error: false
                             })
                             Updates.reload()
                         })
                     } else {
                         this.setState({
-                            loading: false
-                        })
-                        Toast.show({
-                            text: 'Invalid sit key!',
-                            textStyle: {
-                                textAlign: 'center'  
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 4000
+                            loading: false,
+                            error: true
                         })
                     }
                     
@@ -106,7 +99,7 @@ export default class Auth extends Component {
                                 {/* <Label style={styAuth.label}>Enter Your Access Token</Label> */}
                                 <Input 
                                 placeholder = "Enter Your Access Token"
-                                placeholderTextColor = {styAuth.label}
+                                placeholderTextColor = {color.placeHolder}
                                 style={styAuth.input}
                                 onChangeText={(data) => this.keyHandle(data)}
                                 secureTextEntry={this.state.secure}
@@ -120,8 +113,15 @@ export default class Auth extends Component {
                                 }}
                                 />
                             </Item>
+                            <Text style={[
+                                styAuth.errdisplay,
+                                {
+                                    display: this.state.error === true ? 'flex' : 'none'
+                                }
+                            ]}>Invalid Access Token!</Text>
                             <Button style={styAuth.button} onPress={() => {this.submitKey()}}>
-                                <Text style={styAuth.textButton}>Submit</Text>
+                                <Text style={styAuth.textButton}>
+                                    Submit</Text>
                             </Button>
                         </Form>
                     </KeyboardAvoidingView>
