@@ -23,6 +23,7 @@ export default class APIs {
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
