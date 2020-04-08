@@ -39,16 +39,21 @@ export default StyleSheet.create({
         overflow: 'hidden',
         borderWidth: 1,
         borderColor: color.light,
-        marginRight: offset.o1,
+        //marginRight: offset.o1,
         backgroundColor: color.light
     },
     name: {
         ...typo.subHeader,
-        color: color.light
+        color: color.light,   
     },
     pos: {
         ...typo.textSmall,
-        color: color.light
+        color: color.light,
+    },
+    pos1: {
+        ...typo.textSmall,
+        color: color.light,
+        marginLeft: 10
     },
     profileDetail: {
         ...typo.icnLight,

@@ -72,42 +72,42 @@ export default class Main extends Component {
 
     this.checkToken = () => {
       AsyncStorage.getItem('@hr:token')
-      .then((res) => {
-        let current_date = new Date()
-        let data = JSON.parse(res)
-        let exp = data.exp
-        this.setState({
-        auth: DB.getToken(res),
-        id: DB.getUserId(res)
-        })
-        AsyncStorage.getItem('@hr:endPoint')
         .then((res) => {
-            this.setState({
-            url: DB.getEndPoint(res)
+          let current_date = new Date()
+          let data = JSON.parse(res)
+          let exp = data.exp
+          this.setState({
+            auth: DB.getToken(res),
+            id: DB.getUserId(res)
+          })
+          AsyncStorage.getItem('@hr:endPoint')
+            .then((res) => {
+              this.setState({
+                url: DB.getEndPoint(res)
+              })
             })
         })
-      })
     }
 
     this.isLowest = () => {
-        APIs.Level(this.state.url, this.state.auth, this.state.id)
+      APIs.Level(this.state.url, this.state.auth, this.state.id)
         .then((res) => {
-            if(res.status === 'success') {
-              this.setState({
-                  lowestLevel: res.data.lowest_level
-              })
-            } else {
-              Toast.show({
-                text: 'Connection time out. Please check your internet connection!',
-                textStyle: {
-                  textAlign: 'center'
-                },
-                style: {
-                  backgroundColor: color.primary
-                },
-                duration: 6000
-              })
-            }
+          if (res.status === 'success') {
+            this.setState({
+              lowestLevel: res.data.lowest_level
+            })
+          } else {
+            Toast.show({
+              text: 'Connection time out. Please check your internet connection!',
+              textStyle: {
+                textAlign: 'center'
+              },
+              style: {
+                backgroundColor: color.primary
+              },
+              duration: 6000
+            })
+          }
         })
     }
 
@@ -147,7 +147,7 @@ export default class Main extends Component {
   render() {
     if (this.state.loading === true || this.state.profile === null) {
       return (
-        <Loading info='request profile data ...'/>
+        <Loading info='request profile data ...' />
       )
     }
 
@@ -171,24 +171,19 @@ export default class Main extends Component {
                       uri: `data:${this.state.profile['Profile Image'][1]};base64,${this.state.profile['Profile Image'][0]}`
                     }
                 } style={styMain.profilePic} />
-                <View>
-                  <Text style={styMain.name}>
-                    {/* emp name */}
-                    {
-                      this.state.profile['General Information']['Employee Name'] ?
-                      this.state.profile['General Information']['Employee Name'] :
-                      'Unknown User'
-                    }
-                  </Text>
-                  <Text style={[styMain.pos]}>
-                    {/* emp position */}
-                    {
-                      this.state.profile['General Information']['Job Position'] ?
-                      this.state.profile['General Information']['Job Position'] :
-                      'Untitled Position'
-                    }
-                  </Text>
+                <View style = {{marginLeft: 15}}>
+                  {
+                    this.state.profile['General Information']['Employee Name'] ?
+                      <Text style={styMain.name}>
+                        {this.state.profile['General Information']['Employee Name']} </Text> :
+                      <Text style={styMain.name}>Unknown User</Text>
 
+                  }
+                  {
+                    this.state.profile['General Information']['Job Position'] ?
+                      <Text style={[styMain.pos]}>{this.state.profile['General Information']['Job Position']} </Text> :
+                      <Text style={[styMain.pos]}>Untitled Position</Text>
+                  }
                 </View>
 
               </Col>
@@ -282,7 +277,7 @@ export default class Main extends Component {
           </Row>
 
           <Row style={[styMain.menuHolder, {
-              display: this.state.lowestLevel === true ? 'none' : 'flex'
+            display: this.state.lowestLevel === true ? 'none' : 'flex'
           }]}>
             <Col style={styMain.cardLft}>
               <Card style={!po.menu[5].navigate ? styMain.disabledMenu : null}>
@@ -295,7 +290,7 @@ export default class Main extends Component {
                   <CardItem>
                     <Body style={styMain.menuBody}>
                       {/* <Icon name={po.menu[3].icon} style={styMain.icon} /> */}
-                      <Image style={[styMain.imgIcn, {width: 50, height: 42 }]} source={require('../../assets/icon/approve-leave.png')} />
+                      <Image style={[styMain.imgIcn, { width: 50, height: 42 }]} source={require('../../assets/icon/approve-leave.png')} />
                       <Text>{po.menu[5].name}</Text>
                     </Body>
                   </CardItem>
