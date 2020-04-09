@@ -23,7 +23,6 @@ export default class APIs {
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -117,11 +116,9 @@ export default class APIs {
             }
         }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
-                console.log(res)
                 return { data: res, status: 'success' }
             })
             .catch(function (error) {
-                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -272,16 +269,12 @@ export default class APIs {
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }
 
     // request leave
     static requestLeave(auth, url, id, leaveType, from, to, dayType, description, file) {
-        
-        console.log(file.length, 'file :::')
-
         let fd = new FormData()
         for(let i=0; i<file.length; i++) {
             if(i === 0) {
@@ -304,7 +297,6 @@ export default class APIs {
         }
         )
             .then(function (res) {
-                console.log("ApI Return for Request Leave::", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
@@ -410,7 +402,6 @@ export default class APIs {
             }
         }).get(`${url}/list/leaveRequest/${id}`)
             .then(function (res) {
-                console.log("API LEAVE DATA::", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
@@ -435,18 +426,15 @@ export default class APIs {
 
     // post receivedPayroll
     static sendReceived = (url, auth, payrollID) => {
-        console.log(url, auth, payrollID)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).post(`${url}/payroll/receive/${payrollID}?status=receive`)
             .then(function (res) {
-                console.log(res)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log("error", '<<<<')
                 return { error: error, status: 'fail' }
             })
     }

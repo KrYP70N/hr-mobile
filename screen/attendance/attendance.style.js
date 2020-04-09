@@ -6,8 +6,8 @@ import offset from '../../constant/offset'
 
 export default StyleSheet.create({
     container: {
-        paddingLeft: offset.o1,
-        paddingRight: offset.o1
+        paddingLeft: 15,
+        paddingRight: 15
     },
     timeBanner: {
         backgroundColor: color.primary,

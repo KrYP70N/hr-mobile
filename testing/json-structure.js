@@ -12,17 +12,11 @@ axios.create({
         let str_index = data.indexOf('data\": ') + 'data\": '.length
 
         data = data.slice(str_index + 1, data.length - 2)
-        console.log(data)
         let generalInfo = data.slice(0, data.indexOf("Work Information")).split(', "')
         let generalArr = []
-
-        
-
-        console.log(generalArr)
 
         return { data: res.data, status: 'success' }
     })
     .catch(function (error) {
-        console.log(error)
         return { error: error, status: 'fail' }
     })

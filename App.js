@@ -35,7 +35,7 @@ export default class App extends React.Component {
   render() {
 
     BackHandler.addEventListener('hardwareBackPress', function() {
-      console.log('hola')
+    
     })
 
     if (!this.state.isReady) {

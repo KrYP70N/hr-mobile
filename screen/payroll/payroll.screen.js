@@ -162,12 +162,18 @@ export default class Payroll extends Component {
                                 <Col style={styPayroll.right}>
                                     <Item picker>
                                         <Label>
-                                            <Text>Select Year</Text>
+                                            <Text style={{
+                                                fontFamily: 'Nunito',
+                                                color: color.placeHolder
+                                            }}>Select Year</Text>
                                         </Label>
                                         <Picker
                                             mode="dialog"
                                             selectedValue={this.state.year}
                                             onValueChange={this.changeYear.bind(this)}
+                                            textStyle={{
+                                                fontFamily: 'Nunito'
+                                            }}
                                         >
                                             {getYear}
                                         </Picker>

@@ -26,7 +26,6 @@ export default class GeneralProfile extends Component {
             workKey: workArray
         })
 
-        console.log(this.props.dataWork)
     }
 
     render () {
@@ -58,8 +57,6 @@ export default class GeneralProfile extends Component {
             )
         })
 
-        // console.log(dataList)
-        
         return (
             <View style={styProfile.workInfo}>
                 <View style={styProfile.workContainer}>

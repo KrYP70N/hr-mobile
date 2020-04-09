@@ -91,9 +91,15 @@ export default StyleSheet.create({
         //fontWeight: 'bold',
 
     },
+    cardReasonLabelText: {
+        ...typo.parabraph,
+        color: "#656565",
+        //marginTop: offset.o1,
+        marginBottom: offset.oh
+    },
     cardReasonText: {
         ...typo.parabraph,
-        //color: color.placeHolder,
+        color: color.placeHolder,
         marginBottom: offset.o1
     },
     cardSText: {
@@ -141,10 +147,13 @@ export default StyleSheet.create({
         flex: 1,
     },
     name: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...typo.paragraph,
+        fontFamily: 'Nunito-Bold'
     },
-    position:{fontSize: 14, marginTop: 3, color: color.placeHolder},
+    position:{
+        ...typo.textSmall,
+        color: color.tertiary
+    },
     leaveApproveCard: {
         backgroundColor: 'white',
         borderRadius: 5,
@@ -171,7 +180,7 @@ export default StyleSheet.create({
         color: '#656565'
     },
     leaveText:{
-        fontSize: 16,
+        ...typo.paragraph,
         marginTop: 5,
     },
     pickerIcn: {

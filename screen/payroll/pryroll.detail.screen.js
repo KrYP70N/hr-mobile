@@ -118,7 +118,6 @@ export default class PayrollDetail extends Component {
     
 
     render() {
-        console.log(this.state.receive)
         if (this.state.data === null) {
             return (
                 <Loading />
@@ -126,7 +125,6 @@ export default class PayrollDetail extends Component {
         }
 
         let silpdata = this.state.data.map((info) => {
-            // console.log(info)
             return (
                 <ListItem style={styPayroll.listItem} key={info.payslip_line_name}>
                     <Text style={styPayroll.listLft}>{info['payslip_line_name']}</Text>
@@ -172,7 +170,10 @@ export default class PayrollDetail extends Component {
                     </View>
 
                     <View style={styPayroll.itemBox}>
-                        <Card>
+                        <Card style={{
+                            borderRadius: 5,
+                            overflow: 'hidden'
+                        }}>
                             <List>
                                 {silpdata}
                             </List>

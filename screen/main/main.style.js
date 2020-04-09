@@ -104,8 +104,8 @@ export default StyleSheet.create({
         opacity: 0.5
     },
     menuHolder: {
-        paddingLeft: offset.o1,
-        paddingRight: offset.o1
+        paddingLeft: 15,
+        paddingRight: 15
     },
     menuBody: {
         minHeight: 100,

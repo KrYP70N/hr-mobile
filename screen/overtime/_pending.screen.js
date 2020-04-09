@@ -21,10 +21,8 @@ export default class Pending extends Component {
     }
 
     cancelOT(data){
-        console.log("Click Cancel:::");
             APIs.OTUpdateStatus(data, this.state.auth, this.state.url, 'cancel')
                 .then((res) => {
-                    console.log("Return Message", res.data)
                     if(res.status === 'success') {  
                         Toast.show({
                             text: 'OT Cancel successful!',
@@ -57,7 +55,6 @@ export default class Pending extends Component {
             APIs.OTPending(id, auth, url)
                 .then((res) => {
                     if (res.status === 'success') {
-                        console.log("Pending List::", res.data)
                         this.setState({
                             data: res.data
                         })
@@ -98,7 +95,6 @@ export default class Pending extends Component {
     }
 
     render () {     
-        console.log(this.state.data)
         if(this.state.url === null || this.state.auth === null || this.state.id === null) {
             return (
                 <Loading />

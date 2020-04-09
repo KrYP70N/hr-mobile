@@ -204,7 +204,10 @@ export default class Main extends Component {
           {/* menu */}
           <Row style={styMain.menuHolder}>
             <Col style={styMain.cardLft}>
-              <Card style={!po.menu[1].navigate ? styMain.disabledMenu : null}>
+              <Card style={[!po.menu[1].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
                 <TouchableOpacity onPress={() =>
                   po.menu[1].navigate ?
                     this.props.navigation.navigate(
@@ -221,7 +224,10 @@ export default class Main extends Component {
               </Card>
             </Col>
             <Col style={styMain.cardRight}>
-              <Card style={!po.menu[2].navigate ? styMain.disabledMenu : null}>
+              <Card style={[!po.menu[2].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
                 <TouchableOpacity onPress={() =>
                   po.menu[2].navigate ?
                     this.props.navigation.navigate(
@@ -242,7 +248,10 @@ export default class Main extends Component {
 
           <Row style={styMain.menuHolder}>
             <Col style={styMain.cardLft}>
-              <Card style={!po.menu[3].navigate ? styMain.disabledMenu : null}>
+              <Card style={[!po.menu[3].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
                 <TouchableOpacity onPress={() =>
                   po.menu[3].navigate ?
                     this.props.navigation.navigate(
@@ -260,7 +269,10 @@ export default class Main extends Component {
               </Card>
             </Col>
             <Col style={styMain.cardRight}>
-              <Card style={!po.menu[4].navigate ? styMain.disabledMenu : null}>
+              <Card style={[!po.menu[4].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
                 <TouchableOpacity onPress={() =>
                   po.menu[4].navigate ?
                     this.props.navigation.navigate(
@@ -270,7 +282,7 @@ export default class Main extends Component {
                   <CardItem>
                     <Body style={styMain.menuBody}>
                       {/* <Icon name={po.menu[4].icon} style={styMain.icon} /> */}
-                      <Image style={[styMain.imgIcn, { height: 40 }]} source={require('../../assets/icon/payroll.png')} />
+                      <Image style={[styMain.imgIcn, { width: 46, height: 47 }]} source={require('../../assets/icon/payroll.png')} />
                       <Text style={styMain.menuTxt}>{po.menu[4].name}</Text>
                     </Body>
                   </CardItem>
@@ -283,7 +295,10 @@ export default class Main extends Component {
             display: this.state.lowestLevel === true ? 'none' : 'flex'
           }]}>
             <Col style={styMain.cardLft}>
-              <Card style={!po.menu[5].navigate ? styMain.disabledMenu : null}>
+              <Card style={[!po.menu[5].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
                 <TouchableOpacity onPress={() =>
                   po.menu[5].navigate ?
                     this.props.navigation.navigate(
@@ -301,7 +316,10 @@ export default class Main extends Component {
               </Card>
             </Col>
             <Col style={styMain.cardRight}>
-              <Card style={!po.menu[6].navigate ? styMain.disabledMenu : null}>
+              <Card style={[!po.menu[6].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
                 <TouchableOpacity onPress={() =>
                   po.menu[6].navigate ?
                     this.props.navigation.navigate(

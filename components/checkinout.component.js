@@ -435,11 +435,11 @@ let styles = StyleSheet.create({
     marginBottom: offset.o3
   },
   left: {
-    paddingLeft: offset.o1,
+    paddingLeft: 15,
     paddingRight: offset.oh
   },
   right: {
-    paddingLeft: offset.oh,
+    paddingLeft: 15,
     paddingRight: offset.o1
   },
   cardHolder: {
@@ -459,7 +459,7 @@ let styles = StyleSheet.create({
     marginBottom: offset.o1
   },
   errorBox: {
-    padding: offset.o1
+    padding: 15
   },
   error: {
     backgroundColor: color.light,

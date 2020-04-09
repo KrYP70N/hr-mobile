@@ -100,7 +100,6 @@ export default class LeaveApprove extends Component {
                     APIs.leaveApproval(this.state.url, this.state.auth, this.state.id)
                         .then((res) => {
                             if (res.status === 'success') {
-                                console.log("Response Api OT Lists:::", res.data)
                                 this.setState({
                                     refresh: !this.state.refresh,
                                     leaveLists: res.data,
@@ -134,7 +133,6 @@ export default class LeaveApprove extends Component {
     }
 
     render() {
-        console.log("Leave Approve List::", this.state.leaveLists);
         return (
             <View style={styles.leaveApproveContainer}>
                 <Header style={{ backgroundColor: color.light}}>
@@ -158,12 +156,16 @@ export default class LeaveApprove extends Component {
                             <Text style={styles.date}>{`From ${item.date_from} To ${item.date_to}`}</Text>
                             <Text style={styles.leaveText}>{item["Leave Type"]}</Text>
                             <View style={styles.leaveApproveBtn}>
-                                <TouchableOpacity onPress={() => { this.sendApproveRejectLeave(this.state.url, this.state.auth, item["Obj id"], 'reject') }}>
-                                    <View style={{ backgroundColor: color.placeHolder, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
+                                <TouchableOpacity 
+                                style={{width: '48%'}}
+                                onPress={() => { this.sendApproveRejectLeave(this.state.url, this.state.auth, item["Obj id"], 'reject') }}>
+                                    <View style={{ backgroundColor: color.placeHolder, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
                                         <Text>Reject</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { this.sendApproveRejectLeave(this.state.url, this.state.auth, item["Obj id"], 'confirm') }}>
+                                <TouchableOpacity 
+                                style={{width: '48%'}}
+                                onPress={() => { this.sendApproveRejectLeave(this.state.url, this.state.auth, item["Obj id"], 'confirm') }}>
                                     <View style={{ marginLeft: 10, backgroundColor: color.primary, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
                                         <Text style={{ color: 'white' }}>Approve</Text>
                                     </View>

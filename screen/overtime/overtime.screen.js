@@ -71,16 +71,10 @@ export default class Overtime extends Component {
 
     // handel otlist
     getOT = () => {
-
-        // let month = this.state.month + 1 < 10 ? '0' + (this.state.month + 1) : this.state.month + 1 
-
-        // console.log(month)
-
         APIs.OTMonthly(this.state.url, this.state.auth, this.state.id, this.state.year, this.state.month)
             .then((res) => {
 
                 if (res.status === 'success') {
-                    console.log("Submit Get OT History Data", res.data)
                     this.setState({
                         record: res.data
                     })
@@ -109,18 +103,6 @@ export default class Overtime extends Component {
                 month: currentdate.getMonth() + 1 < 10 ? '0' + (currentdate.getMonth() + 1) : currentdate.getMonth() + 1
             })
 
-            // let currentYear = new Date().getFullYear()
-            // if (this.state.year === null) {
-            //     this.setState({
-            //         year: currentYear
-            //     })
-            // }
-
-            // if (this.state.month === null) {
-            //     this.setState({
-            //         month: new Date().getMonth()
-            //     })
-            // }
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
                     const url = JSON.parse(res).ApiEndPoint
@@ -159,7 +141,6 @@ export default class Overtime extends Component {
         APIs.OTPending(id, auth, url)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("Pending List::", res.data)
                     this.setState({
                         data: res.data
                     })
@@ -183,7 +164,6 @@ export default class Overtime extends Component {
             .then((res) => {
 
                 if (res.status === 'success') {
-                    console.log("OT HIstory Data::", res.data);
                     this.setState({
                         record: res.data
                     })
@@ -206,7 +186,6 @@ export default class Overtime extends Component {
     cancelOT = (data) => {
         APIs.OTUpdateStatus(data, this.state.auth, this.state.url, 'cancel')
             .then((res) => {
-                console.log("Return Message", res.data)
                 if (res.data.error === false) {
                     this.setState({ refresh: !this.state.refresh })
                     this.getApproveData(this.state.auth, this.state.id, this.state.url);
@@ -299,7 +278,6 @@ export default class Overtime extends Component {
                                     <View style={styOt.cardTitleContainer}>
                                         <Text style={styOt.cardTitle}>{po.approve.staff.cardTitle}</Text>
                                     </View>
-                                    {/* <Text style={{ marginBottom: 5 }}>{`${req["Employee_Name"]} (${req["Job Position"]})`}</Text> */}
                                     <Text style={styOt.cardXSText}>From : {`${req['date_from']}`}</Text>
                                     <Text style={styOt.cardXSText}>To : {`${req['date_to']}`}</Text>
                                     <Text style={styOt.cardSText}>{po.approve.staff.label2}{`${req['hour']} : ${req['minute']} `}</Text>
@@ -352,9 +330,6 @@ export default class Overtime extends Component {
                         <Loading info='loading api data ...' />
                     )
                 }
-
-                console.log("REcord:::", this.state.record);
-
                 let currentYear = new Date().getFullYear()
 
                 // year render
@@ -383,9 +358,9 @@ export default class Overtime extends Component {
                 let records = this.state.record.map((record, idx) => {
                     let badge_color = color.primary
 
-                    if (record.state === 'cancel') {
+                    if (record.state === 'Cancel' || record.state === 'cancel') {
                         badge_color = color.placeHolder
-                    } else if (record.state === 'refuse') {
+                    } else if (record.state === 'refuse' || record.state === 'Refuse') {
                         badge_color = color.danger
                     }
 
@@ -393,22 +368,25 @@ export default class Overtime extends Component {
                         <Card key={idx.toString()}>
                             <CardItem>
                                 <Body>
-                                    {/* <View style={styOt.cardTitleContainer}>
-                                        <Text style={styOt.cardTitle}>Employee_Name</Text>
-                                    </View> */}
                                     <View style={styOt.cardTitleContainer}>
                                         <Text style={styOt.cardXSText}>OT Hours - {record.hour}:{record.minute}</Text>
-                                        <Badge style={[styOt.badgeSuccess, {
-                                            backgroundColor: badge_color
-                                        }]}>
-                                            <Text>{record.state}</Text>
-                                        </Badge>
+                                        <View style = {{backgroundColor: badge_color, borderRadius: 5, paddingTop: 4,paddingBottom: 4, paddingLeft: 10, paddingRight: 10, alignItems: 'center', justifyContent: 'center'}}>
+                                        <Text style= {{color: "#fff", fontSize: 12}}>{record.state}</Text>
+                                        </View>
                                     </View>
                                     <View style={styOt.cardTitleContainer}>
                                         <Text style={styOt.dateFromText}>From - {record.date_from}</Text>
                                     </View>
                                     <View style={styOt.cardTitleContainer}>
                                         <Text style={styOt.dateFromText}>To - {record.date_to}</Text>
+                                    </View>
+
+                                    <View style={styOt.cardTitleContainer}>
+                                        <Text style={styOt.cardWarning}>{record["State Note"]}</Text>
+                                    </View>
+
+                                    <View style={styOt.cardTitleContainer}>
+                                        <Text style={styOt.cardReasonLabelText}>Reason:  {record.name}</Text>
                                     </View>
                                 </Body>
                             </CardItem>
@@ -489,7 +467,6 @@ export default class Overtime extends Component {
     }
 
     render() {
-        console.log("Reach OT Screen")
         if (this.state.url === null && this.state.auth === null && this.state.id === null) {
             return (
                 <Loading />
@@ -500,7 +477,6 @@ export default class Overtime extends Component {
             <Container>
                 <Header style={{
                     backgroundColor: color.light,
-                    // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                 }}>
                     <Left style={{
                         display: 'flex',
@@ -526,7 +502,6 @@ export default class Overtime extends Component {
                     onIndexChange={this._handleIndexChange}
                     swipeEnabled={false}
                     lazy={true}
-                //initialRouteName = {'Request'}
                 />
             </Container>
         )

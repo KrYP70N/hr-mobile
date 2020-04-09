@@ -53,7 +53,6 @@ export default class LeaveRequest extends Component {
         APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
             .then((res) => {
                 if (res.status == "success") {
-                    console.log("Leve Request Success",res.data);
                     if (res.data.error == false) {
                         const d = new Date();
                         this.setState({
@@ -102,7 +101,6 @@ export default class LeaveRequest extends Component {
                         })
                     }
                 } else {
-                    console.log("Not Success Leave Request ::", res.data)
                     Toast.show({
                         text: 'Connection time out. Please check your internet connection!',
                         textStyle: {

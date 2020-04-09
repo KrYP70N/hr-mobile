@@ -102,7 +102,6 @@ export default class OvertimeApprove extends Component {
                     APIs.OTApproval(this.state.url, this.state.auth, this.state.id)
                         .then((res) => {
                             if (res.status === 'success') {
-                                console.log("Response Api OT Lists:::", res.data)
                                 this.setState({
                                     refresh: !this.state.refresh,
                                     overtimeList: res.data,
@@ -137,8 +136,6 @@ export default class OvertimeApprove extends Component {
 
 
     render() {
-        console.log("Overtime Approve Screen")
-        console.log("Overtime Render list::", this.state.overtimeList.length);
         return (
             <Container>
                 <Header style={{ backgroundColor: color.light}}>
@@ -146,7 +143,7 @@ export default class OvertimeApprove extends Component {
                         <Icon name='ios-arrow-round-back' style={{
                             fontSize: offset.o4, color: color.primary, marginRight: offset.o2
                         }} onPress={() => { this.props.navigation.navigate('Main') }} />
-                        <Text style={{ color: color.secondary }}>Approve OT</Text>
+                        <Text style={{ color: color.secondary, fontFamily: 'Nunito' }}>Approve OT</Text>
                     </Left>
                     <Right></Right>
                 </Header>
@@ -171,7 +168,7 @@ export default class OvertimeApprove extends Component {
                             renderItem={({ item, index }) =>
                                 <View style={styles.leaveApproveCard}>
                                     <Text style={styles.name}>{item.employee_name}</Text>
-                                    <Text style={styles.position}>{`(${item["Job Position"]})`}</Text>
+                                    <Text style={styles.position}>{`${item["Job Position"]}`}</Text>
                                     <Text style={styles.date}>{`From - ${item.overtime_date_from}`}</Text>
                                     <Text style={styles.toDate}>{`To     - ${item.overtime_date_to}`}</Text>
                                     <Text style={styles.otHour}>{`OT Hours - ${item.overtime_hours}:${item.overtime_minute}`}</Text>
@@ -179,15 +176,17 @@ export default class OvertimeApprove extends Component {
                                     <View style={styles.leaveApproveBtn}>
                                         <TouchableOpacity
                                             onPress={() => { this.sendApproveRejectOT(item.Overtime_id, this.state.auth, this.state.url, 'reject') }}
+                                            style={{width: '48%'}}
                                         >
-                                            <View style={{ backgroundColor: color.placeHolder, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
+                                            <View style={{ backgroundColor: color.placeHolder, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
                                                 <Text>Reject</Text>
                                             </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={() => { this.sendApproveRejectOT(item.Overtime_id, this.state.auth, this.state.url, 'confirm') }}
+                                            style={{width: '48%'}}
                                         >
-                                            <View style={{ marginLeft: 10, backgroundColor: color.primary, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
+                                            <View style={{ marginLeft: 10, backgroundColor: color.primary, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
                                                 <Text style={{ color: 'white' }}>Approve</Text>
                                             </View>
                                         </TouchableOpacity>

@@ -62,8 +62,6 @@ export default class Request extends Component {
             } else {
                 const request_from = this.state.date + " " + this.state.fromTime;
                 const request_to = this.state.date + " " + this.state.toTime;
-                console.log("Date From::", request_from)
-                console.log("Date To::", request_to)
                 APIs.OTRequest(
                     this.props.id,
                     this.props.auth,

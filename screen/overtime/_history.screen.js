@@ -45,11 +45,7 @@ export default class History extends Component {
 
         // handel otlist
         this.getOT = () => {
-
             let month = this.state.month + 1 < 10 ? '0' + (this.state.month + 1) : this.state.month + 1 
-
-            console.log(month)
-
             APIs.OTMonthly(this.state.url, this.state.auth, this.state.id, this.state.year, month)
             .then((res) => {
 
