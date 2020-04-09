@@ -397,7 +397,7 @@ export default class CheckInOut extends Component {
                   style={{
                     opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
                     fontFamily: 'Nunito-Bold',
-                    fontSize: 18
+                    fontSize: 16
                   }}
                 >Check In</Text>
               </View>
@@ -419,7 +419,7 @@ export default class CheckInOut extends Component {
                   <Text style={{
                     opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
                     fontFamily: 'Nunito-Bold',
-                    fontSize: 18
+                    fontSize: 16
                   }}>Check Out</Text>
                 </View>
               </TouchableOpacity>
