@@ -12,17 +12,13 @@ export default class PayrollList extends Component {
         super(props)
 
         this.download = (url, auth, slipid) => {
-            console.log(url, auth, slipid)
             APIs.downloadPaySlip(url, auth, slipid)
             .then((res) => {
-                // console.log(res.data.data['Payslip PDF'][0])
                 WebBrowser.openBrowserAsync(res.data.data['Payslip PDF'][0])
-                // Linking.openURL(res.data.data['Payslip PDF'][0])
             })
         }
     }
     render() {
-        console.log(this.props.data)
         if (this.props.data.length > 0) {
             let slips = this.props.data.map((slip) => {
                 return (

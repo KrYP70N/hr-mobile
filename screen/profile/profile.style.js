@@ -31,19 +31,22 @@ export default StyleSheet.create({
     marginBottom: offset.o1
   },
   id: {
+    ...typo.textSmall,
     color: color.placeHolder,
-    marginBottom: offset.o1,
+    marginBottom: offset.oh,
     textAlign: 'center'
   },
   name: {
     ...typo.subHeader,
     color: color.primary,
-    fontWeight: 'bold',
+    fontFamily: 'Nunito-Bold',
     textAlign: 'center'
   },
   position: {
+    ...typo.textSmall,
     textAlign: 'center',
-    color: color.secondary
+    color: color.secondary,
+    marginBottom: offset.o3
   },
   dataList: {
     width: '100%',
@@ -55,15 +58,19 @@ export default StyleSheet.create({
   },
   label: {
     ...typo.placeholder,
-    marginTop: offset.o1
+    marginTop: offset.o1,
+    fontSize: 14
   },
   dataValue: {
+    ...typo.paragraph,
+    color: '#333',
     marginBottom: offset.o1
   },
   title: {
     ...typo.subHeader,
-    fontWeight: 'bold',
-    padding: offset.o1
+    fontFamily: 'Nunito-Bold',
+    padding: offset.o1,
+    color: '#333'
   },
   personalInfo: {
     padding: offset.o1,

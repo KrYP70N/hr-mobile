@@ -20,10 +20,13 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     await Font.loadAsync({
+      'Nunito': require('./assets/fonts/Nunito-Regular.ttf'),
+      'Nunito-Bold': require('./assets/fonts/Nunito-Bold.ttf'),
       Roboto: require('native-base/Fonts/Roboto.ttf'),
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
       ...Ionicons.font,
-    });
+    })
+    
     setTimeout(() => {
       this.setState({ isReady: true });
     }, 4000)
@@ -32,7 +35,7 @@ export default class App extends React.Component {
   render() {
 
     BackHandler.addEventListener('hardwareBackPress', function() {
-      console.log('hola')
+    
     })
 
     if (!this.state.isReady) {

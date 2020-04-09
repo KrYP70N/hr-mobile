@@ -114,6 +114,9 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      return true
+    })
     this.props.navigation.addListener('focus', () => {
       this.setState({
         url: null,
@@ -211,7 +214,7 @@ export default class Main extends Component {
                   <CardItem>
                     <Body style={styMain.menuBody}>
                       <Image style={styMain.imgIcn} source={require('../../assets/icon/attendance.png')} />
-                      <Text>{po.menu[1].name}</Text>
+                      <Text style={styMain.menuTxt}>{po.menu[1].name}</Text>
                     </Body>
                   </CardItem>
                 </TouchableOpacity>
@@ -229,7 +232,7 @@ export default class Main extends Component {
                     <Body style={styMain.menuBody}>
                       {/* <Icon name={po.menu[2].icon} style={styMain.icon} /> */}
                       <Image style={styMain.imgIcn} source={require('../../assets/icon/leave.png')} />
-                      <Text>{po.menu[2].name}</Text>
+                      <Text style={styMain.menuTxt} >{po.menu[2].name}</Text>
                     </Body>
                   </CardItem>
                 </TouchableOpacity>
@@ -250,7 +253,7 @@ export default class Main extends Component {
                     <Body style={styMain.menuBody}>
                       {/* <Icon name={po.menu[3].icon} style={styMain.icon} /> */}
                       <Image style={[styMain.imgIcn, { height: 45 }]} source={require('../../assets/icon/ot.png')} />
-                      <Text>{po.menu[3].name}</Text>
+                      <Text style={styMain.menuTxt}>{po.menu[3].name}</Text>
                     </Body>
                   </CardItem>
                 </TouchableOpacity>
@@ -268,7 +271,7 @@ export default class Main extends Component {
                     <Body style={styMain.menuBody}>
                       {/* <Icon name={po.menu[4].icon} style={styMain.icon} /> */}
                       <Image style={[styMain.imgIcn, { height: 40 }]} source={require('../../assets/icon/payroll.png')} />
-                      <Text>{po.menu[4].name}</Text>
+                      <Text style={styMain.menuTxt}>{po.menu[4].name}</Text>
                     </Body>
                   </CardItem>
                 </TouchableOpacity>
@@ -291,7 +294,7 @@ export default class Main extends Component {
                     <Body style={styMain.menuBody}>
                       {/* <Icon name={po.menu[3].icon} style={styMain.icon} /> */}
                       <Image style={[styMain.imgIcn, { width: 50, height: 42 }]} source={require('../../assets/icon/approve-leave.png')} />
-                      <Text>{po.menu[5].name}</Text>
+                      <Text style={styMain.menuTxt}>{po.menu[5].name}</Text>
                     </Body>
                   </CardItem>
                 </TouchableOpacity>
@@ -309,7 +312,7 @@ export default class Main extends Component {
                     <Body style={styMain.menuBody}>
                       {/* <Icon name={po.menu[4].icon} style={styMain.icon} /> */}
                       <Image style={[styMain.imgIcn, { width: 45, height: 43 }]} source={require('../../assets/icon/approve-ot.png')} />
-                      <Text>{po.menu[6].name}</Text>
+                      <Text style={styMain.menuTxt}>{po.menu[6].name}</Text>
                     </Body>
                   </CardItem>
                 </TouchableOpacity>

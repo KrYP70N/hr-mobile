@@ -30,7 +30,6 @@ import SideMenu from '../router/SideMenu';
 import styNav from './navigation.style'
 
 function CustomdrawerContent(props) {
-  // console.log(props)
   return (
     <DrawerContentScrollView {...props}>
       <SideMenu navigation={props.navigation} />

@@ -20,9 +20,6 @@ export default class LeavePending extends Component {
         }
 
         this.cancelOT = (cid) => {
-            console.log("url", this.state.url)
-            console.log("auth", this.state.auth)
-            console.log("id", this.state.id)
             APIs.leaveStatusUpdate(this.state.url, this.state.auth, cid, 'cancel')
             .then((res) => {
                 if(res.status === 'success') {
@@ -124,7 +121,6 @@ export default class LeavePending extends Component {
             )
         }
 
-        console.log("Cancel Leave Lists::", this.state.leaves)
 
         const GetLeave = this.state.leaves.map((leave) => {
             return (

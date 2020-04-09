@@ -7,7 +7,9 @@ export default {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        height: 50,
+        borderRadius: 5
     },
     secondary: {
         padding: padding.p1,

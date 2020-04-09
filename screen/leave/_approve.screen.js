@@ -100,7 +100,6 @@ export default class LeaveApprove extends Component {
                     APIs.leaveApproval(this.state.url, this.state.auth, this.state.id)
                         .then((res) => {
                             if (res.status === 'success') {
-                                console.log("Response Api OT Lists:::", res.data)
                                 this.setState({
                                     refresh: !this.state.refresh,
                                     leaveLists: res.data,
@@ -134,7 +133,6 @@ export default class LeaveApprove extends Component {
     }
 
     render() {
-        console.log("Leave Approve List::", this.state.leaveLists);
         return (
             <View style={styles.leaveApproveContainer}>
                 <Header style={{ backgroundColor: color.light}}>

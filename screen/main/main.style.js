@@ -121,6 +121,9 @@ export default StyleSheet.create({
     imgIcn: {
         width: 40,
         height: 38,
-        marginBottom: offset.o1
+        marginBottom: offset.o2
+    },
+    menuTxt: {
+        ...typo.textSmall,
     }
 })

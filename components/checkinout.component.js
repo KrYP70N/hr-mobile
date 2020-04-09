@@ -382,7 +382,7 @@ export default class CheckInOut extends Component {
 
         {/* check in */}
         <Col style={styles.left}>
-          <Card>
+          <Card style={styles.cardHolder}>
             <TouchableOpacity onPress={() => {
               this.CheckIn()
             }}>
@@ -395,7 +395,9 @@ export default class CheckInOut extends Component {
                 />
                 <Text
                   style={{
-                    opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
+                    opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
+                    fontFamily: 'Nunito-Bold',
+                    fontSize: 18
                   }}
                 >Check In</Text>
               </View>
@@ -405,21 +407,23 @@ export default class CheckInOut extends Component {
 
         {/* check out */}
         <Col style={styles.right}>
-          <Card>
-            <TouchableOpacity onPress={() => this.CheckOut()}>
-              <View style={styles.card}>
-                <Image
-                  source={require('../assets/icon/checktime.png')}
-                  style={[styles.icon, {
-                    opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
-                  }]}
-                />
-                <Text style={{
-                  opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
-                }}>Check Out</Text>
-              </View>
-            </TouchableOpacity>
-          </Card>
+            <Card style={styles.cardHolder}>
+              <TouchableOpacity onPress={() => this.CheckOut()}>
+                <View style={styles.card}>
+                  <Image
+                    source={require('../assets/icon/checktime.png')}
+                    style={[styles.icon, {
+                      opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
+                    }]}
+                  />
+                  <Text style={{
+                    opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
+                    fontFamily: 'Nunito-Bold',
+                    fontSize: 18
+                  }}>Check Out</Text>
+                </View>
+              </TouchableOpacity>
+            </Card>
         </Col>
       </Row>
     )
@@ -428,7 +432,7 @@ export default class CheckInOut extends Component {
 
 let styles = StyleSheet.create({
   cardRow: {
-    marginBottom: offset.o1
+    marginBottom: offset.o3
   },
   left: {
     paddingLeft: offset.o1,
@@ -437,6 +441,10 @@ let styles = StyleSheet.create({
   right: {
     paddingLeft: offset.oh,
     paddingRight: offset.o1
+  },
+  cardHolder: {
+    borderRadius: 5,
+    overflow: 'hidden'
   },
   card: {
     minHeight: 120,

@@ -89,6 +89,13 @@ export default {
         marginBottom: offset.o1,
         marginTop: offset.oh,
     },
+
+    cardReasonLabelText: {
+        ...typo.parabraph,
+        color: "#656565",
+        //marginTop: offset.o1,
+        marginBottom: offset.oh
+    },
     dateFromText: {
         fontSize: 14,
         //fontWeight: 'bold',

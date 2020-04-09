@@ -102,7 +102,6 @@ export default class OvertimeApprove extends Component {
                     APIs.OTApproval(this.state.url, this.state.auth, this.state.id)
                         .then((res) => {
                             if (res.status === 'success') {
-                                console.log("Response Api OT Lists:::", res.data)
                                 this.setState({
                                     refresh: !this.state.refresh,
                                     overtimeList: res.data,
@@ -137,8 +136,6 @@ export default class OvertimeApprove extends Component {
 
 
     render() {
-        console.log("Overtime Approve Screen")
-        console.log("Overtime Render list::", this.state.overtimeList.length);
         return (
             <Container>
                 <Header style={{ backgroundColor: color.light}}>

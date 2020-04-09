@@ -33,7 +33,6 @@ export class SideMenu extends Component {
         <TouchableOpacity style={styNav.item} onPress={() => {
           AsyncStorage.removeItem('@hr:token')
           .then(() => {
-            console.log('token removed')
             this.props.navigation.navigate('Login')
           })
         }}>

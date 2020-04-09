@@ -33,7 +33,6 @@ export default class Clock extends Component {
                             time: Moment(response.data)
                         })
                     } else {
-                        console.log('error')
                     }
                 })
                 .catch((error) => {

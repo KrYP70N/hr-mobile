@@ -90,9 +90,15 @@ export default StyleSheet.create({
         //fontWeight: 'bold',
 
     },
+    cardReasonLabelText: {
+        ...typo.parabraph,
+        color: "#656565",
+        //marginTop: offset.o1,
+        marginBottom: offset.oh
+    },
     cardReasonText: {
         ...typo.parabraph,
-        //color: color.placeHolder,
+        color: color.placeHolder,
         marginBottom: offset.o1
     },
     cardSText: {

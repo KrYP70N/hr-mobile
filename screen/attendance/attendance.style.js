@@ -85,7 +85,8 @@ export default StyleSheet.create({
         paddingLeft: offset.oh
     },
     infoCard: {
-        padding: offset.o2
+        padding: offset.o2,
+        borderRadius: 5
     },
     infoCardTitle: {
         ...typo.parabraph

@@ -23,8 +23,9 @@ export default StyleSheet.create({
         ...typo.headline
     },
     sub: {
-        ...typo.parabraph,
-        marginBottom: offset.o3
+        ...typo.paragraph,
+        marginBottom: offset.o3,
+        color: '#333'
     },
     item: {
         marginBottom: offset.o2
@@ -50,6 +51,7 @@ export default StyleSheet.create({
         color: color.placeHolder
     },
     resetTxt: {
+        fontFamily: 'Nunito',
         color: color.placeHolder,
         textDecorationLine: "underline",
         textDecorationColor: color.placeHolder,
@@ -58,5 +60,8 @@ export default StyleSheet.create({
     copyright: {
         textAlign: 'center',
         fontSize: typo.s1
+    },
+    input: {
+        fontFamily: 'Nunito'
     }
 })

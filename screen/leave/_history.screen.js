@@ -161,7 +161,6 @@ export default class LeaveHistory extends Component {
             } else {
                 background = color.primary
             }
-            console.log(leave)
             return (
                 <Card key={Math.floor(Math.random() * 1000)}>
                     <CardItem>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StatusBar, AsyncStorage, } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
-//import { Header, Left, Right, Container, Toast, Icon,} from 'native-base'
 import { View, Text, Content, Container, Toast, Tab, Header, Left, Right, Icon, Card, CardItem, Body, Row, Col,
      Button, Picker, Form, Item, Label, Badge} from 'native-base'
 import color from '../../constant/color'
@@ -64,9 +63,6 @@ export default class TabViewExample extends Component {
     
     // update ot list
     updateLeave = () => {
-        console.log("Year", this.state.year)
-        console.log("Year", this.state.month)
-
         APIs.LeaveMonthly(this.state.url, this.state.auth, this.state.id, this.state.year, this.state.month)
         .then((res) => {
             if(res.status === 'success') {
@@ -195,7 +191,6 @@ export default class TabViewExample extends Component {
         APIs.getLeaveRequest(auth, url, id)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("Leave Pending List::", res.data)
                     this.setState({
                         leaves: res.data
                     })
@@ -277,7 +272,6 @@ export default class TabViewExample extends Component {
                     />
                 )
             case 'second':
-                console.log("Leves Pending:::", this.state.leaves)
                 const GetLeave = this.state.leaves.map((leave) => {
                     return (
                         <Card key={leave['Obj id']}>
@@ -286,7 +280,6 @@ export default class TabViewExample extends Component {
                                     <View style={styLeave.cardTitleContainer}>
                                         <Text style={styLeave.cardTitle}>{leave['Leave Type']}</Text>
                                     </View>
-                                    {/* <Text style={{ marginBottom: 5 }}>{`${leave["Employee_Name"]} (${leave["Job Position"]})`}</Text> */}
                                     <Text style={styLeave.cardXSText}>{leave['date_from']} to {leave['date_to']}</Text>
                                     <Text style={styLeave.cardSText}>Leave left - {leave['number of days']} Days</Text>
                                     <Text style={styLeave.cardWarning}>Your request is pending</Text>
@@ -338,7 +331,6 @@ export default class TabViewExample extends Component {
                         <Loading info='loading api data ...' />
                     )
                 }
-                console.log("Leave History List::", this.state.leaveHistoryLists);
 
                 let currentYear = new Date().getFullYear()
 
@@ -375,28 +367,25 @@ export default class TabViewExample extends Component {
                     } else {
                         background = color.primary
                     }
-                    console.log(leave)
+
                     return (
                         <Card key={Math.floor(Math.random() * 1000)}>
                             <CardItem>
                                 <Body>
                                     <View style={styLeave.cardTitleContainer}>
                                         <Text style={styLeave.cardTitle}>{leave.Leave_Type}</Text>
-                                        {/* <Text style={styLeave.cardRthLabel}>05 Nov 2020</Text> */}
                                     </View>
                                     <View style={styLeave.cardTitleContainer}>
-                                        <Text style={styLeave.dateFromText}>From : {leave.date_from}</Text>
-                                        <Badge style={[styLeave.badgeSuccess, {
-                                            backgroundColor: background
-                                        }
-                                        ]}>
-                                            <Text>{leave.state}</Text>
-                                        </Badge>
+                                    
+                                        <Text style={styLeave.dateFromText}>{`${leave.date_from} to ${leave.date_to}`}</Text>
+                                        <View style = {{backgroundColor: background, borderRadius: 5, paddingTop: 4,paddingBottom: 4, paddingLeft: 10, paddingRight: 10, alignItems: 'center', justifyContent: 'center'}}>
+                                        <Text style= {{color: "#fff", fontSize: 12}}>{leave.state}</Text>
+                                        </View>
                                     </View>
-                                    <Text style={[styLeave.dateFromText, { marginBottom: offset.o2 }]}>To : {leave.date_to}</Text>
-                                    <Text style={[styLeave.cardReasonText, {
+                                    <Text style = {styLeave.cardWarning}>{leave["State Note"]}</Text>
+                                    <Text style={[styLeave.cardReasonLabelText, {
                                         display: leave.Reason === null || leave.Reason === 'null' ? 'none' : 'flex'
-                                    }]}>{leave.Reason}</Text>
+                                    }]}>Reason:  {leave.Reason}</Text>
                                 </Body>
                             </CardItem>
                         </Card>
@@ -488,7 +477,6 @@ export default class TabViewExample extends Component {
             <Container>
                 <Header style={{
                     backgroundColor: color.light,
-                    // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                 }}>
                     <Left style={{
                         display: 'flex',

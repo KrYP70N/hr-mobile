@@ -14,7 +14,7 @@ export default StyleSheet.create({
         width: '100%'
     },
     content: {
-        padding: offset.o2,
+        padding: offset.o4,
         justifyContent: 'center',
         flex: 1
     },
@@ -36,7 +36,6 @@ export default StyleSheet.create({
     errdisplay: {
         width: '100%',
         color: color.danger,
-        marginBottom: offset.o3,
         textAlign: 'left'
     },
     label: {
@@ -51,7 +50,8 @@ export default StyleSheet.create({
     },
     button: {
         ...button.primary,
-        width: '100%'
+        width: '100%',
+        marginTop: offset.o3,
     },
     textButton: {
         width: '100%',

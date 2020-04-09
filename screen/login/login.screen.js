@@ -40,7 +40,6 @@ export default class Login extends Component {
             this.setState({
                 loading: true
             })
-            console.log(this.state.apiUrl, this.state.db, this.state.user, this.state.password)
             APIs.Token(this.state.apiUrl, this.state.db, this.state.user, this.state.password)
                 .then((res) => {
                     // display loading
@@ -50,7 +49,6 @@ export default class Login extends Component {
                     if (res.status === 'success') {
                         let date = new Date()
                         let exp_date = moment(date).add(res.data.expires_in, 'seconds')
-                        console.log(exp_date)
                         AsyncStorage.setItem('@hr:token', JSON.stringify({
                             key: 'Bearer '+ res.data.access_token,
                             // key: res.data.access_token,
@@ -133,7 +131,6 @@ export default class Login extends Component {
                     //   }
                     let data = JSON.parse(res)
                     let diff = moment(data.exp).diff(moment(new Date()), 'hours')
-                    console.log(diff)
                     if(diff < 50 && diff > 0) {
                         // refresh
                         let token = data.key
@@ -164,7 +161,6 @@ export default class Login extends Component {
                         // expired
                         AsyncStorage.removeItem('@hr:token')
                         .then(() => {
-                            console.log('session expired')
                             this.setState({
                                 loading: false
                             })
@@ -177,7 +173,6 @@ export default class Login extends Component {
                     }
                 } else {
                     // logouted
-                    console.log('logouted ...')
                     this.setState({
                         loading: false
                     })
@@ -215,20 +210,20 @@ export default class Login extends Component {
                     <Text style={styLogin.sub}>{po.sub}</Text>
 
                     <Item inlineLabel style={styLogin.item}>
-                        <Label style={styLogin.label}>
-                            <Icon name='ios-person' style={styLogin.icn}/>
-                        </Label>
-                        <Input value={this.state.user} onChangeText={(key) => this.user(key)} placeholder='User Name'/>
+                        <Input value={this.state.user} 
+                        style={styLogin.input}
+                        onChangeText={(key) => this.user(key)} 
+                        placeholder='User Name' 
+                        placeholderTextColor={color.placeHolder}/>
                     </Item>
 
                     <Item inlineLabel style={styLogin.password}>
-                        <Label style={styLogin.label}>
-                            <Icon name='ios-lock' style={styLogin.icn}/>
-                        </Label>
-                        <Input secureTextEntry={this.state.hidePassword} style={styLogin.input}
+                        <Input secureTextEntry={this.state.hidePassword} 
+                            style={styLogin.input}
                             value={this.state.password}
                             onChangeText={(key) => { this.password(key) }}
                             placeholder='Password'
+                            placeholderTextColor={color.placeHolder}
                         />
                         <Icon active name={
                             this.state.hidePassword === true ? 'ios-eye-off' : 'ios-eye'
