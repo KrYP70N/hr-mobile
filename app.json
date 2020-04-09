@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.0.1",
+    "version": "1.0.0",
     "orientation": "portrait",
     "splash": {
       "image": "./assets/splash.png",
@@ -25,7 +25,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.innovixhr.hrmobile",
-      "buildNumber": "4"
+      "buildNumber": "5"
     },
     "android": {
       "package": "com.innovixhr.hrmobile",
