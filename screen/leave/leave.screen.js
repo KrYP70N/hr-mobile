@@ -248,7 +248,7 @@ export default class TabViewExample extends Component {
             {...props}
             indicatorStyle={{ backgroundColor: color.indicator, height: 5 }}
             style={{ backgroundColor: color.primary }}
-            labelStyle={{ color: 'white' }}
+            labelStyle={{ color: 'white', fontFamily: 'Nunito-Bold' }}
             onTabPress={({ route, preventDefault }) => {
                 if (route.key === 'first') {
                     this.getRequestData(this.state.auth, this.state.url)
@@ -489,7 +489,8 @@ export default class TabViewExample extends Component {
                             marginRight: offset.o2
                         }} onPress={() => { this.props.navigation.navigate('Main') }} />
                         <Text style={{
-                            color: color.secondary
+                            color: color.secondary,
+                            fontFamily: 'Nunito'
                         }}>Leave</Text>
                     </Left>
                     <Right></Right>

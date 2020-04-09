@@ -123,7 +123,8 @@ export default class Profile extends Component {
                 marginRight: offset.o2
               }} onPress={() => { this.props.navigation.navigate('Main') }} />
               <Text style={{
-                color: color.secondary
+                color: color.secondary,
+                fontFamily: 'Nunito'
               }}>Profile</Text>
             </Left>
             <Right></Right>

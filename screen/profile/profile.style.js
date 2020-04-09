@@ -12,13 +12,14 @@ export default StyleSheet.create({
   },
   workInfo: {
     marginTop: offset.o5,
-    padding: offset.o1
+    padding: 15
   },
   workContainer: {
     backgroundColor: color.light,
     display: 'flex',
     alignItems: 'center',
-    padding: offset.o2
+    padding: offset.o2,
+    borderRadius: 5
   },
   profileImage: {
     width: 100,
@@ -73,12 +74,13 @@ export default StyleSheet.create({
     color: '#333'
   },
   personalInfo: {
-    padding: offset.o1,
+    padding: 15,
     marginBottom: offset.o4
   },
   personalContainer: {
     padding: offset.o2,
     paddingTop: 0,
-    backgroundColor: color.light
+    backgroundColor: color.light,
+    borderRadius: 5
   }
 })

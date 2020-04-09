@@ -170,7 +170,10 @@ export default class PayrollDetail extends Component {
                     </View>
 
                     <View style={styPayroll.itemBox}>
-                        <Card>
+                        <Card style={{
+                            borderRadius: 5,
+                            overflow: 'hidden'
+                        }}>
                             <List>
                                 {silpdata}
                             </List>

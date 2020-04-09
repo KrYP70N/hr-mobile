@@ -238,7 +238,7 @@ export default class Overtime extends Component {
             {...props}
             indicatorStyle={{ backgroundColor: color.indicator, height: 5 }}
             style={{ backgroundColor: color.primary }}
-            labelStyle={{ color: 'white' }}
+            labelStyle={{ color: 'white', fontFamily: 'Nunito-Bold' }}
             onTabPress={({ route, preventDefault }) => {
                 if (route.key === 'first') {
                     //this.getRequestData(this.state.auth, this.state.url, this.state.id)
@@ -286,7 +286,7 @@ export default class Overtime extends Component {
                                         style={styOt.ButtonSecondary}
                                         onPress={() => this.cancelOT(req['Obj Id'])}
                                     >
-                                        <Text>{po.approve.staff.button}</Text>
+                                        <Text>Submit</Text>
                                     </Button>
                                 </Body>
                             </CardItem>

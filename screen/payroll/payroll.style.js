@@ -52,7 +52,7 @@ export default StyleSheet.create({
     },
     month: {
         ...typo.textSmall,
-        color: color.tertiary
+        color: '#333'
     },
     salary: {
         ...typo.paragraph,

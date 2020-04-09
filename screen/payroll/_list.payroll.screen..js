@@ -27,7 +27,10 @@ export default class PayrollList extends Component {
                             this.props.navigation.navigate('PayrollDetail', {slipid: slip.payslip_id, auth: this.props.apidata.auth, url: this.props.apidata.url})
                         }}
                     >
-                        <Card>
+                        <Card style={{
+                            borderRadius: 5,
+                            overflow: 'hidden',
+                        }}>
                             <CardItem>
                                 <Body>
                                     <View style={styPayroll.titleHolder}>

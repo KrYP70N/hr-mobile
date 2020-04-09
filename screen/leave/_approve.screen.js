@@ -145,6 +145,9 @@ export default class LeaveApprove extends Component {
                     <Right></Right>
                 </Header>
 
+                <View style={{
+                    padding: 10
+                }}>
                 <FlatList
                     data={this.state.leaveLists}
                     showsVerticalScrollIndicator={false}
@@ -156,12 +159,16 @@ export default class LeaveApprove extends Component {
                             <Text style={styles.date}>{`From ${item.date_from} To ${item.date_to}`}</Text>
                             <Text style={styles.leaveText}>{item["Leave Type"]}</Text>
                             <View style={styles.leaveApproveBtn}>
-                                <TouchableOpacity onPress={() => { this.sendApproveRejectLeave(this.state.url, this.state.auth, item["Obj id"], 'reject') }}>
-                                    <View style={{ backgroundColor: color.placeHolder, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
+                                <TouchableOpacity 
+                                style={{width: '48%'}}
+                                onPress={() => { this.sendApproveRejectLeave(this.state.url, this.state.auth, item["Obj id"], 'reject') }}>
+                                    <View style={{ backgroundColor: color.placeHolder, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
                                         <Text>Reject</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { this.sendApproveRejectLeave(this.state.url, this.state.auth, item["Obj id"], 'confirm') }}>
+                                <TouchableOpacity 
+                                style={{width: '48%'}}
+                                onPress={() => { this.sendApproveRejectLeave(this.state.url, this.state.auth, item["Obj id"], 'confirm') }}>
                                     <View style={{ marginLeft: 10, backgroundColor: color.primary, width: 145, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
                                         <Text style={{ color: 'white' }}>Approve</Text>
                                     </View>
@@ -171,6 +178,7 @@ export default class LeaveApprove extends Component {
                     }
                     keyExtractor={(item, index) => index.toString()}
                 />
+                </View>
                 <View style={{
                     display: this.state.leaveLists.length === 0 ? 'flex' : 'none',
                     alignItems: "center",

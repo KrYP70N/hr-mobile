@@ -397,7 +397,7 @@ export default class CheckInOut extends Component {
                   style={{
                     opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
                     fontFamily: 'Nunito-Bold',
-                    fontSize: 18
+                    fontSize: 16
                   }}
                 >Check In</Text>
               </View>
@@ -419,7 +419,7 @@ export default class CheckInOut extends Component {
                   <Text style={{
                     opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
                     fontFamily: 'Nunito-Bold',
-                    fontSize: 18
+                    fontSize: 16
                   }}>Check Out</Text>
                 </View>
               </TouchableOpacity>
@@ -435,11 +435,11 @@ let styles = StyleSheet.create({
     marginBottom: offset.o3
   },
   left: {
-    paddingLeft: offset.o1,
+    paddingLeft: 15,
     paddingRight: offset.oh
   },
   right: {
-    paddingLeft: offset.oh,
+    paddingLeft: 15,
     paddingRight: offset.o1
   },
   cardHolder: {
@@ -459,7 +459,7 @@ let styles = StyleSheet.create({
     marginBottom: offset.o1
   },
   errorBox: {
-    padding: offset.o1
+    padding: 15
   },
   error: {
     backgroundColor: color.light,

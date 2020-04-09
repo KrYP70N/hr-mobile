@@ -17,7 +17,8 @@ export default StyleSheet.create({
         paddingLeft: offset.o1
     },
     label: {
-        ...typo.placeholder
+        ...typo.placeholder,
+        fontSize: 16
     },
     picker: {
         marginBottom: offset.o4
@@ -146,10 +147,13 @@ export default StyleSheet.create({
         flex: 1,
     },
     name: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...typo.paragraph,
+        fontFamily: 'Nunito-Bold'
     },
-    position:{fontSize: 14, marginTop: 3, color: color.placeHolder},
+    position:{
+        ...typo.textSmall,
+        color: color.tertiary
+    },
     leaveApproveCard: {
         backgroundColor: 'white',
         borderRadius: 5,
@@ -176,7 +180,7 @@ export default StyleSheet.create({
         color: '#656565'
     },
     leaveText:{
-        fontSize: 16,
+        ...typo.paragraph,
         marginTop: 5,
     },
     pickerIcn: {

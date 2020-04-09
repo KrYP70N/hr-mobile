@@ -23,7 +23,8 @@ export default {
         marginBottom: offset.o1
     },
     textarea: {
-        marginTop: offset.o5
+        marginTop: offset.o5,
+        fontFamily: 'Nunito'
     },
     picker: {
         marginBottom: offset.o4
@@ -131,10 +132,13 @@ export default {
         flex: 1,
     },
     name: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...typo.paragraph,
+        fontFamily: 'Nunito-Bold'
     },
-    position:{fontSize: 14, marginTop: 3, color: color.placeHolder},
+    position:{
+        ...typo.textSmall,
+        color: color.tertiary
+    },
     leaveApproveCard: {
         backgroundColor: 'white',
         borderRadius: 5,
