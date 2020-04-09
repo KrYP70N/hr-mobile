@@ -17,7 +17,8 @@ export default StyleSheet.create({
         paddingLeft: offset.o1
     },
     label: {
-        ...typo.placeholder
+        ...typo.placeholder,
+        fontSize: 16
     },
     picker: {
         marginBottom: offset.o4

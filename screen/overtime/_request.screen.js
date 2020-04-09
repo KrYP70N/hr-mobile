@@ -29,7 +29,7 @@ export default class Request extends Component {
             totextColor: this.props.totextColor,
         }
 
-       
+
 
         // pick hour
         this.pickHour = (data) => {
@@ -73,7 +73,7 @@ export default class Request extends Component {
                     this.state.description
                 )
                     .then((res) => {
-                        if(res.data.error == false){
+                        if (res.data.error == false) {
                             const d = new Date();
                             this.pickDate(d);
                             this.setState({
@@ -85,7 +85,7 @@ export default class Request extends Component {
                                 totextColor: color.placeHolder,
                                 description: null,
                             })
-                             Toast.show({
+                            Toast.show({
                                 text: res.data.message,
                                 textStyle: {
                                     textAlign: 'center'
@@ -95,7 +95,7 @@ export default class Request extends Component {
                                 },
                                 duration: 5000
                             })
-                        }else{
+                        } else {
                             this.setState({
                                 date: 'OT Date',
                                 datetextColor: color.placeHolder,
@@ -116,17 +116,17 @@ export default class Request extends Component {
                                 duration: 5000
                             })
                         }
-                        if(res.status !== 'success') {
+                        if (res.status !== 'success') {
                             Toast.show({
                                 text: 'Connection time out. Please check your internet connection!',
                                 textStyle: {
-                                  textAlign: 'center'
+                                    textAlign: 'center'
                                 },
                                 style: {
-                                  backgroundColor: color.primary
+                                    backgroundColor: color.primary
                                 },
                                 duration: 6000
-                              })
+                            })
                         }
                     })
             }
@@ -186,80 +186,80 @@ export default class Request extends Component {
 
     render() {
         return (
-            <SafeAreaView style = {{flex: 1}}>
-            <Container>
-                <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
-                    <Content style={styOt.container}>
-                        <Form>
-                            <View style={{ position: 'relative' }}>
-                                <DateTimePickerModal
-                                    isVisible={this.state.isDatePickerVisible}
-                                    mode="date"
-                                    onConfirm={this.pickDate}
-                                    onCancel={this.hideDatePicker}
-                                  
-                                />
-                                <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                                    <Text style={{ paddingLeft: 10, color: this.state.datetextColor }}>{this.state.date}</Text>
-                                    <Icon name={po.request.datePicker.icon} style={styOt.pickerIcn} onPress={() => { this.showDatePicker() }} />
+            <SafeAreaView style={{ flex: 1 }}>
+                <Container>
+                    <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
+                        <Content style={styOt.container}>
+                            <Form>
+                                <View style={{ position: 'relative' }}>
+                                    <DateTimePickerModal
+                                        isVisible={this.state.isDatePickerVisible}
+                                        mode="date"
+                                        onConfirm={this.pickDate}
+                                        onCancel={this.hideDatePicker}
+
+                                    />
+                                    <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                                        <Text style={{ paddingLeft: 10, color: this.state.datetextColor }}>{this.state.date}</Text>
+                                        <Icon name={po.request.datePicker.icon} style={styOt.pickerIcn} onPress={() => { this.showDatePicker() }} />
+                                    </View>
+                                    <View style={{ width: '100%', height: 0.5, backgroundColor: '#000', }}></View>
                                 </View>
-                                <View style={{ width: '100%', height: 0.5, backgroundColor: '#000', }}></View>
-                            </View>
 
-                            <View style={{ position: 'relative' }}>
-                                <DateTimePickerModal
-                                    isVisible={this.state.isTimePickerFromVisible}
-                                    mode="time"
-                                    display="spinner"
-                                    headerTextIOS = "Pick a time"
-                                    onConfirm={this.pickTimeFrom}
-                                    onCancel={this.hideTimePickerFrom}
-                                    is24Hour={true} //24 hour fomat in android
-                                    locale="en_GB" // 24 hour fomat in ios
-                                />
-                                <View style={{ flexDirection: 'row', marginTop: 30 }}>
-                                    <Text style={{ paddingLeft: 10, color: this.state.fromtextColor }}>{this.state.fromTime}</Text>
-                                    <Icon name={po.request.datePicker.icon} style={styOt.pickerIcn} onPress={() => { this.showTimePickerFrom() }} />
+                                <View style={{ position: 'relative' }}>
+                                    <DateTimePickerModal
+                                        isVisible={this.state.isTimePickerFromVisible}
+                                        mode="time"
+                                        display="spinner"
+                                        headerTextIOS="Pick a time"
+                                        onConfirm={this.pickTimeFrom}
+                                        onCancel={this.hideTimePickerFrom}
+                                        is24Hour={true} //24 hour fomat in android
+                                        locale="en_GB" // 24 hour fomat in ios
+                                    />
+                                    <View style={{ flexDirection: 'row', marginTop: 30 }}>
+                                        <Text style={{ paddingLeft: 10, color: this.state.fromtextColor }}>{this.state.fromTime}</Text>
+                                        <Icon name={po.request.datePicker.icon} style={styOt.pickerIcn} onPress={() => { this.showTimePickerFrom() }} />
+                                    </View>
+                                    <View style={{ width: '100%', height: 0.5, backgroundColor: '#000', }}></View>
                                 </View>
-                                <View style={{ width: '100%', height: 0.5, backgroundColor: '#000', }}></View>
-                            </View>
 
-                            <View style={{ position: "relative", }}>
-                                <DateTimePickerModal
-                                    isVisible={this.state.isTimePickerToVisible}
-                                    mode="time"
-                                    headerTextIOS = "Pick a time"
-                                    display="spinner"
-                                    onConfirm={this.pickTimeTo}
-                                    onCancel={this.hideTimePickerto}
-                                    is24Hour={true} //24 hour fomat in android
-                                    locale="en_GB" // 24 hour fomat in ios
-                                />
+                                <View style={{ position: "relative", }}>
+                                    <DateTimePickerModal
+                                        isVisible={this.state.isTimePickerToVisible}
+                                        mode="time"
+                                        headerTextIOS="Pick a time"
+                                        display="spinner"
+                                        onConfirm={this.pickTimeTo}
+                                        onCancel={this.hideTimePickerto}
+                                        is24Hour={true} //24 hour fomat in android
+                                        locale="en_GB" // 24 hour fomat in ios
+                                    />
 
-                                <View style={{ flexDirection: 'row', marginTop: 30 }}>
-                                    <Text style={{ paddingLeft: 10, color: this.state.totextColor }}>{this.state.toTime}</Text>
-                                    <Icon name={po.request.datePicker.icon} style={styOt.pickerIcn} onPress={() => { this.showTimePickerto() }} />
+                                    <View style={{ flexDirection: 'row', marginTop: 30 }}>
+                                        <Text style={{ paddingLeft: 10, color: this.state.totextColor }}>{this.state.toTime}</Text>
+                                        <Icon name={po.request.datePicker.icon} style={styOt.pickerIcn} onPress={() => { this.showTimePickerto() }} />
+                                    </View>
+                                    <View style={{ width: '100%', height: 0.5, backgroundColor: '#000' }}></View>
+
                                 </View>
-                                <View style={{ width: '100%', height: 0.5, backgroundColor: '#000' }}></View>
-
-                            </View>
 
 
-                            <Textarea rowSpan={5} bordered placeholder={po.request.textarea.label} placeholderTextColor={color.placeHolder} style={styOt.textarea}
-                                onChangeText={(data) => { this.description(data) }}
-                                value={this.state.description}
-                            />
-                             <Button style={styOt.button} onPress={this.submit}>
-                        <Text>{po.request.buttonText}</Text>
-                    </Button>
-                        </Form>
-                    </Content>
-                    {/* <Button style={styOt.button} onPress={this.submit}>
+                                <Textarea rowSpan={5} bordered placeholder={po.request.textarea.label} placeholderTextColor={color.placeHolder} style={styOt.textarea}
+                                    onChangeText={(data) => { this.description(data) }}
+                                    value={this.state.description}
+                                />
+                                <Button style={styOt.button} onPress={this.submit}>
+                                    <Text>{po.request.buttonText}</Text>
+                                </Button>
+                            </Form>
+                        </Content>
+                        {/* <Button style={styOt.button} onPress={this.submit}>
                         <Text>{po.request.buttonText}</Text>
                     </Button> */}
-                </KeyboardAvoidingView>
-               
-            </Container>
+                    </KeyboardAvoidingView>
+
+                </Container>
             </SafeAreaView>
         )
     }

@@ -308,7 +308,7 @@ export default class Overtime extends Component {
                                         style={styOt.ButtonSecondary}
                                         onPress={() => this.cancelOT(req['Obj Id'])}
                                     >
-                                        <Text>{po.approve.staff.button}</Text>
+                                        <Text>Submit</Text>
                                     </Button>
                                 </Body>
                             </CardItem>

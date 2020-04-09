@@ -314,7 +314,10 @@ export default class LeaveRequest extends Component {
                                             <Text style={styLeave.placeholder}>Leave Type</Text>
                                         </Label>
                                         <Picker
-
+                                            textStyle={{
+                                                fontFamily: 'Nunito',
+                                                color: 'red'
+                                            }}
                                             iosIcon={
                                                 <Icon name="arrow-down" />
                                             }
@@ -327,7 +330,7 @@ export default class LeaveRequest extends Component {
                                             {
                                                 this.state.leaveType.map((type) => {
                                                     return (
-                                                        <Picker.Item label={type['name']} value={type['leave_type_id']} key={type['leave_type_id']} />
+                                                        <Picker.Item label={type['name']} value={type['leave_type_id']} key={type['leave_type_id']}/>
                                                     )
                                                 })
                                             }
@@ -340,12 +343,11 @@ export default class LeaveRequest extends Component {
                                             mode="date"
                                             onConfirm={this.pickDate}
                                             onCancel={this.hideDatePicker}
-
                                         />
                                         <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-between', alignItems: 'center', paddingLeft: 15 }}>
                                             <Text style={{ color: color.placeHolder }, styLeave.placeholder}>Start Date</Text>
                                             <View style={{ flexDirection: 'row', width: 150 }}>
-                                                <Text style={{ paddingLeft: 10, fontSize: 16 }}>{this.state.startDate}</Text>
+                                                <Text style={{ textAlign: 'left', fontSize: 16 }}>{this.state.startDate}</Text>
                                                 <Icon name={po.request.datePicker.icon} style={styLeave.pickerIcn} onPress={() => { this.showDatePicker() }} />
                                             </View>
                                         </View>
@@ -363,7 +365,7 @@ export default class LeaveRequest extends Component {
                                         <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-between', alignItems: 'center', paddingLeft: 15 }}>
                                             <Text style={{ color: color.placeHolder }, styLeave.placeholder}>End Date</Text>
                                             <View style={{ flexDirection: 'row', width: 150 }}>
-                                                <Text style={{ paddingLeft: 10, fontSize: 16 }}>{this.state.endDate}</Text>
+                                                <Text style={{ fontSize: 16 }}>{this.state.endDate}</Text>
                                                 <Icon name={po.request.datePicker.icon} style={styLeave.pickerIcn} onPress={() => { this.showEndDatePicker() }} />
                                             </View>
                                         </View>
@@ -400,7 +402,7 @@ export default class LeaveRequest extends Component {
                                     />
                                     <AttachButton />
                                     <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
-                                        <Text style={styLeave.buttonText}>Submit</Text>
+                                        <Text style={styLeave.buttonText}>SUBMIT</Text>
                                     </Button>
                                 </Form>
 
