@@ -126,13 +126,20 @@ export default class Attendance extends Component {
         }
 
         let infos = this.state.dataTitle.map((title) => {
+            let col = color.placeHolder
+
+            if (title === 'Leaves') col = color.danger
+            if (title === 'Attendance') col = color.primary
+
             return (
                 <Card style={[styAttend.infoCard,
                 this.state.data[title][0][0] === null || this.state.data[title][0][0] === 0 ? { display: 'none' } : null
                 ]} key={title}>
                     <View style={styAttend.cardLTitle}>
                         <Text style={styAttend.infoCardTitle}>{title}</Text>
-                        <Text style={styAttend.infoCardLabelSuccess}>{this.state.data[title][0]}</Text>
+                        <Text style={[styAttend.infoCardLabelSuccess, {
+                            color: col
+                        }]}>{this.state.data[title][0]}</Text>
                     </View>
                 </Card>
             )

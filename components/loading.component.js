@@ -22,7 +22,8 @@ export default class Loading extends Component {
                 <Text
                     style={{
                         color: color.placeHolder,
-                        textAlign: 'center'
+                        textAlign: 'center',
+                        // fontFamily: 'Nunito'
                     }}
                 >{this.props.info}</Text>
             </View>

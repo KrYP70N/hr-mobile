@@ -22,7 +22,7 @@ export default class PersonalProfile extends Component {
                         display: this.props.data[`${list}`] ? null : 'none'
                     }]} key={list}>
                         <Text style={styProfile.label}>{list}</Text>
-                        <Text>{this.props.data[`${list}`]}</Text>
+                        <Text style={[styProfile.dataValue, {paddingBottom: offset.o1}]}>{this.props.data[`${list}`]}</Text>
                     </View>    
                 )
             }

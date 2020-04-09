@@ -5,6 +5,7 @@ import { Container, Text, View } from 'native-base'
 import styProfile from './profile.style'
 import ProfileModel from '../../model/profile.model'
 import Loading from '../../components/loading.component'
+import offset from '../../constant/offset'
 
 export default class GeneralProfile extends Component {
     constructor (props) {
@@ -43,7 +44,7 @@ export default class GeneralProfile extends Component {
                         display: this.props.dataWork[`${list}`] ? null : 'none'
                     }]} key={list}>
                         <Text style={styProfile.label}>{list}</Text>
-                        <Text>{this.props.dataWork[`${list}`]}</Text>
+                        <Text style={[styProfile.dataValue, {paddingBottom: offset.o1}]}>{this.props.dataWork[`${list}`]}</Text>
                     </View>    
                 )
             }
@@ -69,7 +70,7 @@ export default class GeneralProfile extends Component {
                         uri: `data:${this.props.data['Profile Picture'][1]};base64,${this.props.data['Profile Picture'][0]}`
                         }
                     } style={styProfile.profileImage}/>
-                    <Text style={styProfile.id}>{this.props.data['Employee Code']}</Text>
+                    <Text style={styProfile.id}>ID - {this.props.data['Employee Code']}</Text>
                     <Text style={styProfile.name}>{this.props.data['Employee Name']}</Text>
                     <Text style={styProfile.position}>
                     {

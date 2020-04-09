@@ -14,7 +14,7 @@ export default StyleSheet.create({
         width: '100%'
     },
     content: {
-        padding: offset.o2,
+        padding: offset.o4,
         justifyContent: 'center',
         flex: 1
     },

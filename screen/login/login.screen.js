@@ -216,13 +216,15 @@ export default class Login extends Component {
 
                     <Item inlineLabel style={styLogin.item}>
                         <Input value={this.state.user} 
+                        style={styLogin.input}
                         onChangeText={(key) => this.user(key)} 
                         placeholder='User Name' 
                         placeholderTextColor={color.placeHolder}/>
                     </Item>
 
                     <Item inlineLabel style={styLogin.password}>
-                        <Input secureTextEntry={this.state.hidePassword} style={styLogin.input}
+                        <Input secureTextEntry={this.state.hidePassword} 
+                            style={styLogin.input}
                             value={this.state.password}
                             onChangeText={(key) => { this.password(key) }}
                             placeholder='Password'

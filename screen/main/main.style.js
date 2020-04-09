@@ -39,17 +39,21 @@ export default StyleSheet.create({
         overflow: 'hidden',
         borderWidth: 1,
         borderColor: color.light,
-        marginRight: offset.o1,
+        //marginRight: offset.o1,
         backgroundColor: color.light
     },
     name: {
         ...typo.subHeader,
-        color: color.light
+        color: color.light,   
     },
     pos: {
         ...typo.textSmall,
         color: color.light,
-        marginLeft: 5
+    },
+    pos1: {
+        ...typo.textSmall,
+        color: color.light,
+        marginLeft: 10
     },
     profileDetail: {
         ...typo.icnLight,
@@ -117,6 +121,9 @@ export default StyleSheet.create({
     imgIcn: {
         width: 40,
         height: 38,
-        marginBottom: offset.o1
+        marginBottom: offset.o2
+    },
+    menuTxt: {
+        ...typo.textSmall,
     }
 })
