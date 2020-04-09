@@ -338,6 +338,7 @@ export default class TabViewExample extends Component {
                         <Loading info='loading api data ...' />
                     )
                 }
+                console.log("Leave History List::", this.state.leaveHistoryLists);
 
                 let currentYear = new Date().getFullYear()
 
