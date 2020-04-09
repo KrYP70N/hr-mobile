@@ -11,38 +11,45 @@ let size = {
 export default {
     paragraph: {
         fontSize: size.s2,
-        color: color.secondary
+        color: color.secondary,
+        fontFamily: 'Nunito'
     },
     cardTitle: {
         fontSize: size.s3,
-        fontWeight: 'bold',
+        fontFamily: 'Nunito-Bold',
         color: color.secondary
     },
     cardSTitle: {
         fontSize: size.s2,
-        fontWeight: 'bold',
+        fontFamily: 'Nunito-Bold',
         color: color.secondary
     },
     cardRthLabel: {
         fontSize: size.s1,
-        color: color.placeHolder
+        color: color.placeHolder,
+        fontFamily: 'Nunito'
     },
     headline: {
         fontSize: size.s4,
-        color: color.primary
+        color: color.primary,
+        fontFamily: 'Nunito-Bold'
     },
     subHeader: {
-        fontSize: size.s3
+        fontSize: size.s3,
+        fontFamily: 'Nunito',
     },
     textSmall: {
-        fontSize: size.s1
+        fontSize: size.s1,
+        fontFamily: 'Nunito'
     },
     placeholder: {
         fontSize: size.s2,
-        color: color.placeHolder
+        color: color.placeHolder,
+        fontFamily: 'Nunito'
     },
     icnLight: {
         color: color.light,
-        fontSize: size.s5
+        fontSize: size.s5,
+        fontFamily: 'Nunito'
     }
 }

@@ -24,7 +24,8 @@ export default StyleSheet.create({
     },
     sub: {
         ...typo.parabraph,
-        marginBottom: offset.o3
+        marginBottom: offset.o3,
+        color: '#333'
     },
     item: {
         marginBottom: offset.o2

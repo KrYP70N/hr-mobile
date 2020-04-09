@@ -114,6 +114,9 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      return true
+    })
     this.props.navigation.addListener('focus', () => {
       this.setState({
         url: null,
