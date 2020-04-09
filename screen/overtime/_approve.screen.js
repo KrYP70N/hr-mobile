@@ -161,7 +161,8 @@ export default class OvertimeApprove extends Component {
                 //    <View style={[
                 //         styles.leaveApproveContainer
                 //     ]}>
-
+                        <View style={{padding: 10}}>
+                            
                         <FlatList
                             data={this.state.overtimeList}
                             showsVerticalScrollIndicator={false}
@@ -195,6 +196,7 @@ export default class OvertimeApprove extends Component {
                             }
                             keyExtractor={(item, index) => index.toString()}
                         />
+                        </View>
                         /* <View style={{
                             display: this.state.overtimeList.length === 0 ? 'none' : 'flex',
                             alignItems: "center",

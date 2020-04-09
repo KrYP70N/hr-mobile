@@ -145,6 +145,9 @@ export default class LeaveApprove extends Component {
                     <Right></Right>
                 </Header>
 
+                <View style={{
+                    padding: 10
+                }}>
                 <FlatList
                     data={this.state.leaveLists}
                     showsVerticalScrollIndicator={false}
@@ -175,6 +178,7 @@ export default class LeaveApprove extends Component {
                     }
                     keyExtractor={(item, index) => index.toString()}
                 />
+                </View>
                 <View style={{
                     display: this.state.leaveLists.length === 0 ? 'flex' : 'none',
                     alignItems: "center",
