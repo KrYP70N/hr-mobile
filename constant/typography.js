@@ -47,6 +47,10 @@ export default {
         color: color.placeHolder,
         fontFamily: 'Nunito'
     },
+    dateValueText: {
+        fontSize: size.s2,
+        fontFamily: 'Nunito'
+    },
     icnLight: {
         color: color.light,
         fontSize: size.s5,
