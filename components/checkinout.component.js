@@ -331,8 +331,10 @@ export default class CheckInOut extends Component {
           }}>
             <Card style={styles.error}>
               <Image source={require('../assets/icon/location-2.png')} style={styles.errImg} />
-              <Text style={styles.errorTitle}>Location Error!</Text>
-              <Text style={styles.errorTxt}>Check your location setting!</Text>
+              {/* <Text style={styles.errorTitle}>Location Error!</Text> */}
+              <Text style={[styles.errorTxt, {
+                textAlign: 'center'
+              }]}>In order to use Check In/ Check Out and Attendance Functions, you will need to turn on your location service.</Text>
             </Card>
           </TouchableOpacity>
         </View>
