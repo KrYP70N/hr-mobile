@@ -334,7 +334,7 @@ export default class CheckInOut extends Component {
               {/* <Text style={styles.errorTitle}>Location Error!</Text> */}
               <Text style={[styles.errorTxt, {
                 textAlign: 'center'
-              }]}>In order to use Check In/ Check Out and Attendance Functions, you will need to turn on your location service.</Text>
+              }]}>In order to use Check In / Check Out and Attendance Functions, you will need to turn on your location service.</Text>
             </Card>
           </TouchableOpacity>
         </View>
