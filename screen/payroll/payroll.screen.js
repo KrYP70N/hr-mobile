@@ -150,7 +150,8 @@ export default class Payroll extends Component {
                                 marginRight: offset.o2
                             }} onPress={() => { this.props.navigation.navigate('Main') }} />
                             <Text style={{
-                                color: color.secondary
+                                color: color.secondary,
+                                fontFamily: 'Nunito'
                             }}>Payroll</Text>
                         </Left>
                         <Right></Right>
