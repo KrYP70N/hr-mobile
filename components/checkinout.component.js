@@ -441,8 +441,8 @@ let styles = StyleSheet.create({
     paddingRight: offset.oh
   },
   right: {
-    paddingLeft: 15,
-    paddingRight: offset.o1
+    paddingLeft: offset.o1,
+    paddingRight: 15
   },
   cardHolder: {
     borderRadius: 5,
