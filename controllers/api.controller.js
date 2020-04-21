@@ -74,6 +74,7 @@ export default class APIs {
 
     // user controller
     static Profile(url, auth, id) {
+        console.log(id, '++++')
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -435,6 +436,38 @@ export default class APIs {
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // get pending Leave Lists
+    static getNotice = (auth, url, channel) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/noti/${channel}?from_date=2020-02-01&to_date=2020-04-01`)
+            .then(function (res) {
+                console.log(res)
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // get channel
+    static getChannel = (auth, url, id) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/channel/${id}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                console.log(error)
                 return { error: error, status: 'fail' }
             })
     }

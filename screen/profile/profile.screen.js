@@ -50,6 +50,7 @@ export default class Profile extends Component {
     AsyncStorage.getItem('@hr:token')
       .then((res) => {
         let data = JSON.parse(res)
+        console.log(data.id, '<<<<')
         this.setState({
           auth: data['key'],
           id: data['id']

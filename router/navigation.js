@@ -26,6 +26,7 @@ import Leave from '../screen/leave/leave.screen'
 import LeaveApprove from '../screen/leave/_approve.screen';
 import OvertimeApprove from '../screen/overtime/_approve.screen';
 import NoticeBoard from '../screen/noticeboard/noticeboard.screen';
+import NotiboardDetail from '../screen/noticeboard/detail.screen';
 import SideMenu from '../router/SideMenu';
 
 import styNav from './navigation.style'
@@ -78,6 +79,7 @@ function Navigation() {
         <Drawer.Screen name='Leave' component={Leave} />
         <Drawer.Screen name='LeaveApprove' component={LeaveApprove}/>
         <Drawer.Screen name='NoticeBoard' component={NoticeBoard}/>
+        <Drawer.Screen name='NotiboardDetail' component={NotiboardDetail}/>
         <Drawer.Screen name='OvertimeApprove' component={OvertimeApprove}/>
       </Drawer.Navigator>
     </NavigationContainer>

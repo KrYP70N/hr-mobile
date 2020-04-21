@@ -47,5 +47,36 @@ export default StyleSheet.create({
         position: 'absolute',
         right: 0,
         bottom: -offset.o1
+    },
+    banner: {
+        backgroundColor: color.primary,
+        padding: offset.o1 + offset.oh,
+        minHeight: 150,
+        justifyContent: 'center'
+    },
+    bannerTitle: {
+        ...typography.headline,
+        fontFamily: 'Nunito',
+        color: color.light,
+        paddingTop: offset.o2,
+        paddingBottom: offset.o2,
+    },
+    detailDate: {
+        ...typography.paragraph,
+        color: color.placeHolder,
+        marginBottom: offset.o2
+    },
+    detailTitle: {
+        ...typography.cardTitle,
+        color: color.primary,
+        marginBottom: offset.o2
+    },
+    detailBody: {
+        ...typography.paragraph,
+        marginBottom: offset.o2
+    },
+    detailSender: {
+        ...typography.paragraph,
+        fontFamily: 'Nunito-Bold'
     }
 })
