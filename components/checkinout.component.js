@@ -7,13 +7,17 @@ import * as IntentLauncher from 'expo-intent-launcher'
 import * as geolib from 'geolib';
 
 
-import { StyleSheet, Image, AsyncStorage, TouchableOpacity } from 'react-native'
+import { StyleSheet, Image, AsyncStorage, TouchableOpacity, Platform, Dimensions } from 'react-native'
 import { Text, Row, Col, Card, Body, View, Toast } from 'native-base'
 import offset from '../constant/offset'
 // import { TouchableOpacity } from 'react-native-gesture-handler'
 import color from '../constant/color';
 import typography from '../constant/typography';
-import APIs from '../controllers/api.controller'
+import APIs from '../controllers/api.controller';
+import Modal from 'react-native-modal';
+const height = Dimensions.get('screen').height;
+const width = Dimensions.get('screen').width;
+
 
 export default class CheckInOut extends Component {
 
@@ -30,7 +34,9 @@ export default class CheckInOut extends Component {
       officeCoord: null,
       radius: null,
       withinRadius: 'wait',
-      status: null
+      status: null,
+      isModalVisible: false,
+      checkMessage: '',
     }
     // check in control
     this.CheckIn = () => {
@@ -43,25 +49,18 @@ export default class CheckInOut extends Component {
             long: this.state.location['longitude']
           }).then((res) => {
             if (res.status === 'success') {
-              Toast.show({
-                text: 'Success check in!',
-                textStyle: {
-                  textAlign: 'center'
-                },
-                style: {
-                  backgroundColor: color.primary
-                }
+              this.setState({
+                checkMessage: 'Success check in!',
+                isModalVisible: true,
+                
               })
             } else {
-              Toast.show({
-                text: 'You already check in!',
-                textStyle: {
-                  textAlign: 'center'
-                },
-                style: {
-                  backgroundColor: color.primary
-                }
+              this.setState({
+                checkMessage: "You're already check in!",
+                isModalVisible: true,
+                
               })
+              
             }
             this.CheckStatus()
           })
@@ -73,25 +72,17 @@ export default class CheckInOut extends Component {
           APIs.Checkin(this.state.url, this.state.auth, this.state.id)
             .then((res) => {
               if (res.status === 'success') {
-                Toast.show({
-                  text: 'Success check in!',
-                  textStyle: {
-                    textAlign: 'center'
-                  },
-                  style: {
-                    backgroundColor: color.primary
-                  }
+                this.setState({
+                  checkMessage: 'Success check in!',
+                  isModalVisible: true,
+                  
                 })
                 this.CheckStatus()
               } else {
-                Toast.show({
-                  text: 'You already check in!',
-                  textStyle: {
-                    textAlign: 'center'
-                  },
-                  style: {
-                    backgroundColor: color.primary
-                  }
+                this.setState({
+                  checkMessage: "You're already check in!",
+                  isModalVisible: true,
+                  
                 })
               }
               this.CheckStatus()
@@ -108,16 +99,12 @@ export default class CheckInOut extends Component {
         if (this.state.status.Checkin !== true) {
           fun()
         } else {
-          Toast.show({
-            text: "You're already checked in!",
-            textStyle: {
-              textAlign: 'center'
-            },
-            style: {
-              backgroundColor: color.primary
-            },
-            duration: 6000
+          this.setState({
+            checkMessage: "You're already checked in!",
+            isModalVisible: true,
+            
           })
+         
         }
       }
 
@@ -132,24 +119,16 @@ export default class CheckInOut extends Component {
             long: this.state.location['longitude']
           }).then((res) => {
             if (res.status === 'success') {
-              Toast.show({
-                text: 'Success check out!',
-                textStyle: {
-                  textAlign: 'center'
-                },
-                style: {
-                  backgroundColor: color.primary
-                }
+              this.setState({
+                checkMessage: 'Success check out!',
+                isModalVisible: true,
+                
               })
             } else {
-              Toast.show({
-                text: 'You already check out!',
-                textStyle: {
-                  textAlign: 'center'
-                },
-                style: {
-                  backgroundColor: color.danger
-                }
+              this.setState({
+                checkMessage:  "You're already check out!",
+                isModalVisible: true,
+                
               })
             }
 
@@ -163,25 +142,18 @@ export default class CheckInOut extends Component {
           APIs.Checkout(this.state.url, this.state.auth, this.state.id)
             .then((res) => {
               if (res.status === 'success') {
-                Toast.show({
-                  text: 'Success check out!',
-                  textStyle: {
-                    textAlign: 'center'
-                  },
-                  style: {
-                    backgroundColor: color.primary
-                  }
+                this.setState({
+                  checkMessage: 'Success check out!',
+                  isModalVisible: true,                 
                 })
+               
               } else {
-                Toast.show({
-                  text: 'You already check out!',
-                  textStyle: {
-                    textAlign: 'center'
-                  },
-                  style: {
-                    backgroundColor: color.danger
-                  }
+                this.setState({
+                  checkMessage: "You're Already Check Out!",
+                  isModalVisible: true,
+                 
                 })
+                
               }
               this.CheckStatus()
             })
@@ -195,15 +167,11 @@ export default class CheckInOut extends Component {
       } else {
         if (this.state.status.Checkout !== true) {
           fun()
-          Toast.show({
-            text: "You're already checked out!",
-            textStyle: {
-              textAlign: 'center'
-            },
-            style: {
-              backgroundColor: color.primary
-            },
-            duration: 6000
+        }else{
+          this.setState({
+            checkMessage: "You're already checked out!",
+            isModalVisible: true,
+            
           })
         }
       }
@@ -380,6 +348,7 @@ export default class CheckInOut extends Component {
     }
 
     return (
+      <View style={{flex: 1}}>
       <Row style={styles.cardRow}>
 
         {/* check in */}
@@ -409,25 +378,45 @@ export default class CheckInOut extends Component {
 
         {/* check out */}
         <Col style={styles.right}>
-            <Card style={styles.cardHolder}>
-              <TouchableOpacity onPress={() => this.CheckOut()}>
-                <View style={styles.card}>
-                  <Image
-                    source={require('../assets/icon/checktime.png')}
-                    style={[styles.icon, {
-                      opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
-                    }]}
-                  />
-                  <Text style={{
-                    opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
-                    fontFamily: 'Nunito-Bold',
-                    fontSize: 16
-                  }}>Check Out</Text>
-                </View>
-              </TouchableOpacity>
-            </Card>
+          <Card style={styles.cardHolder}>
+            <TouchableOpacity onPress={() => this.CheckOut()}>
+              <View style={styles.card}>
+                <Image
+                  source={require('../assets/icon/checktime.png')}
+                  style={[styles.icon, {
+                    opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
+                  }]}
+                />
+                <Text style={{
+                  opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
+                  fontFamily: 'Nunito-Bold',
+                  fontSize: 16
+                }}>Check Out</Text>
+              </View>
+            </TouchableOpacity>
+          </Card>
         </Col>
+        
       </Row>
+      <Modal isVisible={this.state.isModalVisible} >
+          <View style={styles.ModelViewContainer}>
+            <View style = {styles.iconView}>
+            <Image source={require('../assets/icon/checktime.png')} style = {styles.dialogIcon}/>
+            </View>
+          <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
+            <View style={styles.ModalTextContainer}>
+              <TouchableOpacity style={styles.CancelOpacityContainer}
+                onPress={() => this.setState({ isModalVisible: false })} >
+                <Text style={styles.modalTextStyle} >
+                  {'Close'}
+                </Text>
+              </TouchableOpacity>
+             
+            </View>
+
+          </View>
+        </Modal>
+      </View>
     )
   }
 }
@@ -480,6 +469,48 @@ let styles = StyleSheet.create({
     width: 64,
     height: 64,
     marginBottom: offset.o2
+  },
+  ModelViewContainer: { 
+   width: width + 30,
+   height: 200, 
+   backgroundColor: '#f2f2f2', 
+   alignItems: 'center',
+   position: 'absolute',
+   marginLeft: -30,
+   bottom: Platform.OS === 'ios'? 15 : -20,
+},
+  lanTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 15,
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  lanTitleMM: {
+    fontSize: 14,
+    marginTop: 15,
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  ModalTextContainer: { width: '100%', flex: 1, position: 'absolute', bottom: 0},
+  CancelOpacityContainer: {
+    width: '100%',
+    height: 50, 
+    backgroundColor: color.primary, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+  },
+  modalTextStyle: {color: '#fff', textAlign: 'center',},
+  iconView: {
+    width:'100%',
+    alignItems: 'center',
+  },
+  dialogIcon: {
+    width: 28,
+    height: 28,
+    marginBottom: offset.o1,
+    marginTop: offset.o2,
   }
+
 })
 
