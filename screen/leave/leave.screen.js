@@ -496,6 +496,7 @@ export default class TabViewExample extends Component {
                     </Left>
                     <Right></Right>
                 </Header>
+                
                 <TabView
                     navigationState={this.state}
                     renderScene={this._renderScene}

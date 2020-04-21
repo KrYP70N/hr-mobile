@@ -14,8 +14,8 @@ import { View, Text, Button, Icon } from 'native-base';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import { NavigationActions } from 'react-navigation';
 
-import Auth from '../screen/auth/auth.screen'
 import Login from '../screen/login/login.screen'
+import Dashboard from '../screen/dashboard/dashboard.screen'
 import Main from '../screen/main/main.screen'
 import ProfileScreen from '../screen/profile/profile.screen'
 import Attendance from '../screen/attendance/attendance.screen'
@@ -25,6 +25,7 @@ import PayrollDetail from '../screen/payroll/pryroll.detail.screen'
 import Leave from '../screen/leave/leave.screen'
 import LeaveApprove from '../screen/leave/_approve.screen';
 import OvertimeApprove from '../screen/overtime/_approve.screen';
+import NoticeBoard from '../screen/noticeboard/noticeboard.screen';
 import SideMenu from '../router/SideMenu';
 
 import styNav from './navigation.style'
@@ -67,6 +68,7 @@ function Navigation() {
             edgeWidth: 0
           }}
         />
+        <Drawer.Screen name='Dashboard' component={Dashboard} />
         <Drawer.Screen name='Main' component={Main} />
         <Drawer.Screen name='Profile' component={ProfileScreen} />
         <Drawer.Screen name='Attendance' component={Attendance} />
@@ -75,6 +77,7 @@ function Navigation() {
         <Drawer.Screen name='PayrollDetail' component={PayrollDetail} />
         <Drawer.Screen name='Leave' component={Leave} />
         <Drawer.Screen name='LeaveApprove' component={LeaveApprove}/>
+        <Drawer.Screen name='NoticeBoard' component={NoticeBoard}/>
         <Drawer.Screen name='OvertimeApprove' component={OvertimeApprove}/>
       </Drawer.Navigator>
     </NavigationContainer>

@@ -378,7 +378,7 @@ export default class Overtime extends Component {
                                         <Text style={styOt.dateFromText}>From - {record.date_from}</Text>
                                     </View>
                                     <View style={styOt.cardTitleContainer}>
-                                        <Text style={styOt.dateFromText}>To - {record.date_to}</Text>
+                                        <Text style={styOt.dateFromText}>To   - {record.date_to}</Text>
                                     </View>
 
                                     <View style={styOt.cardTitleContainer}>

@@ -22,5 +22,10 @@ export default StyleSheet.create({
         width: 28,
         height: 28,
         marginRight: offset.o2
+    },
+    image4: {
+        width: 20,
+        height: 30,
+        marginRight: offset.o2
     }
 })
