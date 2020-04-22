@@ -349,55 +349,28 @@ export default class CheckInOut extends Component {
 
     return (
       <View style={{flex: 1}}>
-      <Row style={styles.cardRow}>
-
-        {/* check in */}
-        <Col style={styles.left}>
-          <Card style={styles.cardHolder}>
-            <TouchableOpacity onPress={() => {
-              this.CheckIn()
+     <Card style={styles.cardHolder}>
+          <TouchableOpacity onPress={() => {
+            this.props.navigation.navigate('CheckInOut', {location: this.state.location})
+              //this.CheckInOut()
             }}>
               <View style={styles.card}>
                 <Image
                   source={require('../assets/icon/checktime.png')}
-                  style={[styles.icon, {
-                    opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
-                  }]}
+                  style={[styles.icon]}
                 />
+                <Text style = {{marginTop: 5, color: color.primary}}>Get your Attendance!</Text>
                 <Text
                   style={{
-                    opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
+                    //opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
                     fontFamily: 'Nunito-Bold',
-                    fontSize: 16
+                    fontSize: 16,
+                    marginTop: 10,
                   }}
-                >Check In</Text>
+                >Check In/Check Out</Text>
               </View>
             </TouchableOpacity>
-          </Card>
-        </Col>
-
-        {/* check out */}
-        <Col style={styles.right}>
-          <Card style={styles.cardHolder}>
-            <TouchableOpacity onPress={() => this.CheckOut()}>
-              <View style={styles.card}>
-                <Image
-                  source={require('../assets/icon/checktime.png')}
-                  style={[styles.icon, {
-                    opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
-                  }]}
-                />
-                <Text style={{
-                  opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
-                  fontFamily: 'Nunito-Bold',
-                  fontSize: 16
-                }}>Check Out</Text>
-              </View>
-            </TouchableOpacity>
-          </Card>
-        </Col>
-        
-      </Row>
+            </Card>
       <Modal isVisible={this.state.isModalVisible} >
           <View style={styles.ModelViewContainer}>
             <View style = {styles.iconView}>
@@ -438,7 +411,7 @@ let styles = StyleSheet.create({
     overflow: 'hidden'
   },
   card: {
-    minHeight: 120,
+    minHeight: 150,
     padding: offset.o3,
     display: 'flex',
     alignItems: 'center',
