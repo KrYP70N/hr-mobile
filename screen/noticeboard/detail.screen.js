@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react'
-import { Container, Header, Left, Icon, Text, Right, Content } from 'native-base'
+import { Container, Header, Left, Icon, Text, Right, Content, View } from 'native-base'
 
 // variable
 import color from '../../constant/color'
@@ -8,11 +8,11 @@ import styles from './noticeboard.style'
 // import { Image } from 'react-native'
 
 // components
-import NotiList from './notilist'
-import APIs from '../../controllers/api.controller'
 
-export default class NoticeBoard extends Component {
+export default class Dashboard extends Component {
     render() {
+        const { params } = this.props.route
+        
         return (
             <Container>
                 <Header style={{
@@ -28,11 +28,11 @@ export default class NoticeBoard extends Component {
                             fontSize: offset.o4,
                             color: color.primary,
                             marginRight: offset.o2
-                        }} onPress={() => { this.props.navigation.navigate('Main') }} />
+                        }} onPress={() => { this.props.navigation.navigate('NoticeBoard') }} />
                         <Text style={{
                             color: color.secondary,
                             fontFamily: 'Nunito'
-                        }}>Notice Board</Text>
+                        }}>{params.title.slice(0, 8)} {params.title.length > 8 && '...'}</Text>
                     </Left>
                     <Right>
                         {/* <Image source={require('../../assets/icon/delete-button.png')} style={{
@@ -42,8 +42,21 @@ export default class NoticeBoard extends Component {
                     </Right>
                 </Header>
                 
-                <Content style={styles.container}>
-                    <NotiList navigation={this.props.navigation}/>
+                <Content style={{
+                    backgroundColor: color.lighter
+                }}>
+                    {/* banner */}
+                    <View style={styles.banner}>
+                        <Text style={styles.bannerTitle}>{params.title}</Text>
+                    </View>
+
+                    {/* body */}
+                    <View style={styles.container}>
+                        <Text style={styles.detailDate}>11 Nov 2019 11:09 AM</Text>
+                        <Text style={styles.detailTitle}>Happy Birthday</Text>
+                        <Text style={styles.detailBody}>Wishing you all the best.</Text>
+                        <Text style={styles.detailSender}>- John Doe</Text>
+                    </View>
                 </Content>
             </Container>
         )

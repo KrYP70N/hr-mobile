@@ -21,6 +21,11 @@ export default StyleSheet.create({
         marginBottom: offset.o2,
         borderRadius: offset.oh
     },
+    notiIcn: {
+        width: 35,
+        height: 35,
+        marginBottom: offset.oh
+    },
     noti: {
         fontFamily: 'Nunito-Bold',
         fontSize: 24,
