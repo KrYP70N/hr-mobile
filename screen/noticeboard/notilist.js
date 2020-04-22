@@ -4,60 +4,56 @@ import styles from './noticeboard.style'
 import { Image, AsyncStorage } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
 
 export default function NotiList({ navigation }) {
-
     const [token, setToken] = useState("")
     const [endPoint, setEndPoint] = useState("")
     const [channel, setChannel] = useState("")
+    const [emptyNoti, setemptyNoti] = useState(false)
+    const [notilist, setnotilist] = useState([])
 
-    const [notilist, setnotilist] = useState([
-        {
-            title: 'Birthday Wishes for November Born',
-            body: 'Lorem ipsum dolor sit amet, consectetur... adipiscing elit',
-            date: '2 hrs',
-            new: true
-        },
-        {
-            title: 'Announcement for Annual Staff Party',
-            body: 'Lorem ipsum dolor sit amet, consectetur... adipiscing elit',
-            date: '2 hrs',
-            new: false
-        },
-        {
-            title: 'Company Policy',
-            body: 'Lorem ipsum dolor sit amet, consectetur... adipiscing elit',
-            date: '2 hrs',
-            new: false
-        }
-    ])
-
-    if(token === "") {
+    if (token === "") {
         AsyncStorage.getItem('@hr:token')
-        .then((res) => setToken(JSON.parse(res)))
+            .then((res) => setToken(JSON.parse(res)))
     }
 
-    if(endPoint === "") {
+    if (endPoint === "") {
         AsyncStorage.getItem('@hr:endPoint')
-        .then((res) => setEndPoint(JSON.parse(res)))
+            .then((res) => setEndPoint(JSON.parse(res)))
     }
 
-    if(token !== "" && endPoint !== "") {
-        console.log(token, endPoint)
-        if(channel === "") {
+    if (token !== "" && endPoint !== "") {
+        if (channel === "") {
             APIs.getChannel(token.key, endPoint.ApiEndPoint, token.id)
-            .then((res) => {
-                setChannel(res.data)
-            })
+                .then((res) => {
+                    setChannel(res.data)
+                })
         }
-        
-        if(channel !== "") {
-            console.log(channel)
+
+        if (channel !== "" && emptyNoti === false && notilist.length === 0) {
+            if (channel.length > 0) {
+                let notis = []
+                channel.map((ch, i) => {
+                    APIs.getNotice(token.key, endPoint.ApiEndPoint, ch['Channel ID'])
+                        .then((res) => {
+                            res.data.length !== 0 ? notis = [...notis, ...res.data] : null
+                            if (i + 1 === channel.length) {
+                                setnotilist(notis)
+                            }
+                        })
+                })
+            } else {
+                setemptyNoti(true)
+            }
+
         }
-        // APIs.getNotice(token.key, endPoint.ApiEndPoint, 1)
-        // .then((res) => {
-        //     console.log(res.data)
-        // })
+    }
+
+    if(emptyNoti === false && notilist.length === 0) {
+        return (
+            <Loading />
+        )
     }
 
     return (
@@ -73,9 +69,17 @@ export default function NotiList({ navigation }) {
                             <Image style={styles.notiImg} source={require('../../assets/icon/notification-3.png')} />
                         </View>
                         <View style={styles.txtBox}>
-                            <Text style={styles.notiTitle}>{noti.title}</Text>
-                            <Text style={styles.notiBody}>{noti.body.slice(0, 100)} {noti.body.length > 100 && '...'}</Text>
-                            {noti.new && <Text style={styles.notiBadge}>New</Text>}
+                            <Text style={styles.notiTitle}>{noti['Subject']}</Text>
+                            <Text style={styles.notiBody}>{
+                                noti['Body']
+                                    .replace(/<\/?[^>]+(>|$)/g, "")
+                                    .replace(/\s+/g, ' ').trim()
+                                    .slice(0, 100)
+                            } {noti['Body'].length > 100 && '...'}</Text>
+                            <View style={styles.notiFoot}>
+                                <Text style={styles.notiBody}>{noti['Date']}</Text>
+                                <Text style={styles.notiBadge}>{noti['Channel']}</Text>
+                            </View>
                         </View>
                     </TouchableOpacity>
                 ))

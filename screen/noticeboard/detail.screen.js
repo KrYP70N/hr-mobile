@@ -32,7 +32,7 @@ export default class Dashboard extends Component {
                         <Text style={{
                             color: color.secondary,
                             fontFamily: 'Nunito'
-                        }}>{params.title.slice(0, 8)} {params.title.length > 8 && '...'}</Text>
+                        }}>{params['Subject'].slice(0, 8)} {params['Subject'].length > 8 && '...'}</Text>
                     </Left>
                     <Right>
                         {/* <Image source={require('../../assets/icon/delete-button.png')} style={{
@@ -47,15 +47,21 @@ export default class Dashboard extends Component {
                 }}>
                     {/* banner */}
                     <View style={styles.banner}>
-                        <Text style={styles.bannerTitle}>{params.title}</Text>
+                        <Text style={styles.bannerTitle}>{params['Subject']}</Text>
                     </View>
 
                     {/* body */}
                     <View style={styles.container}>
-                        <Text style={styles.detailDate}>11 Nov 2019 11:09 AM</Text>
-                        <Text style={styles.detailTitle}>Happy Birthday</Text>
-                        <Text style={styles.detailBody}>Wishing you all the best.</Text>
-                        <Text style={styles.detailSender}>- John Doe</Text>
+                        <Text style={styles.detailDate}>{params['Date']}</Text>
+                        <Text style={styles.detailTitle}>{
+                            params['Channel']
+                        }</Text>
+                        <Text style={styles.detailBody}>{
+                            params['Body']
+                            .replace(/<\/?[^>]+(>|$)/g, "")
+                            .replace(/\s+/g,' ').trim()
+                        }</Text>
+                        <Text style={styles.detailSender}>- {params['Author']}</Text>
                     </View>
                 </Content>
             </Container>
