@@ -42,6 +42,7 @@ export class CheckInOut extends Component {
                 longitude: 96.16424959999999,
             },
             mapCoord: null,
+            mapMarkerCoord: null,
             userName: null,
         }
 
@@ -215,14 +216,18 @@ export class CheckInOut extends Component {
                 })
             } else {
                 let location = await Location.getCurrentPositionAsync({})
-                console.log('Current Position Location', location);
+                console.log('Current Position Location', location.coords);
                 this.setState({
                     location: location.coords,
                     mapCoord: {
                         latitude: location.coords.latitude,
                         longitude: location.coords.longitude,
-                        latitudeDelta: 0.0022,
-                        longitudeDelta: 0.0021,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0921,
+                    },
+                    mapMarkerCoord: {
+                        latitude: location.coords.latitude,
+                        longitude: location.coords.longitude
                     }
                 })
             }
@@ -309,6 +314,9 @@ export class CheckInOut extends Component {
     }
 
     render() {
+        console.log(this.props.navigation);
+        console.log("Current Location", this.state.location);
+        console.log("Current Map Location", this.state.mapCoord)
         return (
 
             <Container style={{ flex: 1 }}>
@@ -335,35 +343,36 @@ export class CheckInOut extends Component {
                 </Header>
                 <Content>
                     <View style={styles.container}>
-                        <MapView
+                        <View style = {{flex: 1, height: height}}>
+                        {this.state.location === null ? <Text>...</Text> :
+                            <MapView
                             style={styles.mapStyle}
                             initialRegion={this.state.mapCoord}
-                        // initialRegion={{
-                        //     latitude: this.state.officeCoord.latitude,
-                        //     longitude: this.state.officeCoord.longitude,
-                        //     latitudeDelta: 0.0022,
-                        //     longitudeDelta: 0.0021,
-                        // }}
                         >
-                            <Marker coordinate={this.state.location}>
+                            <Marker coordinate={this.state.mapMarkerCoord}>
                                 <View>
                                     <Image style={{ width: 40, height: 40 }} source={require('../../assets/icon/marker.png')} />
                                 </View>
                             </Marker>
                         </MapView>
+                        }
+                        </View>
+                        
                         <View style={{
-                            flex: 1,
                             width: width,
-                            height: height / 2 + 100,
+                            height: height/2 ,
                             backgroundColor: '#fff',
-                            top: height / 2 - 100,
-                            position: 'absolute',
                             borderTopLeftRadius: 40,
                             borderTopRightRadius: 40,
+                            position: 'absolute',
+                            bottom: height/4 - 50,
+                            //bottom: 150,
+                            //top: 400,
                             padding: 30,
                             alignItems: 'center'
                         }}>
-                            {this.state.userName === null ? <Text style = {{fontSize: 40}}>...</Text> : <Text>{`Have a nice day! ${this.state.userName}`}</Text>}
+                            {this.state.userName === null ? <Text style = {{fontSize: 40}}>...</Text> : 
+                            <Text>{`Have a nice day! ${this.state.userName}`}</Text>}
                             <Clock style={styles.time} navigation={this.props.navigation} checkScreen="checkinout" />
                             <View style={{
                                 flexDirection: 'row',
@@ -389,7 +398,7 @@ export class CheckInOut extends Component {
                                 width: '100%',
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
-                                marginTop: 30,
+                                marginTop: 40,
                                 //height: 60,
                             }}>
                                 <TouchableOpacity onPress={() => { this.CheckIn() }}>
@@ -445,13 +454,11 @@ export class CheckInOut extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: '#fff',
-        // alignItems: 'center',
-        // justifyContent: 'center',
+        backgroundColor: '#fff',
     },
     mapStyle: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height / 2 - 50,
+        width: width,
+        height: height/3 + 50,
     },
     time: {
         ...typo.textSmall,

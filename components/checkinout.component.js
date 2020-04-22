@@ -290,6 +290,7 @@ export default class CheckInOut extends Component {
   }
 
   render() {
+    
     // locatoin update
     if (this.state.locError) {
       return (
@@ -351,7 +352,7 @@ export default class CheckInOut extends Component {
       <View style={{flex: 1}}>
      <Card style={styles.cardHolder}>
           <TouchableOpacity onPress={() => {
-            this.props.navigation.navigate('CheckInOut', {location: this.state.location})
+            this.props.navigation.navigate('CheckInOut')
               //this.CheckInOut()
             }}>
               <View style={styles.card}>
