@@ -197,7 +197,30 @@ export default class Main extends Component {
           </TouchableOpacity>
 
           {/* check in/out */}
-          <View style={styMain.checkinout}>
+         <View style={styMain.checkinout}>
+            {/* 
+          <Card style={styMain.cardHolder}>
+          <TouchableOpacity onPress={() => {
+            this.props.navigation.navigate('CheckInOut')
+              //this.CheckInOut()
+            }}>
+              <View style={styMain.card}>
+                <Image
+                  source={require('../../assets/icon/checktime.png')}
+                  style={[styMain.icon]}
+                />
+                <Text style = {{marginTop: 5, color: color.primary}}>Get your Attendance!</Text>
+                <Text
+                  style={{
+                    //opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
+                    fontFamily: 'Nunito-Bold',
+                    fontSize: 16,
+                    marginTop: 10,
+                  }}
+                >Check In/Check Out</Text>
+              </View>
+            </TouchableOpacity>
+            </Card> */}
             <CheckInOut navigation={this.props.navigation} />
           </View>
 
