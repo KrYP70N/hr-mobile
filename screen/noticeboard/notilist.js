@@ -1,81 +1,132 @@
 import React, { useState } from 'react'
-import { View, Text } from 'native-base'
+import { TouchableOpacity, Linking } from 'react-native'
+import { Text, View, Icon, Col } from 'native-base'
+import { AsyncStorage, Image } from 'react-native'
 import styles from './noticeboard.style'
-import { Image, AsyncStorage } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import APIs from '../../controllers/api.controller'
 
-export default function NotiList({ navigation }) {
 
-    const [token, setToken] = useState("")
-    const [endPoint, setEndPoint] = useState("")
-    const [channel, setChannel] = useState("")
+export default function notilist({ navigation }) {
 
-    const [notilist, setnotilist] = useState([
-        {
-            title: 'Birthday Wishes for November Born',
-            body: 'Lorem ipsum dolor sit amet, consectetur... adipiscing elit',
-            date: '2 hrs',
-            new: true
-        },
-        {
-            title: 'Announcement for Annual Staff Party',
-            body: 'Lorem ipsum dolor sit amet, consectetur... adipiscing elit',
-            date: '2 hrs',
-            new: false
-        },
-        {
-            title: 'Company Policy',
-            body: 'Lorem ipsum dolor sit amet, consectetur... adipiscing elit',
-            date: '2 hrs',
-            new: false
+    const [Collection, setCollection] = useState({
+        notis: [],
+        attachs: []
+    })
+
+    const loader = () => {
+
+        if (Collection.notis.length === 0 && Collection.attachs.length === 0) {
+
+            let token = AsyncStorage.getItem('@hr:token')
+                .then(res => JSON.parse(res))
+
+            let endPoint = AsyncStorage.getItem('@hr:endPoint')
+                .then(res => JSON.parse(res))
+
+
+            Promise.all([token, endPoint])
+                .then((res) => {
+                    let token = res[0]
+                    let endPoint = res[1]
+
+                    // collecting data
+                    APIs.getChannel(token.key, endPoint.ApiEndPoint, token.id)
+                        .then((res) => {
+                            const channels = res.data
+                            channels.map((channel, i) => {
+                                APIs.getNotice(token.key, endPoint.ApiEndPoint, channel['Channel ID'])
+                                    .then((res) => {
+                                        if (res.data.length !== 0) {
+                                            let dataStr = JSON.stringify(res.data)
+                                            let haveAttachment = dataStr.includes('{"Attachment":{')
+                                            let haveNoti = dataStr.includes('{"Noti"')
+
+                                            let item = {}
+
+                                            if (haveAttachment) item.attachs = res.data[0]
+                                            if (haveNoti && haveAttachment) item.notis = res.data[1]
+                                            if (haveNoti && !haveAttachment) item.notis = res.data[0]
+
+                                            setCollection({
+                                                notis: [...Collection.notis, ...item.notis],
+                                                attachs: [...Collection.attachs, ...item.attachs]
+                                            })
+                                        }
+                                    })
+                            })
+
+                        })
+
+                })
         }
-    ])
-
-    if(token === "") {
-        AsyncStorage.getItem('@hr:token')
-        .then((res) => setToken(JSON.parse(res)))
     }
 
-    if(endPoint === "") {
-        AsyncStorage.getItem('@hr:endPoint')
-        .then((res) => setEndPoint(JSON.parse(res)))
-    }
+    navigation.addListener('focus', () => {
+        loader()
+    })
 
-    if(token !== "" && endPoint !== "") {
-        console.log(token, endPoint)
-        if(channel === "") {
-            APIs.getChannel(token.key, endPoint.ApiEndPoint, token.id)
-            .then((res) => {
-                setChannel(res.data)
-            })
-        }
-        
-        if(channel !== "") {
-            console.log(channel)
-        }
-        // APIs.getNotice(token.key, endPoint.ApiEndPoint, 1)
-        // .then((res) => {
-        //     console.log(res.data)
-        // })
+    console.log(Collection.attachs)
+
+
+    if (Collection.notis.length === 0 && Collection.attachs.length === 0) {
+        return (
+            <View style={styles.emptyCard}>
+                <Icon name='ios-information-circle-outline' style={styles.emptyIcn} />
+                <Text style={styles.emptyTxt}>There is no new notification.</Text>
+            </View>
+        )
     }
 
     return (
         <React.Fragment>
             {
-                notilist.map((noti, key) => (
+                Collection.notis.map((noti, key) => (
                     <TouchableOpacity
                         style={styles.card}
                         key={key}
-                        onPress={() => navigation.navigate('NotiboardDetail', noti)}
+                        onPress={() => navigation.navigate('NotiboardDetail', noti['Noti'])}
                     >
                         <View style={styles.imgBox}>
                             <Image style={styles.notiImg} source={require('../../assets/icon/notification-3.png')} />
                         </View>
                         <View style={styles.txtBox}>
-                            <Text style={styles.notiTitle}>{noti.title}</Text>
-                            <Text style={styles.notiBody}>{noti.body.slice(0, 100)} {noti.body.length > 100 && '...'}</Text>
-                            {noti.new && <Text style={styles.notiBadge}>New</Text>}
+                            <Text style={styles.notiTitle}>{noti['Noti']['Subject']}</Text>
+                            <Text style={styles.notiBody}>{
+                                noti['Noti']['Body']
+                                    .replace(/<\/?[^>]+(>|$)/g, "")
+                                    .replace(/\s+/g, ' ').trim()
+                                    .slice(0, 100)
+                            } {noti['Noti']['Body'].length > 100 && '...'}</Text>
+                            <View style={styles.notiFoot}>
+                                <Text style={styles.notiBody}>{noti['Noti']['Date']}</Text>
+                                <Text style={styles.notiBadge}>{noti['Noti']['Channel']}</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                ))
+            }
+            {
+                Collection.attachs.map((attach, key) => (
+                    <TouchableOpacity
+                        style={styles.card}
+                        key={key}
+                        onPress={() => Linking.openURL(attach['Attachment']['URL'])}
+                    >
+                        <View style={styles.imgBox}>
+                            <Image style={styles.notiImg} source={require('../../assets/icon/notification-3.png')} />
+                        </View>
+                        <View style={styles.txtBox}>
+                            <Text style={styles.notiTitle}>{attach['Attachment']['Name']}</Text>
+                            <Text style={styles.notiBody}>{
+                                attach['Attachment']['URL']
+                                    .replace(/<\/?[^>]+(>|$)/g, "")
+                                    .replace(/\s+/g, ' ').trim()
+                                    .slice(0, 100)
+                            }</Text>
+                            <View style={styles.notiFoot}>
+                                <Text style={styles.notiBody}>{attach['Attachment']['Date']}</Text>
+                                <Text style={[styles.notiBadge, styles.attachBadge]}>File/{attach['Attachment']['Mimetype'].slice(attach['Attachment']['Mimetype'].indexOf('/') + 1, attach['Attachment']['Mimetype'].length)}</Text>
+                            </View>
                         </View>
                     </TouchableOpacity>
                 ))

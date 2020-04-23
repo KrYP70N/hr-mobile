@@ -9,7 +9,6 @@ import styles from './noticeboard.style'
 
 // components
 import NotiList from './notilist'
-import APIs from '../../controllers/api.controller'
 
 export default class NoticeBoard extends Component {
     render() {

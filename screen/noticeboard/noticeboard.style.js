@@ -35,18 +35,26 @@ export default StyleSheet.create({
     },
     notiBody: {
         ...typography.textSmall,
-        color: color.placeHolder
-    }, 
+        color: color.placeHolder,
+        marginBottom: offset.o1
+    },
+    notiFoot: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
     notiBadge: {
-        width: 70,
+        minWidth: 70,
         borderRadius: offset.oh,
         backgroundColor: color.danger,
         color: color.light,
         padding: offset.oh,
         textAlign: 'center',
-        position: 'absolute',
-        right: 0,
-        bottom: -offset.o1
+        marginLeft: offset.o1,
+        textTransform: 'capitalize'
+    },
+    attachBadge: {
+        backgroundColor: color.primary
     },
     banner: {
         backgroundColor: color.primary,
@@ -78,5 +86,15 @@ export default StyleSheet.create({
     detailSender: {
         ...typography.paragraph,
         fontFamily: 'Nunito-Bold'
+    },
+    emptyCard: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    emptyIcn: {
+        color: color.placeHolder
+    },
+    emptyTxt: {
+        ...typography.placeholder
     }
 })
