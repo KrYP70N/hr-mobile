@@ -28,7 +28,8 @@ import OvertimeApprove from '../screen/overtime/_approve.screen';
 import NoticeBoard from '../screen/noticeboard/noticeboard.screen';
 import NotiboardDetail from '../screen/noticeboard/detail.screen';
 import SideMenu from '../router/SideMenu';
-import CheckInOut from '../screen/checkinout/checkinout.screen';
+import CheckIn from '../screen/checkinout/checkin.screen';
+import CheckOut from  '../screen/checkinout/checkout.screen';
 
 import styNav from './navigation.style'
 
@@ -82,7 +83,8 @@ function Navigation() {
         <Drawer.Screen name='NoticeBoard' component={NoticeBoard}/>
         <Drawer.Screen name='NotiboardDetail' component={NotiboardDetail}/>
         <Drawer.Screen name='OvertimeApprove' component={OvertimeApprove}/>
-        <Drawer.Screen name='CheckInOut' component={CheckInOut}/>
+        <Drawer.Screen name='CheckIn' component={CheckIn}/>
+        <Drawer.Screen name='CheckOut' component={CheckOut}/>
       </Drawer.Navigator>
     </NavigationContainer>
   )

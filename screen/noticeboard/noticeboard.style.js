@@ -35,8 +35,14 @@ export default StyleSheet.create({
     },
     notiBody: {
         ...typography.textSmall,
-        color: color.placeHolder
-    }, 
+        color: color.placeHolder,
+        marginBottom: offset.o1
+    },
+    notiFoot: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
     notiBadge: {
         width: 70,
         borderRadius: offset.oh,
@@ -44,9 +50,8 @@ export default StyleSheet.create({
         color: color.light,
         padding: offset.oh,
         textAlign: 'center',
-        position: 'absolute',
-        right: 0,
-        bottom: -offset.o1
+        marginLeft: offset.o1,
+        textTransform: 'capitalize'
     },
     banner: {
         backgroundColor: color.primary,

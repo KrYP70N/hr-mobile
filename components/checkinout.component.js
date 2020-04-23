@@ -52,15 +52,15 @@ export default class CheckInOut extends Component {
               this.setState({
                 checkMessage: 'Success check in!',
                 isModalVisible: true,
-                
+
               })
             } else {
               this.setState({
                 checkMessage: "You're already check in!",
                 isModalVisible: true,
-                
+
               })
-              
+
             }
             this.CheckStatus()
           })
@@ -75,14 +75,14 @@ export default class CheckInOut extends Component {
                 this.setState({
                   checkMessage: 'Success check in!',
                   isModalVisible: true,
-                  
+
                 })
                 this.CheckStatus()
               } else {
                 this.setState({
                   checkMessage: "You're already check in!",
                   isModalVisible: true,
-                  
+
                 })
               }
               this.CheckStatus()
@@ -102,9 +102,9 @@ export default class CheckInOut extends Component {
           this.setState({
             checkMessage: "You're already checked in!",
             isModalVisible: true,
-            
+
           })
-         
+
         }
       }
 
@@ -122,13 +122,13 @@ export default class CheckInOut extends Component {
               this.setState({
                 checkMessage: 'Success check out!',
                 isModalVisible: true,
-                
+
               })
             } else {
               this.setState({
-                checkMessage:  "You're already check out!",
+                checkMessage: "You're already check out!",
                 isModalVisible: true,
-                
+
               })
             }
 
@@ -144,16 +144,16 @@ export default class CheckInOut extends Component {
               if (res.status === 'success') {
                 this.setState({
                   checkMessage: 'Success check out!',
-                  isModalVisible: true,                 
+                  isModalVisible: true,
                 })
-               
+
               } else {
                 this.setState({
                   checkMessage: "You're Already Check Out!",
                   isModalVisible: true,
-                 
+
                 })
-                
+
               }
               this.CheckStatus()
             })
@@ -167,11 +167,11 @@ export default class CheckInOut extends Component {
       } else {
         if (this.state.status.Checkout !== true) {
           fun()
-        }else{
+        } else {
           this.setState({
             checkMessage: "You're already checked out!",
             isModalVisible: true,
-            
+
           })
         }
       }
@@ -290,7 +290,7 @@ export default class CheckInOut extends Component {
   }
 
   render() {
-    
+
     // locatoin update
     if (this.state.locError) {
       return (
@@ -349,35 +349,64 @@ export default class CheckInOut extends Component {
     }
 
     return (
-      <View style={{flex: 1}}>
-     <Card style={styles.cardHolder}>
-          <TouchableOpacity onPress={() => {
-            this.props.navigation.navigate('CheckInOut')
-              //this.CheckInOut()
+      <View style={{ flex: 1 }}>
+        <Card style={styles.cardHolder}>
+
+          <View style={styles.card}>
+            <Image
+              source={require('../assets/icon/checktime.png')}
+              style={[styles.icon]}
+            />
+            <Text style={{ color: color.primary, fontSize: 18 }}>Get your Attendance!</Text>
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: "space-between",
+              width: '100%',
+              marginTop: 10,
             }}>
-              <View style={styles.card}>
-                <Image
-                  source={require('../assets/icon/checktime.png')}
-                  style={[styles.icon]}
-                />
-                <Text style = {{marginTop: 5, color: color.primary}}>Get your Attendance!</Text>
-                <Text
+              <TouchableOpacity onPress={() => {
+                this.props.navigation.navigate('CheckIn')
+                //this.CheckInOut()
+              }}>
+                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: 150, height: 90, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
+                  <Image
+                    source={require('../assets/icon/checkin.png')}
+                    style={{ width: 50, height: 40 }}
+                  />
+                  <Text style={{ color: '#fff', marginTop: 5 }}>Check In</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {
+                this.props.navigation.navigate('CheckOut')
+                //this.CheckInOut()
+              }}>
+                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: 150, height: 90, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
+                  <Image
+                    source={require('../assets/icon/checkout.png')}
+                    style={{ width: 50, height: 40 }}
+                  />
+                  <Text style={{ color: '#fff', marginTop: 5 }}>Check Out</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            {/* <Text
                   style={{
                     //opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
                     fontFamily: 'Nunito-Bold',
                     fontSize: 16,
                     marginTop: 10,
                   }}
-                >Check In/Check Out</Text>
-              </View>
-            </TouchableOpacity>
-            </Card>
-      <Modal isVisible={this.state.isModalVisible} >
+                >Check In/Check Out</Text> */}
+          </View>
+
+        </Card>
+        <Modal isVisible={this.state.isModalVisible} >
           <View style={styles.ModelViewContainer}>
-            <View style = {styles.iconView}>
-            <Image source={require('../assets/icon/checktime.png')} style = {styles.dialogIcon}/>
+            <View style={styles.iconView}>
+              <Image source={require('../assets/icon/checktime.png')} style={styles.dialogIcon} />
             </View>
-          <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
+            <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
             <View style={styles.ModalTextContainer}>
               <TouchableOpacity style={styles.CancelOpacityContainer}
                 onPress={() => this.setState({ isModalVisible: false })} >
@@ -385,7 +414,7 @@ export default class CheckInOut extends Component {
                   {'Close'}
                 </Text>
               </TouchableOpacity>
-             
+
             </View>
 
           </View>
@@ -413,7 +442,7 @@ let styles = StyleSheet.create({
   },
   card: {
     minHeight: 150,
-    padding: offset.o3,
+    padding: offset.o2,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
@@ -444,15 +473,15 @@ let styles = StyleSheet.create({
     height: 64,
     marginBottom: offset.o2
   },
-  ModelViewContainer: { 
-   width: width + 30,
-   height: 200, 
-   backgroundColor: '#f2f2f2', 
-   alignItems: 'center',
-   position: 'absolute',
-   marginLeft: -30,
-   bottom: Platform.OS === 'ios'? 15 : -20,
-},
+  ModelViewContainer: {
+    width: width + 30,
+    height: 200,
+    backgroundColor: '#f2f2f2',
+    alignItems: 'center',
+    position: 'absolute',
+    marginLeft: -30,
+    bottom: Platform.OS === 'ios' ? 15 : -20,
+  },
   lanTitle: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -466,17 +495,17 @@ let styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 5,
   },
-  ModalTextContainer: { width: '100%', flex: 1, position: 'absolute', bottom: 0},
+  ModalTextContainer: { width: '100%', flex: 1, position: 'absolute', bottom: 0 },
   CancelOpacityContainer: {
     width: '100%',
-    height: 50, 
-    backgroundColor: color.primary, 
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    height: 50,
+    backgroundColor: color.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  modalTextStyle: {color: '#fff', textAlign: 'center',},
+  modalTextStyle: { color: '#fff', textAlign: 'center', },
   iconView: {
-    width:'100%',
+    width: '100%',
     alignItems: 'center',
   },
   dialogIcon: {

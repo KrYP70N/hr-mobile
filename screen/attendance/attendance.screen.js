@@ -175,7 +175,9 @@ export default class Attendance extends Component {
 
                     </View>
                     {/* check in / out */}
+                    <View style = {{marginLeft: 15, marginRight: 15}}>
                     <CheckInOut navigation={this.props.navigation}/>
+                    </View>
 
                     <View style={[styAttend.container, {
                         marginBottom: offset.o3
