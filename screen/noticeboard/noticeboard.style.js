@@ -44,7 +44,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     notiBadge: {
-        width: 70,
+        minWidth: 70,
         borderRadius: offset.oh,
         backgroundColor: color.danger,
         color: color.light,
@@ -52,6 +52,9 @@ export default StyleSheet.create({
         textAlign: 'center',
         marginLeft: offset.o1,
         textTransform: 'capitalize'
+    },
+    attachBadge: {
+        backgroundColor: color.primary
     },
     banner: {
         backgroundColor: color.primary,
@@ -83,5 +86,15 @@ export default StyleSheet.create({
     detailSender: {
         ...typography.paragraph,
         fontFamily: 'Nunito-Bold'
+    },
+    emptyCard: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    emptyIcn: {
+        color: color.placeHolder
+    },
+    emptyTxt: {
+        ...typography.placeholder
     }
 })
