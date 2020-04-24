@@ -77,17 +77,18 @@ export default class LeaveRequest extends Component {
                             }
                         })
                     } else {
-                        const d = new Date();
-                        this.setState({
-                            refresh: !this.state.refresh,
-                            startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
-                            endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
-                            //selectedLeaveType: res.data[0]['leave_type_id'],
-                            binary: [],
-                            file: [],
-                            description: null
-                        })
-                        this.getRequestData(auth, url);
+
+                        // const d = new Date();
+                        // this.setState({
+                        //     refresh: !this.state.refresh,
+                        //     startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
+                        //     endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
+                        //     //selectedLeaveType: res.data[0]['leave_type_id'],
+                        //     binary: [],
+                        //     file: [],
+                        //     description: null
+                        // })
+                        // this.getRequestData(auth, url);
                         Toast.show({
                             duration: 5000,
                             text: res.data.message,
@@ -130,7 +131,7 @@ export default class LeaveRequest extends Component {
                         startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
                         endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
                         selectedLeaveType: res.data[0]['leave_type_id'],
-                        description: null,
+                        //description: null,
                     })
                 } else {
                     Toast.show({
@@ -393,10 +394,12 @@ export default class LeaveRequest extends Component {
                                         style={styLeave.textarea}
                                         placeholder='Reason for Leave'
                                         onChangeText={(data) => {
+                                            //this.state.description = data;
                                             this.setState({
                                                 description: data
                                             })
                                         }}
+                                        value = {this.state.description}
                                     />
                                     <AttachButton />
                                     <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>

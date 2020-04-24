@@ -20,7 +20,7 @@ import * as geolib from 'geolib';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-export class CheckInOut extends Component {
+export class CheckOut extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -337,7 +337,7 @@ export class CheckInOut extends Component {
                         <Text style={{
                             color: color.secondary,
                             fontFamily: 'Nunito'
-                        }}>CheckIn/Out</Text>
+                        }}>Check Out</Text>
                     </Left>
                     <Right></Right>
                 </Header>
@@ -394,14 +394,26 @@ export class CheckInOut extends Component {
                                 }}>OfficeShift (09:00 AM-06:00 PM)</Text>
                             </View>
                             <View style={{
-                                flexDirection: 'row',
+                                //flexDirection: 'row',
                                 width: '100%',
                                 alignItems: 'center',
-                                justifyContent: 'space-between',
+                                justifyContent: 'center',
                                 marginTop: 40,
                                 //height: 60,
                             }}>
-                                <TouchableOpacity onPress={() => { this.CheckIn() }}>
+                                 <TouchableOpacity onPress={() => {
+                                    
+                                    this.CheckOut()
+                                }}>
+                                    <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: 150, height: 90, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
+                                        <Image
+                                            source={require('../../assets/icon/checkout.png')}
+                                            style={{ width: 50, height: 40 }}
+                                        />
+                                        <Text style={{ color: '#fff', marginTop: 5 }}>Check Out</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                {/* <TouchableOpacity onPress={() => { this.CheckIn() }}>
                                     <View style={{
                                         width: 120,
                                         height: 50,
@@ -422,7 +434,7 @@ export class CheckInOut extends Component {
                                         backgroundColor: color.primary,
                                         borderRadius: 15
                                     }}><Text style={{ color: '#fff' }}>Out</Text></View>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </View>
 
                         </View>
@@ -509,4 +521,4 @@ const styles = StyleSheet.create({
         marginTop: offset.o2,
     }
 });
-export default CheckInOut
+export default CheckOut
