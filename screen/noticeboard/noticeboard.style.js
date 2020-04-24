@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import color from "../../constant/color";
 import offset from "../../constant/offset";
 import typography from "../../constant/typography";
@@ -96,5 +96,19 @@ export default StyleSheet.create({
     },
     emptyTxt: {
         ...typography.placeholder
+    },
+    loading: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: Dimensions.get('screen').height - 200
+    },
+    loadingTxt: {
+        ...typography.placeholder
+    },
+    optionBox: {
+        borderBottomWidth: 1,
+        borderBottomColor: color.placeHolder,
+        marginBottom: offset.o2
     }
 })
