@@ -440,12 +440,12 @@ export default class APIs {
     }
 
     // get pending Leave Lists
-    static getNotice = (auth, url, channel) => {
+    static getNotice = (auth, url, channel, from, to) => {
         return axios.create({
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}/noti/${channel}?from_date=2020-02-01&to_date=2020-04-01`)
+        }).get(`${url}/noti/${channel}?from_date=${from}&to_date=${to}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
