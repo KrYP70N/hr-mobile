@@ -171,7 +171,8 @@ export default class LeaveRequest extends Component {
     pickDate = (data) => {
         let date = new Date(data)
         this.setState({
-            startDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+            startDate: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
+            //startDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
         })
         this.hideDatePicker();
     }
@@ -187,7 +188,8 @@ export default class LeaveRequest extends Component {
     pickEndDate = (data) => {
         let date = new Date(data)
         this.setState({
-            endDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+            endDate: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
+            //endDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
         })
         this.hideEndDatePicker();
     }

@@ -117,73 +117,6 @@ export class CheckInOut extends Component {
             }
 
         }
-        // checkout control
-        this.CheckOut = () => {
-            const fun = () => {
-                if (this.state.geofencing) {
-                    // geo true
-                    APIs.Checkout(this.state.url, this.state.auth, this.state.id, {
-                        lat: this.state.location['latitude'],
-                        long: this.state.location['longitude']
-                    }).then((res) => {
-                        if (res.status === 'success') {
-                            this.setState({
-                                checkMessage: 'Success check out!',
-                                isModalVisible: true,
-
-                            })
-                        } else {
-                            this.setState({
-                                checkMessage: "You're already check out!",
-                                isModalVisible: true,
-
-                            })
-                        }
-
-                        this.CheckStatus()
-                    })
-                        .catch((error) => {
-                            this.props.navigation.navigate('Login')
-                        })
-                } else {
-                    // geo false
-                    APIs.Checkout(this.state.url, this.state.auth, this.state.id)
-                        .then((res) => {
-                            if (res.status === 'success') {
-                                this.setState({
-                                    checkMessage: 'Success check out!',
-                                    isModalVisible: true,
-                                })
-
-                            } else {
-                                this.setState({
-                                    checkMessage: "You're Already Check Out!",
-                                    isModalVisible: true,
-
-                                })
-
-                            }
-                            this.CheckStatus()
-                        })
-                        .catch((error) => {
-                            this.props.navigation.navigate('Login')
-                        })
-                }
-            }
-            if (this.state.status.Multiple_checkinout === true) {
-                fun()
-            } else {
-                if (this.state.status.Checkout !== true) {
-                    fun()
-                } else {
-                    this.setState({
-                        checkMessage: "You're already checked out!",
-                        isModalVisible: true,
-
-                    })
-                }
-            }
-        }
 
         // check status 
         this.CheckStatus = () => {
@@ -267,12 +200,6 @@ export class CheckInOut extends Component {
                             longitude: res.data['General Information']['Longtitude']
                         },
                         userName: res.data['General Information']['Employee Name']
-                        // mapCoord: {
-                        //     latitude: res.data['General Information']['Latitude'],
-                        //     longitude: res.data['General Information']['Longtitude'],
-                        //     // latitudeDelta: 0.1922,
-                        //     // longitudeDelta: 0.1921,
-                        // }
                     })
                 })
                 .catch((error) => {
