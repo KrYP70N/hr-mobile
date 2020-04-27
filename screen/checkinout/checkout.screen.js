@@ -46,77 +46,6 @@ export class CheckOut extends Component {
             userName: null,
         }
 
-        this.CheckIn = () => {
-            console.log('Click Check In')
-            const fun = () => {
-                if (this.state.geofencing) {
-                    // geo true
-                    APIs.Checkin(this.state.url, this.state.auth, this.state.id, {
-                        lat: this.state.location['latitude'],
-                        long: this.state.location['longitude']
-                    }).then((res) => {
-                        console.log("Check In Api REturn Message", res)
-                        if (res.status === 'success') {
-                            this.setState({
-                                checkMessage: 'Success check in!',
-                                isModalVisible: true,
-
-                            })
-                        } else {
-                            this.setState({
-                                checkMessage: "You're already check in!",
-                                isModalVisible: true,
-
-                            })
-
-                        }
-                        this.CheckStatus()
-                    })
-                        .catch((error) => {
-                            this.props.navigation.navigate('Login')
-                        })
-                } else {
-                    // geo false
-                    APIs.Checkin(this.state.url, this.state.auth, this.state.id)
-                        .then((res) => {
-                            if (res.status === 'success') {
-                                this.setState({
-                                    checkMessage: 'Success check in!',
-                                    isModalVisible: true,
-
-                                })
-                                this.CheckStatus()
-                            } else {
-                                this.setState({
-                                    checkMessage: "You're already check in!",
-                                    isModalVisible: true,
-
-                                })
-                            }
-                            this.CheckStatus()
-                        })
-                        .catch((error) => {
-                            this.props.navigation.navigate('Login')
-                        })
-                }
-            }
-
-            if (this.state.status.Multiple_checkinout === true) {
-                fun()
-            } else {
-                if (this.state.status.Checkin !== true) {
-                    fun()
-                } else {
-                    this.setState({
-                        checkMessage: "You're already checked in!",
-                        isModalVisible: true,
-
-                    })
-
-                }
-            }
-
-        }
         // checkout control
         this.CheckOut = () => {
             const fun = () => {
@@ -267,12 +196,6 @@ export class CheckOut extends Component {
                             longitude: res.data['General Information']['Longtitude']
                         },
                         userName: res.data['General Information']['Employee Name']
-                        // mapCoord: {
-                        //     latitude: res.data['General Information']['Latitude'],
-                        //     longitude: res.data['General Information']['Longtitude'],
-                        //     // latitudeDelta: 0.1922,
-                        //     // longitudeDelta: 0.1921,
-                        // }
                     })
                 })
                 .catch((error) => {
@@ -413,28 +336,6 @@ export class CheckOut extends Component {
                                         <Text style={{ color: '#fff', marginTop: 5 }}>Check Out</Text>
                                     </View>
                                 </TouchableOpacity>
-                                {/* <TouchableOpacity onPress={() => { this.CheckIn() }}>
-                                    <View style={{
-                                        width: 120,
-                                        height: 50,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: color.primary,
-                                        borderRadius: 15
-                                    }}><Text style={{
-                                        color: '#fff'
-                                    }} >In</Text></View>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { this.CheckOut() }}>
-                                    <View style={{
-                                        width: 120,
-                                        height: 50,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: color.primary,
-                                        borderRadius: 15
-                                    }}><Text style={{ color: '#fff' }}>Out</Text></View>
-                                </TouchableOpacity> */}
                             </View>
 
                         </View>

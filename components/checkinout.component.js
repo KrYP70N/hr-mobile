@@ -389,15 +389,6 @@ export default class CheckInOut extends Component {
                 </View>
               </TouchableOpacity>
             </View>
-
-            {/* <Text
-                  style={{
-                    //opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
-                    fontFamily: 'Nunito-Bold',
-                    fontSize: 16,
-                    marginTop: 10,
-                  }}
-                >Check In/Check Out</Text> */}
           </View>
 
         </Card>
