@@ -169,12 +169,12 @@ export default class APIs {
     }
 
     // attendance summary
-    static AttendanceSummary(url, auth, id) {
+    static AttendanceSummary(url, auth, year, month, id) {
         return axios.create({
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}/attendance/summary/${id}`)
+        }).get(`${url}/attendance/summary/${year}/${month}/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })

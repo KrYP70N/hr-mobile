@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { TouchableOpacity, Linking } from 'react-native'
-import { Text, View, Icon } from 'native-base'
+import { Text, View, Icon, Spinner, Picker } from 'native-base'
 import { AsyncStorage, Image } from 'react-native'
-import Loading from '../../components/loading.component'
 import styles from './noticeboard.style'
 import APIs from '../../controllers/api.controller'
 import moment from 'moment'
+import offset from '../../constant/offset'
+import color from '../../constant/color'
 
 
 export default function notilist({ navigation }) {
@@ -15,12 +16,8 @@ export default function notilist({ navigation }) {
         attachs: null
     })
 
-    const date = {
-        from: moment().format('YYYY-MM').concat('-01'),
-        to: moment().format('YYYY-MM-DD')
-    }
-
-    const loader = () => {
+    const [month, setmonth] = useState(moment().format('MM'))
+    const loader = (month) => {
         let token = AsyncStorage.getItem('@hr:token')
             .then(res => JSON.parse(res))
         let endPoint = AsyncStorage.getItem('@hr:endPoint')
@@ -30,8 +27,6 @@ export default function notilist({ navigation }) {
                 let token = res[0]
                 let endPoint = res[1]
 
-                console.log(token, endPoint)
-                // collecting data
                 APIs.getChannel(token.key, endPoint.ApiEndPoint, token.id)
                     .then((res) => {
                         let start = 0
@@ -42,14 +37,13 @@ export default function notilist({ navigation }) {
                         }
                         const provider = (id) => {
                             if(start < end) {
-                                APIs.getNotice(token['key'], endPoint['ApiEndPoint'], res.data[id]['Channel ID'], date.from, date.to)
+                                APIs.getNotice(token['key'], endPoint['ApiEndPoint'], res.data[id]['Channel ID'], `${moment().format('YYYY')}-${month}-01`, `${moment().format('YYYY')}-${month}-31`)
                                 .then((res) => {
                                     let collection = res.data
                                     // returned condition 
                                     if(collection.length !== 0) {
                                         let haveAttachment = JSON.stringify(collection).includes('{"Attachment":')
                                         let haveNoti = JSON.stringify(collection).includes('{"Noti":')
-                                        console.log(haveAttachment, haveNoti)
                                         if(haveAttachment) items.attachs = [...items.attachs, ...collection[0]]
                                         if(haveAttachment && haveNoti) items.notis = [...items.notis, ...collection[1]]
                                         if(!haveAttachment && haveNoti) items.notis = [...items.notis, ...collection[0]]
@@ -70,25 +64,61 @@ export default function notilist({ navigation }) {
     }
 
     navigation.addListener('focus', () => {
-        loader()
+        setmonth(moment().format('MM'))
+        loader(moment().format('MM'))
     })
 
+    const filter = (data) => {
+        setmonth(data)
+        loader(data)
+    }
+
+    const MonthOptions = (
+            <View style={styles.optionBox}>
+                <Picker
+                note
+                mode="dialog"
+                selectedValue={month}
+                iosIcon={<Icon name="ios-arrow-down" />}
+                onValueChange={(data) => filter(data)}
+                >
+                <Picker.Item label="January" value="01" />
+                <Picker.Item label="February" value="02" />
+                <Picker.Item label="March" value="03" />
+                <Picker.Item label="April" value="04" />
+                <Picker.Item label="May" value="05" />
+                <Picker.Item label="June" value="06" />
+                <Picker.Item label="July" value="07" />
+                <Picker.Item label="August" value="08" />
+                <Picker.Item label="September" value="09" />
+                <Picker.Item label="October" value="10" />
+                <Picker.Item label="November" value="11" />
+                <Picker.Item label="December" value="12" />
+                </Picker>
+            </View>
+    )
+
     if(Collection.notis === null) {
-        console.log('loading ...')
         return (
-            <Text>loading ...</Text>
+            <View style={styles.loading}>
+                <Spinner />
+                <Text style={styles.loadingTxt}>Loading data ...</Text>
+            </View>
         )
     } else  if (Collection.notis.length === 0 && Collection.attachs.length === 0) {
-        console.log('empty')
         return (
-            <View style={styles.emptyCard}>
-                <Icon name='ios-information-circle-outline' style={styles.emptyIcn} />
-                <Text style={styles.emptyTxt}>There is no new notification.</Text>
+            <View>
+                { MonthOptions }
+                <View style={styles.emptyCard}>
+                    <Icon name='ios-information-circle-outline' style={styles.emptyIcn} />
+                    <Text style={styles.emptyTxt}>There is no notification.</Text>
+                </View>
             </View>
         )
     } else {
         return (
             <React.Fragment>
+                { MonthOptions }
                 {
                     Collection.notis.map((noti, key) => (
                         <TouchableOpacity
@@ -147,3 +177,6 @@ export default function notilist({ navigation }) {
 
     
 }
+
+
+// announcement

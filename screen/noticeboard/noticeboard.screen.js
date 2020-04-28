@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react'
-import { Container, Header, Left, Icon, Text, Right, Content } from 'native-base'
+import { Container, Header, Left, Icon, Text, Right, Content, View } from 'native-base'
 
 // variable
 import color from '../../constant/color'
@@ -18,12 +18,14 @@ export default class NoticeBoard extends Component {
                     backgroundColor: color.light,
                     // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                 }}>
-                    <Left style={{
+                    
+                    <View style={{
+                        width: '100%',
                         display: 'flex',
                         flexDirection: 'row',
                         alignItems: 'center'
                     }}>
-                        <Icon name='ios-arrow-round-back' style={{
+                    <Icon name='ios-arrow-round-back' style={{
                             fontSize: offset.o4,
                             color: color.primary,
                             marginRight: offset.o2
@@ -31,14 +33,10 @@ export default class NoticeBoard extends Component {
                         <Text style={{
                             color: color.secondary,
                             fontFamily: 'Nunito'
-                        }}>Notice Board</Text>
-                    </Left>
-                    <Right>
-                        {/* <Image source={require('../../assets/icon/delete-button.png')} style={{
-                            width: 20,
-                            height: 25
-                        }}/> */}
-                    </Right>
+                        }}>Announcement</Text>
+                    </View>    
+                
+                    {/* <Right /> */}
                 </Header>
                 
                 <Content style={styles.container}>

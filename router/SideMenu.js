@@ -36,7 +36,7 @@ export class SideMenu extends Component {
         </TouchableOpacity>
         <TouchableOpacity style={styNav.item} onPress={() => { this.props.navigation.navigate('NoticeBoard') }}>
           <Image source={require('../assets/icon/noticeboard-2.png')} style={styNav.image4} />
-          <Text>Notice Board</Text>
+          <Text>Announcement</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styNav.item} onPress={() => {
           AsyncStorage.removeItem('@hr:token')
