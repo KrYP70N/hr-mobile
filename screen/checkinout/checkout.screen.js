@@ -57,7 +57,7 @@ export class CheckOut extends Component {
                     }).then((res) => {
                         if (res.status === 'success') {
                             this.setState({
-                                checkMessage: 'Success check out!',
+                                checkMessage: 'Check Out Successful!',
                                 isModalVisible: true,
 
                             })
@@ -80,7 +80,7 @@ export class CheckOut extends Component {
                         .then((res) => {
                             if (res.status === 'success') {
                                 this.setState({
-                                    checkMessage: 'Success check out!',
+                                    checkMessage: 'Check Out Successful!',
                                     isModalVisible: true,
                                 })
 

@@ -58,7 +58,7 @@ export class CheckInOut extends Component {
                         console.log("Check In Api REturn Message", res)
                         if (res.status === 'success') {
                             this.setState({
-                                checkMessage: 'Success check in!',
+                                checkMessage: 'Check In Successful!',
                                 isModalVisible: true,
 
                             })
@@ -81,7 +81,7 @@ export class CheckInOut extends Component {
                         .then((res) => {
                             if (res.status === 'success') {
                                 this.setState({
-                                    checkMessage: 'Success check in!',
+                                    checkMessage: 'Check In Successful!',
                                     isModalVisible: true,
 
                                 })

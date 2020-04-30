@@ -1,21 +1,16 @@
 
 
 import React, { Component } from 'react'
-
-import po from './po'
 import styAttend from './attendance.style'
-import { View, Container, Content, Card, CardItem, Body, Text, Row, Col, Item, Icon, Header, Left, Right, Toast } from 'native-base'
-import { TouchableNativeFeedback } from 'react-native-gesture-handler'
-
+import { View, Container, Content, Card, CardItem, Body, Text, Row, Col, Item, Icon, Header, Left, Right, Toast, Button } from 'native-base'
 import Loading from '../../components/loading.component'
-import Clock from '../../components/time.component'
-import CheckInOut from '../../components/checkinout.component'
 import APIs from '../../controllers/api.controller'
 
 import offset from '../../constant/offset'
 import color from '../../constant/color'
-import { AsyncStorage, StatusBar, Platform, BackHandler } from 'react-native'
+import { AsyncStorage, StatusBar, Platform, BackHandler, SafeAreaView, TouchableOpacity } from 'react-native'
 import { Calendar, CalendarList, Agenda, } from 'react-native-calendars';
+import { ScrollView } from 'react-native-gesture-handler'
 
 export default class Attendance extends Component {
     constructor(props) {
@@ -207,7 +202,6 @@ export default class Attendance extends Component {
         }
 
         let markedDateData = {}
-
         Arr.forEach((a) => {
             let val = JSON.parse(a
                 .slice(a.indexOf("{"), a.length)
@@ -222,19 +216,12 @@ export default class Attendance extends Component {
             markedDateData[a.slice(1, a.indexOf('\' :'))] = val
         })
 
-        console.log("Final Obj", markedDateData)
-
-        // let markedDateData = {
-        //     '2020-04-16': { selected: true, marked: true, selectedColor: 'blue' },
-        //     '2020-04-17': { marked: true },
-        //     '2020-04-18': { marked: true, dotColor: 'red', activeOpacity: 0 },
-        //     '2020-04-19': { disabled: true, disableTouchEvent: true }
-        // }
         let infos = this.state.dataTitle.map((title) => {
             let col = color.placeHolder
 
-            if (title === 'Leaves') col = color.danger
+            if (title === 'Leaves' || title === 'Absence') col = color.danger
             if (title === 'Attendance') col = color.primary
+
 
             return (
                 <Card style={[styAttend.infoCard,
@@ -250,76 +237,102 @@ export default class Attendance extends Component {
             )
         })
         return (
-            <Container style = {{backgroundColor: color.lighter}}>
-                <Header style={{
-                    backgroundColor: color.light,
-                    // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-                }}>
-                    <Left style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center'
+            <SafeAreaView style={{ flex: 1 }}>
+
+
+                <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
+                    <Icon name='ios-arrow-round-back' style={{
+                        fontSize: offset.o4,
+                        color: color.primary,
+                        marginRight: offset.o2,
+                        marginLeft: 15,
+                    }} onPress={() => { this.props.navigation.navigate('Main') }} />
+                    <Text style={{
+                        color: color.secondary,
+                        fontFamily: 'Nunito'
+                    }}>Attendance</Text>
+                </View>
+                <ScrollView>
+                    <View style={{ flex: 1, marginBottom: 30}}>
+                        {/* <Header style={{
+                        backgroundColor: color.light,
+                        marginTop: Platform.OS === 'ios' ? -40 : StatusBar.currentHeight
                     }}>
-                        <Icon name='ios-arrow-round-back' style={{
-                            fontSize: offset.o4,
-                            color: color.primary,
-                            marginRight: offset.o2
-                        }} onPress={() => { this.props.navigation.navigate('Main') }} />
-                        <Text style={{
-                            color: color.secondary,
-                            fontFamily: 'Nunito'
-                        }}>Attendance</Text>
-                    </Left>
-                    <Right></Right>
-                </Header>
-                <Content>
-                    <View style={{ flex: 1, }}>
-                        <View style={[styAttend.container, {
-                            marginTop: offset.o1
-                        }]}>
-                            <Card style={{ borderRadius: 5, backgroundColor: color.light, padding: 10 }}>
-                                <Calendar
-                                    onDayPress={(day) => { console.log('selected day', day) }}
-                                    onDayLongPress={(day) => { console.log('selected day', day) }}
-                                    monthFormat={"MMMM yyyy"}
-                                    onMonthChange={(month) => { this.monthChange(month) }}
-                                    hideArrows={false}
-                                    hideExtraDays={true}
-                                    disableMonthChange={true}
-                                    firstDay={1}
-                                    hideDayNames={false}
-                                    onPressArrowLeft={substractMonth => substractMonth()}
-                                    onPressArrowRight={addMonth => addMonth()}
-                                    disableArrowLeft={false}
-                                    disableArrowRight={false}
-                                    markedDates={markedDateData}
-                                />
-                                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
-                                    <View style={{ width: '95%', height: 1, backgroundColor: color.placeHolder }}></View>
-                                </View>
+                        <Left style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }}>
+                            <Icon name='ios-arrow-round-back' style={{
+                                fontSize: offset.o4,
+                                color: color.primary,
+                                marginRight: offset.o2
+                            }} onPress={() => { this.props.navigation.navigate('Main') }} />
+                            <Text style={{
+                                color: color.secondary,
+                                fontFamily: 'Nunito'
+                            }}>Attendance</Text>
+                        </Left>
+                        <Right></Right>
+                    </Header> */}
 
-                                <View style={{ flexDirection: 'row', alignItems: 'center', padding: 20 }}>
-                                    <View style={{ width: 10, height: 10, backgroundColor: color.attendance, borderRadius: 10 / 2 }}></View>
-                                    <Text style={{ marginLeft: 5 }}>Attendance</Text>
-                                    <View style={{ width: 10, height: 10, marginLeft: 15, backgroundColor: color.danger, borderRadius: 10 / 2 }}></View>
-                                    <Text style={{ marginLeft: 5 }}>Absence</Text>
-                                    <View style={{ width: 10, height: 10, marginLeft: 15, backgroundColor: color.placeHolder, borderRadius: 10 / 2 }}></View>
-                                    <Text style={{ marginLeft: 5 }}>Holiday</Text>
+                        <View style={styAttend.contentContainer}>
+                            <View style={[styAttend.container, {
+                                marginTop: offset.o1
+                            }]}>
+                                <Card style={styAttend.cardCalendar}>
+                                    <Calendar
+                                        onDayPress={(day) => { console.log('selected day', day) }}
+                                        onDayLongPress={(day) => { console.log('selected day', day) }}
+                                        monthFormat={"MMMM yyyy"}
+                                        onMonthChange={(month) => { this.monthChange(month) }}
+                                        hideArrows={false}
+                                        hideExtraDays={true}
+                                        disableMonthChange={true}
+                                        firstDay={1}
+                                        hideDayNames={false}
+                                        onPressArrowLeft={substractMonth => substractMonth()}
+                                        onPressArrowRight={addMonth => addMonth()}
+                                        disableArrowLeft={false}
+                                        disableArrowRight={false}
+                                        markedDates={markedDateData}
+                                    />
+                                    <View style={styAttend.dividerContainer}>
+                                        <View style={styAttend.divider}></View>
+                                    </View>
 
-                                </View>
-                            </Card>
+                                    <View style={styAttend.calendarLabelContainer}>
+                                        <View style={styAttend.labelCirclePrimary}></View>
+                                        <Text style={styAttend.labelText}>Attendance</Text>
+                                        <View style={styAttend.labelCircleRed}></View>
+                                        <Text style={styAttend.labelText}>Absence</Text>
+                                        <View style={styAttend.labelCircleGray}></View>
+                                        <Text style={styAttend.labelText}>Holiday</Text>
+
+                                    </View>
+                                </Card>
+                            </View>
+                            <View style={[styAttend.container, {
+                                marginBottom: offset.o3
+                            }]}>
+
+                                {infos}
+
+                            </View>
+
                         </View>
-                        <View style={[styAttend.container, {
-                            marginBottom: offset.o3
-                        }]}>
 
-                            {infos}
-
-                        </View>
                     </View>
-                </Content>
+                </ScrollView>
+                <TouchableOpacity onPress={() => { this.props.navigation.navigate('Leave') }}>
+                    <View style={styAttend.submitButton} >
+                        <Text style={styAttend.buttonText}>Apply Leave</Text>
+                    </View>
+                </TouchableOpacity>
 
-            </Container>
+
+            </SafeAreaView>
+
         )
     }
 }

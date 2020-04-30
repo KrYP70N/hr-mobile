@@ -8,7 +8,8 @@ export default StyleSheet.create({
         color: color.lighter
     },
     container: {
-        padding: offset.o2
+        paddingLeft: offset.o2,
+        paddingRight: offset.o2,
     },
     left: {
         paddingRight: offset.o1
@@ -38,18 +39,21 @@ export default StyleSheet.create({
     attachButton: {
         ...button.primary
     },
-    submitButton: {
-        ...button.primary,
-        width: '100%',
-        marginTop: 20,
-    },
     // submitButton: {
     //     ...button.primary,
     //     width: '100%',
-    //     position: 'absolute',
-    //     left: 0,
-    //     bottom: 0
+    //     marginTop: 20,
     // },
+    submitButton: {
+        height: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: color.primary,
+        width: '100%',
+        position: 'absolute',
+        //left: 0,
+        bottom: 0
+    },
     buttonText: {
         color: color.light
     },

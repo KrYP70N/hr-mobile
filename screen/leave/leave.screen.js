@@ -12,7 +12,7 @@ import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 import styLeave from './leave.style'
 
-export default class TabViewExample extends Component {
+export default class Leave extends Component {
     constructor(props) {
         super(props)
         this.state = {
