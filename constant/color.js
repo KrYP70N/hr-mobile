@@ -8,5 +8,6 @@ export default {
     placeHolder :       '#A5A5A5',
     warning     :       '#FFB300',
     danger      :       '#FF0000',
-    indicator   :       '#35A9AC'
+    indicator   :       '#35A9AC',
+    attendance  :       '#03b1fc'
 }
