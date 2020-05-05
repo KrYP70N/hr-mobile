@@ -368,7 +368,7 @@ export default class CheckInOut extends Component {
                 this.props.navigation.navigate('CheckIn')
                 //this.CheckInOut()
               }}>
-                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: 130, height: 90, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
+                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width/3, height: (width/3) - 30, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
                   <Image
                     source={require('../assets/icon/checkin.png')}
                     style={{ width: 50, height: 40 }}
@@ -380,7 +380,7 @@ export default class CheckInOut extends Component {
                 this.props.navigation.navigate('CheckOut')
                 //this.CheckInOut()
               }}>
-                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: 130, height: 90, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
+                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width/3, height: (width/3) - 30, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
                   <Image
                     source={require('../assets/icon/checkout.png')}
                     style={{ width: 50, height: 40 }}

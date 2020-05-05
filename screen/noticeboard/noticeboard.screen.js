@@ -11,6 +11,20 @@ import styles from './noticeboard.style'
 import NotiList from './notilist'
 
 export default class NoticeBoard extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            url: null,
+            auth: null,
+            id: null,
+            startDate: '',
+            endDate: ''
+        }
+    }
+    componentDidMount(){
+
+    }
+
     render() {
         return (
             <Container>
@@ -33,7 +47,7 @@ export default class NoticeBoard extends Component {
                         <Text style={{
                             color: color.secondary,
                             fontFamily: 'Nunito'
-                        }}>Announcement</Text>
+                        }}>Notice Board</Text>
                     </View>    
                 
                     {/* <Right /> */}

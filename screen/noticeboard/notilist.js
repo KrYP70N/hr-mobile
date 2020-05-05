@@ -27,8 +27,8 @@ export default function notilist({ navigation }) {
                 let token = res[0]
                 let endPoint = res[1]
 
-                APIs.getChannel(token.key, endPoint.ApiEndPoint, token.id)
-                    .then((res) => {
+                // APIs.getChannel(token.key, endPoint.ApiEndPoint, token.id)
+                //     .then((res) => {
                         let start = 0
                         let end = res.data.length
                         let items = {
@@ -37,8 +37,16 @@ export default function notilist({ navigation }) {
                         }
                         const provider = (id) => {
                             if(start < end) {
-                                APIs.getNotice(token['key'], endPoint['ApiEndPoint'], res.data[id]['Channel ID'], `${moment().format('YYYY')}-${month}-01`, `${moment().format('YYYY')}-${month}-31`)
+                                console.log("auth",token['key'])
+                                console.log("url",endPoint['ApiEndPoint'])
+                                console.log("id",token['id']);
+                                console.log("start date", `${moment().format('YYYY')}-${4}-01`)
+                                console.log("end date", `${moment().format('YYYY')}-${4}-31`)
+                                // APIs.getNotice(token['key'], endPoint['ApiEndPoint'], res.data[id]['Channel ID'], `${moment().format('YYYY')}-${month}-01`, `${moment().format('YYYY')}-${month}-31`)
+                                APIs.getAnnouncement(token['key'], endPoint['ApiEndPoint'], token['id'], `${moment().format('YYYY')}-${month}-01`, `${moment().format('YYYY')}-${month}-31`)
                                 .then((res) => {
+                                    console.log("res", res)
+                                    console.log("res.data",res.data)
                                     let collection = res.data
                                     // returned condition 
                                     if(collection.length !== 0) {
@@ -56,9 +64,9 @@ export default function notilist({ navigation }) {
                                 })
                             }
                         }
-                        provider(start)
+                        //provider(start)
 
-                    })
+                   // })// get Channel
 
             })
     }
@@ -98,6 +106,8 @@ export default function notilist({ navigation }) {
             </View>
     )
 
+    
+
     if(Collection.notis === null) {
         return (
             <View style={styles.loading}>
@@ -130,8 +140,8 @@ export default function notilist({ navigation }) {
                                 <Image style={styles.notiImg} source={require('../../assets/icon/notification-3.png')} />
                             </View>
                             <View style={styles.txtBox}>
-                                <Text style={styles.notiTitle}>{noti['Noti']['Subject']}</Text>
-                                <Text style={styles.notiBody}>{
+                                <Text style={styles.notiTitle}>{noti['Title']}</Text>
+                                {/* <Text style={styles.notiBody}>{
                                     noti['Noti']['Body']
                                         .replace(/<\/?[^>]+(>|$)/g, "")
                                         .replace(/\s+/g, ' ').trim()
@@ -140,7 +150,7 @@ export default function notilist({ navigation }) {
                                 <View style={styles.notiFoot}>
                                     <Text style={styles.notiBody}>{noti['Noti']['Date']}</Text>
                                     <Text style={styles.notiBadge}>{noti['Noti']['Channel']}</Text>
-                                </View>
+                                </View> */}
                             </View>
                         </TouchableOpacity>
                     ))

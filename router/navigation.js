@@ -22,7 +22,8 @@ import Attendance from '../screen/attendance/attendance.screen'
 import Overtime from '../screen/overtime/overtime.screen'
 import Payroll from '../screen/payroll/payroll.screen'
 import PayrollDetail from '../screen/payroll/pryroll.detail.screen'
-import Leave from '../screen/leave/leave.screen'
+import Leave from '../screen/leave/leavedashboard.screen'
+import LeaveRequest from '../screen/leave/leaverequest.screen'
 import LeaveApprove from '../screen/leave/_approve.screen';
 import OvertimeApprove from '../screen/overtime/_approve.screen';
 import NoticeBoard from '../screen/noticeboard/noticeboard.screen';
@@ -30,7 +31,6 @@ import NotiboardDetail from '../screen/noticeboard/detail.screen';
 import SideMenu from '../router/SideMenu';
 import CheckIn from '../screen/checkinout/checkin.screen';
 import CheckOut from  '../screen/checkinout/checkout.screen';
-
 
 import styNav from './navigation.style'
 
@@ -80,6 +80,7 @@ function Navigation() {
         <Drawer.Screen name='Payroll' component={Payroll} />
         <Drawer.Screen name='PayrollDetail' component={PayrollDetail} />
         <Drawer.Screen name='Leave' component={Leave} />
+        <Drawer.Screen name='LeaveRequest' component={LeaveRequest} />
         <Drawer.Screen name='LeaveApprove' component={LeaveApprove}/>
         <Drawer.Screen name='NoticeBoard' component={NoticeBoard}/>
         <Drawer.Screen name='NotiboardDetail' component={NotiboardDetail}/>

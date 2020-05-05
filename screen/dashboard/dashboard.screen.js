@@ -42,7 +42,7 @@ export default class Dashboard extends Component {
                     styles.container
                 }>  
                     <Chart />
-                    <Cards />
+                    <Cards navigation = {this.props.navigation}/>
                 </Content>
             </Container>
         )

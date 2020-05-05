@@ -119,7 +119,7 @@ export default StyleSheet.create({
     labelCircleGray: { width: 10, height: 10, backgroundColor: color.placeHolder, borderRadius: 10 / 2, marginLeft: 15 },
     labelText: { marginLeft: 5 },
      submitButton: {
-        height: 60,
+        height: 50,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: color.primary,

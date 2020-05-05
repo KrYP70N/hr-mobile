@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
 import typo from '../../constant/typography'
@@ -45,17 +45,20 @@ export default StyleSheet.create({
     //     marginTop: 20,
     // },
     submitButton: {
-        height: 60,
+        height: 50,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: color.primary,
         width: '100%',
-        position: 'absolute',
+        marginTop: 20,
+        borderRadius: 5
+        //position: 'absolute',
         //left: 0,
-        bottom: 0
+        //bottom: Platform.OS === 'ios' ? 0 : -30
     },
     buttonText: {
-        color: color.light
+        color: color.light,
+        fontFamily: 'Nunito'
     },
     tabStyle: {
         backgroundColor: color.primary
