@@ -238,99 +238,79 @@ export default class Attendance extends Component {
         })
         return (
             <SafeAreaView style={{ flex: 1 }}>
+                <View style={{ flex: 1, backgroundColor: color.light, }}>
+                    <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name='ios-arrow-round-back' style={{
+                            fontSize: offset.o4,
+                            color: color.primary,
+                            marginRight: offset.o2,
+                            marginLeft: 15,
+                        }} onPress={() => { this.props.navigation.navigate('Main') }} />
+                        <Text style={{
+                            color: color.secondary,
+                            fontFamily: 'Nunito'
+                        }}>Attendance</Text>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                        <ScrollView>
+                            <View style={{ flex: 1, marginBottom: 30 }}>
+                                <View style={styAttend.contentContainer}>
+                                    <View style={[styAttend.container, {
+                                        marginTop: offset.o1
+                                    }]}>
+                                        <Card style={styAttend.cardCalendar}>
+                                            <Calendar
+                                                onDayPress={(day) => { console.log('selected day', day) }}
+                                                onDayLongPress={(day) => { console.log('selected day', day) }}
+                                                monthFormat={"MMMM yyyy"}
+                                                onMonthChange={(month) => { this.monthChange(month) }}
+                                                hideArrows={false}
+                                                hideExtraDays={true}
+                                                disableMonthChange={true}
+                                                firstDay={1}
+                                                hideDayNames={false}
+                                                onPressArrowLeft={substractMonth => substractMonth()}
+                                                onPressArrowRight={addMonth => addMonth()}
+                                                disableArrowLeft={false}
+                                                disableArrowRight={false}
+                                                markedDates={markedDateData}
+                                            />
+                                            <View style={styAttend.dividerContainer}>
+                                                <View style={styAttend.divider}></View>
+                                            </View>
 
+                                            <View style={styAttend.calendarLabelContainer}>
+                                                <View style={styAttend.labelCirclePrimary}></View>
+                                                <Text style={styAttend.labelText}>Attendance</Text>
+                                                <View style={styAttend.labelCircleRed}></View>
+                                                <Text style={styAttend.labelText}>Absence</Text>
+                                                <View style={styAttend.labelCircleGray}></View>
+                                                <Text style={styAttend.labelText}>Holiday</Text>
 
-                <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
-                    <Icon name='ios-arrow-round-back' style={{
-                        fontSize: offset.o4,
-                        color: color.primary,
-                        marginRight: offset.o2,
-                        marginLeft: 15,
-                    }} onPress={() => { this.props.navigation.navigate('Main') }} />
-                    <Text style={{
-                        color: color.secondary,
-                        fontFamily: 'Nunito'
-                    }}>Attendance</Text>
+                                            </View>
+                                        </Card>
+                                    </View>
+                                    <View style={[styAttend.container, {
+                                        marginBottom: offset.o3
+                                    }]}>
+
+                                        {infos}
+
+                                    </View>
+
+                                </View>
+
+                            </View>
+                        </ScrollView>
+                        <TouchableOpacity onPress={() => { this.props.navigation.navigate('Leave') }}>
+                            <View style={styAttend.submitButton} >
+                                <Text style={styAttend.buttonText}>Apply Leave</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                    </View>
+
                 </View>
-                <ScrollView>
-                    <View style={{ flex: 1, marginBottom: 30}}>
-                        {/* <Header style={{
-                        backgroundColor: color.light,
-                        marginTop: Platform.OS === 'ios' ? -40 : StatusBar.currentHeight
-                    }}>
-                        <Left style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center'
-                        }}>
-                            <Icon name='ios-arrow-round-back' style={{
-                                fontSize: offset.o4,
-                                color: color.primary,
-                                marginRight: offset.o2
-                            }} onPress={() => { this.props.navigation.navigate('Main') }} />
-                            <Text style={{
-                                color: color.secondary,
-                                fontFamily: 'Nunito'
-                            }}>Attendance</Text>
-                        </Left>
-                        <Right></Right>
-                    </Header> */}
-
-                        <View style={styAttend.contentContainer}>
-                            <View style={[styAttend.container, {
-                                marginTop: offset.o1
-                            }]}>
-                                <Card style={styAttend.cardCalendar}>
-                                    <Calendar
-                                        onDayPress={(day) => { console.log('selected day', day) }}
-                                        onDayLongPress={(day) => { console.log('selected day', day) }}
-                                        monthFormat={"MMMM yyyy"}
-                                        onMonthChange={(month) => { this.monthChange(month) }}
-                                        hideArrows={false}
-                                        hideExtraDays={true}
-                                        disableMonthChange={true}
-                                        firstDay={1}
-                                        hideDayNames={false}
-                                        onPressArrowLeft={substractMonth => substractMonth()}
-                                        onPressArrowRight={addMonth => addMonth()}
-                                        disableArrowLeft={false}
-                                        disableArrowRight={false}
-                                        markedDates={markedDateData}
-                                    />
-                                    <View style={styAttend.dividerContainer}>
-                                        <View style={styAttend.divider}></View>
-                                    </View>
-
-                                    <View style={styAttend.calendarLabelContainer}>
-                                        <View style={styAttend.labelCirclePrimary}></View>
-                                        <Text style={styAttend.labelText}>Attendance</Text>
-                                        <View style={styAttend.labelCircleRed}></View>
-                                        <Text style={styAttend.labelText}>Absence</Text>
-                                        <View style={styAttend.labelCircleGray}></View>
-                                        <Text style={styAttend.labelText}>Holiday</Text>
-
-                                    </View>
-                                </Card>
-                            </View>
-                            <View style={[styAttend.container, {
-                                marginBottom: offset.o3
-                            }]}>
-
-                                {infos}
-
-                            </View>
-
-                        </View>
-
-                    </View>
-                </ScrollView>
-                <TouchableOpacity onPress={() => { this.props.navigation.navigate('Leave') }}>
-                    <View style={styAttend.submitButton} >
-                        <Text style={styAttend.buttonText}>Apply Leave</Text>
-                    </View>
-                </TouchableOpacity>
-
-
             </SafeAreaView>
 
         )
