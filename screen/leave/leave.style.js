@@ -50,7 +50,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor: color.primary,
         width: '100%',
-        marginTop: 20,
+        marginTop: 30,
         borderRadius: 5
         //position: 'absolute',
         //left: 0,

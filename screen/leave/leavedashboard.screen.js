@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Text, View, SafeAreaView, } from 'react-native'
-import { Icon, Card } from 'native-base'
+import { Text, View, SafeAreaView, ScrollView } from 'react-native'
+import { Icon, Card, Container, Content, Header, Left, Right } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import Cards from '../leave/cards'
@@ -13,8 +13,8 @@ export class Leave extends Component {
 
     render() {
         return (
-            <SafeAreaView style={{ flex: 1 }}>
-                <View style={{ flex: 1, width: '100%' }}>
+            <SafeAreaView style = {{flex: 1}}>
+                <Container>
                     <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name='ios-arrow-round-back' style={{
                             fontSize: offset.o4,
@@ -27,22 +27,14 @@ export class Leave extends Component {
                             fontFamily: 'Nunito'
                         }}>Leave</Text>
                     </View>
-                    <View style={{ flex: 1, width: '100%' }}>
-                        {/* <View style={{ width: "100%", height: '30%', backgroundColor: color.primary , justifyContent: "center"}}> */}
-                        <Chart/>
-                        {/* </View> */}
-                        <View style={{
-                            backgroundColor: color.lighter,
-                            padding: offset.o1 + offset.oh
-                        }}>
-                            <Cards navigation = {this.props.navigation}/>
-                        </View>
-                    </View>
 
-
-
-                </View>
+                    <Content style={{ flex: 1 }}>
+                        <Chart />
+                        <Cards navigation={this.props.navigation} />
+                    </Content>
+                </Container>
             </SafeAreaView>
+
         )
     }
 }
