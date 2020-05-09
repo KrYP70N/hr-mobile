@@ -29,7 +29,7 @@ const cardList = [
         title: 'Approved',
         noti: 0,
         icon: require('../../assets/icon/leave_approve.png'),
-        page: 'LeaveRequest'
+        page: 'EmployeeLeaveApproved'
     },
     {
         title: 'Rejected',
@@ -68,25 +68,15 @@ export class cards extends Component {
                     padding: offset.o1 + offset.oh,
                     backgroundColor: color.light,
                     marginTop: offset.o2,
-                    //marginLeft: offset.o1,
-                    //marginRight: offset.o1,
                     borderRadius: offset.oh,
-                   // width: '48%',
-                    //backgroundColor: color.light,
-                    //marginTop: offset.o1,
-                    //borderRadius: offset.o1,
                     borderColor: color.placeHolder,
                     borderWidth: 0.5,
                     justifyContent: 'center',
-                    //paddingLeft: offset.o1 + offset.oh,
                     height: height / 6,
                 }} key={key} 
                 onPress = {() => {this.props.navigation.navigate(card.page)}}>
                     <View style={{
                         width: '100%',
-                       
-                        // backgroundColor: color.light,
-                        // borderRadius: offset.o1,
                          paddingLeft: offset.o1,
                          justifyContent: 'center',
                         // height: height/6,
