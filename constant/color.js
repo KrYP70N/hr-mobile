@@ -4,6 +4,7 @@ export default {
     tertiary    :       '#656565',
     light       :       '#FFFFFF',
     lighter     :       '#F5F5F5',
+    semiLigher  :       '#f7f7f7',
     dark        :       '#2A484E',
     placeHolder :       '#A5A5A5',
     warning     :       '#FFB300',

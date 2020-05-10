@@ -9,6 +9,7 @@ import styles from './noticeboard.style'
 
 // components
 import NotiList from './notilist'
+import Loading from '../../components/loading.component'
 
 export default class NoticeBoard extends Component {
     constructor(props){
@@ -43,7 +44,7 @@ export default class NoticeBoard extends Component {
                             fontSize: offset.o4,
                             color: color.primary,
                             marginRight: offset.o2
-                        }} onPress={() => { this.props.navigation.navigate('Main') }} />
+                        }} onPress={() => { this.props.navigation.navigate('Dashboard') }} />
                         <Text style={{
                             color: color.secondary,
                             fontFamily: 'Nunito'

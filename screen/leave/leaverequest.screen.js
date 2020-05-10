@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, SafeAreaView, ScrollView, TouchableOpacity, AsyncStorage, KeyboardAvoidingView } from 'react-native'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
-import { Picker, Textarea, Row, Col, Button, Toast, Icon, Container, Content } from 'native-base'
+import { Picker, Textarea, Row, Col, Button, Toast, Icon, Container, Content, Header } from 'native-base'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system';
@@ -197,14 +197,6 @@ export class LeaveRequest extends Component {
 
     pickDate = (data) => {
         let date = new Date(data)
-        // let firstDate = `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`;
-        // let sDate = new Date(firstDate);
-        // let eDate = new Date(this.state.endDate);
-        // console.log("Start DAte", sDate);
-        // console.log("End Date", eDate);
-        // let diffTime = eDate - sDate;
-        // let diffDay = (diffTime / (1000 * 3600 * 24)) + 1;
-        // console.log("Date Difference", diffDay);
         this.setState({
             startDate: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
             startDateMonthLabel: months[date.getMonth()],
@@ -215,25 +207,6 @@ export class LeaveRequest extends Component {
             totalDay: 1,
 
         })
-        // if (sDate <= eDate) {
-        //     let diffTime = eDate - sDate;
-        //     let diffDay = (diffTime / (1000 * 3600 * 24)) + 1;
-        //     console.log("Date Difference", diffDay);
-        //     this.setState({
-        //         startDate: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
-        //         startDateMonthLabel: months[date.getMonth()],
-        //         startDateDayLabel: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
-        //         totalDay: diffDay,
-        //     })
-        // } else {
-        //     this.setState({
-        //         startDate: this.state.startDate,
-        //         startDateMonthLabel: this.state.startDateMonthLabel,
-        //         startDateDayLabel: this.state.startDateDayLabel,
-        //         totalDay: this.state.totalDay,
-
-        //     })
-        // }
         this.hideDatePicker();
     }
 
@@ -254,16 +227,7 @@ export class LeaveRequest extends Component {
         let sDate = new Date(this.state.startDate);
         console.log("Start DAte", this.state.startDate);
         console.log(secondDate);
-        // let diffTime = eDate - sDate;
-        // let diffDay = (diffTime / (1000 * 3600 * 24)) + 1;
-        // console.log(diffDay);
-        // this.setState({
-        //     endDate: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
-        //     endDateMonthLabel: months[date.getMonth()],
-        //     endDateDayLabel: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
-        //     totalDay: diffDay,
 
-        // })
         if (sDate <= eDate) {
             let diffTime = eDate - sDate;
             let diffDay = (diffTime / (1000 * 3600 * 24)) + 1;
@@ -409,145 +373,139 @@ export class LeaveRequest extends Component {
                             fontFamily: 'Nunito'
                         }}>Apply Leave</Text>
                     </View>
-                    <View style={{ width: '100%', height: 20, backgroundColor: color.lighter }}></View>
+                   
 
                     <Content>
+                    <View style={{ width: '100%', height: 20, backgroundColor: color.lighter }}></View>
                         <KeyboardAvoidingView behavior='padding'>
-                            <ScrollView>
-                                <View style={{ flex: 1, marginBottom: 60 }}>
-                                    <View style={{ width: '100%', paddingLeft: 10, paddingRight: 10, marginTop: 10 }}>
-                                        <Picker
-                                            //placeholder="Select Leve Type"
-                                            textStyle={{
-                                                fontFamily: 'Nunito',
-                                                // color: 'red'
-                                            }}
-                                            iosIcon={
-                                                <Icon name="arrow-down" />
-                                            }
-                                            selectedValue={
-                                                this.state.selectedLeaveType
-                                            }
-                                            onValueChange={(value, index) => {
-                                                this.changeLeaveType(value, index)
-                                            }}>
-                                            {
-                                                this.state.leaveType.map((type) => {
-                                                    return (
-                                                        <Picker.Item label={type['name']} value={type['leave_type_id']} key={type['leave_type_id']} />
-                                                    )
-                                                })
-                                            }
-                                        </Picker>
-                                    </View>
+                            <View style={{ width: '100%', paddingLeft: 10, paddingRight: 10, marginTop: 10 }}>
+                                <Picker
+                                    //placeholder="Select Leve Type"
+                                    textStyle={{
+                                        fontFamily: 'Nunito',
+                                        // color: 'red'
+                                    }}
+                                    iosIcon={
+                                        <Icon name="arrow-down" />
+                                    }
+                                    selectedValue={
+                                        this.state.selectedLeaveType
+                                    }
+                                    onValueChange={(value, index) => {
+                                        this.changeLeaveType(value, index)
+                                    }}>
+                                    {
+                                        this.state.leaveType.map((type) => {
+                                            return (
+                                                <Picker.Item label={type['name']} value={type['leave_type_id']} key={type['leave_type_id']} />
+                                            )
+                                        })
+                                    }
+                                </Picker>
+                            </View>
 
-                                    <View style={styLeave.container}>
-                                        <View style={{ width: '100%', height: 1, backgroundColor: color.placeHolder, }} />
+                            <View style={styLeave.container}>
+                                <View style={{ width: '100%', height: 1, backgroundColor: color.placeHolder, }} />
 
-                                        <View style={{ flexDirection: 'row', width: '100%', marginTop: offset.o3 }}>
-                                            <View>
-                                                <Text style={{ fontSize: 16, color: '#656565', fontFamily: 'Nunito' }}>From</Text>
-                                                <TouchableOpacity onPress={() => { this.showDatePicker() }}>
-                                                    <DateTimePickerModal
-                                                        isVisible={this.state.isStartDateVisible}
-                                                        mode="date"
-                                                        onConfirm={this.pickDate}
-                                                        onCancel={this.hideDatePicker}
-                                                    />
-                                                    <View style={{ marginTop: 5, justifyContent: 'center', alignItems: 'center', borderColor: color.placeHolder, borderRadius: 5, borderWidth: 1, width: 80, height: 80 }}>
-                                                        <Text style={{ color: '#656565', fontSize: 16, fontFamily: 'Nunito' }}>{this.state.startDateMonthLabel}</Text>
-                                                        <Text style={{ marginTop: 5, fontFamily: 'Nunito-Bold', fontSize: 18 }}>{this.state.startDateDayLabel}</Text>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            </View>
-                                            <View style={{ marginLeft: 20 }}>
-                                                <Text style={{ fontSize: 16, color: '#656565', fontFamily: 'Nunito' }}>To</Text>
-                                                <TouchableOpacity onPress={() => { this.showEndDatePicker() }}>
-                                                    <DateTimePickerModal
-                                                        isVisible={this.state.isEndDateVisible}
-                                                        mode="date"
-                                                        onConfirm={this.pickEndDate}
-                                                        onCancel={this.hideEndDatePicker}
-
-                                                    />
-                                                    <View style={{ marginTop: 5, justifyContent: 'center', alignItems: 'center', borderColor: color.placeHolder, borderRadius: 5, borderWidth: 1, width: 80, height: 80 }}>
-                                                        <Text style={{ color: '#656565', fontSize: 16, fontFamily: 'Nunito' }}>{this.state.endDateMonthLabel}</Text>
-                                                        <Text style={{ marginTop: 5, fontFamily: 'Nunito-Bold', fontSize: 18 }}>{this.state.endDateDayLabel}</Text>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            </View>
-
-                                            <View style={{ marginLeft: 20 }}>
-                                                <Text style={{ fontSize: 16, color: '#656565', fontFamily: 'Nunito' }}>Total Day</Text>
-                                                <View style={{ marginTop: 5, justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: color.primary, width: 80, height: 80 }}>
-                                                    <Text style={{ marginTop: 5, fontFamily: 'Nunito-Bold', fontSize: 18, color: '#fff' }}>{this.state.totalDay}</Text>
-                                                </View>
-                                            </View>
-                                        </View>
-
-                                        <View style={{ width: '100%', marginTop: 30 }}>
-                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                <TouchableOpacity onPress={() => { this.setState({ checked: 'mhalf', dayType: true }) }}>
-                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                        <View style={{ width: 20, height: 20, borderRadius: 20 / 2, borderColor: color.dark, borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                                            <View style={{ width: 13, height: 13, borderRadius: 13 / 2, backgroundColor: this.state.checked === 'mhalf' ? color.primary : color.light }}></View>
-                                                        </View>
-                                                        <Text style={{ marginLeft: 5, fontSize: 16, color: '#333333', fontFamily: 'Nunito', }}>Morning Leave</Text>
-                                                    </View>
-                                                </TouchableOpacity>
-                                                <TouchableOpacity onPress={() => { this.setState({ checked: 'ehalf', dayType: true }) }}>
-                                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
-                                                        <View style={{ width: 20, height: 20, borderRadius: 20 / 2, borderColor: color.dark, borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                                            <View style={{ width: 13, height: 13, borderRadius: 13 / 2, backgroundColor: this.state.checked === 'ehalf' ? color.primary : color.light }}></View>
-                                                        </View>
-                                                        <Text style={{ marginLeft: 5, fontSize: 16, color: '#333333', fontFamily: 'Nunito', }}>Evening Leave</Text>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            </View>
-                                            <TouchableOpacity onPress={() => { this.setState({ checked: 'full', dayType: false }) }}>
-                                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
-                                                    <View style={{ width: 20, height: 20, borderRadius: 20 / 2, borderColor: color.dark, borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                                        <View style={{ width: 13, height: 13, borderRadius: 13 / 2, backgroundColor: this.state.checked === 'full' ? color.primary : color.light }}></View>
-                                                    </View>
-                                                    <Text style={{ marginLeft: 5, fontSize: 16, color: '#333333', fontFamily: 'Nunito', }}>Full Day Leave</Text>
-                                                </View>
-                                            </TouchableOpacity>
-
-                                        </View>
-
-                                        <View style={{ marginTop: 30 }}>
-                                            <Text style={{ fontSize: 16, marginBottom: 10, fontFamily: 'Nunito', color: '#656565' }}>Reason For Leave</Text>
-                                            <Textarea
-                                                placeholderTextColor={color.placeHolder}
-                                                rowSpan={3}
-                                                bordered
-                                                style={{ backgroundColor: color.lighter }}
-                                                //placeholder='Reason for Leave'
-                                                onChangeText={(data) => {
-                                                    //this.state.description = data;
-                                                    this.setState({
-                                                        description: data
-                                                    })
-                                                }}
-                                                value={this.state.description}
+                                <View style={{ flexDirection: 'row', width: '100%', marginTop: offset.o3 }}>
+                                    <View>
+                                        <Text style={{ fontSize: 16, color: '#656565', fontFamily: 'Nunito' }}>From</Text>
+                                        <TouchableOpacity onPress={() => { this.showDatePicker() }}>
+                                            <DateTimePickerModal
+                                                isVisible={this.state.isStartDateVisible}
+                                                mode="date"
+                                                onConfirm={this.pickDate}
+                                                onCancel={this.hideDatePicker}
                                             />
-                                        </View>
-
-                                        <AttachButton />
-
+                                            <View style={{ marginTop: 5, justifyContent: 'center', alignItems: 'center', borderColor: color.placeHolder, borderRadius: 5, borderWidth: 1, width: 80, height: 80 }}>
+                                                <Text style={{ color: '#656565', fontSize: 16, fontFamily: 'Nunito' }}>{this.state.startDateMonthLabel}</Text>
+                                                <Text style={{ marginTop: 5, fontFamily: 'Nunito-Bold', fontSize: 18 }}>{this.state.startDateDayLabel}</Text>
+                                            </View>
+                                        </TouchableOpacity>
                                     </View>
+                                    <View style={{ marginLeft: 20 }}>
+                                        <Text style={{ fontSize: 16, color: '#656565', fontFamily: 'Nunito' }}>To</Text>
+                                        <TouchableOpacity onPress={() => { this.showEndDatePicker() }}>
+                                            <DateTimePickerModal
+                                                isVisible={this.state.isEndDateVisible}
+                                                mode="date"
+                                                onConfirm={this.pickEndDate}
+                                                onCancel={this.hideEndDatePicker}
+
+                                            />
+                                            <View style={{ marginTop: 5, justifyContent: 'center', alignItems: 'center', borderColor: color.placeHolder, borderRadius: 5, borderWidth: 1, width: 80, height: 80 }}>
+                                                <Text style={{ color: '#656565', fontSize: 16, fontFamily: 'Nunito' }}>{this.state.endDateMonthLabel}</Text>
+                                                <Text style={{ marginTop: 5, fontFamily: 'Nunito-Bold', fontSize: 18 }}>{this.state.endDateDayLabel}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                    <View style={{ marginLeft: 20 }}>
+                                        <Text style={{ fontSize: 16, color: '#656565', fontFamily: 'Nunito' }}>Total Day</Text>
+                                        <View style={{ marginTop: 5, justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: color.primary, width: 80, height: 80 }}>
+                                            <Text style={{ marginTop: 5, fontFamily: 'Nunito-Bold', fontSize: 18, color: '#fff' }}>{this.state.totalDay}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+
+                                <View style={{ width: '100%', marginTop: 30 }}>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <TouchableOpacity onPress={() => { this.setState({ checked: 'mhalf', dayType: true }) }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <View style={{ width: 20, height: 20, borderRadius: 20 / 2, borderColor: color.dark, borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                                    <View style={{ width: 13, height: 13, borderRadius: 13 / 2, backgroundColor: this.state.checked === 'mhalf' ? color.primary : color.light }}></View>
+                                                </View>
+                                                <Text style={{ marginLeft: 5, fontSize: 16, color: '#333333', fontFamily: 'Nunito', }}>Morning Leave</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { this.setState({ checked: 'ehalf', dayType: true }) }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
+                                                <View style={{ width: 20, height: 20, borderRadius: 20 / 2, borderColor: color.dark, borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                                    <View style={{ width: 13, height: 13, borderRadius: 13 / 2, backgroundColor: this.state.checked === 'ehalf' ? color.primary : color.light }}></View>
+                                                </View>
+                                                <Text style={{ marginLeft: 5, fontSize: 16, color: '#333333', fontFamily: 'Nunito', }}>Evening Leave</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <TouchableOpacity onPress={() => { this.setState({ checked: 'full', dayType: false }) }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
+                                            <View style={{ width: 20, height: 20, borderRadius: 20 / 2, borderColor: color.dark, borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                                <View style={{ width: 13, height: 13, borderRadius: 13 / 2, backgroundColor: this.state.checked === 'full' ? color.primary : color.light }}></View>
+                                            </View>
+                                            <Text style={{ marginLeft: 5, fontSize: 16, color: '#333333', fontFamily: 'Nunito', }}>Full Day Leave</Text>
+                                        </View>
+                                    </TouchableOpacity>
 
                                 </View>
 
-                            </ScrollView>
+                                <View style={{ marginTop: 30 }}>
+                                    <Text style={{ fontSize: 16, marginBottom: 10, fontFamily: 'Nunito', color: '#656565' }}>Reason For Leave</Text>
+                                    <Textarea
+                                        placeholderTextColor={color.placeHolder}
+                                        rowSpan={3}
+                                        bordered
+                                        style={{ backgroundColor: color.lighter }}
+                                        //placeholder='Reason for Leave'
+                                        onChangeText={(data) => {
+                                            //this.state.description = data;
+                                            this.setState({
+                                                description: data
+                                            })
+                                        }}
+                                        value={this.state.description}
+                                    />
+                                </View>
 
+                                <AttachButton />
+                                <TouchableOpacity onPress={() => { this.submit(this.state.auth, this.state.id, this.state.url) }}>
+                                    <View style={styLeave.submitButton} >
+                                        <Text style={styLeave.buttonText}>Submit</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
                         </KeyboardAvoidingView>
                     </Content>
-                    <TouchableOpacity onPress={() => { this.submit(this.state.auth, this.state.id, this.state.url) }}>
-                        <View style={styLeave.submitButton} >
-                            <Text style={styLeave.buttonText}>Submit</Text>
-                        </View>
-                    </TouchableOpacity>
+
 
                 </Container>
 

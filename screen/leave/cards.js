@@ -29,7 +29,7 @@ const cardList = [
         title: 'Approved',
         noti: 0,
         icon: require('../../assets/icon/leave_approve.png'),
-        page: 'LeaveRequest'
+        page: 'EmployeeLeaveApproved'
     },
     {
         title: 'Rejected',
@@ -51,27 +51,35 @@ export class cards extends Component {
       } 
   render(){
     return (
-        <View style={styles.row}>
+        <View style={{display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginLeft: 15,
+        marginRight: 15,
+        marginBottom: 15,
+        flexWrap: 'wrap'}}>
             {
                 cardList.map((card, key) => (
-                   <TouchableOpacity style={{
+                   <TouchableOpacity 
+                   
+
+                   style={{
                     width: '48%',
+                    padding: offset.o1 + offset.oh,
                     backgroundColor: color.light,
-                    marginBottom: offset.o1,
-                    borderRadius: offset.o1,
+                    marginTop: offset.o2,
+                    borderRadius: offset.oh,
                     borderColor: color.placeHolder,
                     borderWidth: 0.5,
                     justifyContent: 'center',
-                    //paddingLeft: offset.o1 + offset.oh,
                     height: height / 6,
-                }} key={key} onPress = {() => {this.props.navigation.navigate(card.page)}}>
+                }} key={key} 
+                onPress = {() => {this.props.navigation.navigate(card.page)}}>
                     <View style={{
                         width: '100%',
-                        backgroundColor: color.light,
-                        borderRadius: offset.o1,
-                        paddingLeft: offset.o1 + offset.oh,
-                        justifyContent: 'center',
-                        height: '100%',
+                         paddingLeft: offset.o1,
+                         justifyContent: 'center',
+                        // height: height/6,
                     }} key={key}>
                         {card.title === 'Balance' ?  <Image source={card.icon} style={{
                             width: 40,
@@ -84,7 +92,7 @@ export class cards extends Component {
                         }} />}
                        
                         
-                        <Text style={{fontSize: 15, fontFamily: 'Nunito-Bold'}}>{card.title}</Text>
+                        <Text style={{fontSize: 14, fontFamily: 'Nunito-Bold'}}>{card.title}</Text>
                     </View>
                     </TouchableOpacity>
                     

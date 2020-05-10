@@ -93,9 +93,9 @@ export class chart extends Component {
                 //justifyContent: 'center',
                 padding: offset.o2,
                 backgroundColor: color.primary,
-                marginBottom: offset.o2,
+                //marginBottom: offset.o2,
                 borderRadius: offset.o1,
-                height: '25%'
+                //height: '35%'
             }}>
                 <View style={{
                     width: width/3,
@@ -116,7 +116,10 @@ export class chart extends Component {
                         </PieChart>
                     </View>
                 </View>
-                    <View style = {{width: (2*width)/3, height: '75%'}}>
+                    <View style = {{width: (2*width)/3, 
+                    marginTop: 5,
+                         //height: '75%'
+                         }}>
                     <FlatList
                         data={labelData}
                         numColumns={2}
