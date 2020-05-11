@@ -26,6 +26,8 @@ import Leave from '../screen/leave/leavedashboard.screen'
 import LeaveRequest from '../screen/leave/leaverequest.screen'
 import LeaveApprove from '../screen/leave/_approve.screen';
 import EmpLeaveApproved from '../screen/leave/leaveapproved.screen';
+import EmployeeLeaveRejected from '../screen/leave/leaverejected.screen'
+import EmployeeLeaveHistory from '../screen/leave/leavehistory.screen'
 import OvertimeApprove from '../screen/overtime/_approve.screen';
 import NoticeBoard from '../screen/noticeboard/noticeboard.screen';
 import NotiboardDetail from '../screen/noticeboard/detail.screen';
@@ -84,6 +86,8 @@ function Navigation() {
         <Drawer.Screen name='LeaveRequest' component={LeaveRequest} />
         <Drawer.Screen name='LeaveApprove' component={LeaveApprove}/>
         <Drawer.Screen name='EmployeeLeaveApproved' component={EmpLeaveApproved}/>
+        <Drawer.Screen name='EmployeeLeaveRejected' component={EmployeeLeaveRejected}/>
+        <Drawer.Screen name='EmployeeLeaveHistory' component={EmployeeLeaveHistory}/>
         <Drawer.Screen name='NoticeBoard' component={NoticeBoard}/>
         <Drawer.Screen name='NotiboardDetail' component={NotiboardDetail}/>
         <Drawer.Screen name='OvertimeApprove' component={OvertimeApprove}/>

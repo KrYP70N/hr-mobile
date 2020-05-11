@@ -17,7 +17,7 @@ const cardList = [
         title: 'History',
         noti: 3,
         icon: require('../../assets/icon/leave_history.png'),
-        page: 'LeaveRequest'
+        page: 'EmployeeLeaveHistory'
     },
     {
         title: 'Balance',
@@ -35,7 +35,7 @@ const cardList = [
         title: 'Rejected',
         noti: 0,
         icon: require('../../assets/icon/leave_reject.png'),
-        page: 'LeaveRequest'
+        page: 'EmployeeLeaveRejected'
     },
     {
         title: 'Pending Approval',

@@ -4,11 +4,19 @@ import { StyleSheet } from 'react-native'
 import { View, Text, Row, Col } from 'native-base'
 import colors from '../constant/color'
 
-// registered leave type
-const leaves = {
+// registered leave type color
+const leavesColor = {
     "Casual Leave": '#47E9EE',
     "Medical Leave": '#377375',
     "Annual Leave": '#FFB300'
+}
+
+// registered status type color
+const statusColor = {
+    "Approved": '#47E9EE',
+    "Rejected": '#FF0000',
+    "Cancellation": '#F5F5F5',
+    "Pending": '#FFB300'
 }
 
 export default function StatusCard({leaveType, date, status}) {
@@ -16,7 +24,7 @@ export default function StatusCard({leaveType, date, status}) {
         <View style={styles.container}>
             <View style={styles.mainRow}>
                 <View style={styles.status}>
-                    <Text style={{...styles.statusCircle, backgroundColor: leaves[leaveType]}}></Text>
+                    <Text style={{...styles.statusCircle, backgroundColor: leavesColor[leaveType]}}></Text>
                 </View>
                 <View style={styles.content}>
                     <View style={styles.left}>
@@ -24,7 +32,9 @@ export default function StatusCard({leaveType, date, status}) {
                         <Text>{leaveType}</Text>
                     </View>
                     <View style={styles.right}>
-                        <Text style={styles.statusTxt}>{status}</Text>
+                        <Text style={[styles.statusTxt, {
+                            color: statusColor[status]
+                        }]}>{status}</Text>
                     </View>
                 </View>
             </View>
