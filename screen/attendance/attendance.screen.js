@@ -302,7 +302,7 @@ export default class Attendance extends Component {
 
                             </View>
                         </ScrollView>
-                        <TouchableOpacity onPress={() => { this.props.navigation.navigate('Leave') }}>
+                        <TouchableOpacity onPress={() => { this.props.navigation.navigate('LeaveRequest') }}>
                             <View style={styAttend.submitButton} >
                                 <Text style={styAttend.buttonText}>Apply Leave</Text>
                             </View>

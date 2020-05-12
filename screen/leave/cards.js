@@ -23,7 +23,7 @@ const cardList = [
         title: 'Balance',
         noti: 4,
         icon: require('../../assets/icon/dashboard-pending.png'),
-        page: 'LeaveRequest'
+        page: 'EmployeeLeaveBalance'
     },
     {
         title: 'Approved',
@@ -41,7 +41,7 @@ const cardList = [
         title: 'Pending Approval',
         noti: 9,
         icon: require('../../assets/icon/leave_pending.png'),
-        page: 'LeaveRequest'
+        page: 'EmployeeLeavePending'
     },
 ]
 export class cards extends Component {
