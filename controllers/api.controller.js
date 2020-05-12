@@ -488,6 +488,21 @@ export default class APIs {
             })
     }
 
+    // get leave balance
+    static getLeaveBalance = (url, auth, id, year) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).post(`${url}/leave/balance/${id}/${year}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
     // post receivedPayroll
     static sendReceived = (url, auth, payrollID) => {
         return axios.create({
