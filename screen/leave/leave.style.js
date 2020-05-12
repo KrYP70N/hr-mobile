@@ -81,7 +81,6 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: offset.o1
     },
     cardTitle: {
         ...typo.cardTitle,
@@ -91,7 +90,8 @@ export default StyleSheet.create({
     },
     cardXSText: {
         ...typo.textSmall,
-        color: color.placeHolder
+        color: '#656565',
+        marginTop: 10,
     },
     dateFromText: {
         fontSize: 14,
@@ -112,12 +112,14 @@ export default StyleSheet.create({
     cardSText: {
         ...typo.parabraph,
         color: color.placeHolder,
-        marginBottom: offset.o1
+        marginTop: offset.o1,
+        marginBottom: offset.o2
     },
     cardWarning: {
         ...typo.parabraph,
         color: color.warning,
-        marginBottom: offset.o2
+        marginBottom: offset.o2,
+        fontSize: 16
     },
     ButtonSecondary: {
         ...button.secondary,

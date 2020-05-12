@@ -17,6 +17,6 @@ export default {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: color.placeHolder
+        backgroundColor: '#D4D4D4'
     }
 }
