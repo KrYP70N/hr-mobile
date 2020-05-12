@@ -20,6 +20,7 @@ export default class APIs {
             }
         }).get(`${url}/api/auth/token`)
             .then(function (res) {
+                console.log(res.data)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
@@ -58,12 +59,12 @@ export default class APIs {
     }
 
     // time controller
-    static Time(url, token) {
+    static Time(url, token, id) {
         return axios.create({
             headers: {
                 'Authorization': token
             }
-        }).get(`${url}/getTime`)
+        }).get(`${url}/getTime/${id}`)
             .then(function (res) {
                 return { data: res.data["data"]["Current Server Time"], status: 'success' }
             })
@@ -74,6 +75,7 @@ export default class APIs {
 
     // user controller
     static Profile(url, auth, id) {
+        console.log(url)
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -426,6 +428,66 @@ export default class APIs {
             })
     }
 
+    // get leave status
+    static getLeaveStatus = (url, auth) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/leave/status`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // get leave history
+    static getLeaveHistory = (url, auth, id, year, month) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).post(`${url}/list/leaves/${id}/${year}/${month}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // get leave approve, cancel, pending
+    static getLeaveByStatus = (url, auth, id, status, year, month) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).post(`${url}/list/${status}/leaves/${id}/${year}/${month}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // get leave summary
+    static getLeaveSummary = (url, auth, id, year) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).post(`${url}/leave/summary/${id}/${year}`)
+            .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
     // post receivedPayroll
     static sendReceived = (url, auth, payrollID) => {
         return axios.create({
@@ -486,4 +548,6 @@ export default class APIs {
                 return { error: error, status: 'fail' }
             })
     }
+
+
 }
