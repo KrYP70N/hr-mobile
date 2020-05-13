@@ -7,12 +7,9 @@
 - @hr:token [string]
 - @hr:login [string] true/false
 
-## todo
-- db model fall back
-- this.status(this.props.userid, this.props.auth, this.props.url)
-
-<!-- fixes -->
-1. noticeboard to attendance
-
-<!-- dashboard -->
-1. 
+## leave callback
+- leave status : getLeaveStatus(url, auth)
+- leave history : getLeaveHistory(url, auth, id, year, month)
+- get leave by status : getLeaveByStatus(url, auth, id, status, year, month)
+- leave summary : getLeaveSummary(url, auth, id, year)
+- leave balance : getLeaveBalance(url, auth, id, year)

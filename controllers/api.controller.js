@@ -75,7 +75,7 @@ export default class APIs {
 
     // user controller
     static Profile(url, auth, id) {
-        console.log(url)
+        console.log(url, auth, id)
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -290,7 +290,6 @@ export default class APIs {
             }
         }
 
-
         return axios.post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`,
             file.length === 0 ? null : fd, {
             headers: {
@@ -475,15 +474,11 @@ export default class APIs {
 
     // get leave summary
     static getLeaveSummary = (url, auth, id, year) => {
-        console.log("Api Url", url)
-        console.log("Api auth", auth)
-        console.log("Api id", id)
-        console.log("Api year", year)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
-        }).post(`${url}/leave/summary/${id}/${year}`)
+        }).get(`${url}/leave/summary/${id}/${year}`)
             .then(function (res) {
                 console.log(res.data.data)
                 return { data: res.data.data, status: 'success' }
@@ -569,6 +564,4 @@ export default class APIs {
                 return { error: error, status: 'fail' }
             })
     }
-
-
 }
