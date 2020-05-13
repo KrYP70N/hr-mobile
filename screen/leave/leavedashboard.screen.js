@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, SafeAreaView, ScrollView } from 'react-native'
+import { Text, View, SafeAreaView, ScrollView, AsyncStorage } from 'react-native'
 import { Icon, Card, Container, Content, Header, Left, Right } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
@@ -29,7 +29,7 @@ export class Leave extends Component {
                     </View>
 
                     <Content style={{ flex: 1 }}>
-                        <Chart />
+                        <Chart navigation={this.props.navigation}/>
                         <Cards navigation={this.props.navigation} />
                     </Content>
                 </Container>

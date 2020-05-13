@@ -475,15 +475,21 @@ export default class APIs {
 
     // get leave summary
     static getLeaveSummary = (url, auth, id, year) => {
+        console.log("Api Url", url)
+        console.log("Api auth", auth)
+        console.log("Api id", id)
+        console.log("Api year", year)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).post(`${url}/leave/summary/${id}/${year}`)
             .then(function (res) {
+                console.log(res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log("Error", error)
                 return { error: error, status: 'fail' }
             })
     }

@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Text, View, SafeAreaView, Dimensions } from 'react-native'
+import { Text, View, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native'
 import { Container, Content, Icon } from 'native-base'
 import { PieChart } from 'react-native-svg-charts'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
+import styLeave from './leave.style'
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height
 
@@ -45,17 +46,17 @@ export class EmployeeLeaveBalance extends Component {
     render() {
 
         let leaveData = data.map((leave) => {
-            return(
+            return (
                 <View style={{ width: '100%', }}>
-                <View style={{ width: '100%', paddingTop: 10, paddingBottom: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style = {{width: 20, height: 20, borderRadius: 20/2, backgroundColor: leave.color}}></View>
-                        <Text style = {{marginLeft: 10, fontSize: 16, fontFamily: 'Nunito'}}>{leave.title}</Text>
+                    <View style={{ width: '100%', paddingTop: 10, paddingBottom: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ width: 20, height: 20, borderRadius: 20 / 2, backgroundColor: leave.color }}></View>
+                            <Text style={{ marginLeft: 10, fontSize: 16, fontFamily: 'Nunito' }}>{leave.title}</Text>
+                        </View>
+                        <Text style={{ fontSize: 16, fontFamily: 'Nunito-Bold' }}>{leave.value}</Text>
                     </View>
-                    <Text style = {{fontSize: 16, fontFamily: 'Nunito-Bold'}}>{leave.value}</Text>
+                    <View style={{ width: '100%', height: 0.5, backgroundColor: color.placeHolder }} />
                 </View>
-                <View style={{ width: '100%', height: 0.5, backgroundColor: color.placeHolder }} />
-            </View>
             )
         })
 
@@ -71,8 +72,8 @@ export class EmployeeLeaveBalance extends Component {
                 key: `pie-${index}`,
             }))
 
-      
-                
+
+
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container>
@@ -88,22 +89,27 @@ export class EmployeeLeaveBalance extends Component {
                             fontFamily: 'Nunito'
                         }}>Leave Balance</Text>
                     </View>
-                    <View style = {{width: '100%', height: 20, backgroundColor: color.lighter}}></View>
+                    <View style={{ width: '100%', height: 20, backgroundColor: color.lighter }}></View>
                     <Content style={{ flex: 1 }}>
-                        <View style = {{height: 200, width: '100%',justifyContent: 'center'}}>
-                        <PieChart
-                            style={{ height: 150, }} data={pieData}
-                            innerRadius="0.5%"
-                            padAngle={0}
-                        >
-                        </PieChart>
+                        <View style={{ height: 200, width: '100%', justifyContent: 'center' }}>
+                            <PieChart
+                                style={{ height: 150, }} data={pieData}
+                                innerRadius="0.5%"
+                                padAngle={0}
+                            >
+                            </PieChart>
                         </View>
 
                         <View style={{ padding: 20 }}>
                             {leaveData}
                         </View>
-
+                       
                     </Content>
+                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('LeaveRequest') }}>
+                            <View style={{ position: 'absolute', bottom: 0, width: '100%', height: 55, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }} >
+                                <Text style={styLeave.buttonText}>Apply Leave</Text>
+                            </View>
+                        </TouchableOpacity>
                 </Container>
             </SafeAreaView>
         )

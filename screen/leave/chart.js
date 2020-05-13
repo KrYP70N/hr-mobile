@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Text, View, FlatList, Dimensions } from 'react-native'
-import { Icon } from 'native-base'
+import { Text, View, FlatList, Dimensions, AsyncStorage } from 'react-native'
+import { Content, Container, Toast, Icon, Card, CardItem, Body, Button, } from 'native-base'
 import { PieChart } from 'react-native-svg-charts'
 import color from '../../constant/color'
 import offset from '../../constant/color'
+import APIs from '../../controllers/api.controller'
 const width = Dimensions.get('screen').width;
 
 
@@ -72,8 +73,72 @@ const labelData = [
 export class chart extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            auth: null,
+            url: null,
+            id: null,
+            year: null,
+            summaryData: [],
+        }
     }
+
+    componentDidMount(){
+        this.props.navigation.addListener('focus', () => {
+            let date = new Date()
+            this.setState({
+                year: date.getFullYear(),
+            })
+
+            AsyncStorage.getItem('@hr:endPoint')
+                .then((res) => {
+                    let date = new Date()
+                    const currentYear = date.getFullYear()
+                    const url = JSON.parse(res).ApiEndPoint
+                    this.setState({ url: JSON.parse(res).ApiEndPoint })
+                    AsyncStorage.getItem('@hr:token')
+                        .then((res) => {
+                            const auth = JSON.parse(res).key;
+                            const id = JSON.parse(res).id;
+                            this.setState({
+                                auth: JSON.parse(res).key,
+                                id: JSON.parse(res).id
+                            })
+                            this.getSummaryData(auth, id, url, currentYear);
+
+                        })
+                })
+        })
+    }
+
+    getSummaryData(auth, id, url, year) {
+        console.log("Auth", auth)
+        console.log("Url", url)
+        console.log("ID", id)
+        console.log("Year", year)
+        APIs.getLeaveSummary(url, auth, id, year)
+            .then((res) => {
+                if (res.status === 'success') {
+                    console.log("Res data", res.data)
+                    this.setState({
+                        summaryData: res.data
+                    })
+                } else {
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
+                }
+            })
+    }
+
     render() {
+        console.log("Summary Data", this.state.summaryData)
         let pieData = data
             .filter((d) => d.value > 0)
             .map((d, index) => ({
@@ -120,7 +185,7 @@ export class chart extends Component {
                     marginTop: 5,
                          //height: '75%'
                          }}>
-                    <FlatList
+                    {/* <FlatList
                         data={labelData}
                         numColumns={2}
                         renderItem={({ item }) => {
@@ -138,7 +203,7 @@ export class chart extends Component {
 
                         }
                         keyExtractor={(item, index) => index.toString()}
-                    />
+                    /> */}
                     </View>
               
             </View>
