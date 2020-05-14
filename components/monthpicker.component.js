@@ -10,15 +10,23 @@ export default function MonthPicker({show, onClosePress, onGoNext, onGoPrev}) {
 
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
 
+    // next emitter
     const goNext = () => {
-        setDate( moment(date).add(1, 'months') )
+        setDate(moment(date).add(1, 'months'))
         onGoNext({
             month: moment(date).add(1, 'months').format('MM'),
             year: moment(date).add(1, 'months').format('YYYY')
         })
     }
 
-    const goPrev = () => setDate( moment(date).subtract(1, 'months') )
+    // prev emitter
+    const goPrev = () => {
+        setDate(moment(date).subtract(1, 'months'))
+        onGoPrev({
+            month: moment(date).subtract(1, 'months').format('MM'),
+            year: moment(date).subtract(1, 'months').format('YYYY')
+        })
+    }
     
 
     return (

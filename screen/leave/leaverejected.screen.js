@@ -23,18 +23,10 @@ export class EmployeeLeaveRejected extends Component {
     }
 
     // filter next ctrl
-    ctrlNext = ({year, month}) => {
-        this.setState({
-            month: month,
-            year: year
-        })
-    }
+    ctrlNext = ({year, month}) => this.setState({month, year})
 
     // filter prev ctrl
-    ctrlPrev = () => {
-        console.log('prev')
-    }
-
+    ctrlPrev = ({year, month}) => this.setState({month, year})
 
     render() {
         console.log(this.state.year, this.state.month)
@@ -76,6 +68,7 @@ export class EmployeeLeaveRejected extends Component {
                             filter: !this.state.filter
                         })}
                         onGoNext={this.ctrlNext}
+                        onGoPrev={this.ctrlPrev}
                     />
 
                     <StatusCard 
