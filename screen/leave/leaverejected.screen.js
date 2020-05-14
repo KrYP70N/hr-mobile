@@ -9,17 +9,35 @@ import styles from './leave.style'
 // components
 import MonthPicker from '../../components/monthpicker.component'
 import StatusCard from '../../components/statuscard.component'
+import moment from 'moment'
 
 export class EmployeeLeaveRejected extends Component {
     
     constructor (props) {
         super(props)
         this.state = {
-            filter: true
+            filter: true,
+            year: moment().format('YYYY'),
+            month: moment().format('MM')
         }
     }
 
+    // filter next ctrl
+    ctrlNext = ({year, month}) => {
+        this.setState({
+            month: month,
+            year: year
+        })
+    }
+
+    // filter prev ctrl
+    ctrlPrev = () => {
+        console.log('prev')
+    }
+
+
     render() {
+        console.log(this.state.year, this.state.month)
         return (
            <Container>
                 <Header style={{
@@ -57,6 +75,7 @@ export class EmployeeLeaveRejected extends Component {
                         onClosePress={() => this.setState({
                             filter: !this.state.filter
                         })}
+                        onGoNext={this.ctrlNext}
                     />
 
                     <StatusCard 

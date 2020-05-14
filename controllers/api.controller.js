@@ -20,7 +20,6 @@ export default class APIs {
             }
         }).get(`${url}/api/auth/token`)
             .then(function (res) {
-                console.log(res.data)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
@@ -75,7 +74,6 @@ export default class APIs {
 
     // user controller
     static Profile(url, auth, id) {
-        console.log(url, auth, id)
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -298,11 +296,9 @@ export default class APIs {
         }
         )
             .then(function (res) {
-                console.log("API Success RES::", res)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log("API return Error", error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -480,11 +476,9 @@ export default class APIs {
             }
         }).get(`${url}/leave/summary/${id}/${year}`)
             .then(function (res) {
-                console.log(res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log("Error", error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -557,7 +551,6 @@ export default class APIs {
             }
         }).get(`${url}/announcement/${id}?date_start=${startDate}&date_stop=${endDate}`)
             .then(function (res) {
-                //console.log("Announcement Data",res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
