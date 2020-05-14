@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Text, View, Image } from 'react-native'
-import { Left, Right, Icon, Container, Content, Header } from 'native-base'
+import { Text, View, Image, AsyncStorage } from 'react-native'
+import { Left, Right, Icon, Container, Content, Header, Toast } from 'native-base'
 
 import color from '../../constant/color'
 import offset from '../../constant/offset'
@@ -10,16 +10,93 @@ import styles from './leave.style'
 import MonthPicker from '../../components/monthpicker.component'
 import StatusCard from '../../components/statuscard.component'
 
+import APIs from '../../controllers/api.controller'
+
 export class EmployeeLeaveRejected extends Component {
     
     constructor (props) {
         super(props)
         this.state = {
+            auth: null,
+            url: null,
+            id: null,
+            year: null,
+            month: null,
+            leaveRejectedList: [],
             filter: true
         }
     }
 
+    componentDidMount() {
+        this.props.navigation.addListener('focus', () => {
+            let date = new Date()
+            this.setState({
+                year: date.getFullYear(),
+                month: `${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}`,
+            })
+
+            AsyncStorage.getItem('@hr:endPoint')
+                .then((res) => {
+                    let date = new Date()
+                    let currentYear = date.getFullYear()
+                    let currentMonth = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)
+                    const url = JSON.parse(res).ApiEndPoint
+                    this.setState({ url: JSON.parse(res).ApiEndPoint })
+                    AsyncStorage.getItem('@hr:token')
+                        .then((res) => {
+                            const auth = JSON.parse(res).key;
+                            const id = JSON.parse(res).id;
+                            this.setState({
+                                auth: JSON.parse(res).key,
+                                id: JSON.parse(res).id
+                            })
+                            this.getLeaveRejectedList(auth, id, url, currentYear, currentMonth);
+
+                        })
+                })
+        })
+    }
+
+    getLeaveRejectedList(auth, id, url, year, month) {
+        APIs.getLeaveRejectedList(url, auth, id, year, month)
+            .then((res) => {
+                if (res.status === 'success') {
+                    console.log("Leave Data", res.data)
+                    this.setState({
+                        leaveRejectedList: res.data
+                    })
+                } else {
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
+                }
+            })
+    }
+
+    onChangeDate(clickedDate){
+        console.log("Clicked Date", clickedDate)
+    }
+
     render() {
+        console.log("Rejected Leave List", this.state.leaveRejectedList)
+        let statusData =  this.state.leaveRejectedList.map((reject, index) => {
+            return(
+                <StatusCard
+                key = {index}
+                leaveType={reject.Leave_Type}
+                date={`${reject.date_from} to ${reject.date_to}`}
+                status={reject.state}
+            />
+            )
+        })
+
         return (
            <Container>
                 <Header style={{
@@ -57,23 +134,10 @@ export class EmployeeLeaveRejected extends Component {
                         onClosePress={() => this.setState({
                             filter: !this.state.filter
                         })}
+                        onChangeDate = {this.onChangeDate(clickedDate)}
                     />
-
-                    <StatusCard 
-                        leaveType="Casual Leave"
-                        date="07 Nov 2019 to 09 Nov 2019"
-                        status="Rejected"
-                    />
-                    <StatusCard 
-                        leaveType="Medical Leave"
-                        date="07 Nov 2019 to 09 Nov 2019"
-                        status="Rejected"
-                    />
-                    <StatusCard 
-                        leaveType="Annual Leave"
-                        date="07 Nov 2019 to 09 Nov 2019"
-                        status="Rejected"
-                    />
+                    
+                    {statusData}
                 </Content>
            </Container>
         )

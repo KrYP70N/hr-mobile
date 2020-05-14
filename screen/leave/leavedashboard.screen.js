@@ -5,11 +5,61 @@ import color from '../../constant/color'
 import offset from '../../constant/offset'
 import Cards from '../leave/cards'
 import Chart from '../leave/chart'
+import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
 
 export class Leave extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            url: null,
+            auth: null,
+            id: null,
+            summaryData: [],
+            loading: false,
+        }
     }
+
+    // componentDidMount() {
+    //     this.props.navigation.addListener('focus', () => {
+    //         let date = new Date()
+    //         this.setState({
+    //             year: date.getFullYear(),
+    //         })
+
+    //         AsyncStorage.getItem('@hr:endPoint')
+    //             .then((res) => {
+    //                 let date = new Date()
+    //                 const currentYear = date.getFullYear()
+    //                 const url = JSON.parse(res).ApiEndPoint
+    //                 this.setState({ url: JSON.parse(res).ApiEndPoint })
+    //                 AsyncStorage.getItem('@hr:token')
+    //                     .then((res) => {
+    //                         const auth = JSON.parse(res).key;
+    //                         const id = JSON.parse(res).id;
+    //                         this.setState({
+    //                             auth: JSON.parse(res).key,
+    //                             id: JSON.parse(res).id
+    //                         })
+    //                         this.getSummaryData(auth, id, url, currentYear);
+
+    //                     })
+    //             })
+    //     })
+    // }
+
+    // getSummaryData(auth, id, url, year) {
+    //     APIs.getLeaveSummary(url, auth, id, year)
+    //         .then((res) => {
+    //             if (res.status === 'success') {
+    //                 this.setState({
+    //                     summaryData: res.data
+    //                 })
+    //             } else {
+                  
+    //             }
+    //         })
+    // }
 
     render() {
         return (
