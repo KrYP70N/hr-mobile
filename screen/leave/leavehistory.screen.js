@@ -11,6 +11,7 @@ import MonthPicker from '../../components/monthpicker.component'
 import StatusCard from '../../components/statuscard.component'
 
 import APIs from '../../controllers/api.controller'
+import moment from 'moment'
 
 export class EmployeeLeaveHistory extends Component {
 
@@ -20,8 +21,8 @@ export class EmployeeLeaveHistory extends Component {
             auth: null,
             url: null,
             id: null,
-            year: null,
-            month: null,
+            year: moment().format('YYYY'),
+            month: moment().format('MM'),
             leaveHistoryLists: [],
             filter: true
         }
@@ -29,17 +30,8 @@ export class EmployeeLeaveHistory extends Component {
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
-            let date = new Date()
-            this.setState({
-                year: date.getFullYear(),
-                month: `${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}`,
-            })
-
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
-                    let date = new Date()
-                    let currentYear = date.getFullYear()
-                    let currentMonth = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)
                     const url = JSON.parse(res).ApiEndPoint
                     this.setState({ url: JSON.parse(res).ApiEndPoint })
                     AsyncStorage.getItem('@hr:token')
@@ -50,7 +42,7 @@ export class EmployeeLeaveHistory extends Component {
                                 auth: JSON.parse(res).key,
                                 id: JSON.parse(res).id
                             })
-                            this.getLeaveHistory(auth, id, url, currentYear, currentMonth);
+                            this.getLeaveHistory(auth, id, url, this.state.year, this.state.month);
                         })
                 })
         })
@@ -77,6 +69,20 @@ export class EmployeeLeaveHistory extends Component {
                     })
                 }
             })
+    }
+
+    // filter next ctrl
+    ctrlNext = ({ year, month }) => {
+        this.setState({ month, year })
+        this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, year, month)
+
+    }
+
+    // filter prev ctrl
+    ctrlPrev = ({ year, month }) => {
+        this.setState({ month, year })
+        this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, year, month)
+
     }
 
     render() {
@@ -129,6 +135,8 @@ export class EmployeeLeaveHistory extends Component {
                         onClosePress={() => this.setState({
                             filter: !this.state.filter
                         })}
+                        onGoNext={this.ctrlNext}
+                        onGoPrev={this.ctrlPrev}
                     />
                     {statusData}
                 </Content>

@@ -9,31 +9,34 @@ import styles from './leave.style'
 // components
 import MonthPicker from '../../components/monthpicker.component'
 import StatusCard from '../../components/statuscard.component'
+import moment from 'moment'
 
 import APIs from '../../controllers/api.controller'
 
 export class EmployeeLeaveRejected extends Component {
-    
-    constructor (props) {
+
+    constructor(props) {
         super(props)
         this.state = {
             auth: null,
             url: null,
             id: null,
-            year: null,
-            month: null,
+            // year: null,
+            // month: null,
             leaveRejectedList: [],
-            filter: true
+            filter: true,
+            year: moment().format('YYYY'),
+            month: moment().format('MM')
         }
     }
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
-            let date = new Date()
-            this.setState({
-                year: date.getFullYear(),
-                month: `${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}`,
-            })
+            //let date = new Date()
+            // this.setState({
+            //     year: date.getFullYear(),
+            //     month: `${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}`,
+            // })
 
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
@@ -50,7 +53,7 @@ export class EmployeeLeaveRejected extends Component {
                                 auth: JSON.parse(res).key,
                                 id: JSON.parse(res).id
                             })
-                            this.getLeaveRejectedList(auth, id, url, currentYear, currentMonth);
+                            this.getLeaveRejectedList(auth, id, url, this.state.year, this.state.month);
 
                         })
                 })
@@ -80,66 +83,98 @@ export class EmployeeLeaveRejected extends Component {
             })
     }
 
-    onChangeDate(clickedDate){
+    onChangeDate(clickedDate) {
         console.log("Clicked Date", clickedDate)
     }
 
+    // render() {
+    //     console.log("Rejected Leave List", this.state.leaveRejectedList)
+    //     let statusData =  this.state.leaveRejectedList.map((reject, index) => {
+    //         return(
+    //             <StatusCard
+    //             key = {index}
+    //             leaveType={reject.Leave_Type}
+    //             date={`${reject.date_from} to ${reject.date_to}`}
+    //             status={reject.state}
+    //         />
+    //         )
+    //     })
+
+    //     }
+    // }
+
+    // filter next ctrl
+    ctrlNext = ({ year, month }) => {
+        this.setState({ month, year })
+        this.getLeaveRejectedList(this.state.auth, this.state.id, this.state.url, year, month)
+
+    }
+
+    // filter prev ctrl
+    ctrlPrev = ({ year, month }) => {
+        this.setState({ month, year })
+        this.getLeaveRejectedList(this.state.auth, this.state.id, this.state.url, year, month)
+
+    }
+
     render() {
-        console.log("Rejected Leave List", this.state.leaveRejectedList)
-        let statusData =  this.state.leaveRejectedList.map((reject, index) => {
-            return(
+        console.log(this.state.year, this.state.month)
+        let statusData = this.state.leaveRejectedList.map((reject, index) => {
+            return (
                 <StatusCard
-                key = {index}
-                leaveType={reject.Leave_Type}
-                date={`${reject.date_from} to ${reject.date_to}`}
-                status={reject.state}
-            />
+                    key={index}
+                    leaveType={reject.Leave_Type}
+                    date={`${reject.date_from} to ${reject.date_to}`}
+                    status={reject.state}
+                />
             )
         })
 
-        return (
-           <Container>
-                <Header style={{
-                    backgroundColor: color.light,
-                }}>
-                    <Left style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center'
-                    }}>
-                        <Icon name='ios-arrow-round-back' style={{
-                            fontSize: offset.o4,
-                            color: color.primary,
-                            marginRight: offset.o2
-                        }} onPress={() => { this.props.navigation.navigate('Leave') }} />
-                        <Text style={{
-                            color: color.secondary,
-                            fontFamily: 'Nunito'
-                        }}>Rejected</Text>
-                    </Left>
-                    <Right>
-                        <Icon 
-                        name="ios-options" 
-                        onPress={() => {
-                            this.setState({
-                                filter: !this.state.filter
-                            })
-                        }}
-                        />
-                    </Right>
-                </Header>
-                <Content style={styles.pdContainer}>
-                    <MonthPicker 
-                        show={this.state.filter}
-                        onClosePress={() => this.setState({
-                            filter: !this.state.filter
-                        })}
-                        onChangeDate = {this.onChangeDate(clickedDate)}
-                    />
-                    
-                    {statusData}
-                </Content>
-           </Container>
+    
+    return(
+            <Container>
+    <Header style={{
+        backgroundColor: color.light,
+    }}>
+        <Left style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center'
+        }}>
+            <Icon name='ios-arrow-round-back' style={{
+                fontSize: offset.o4,
+                color: color.primary,
+                marginRight: offset.o2
+            }} onPress={() => { this.props.navigation.navigate('Leave') }} />
+            <Text style={{
+                color: color.secondary,
+                fontFamily: 'Nunito'
+            }}>Rejected</Text>
+        </Left>
+        <Right>
+            <Icon
+                name="ios-options"
+                onPress={() => {
+                    this.setState({
+                        filter: !this.state.filter
+                    })
+                }}
+            />
+        </Right>
+    </Header>
+    <Content style={styles.pdContainer}>
+        <MonthPicker
+            show={this.state.filter}
+            onClosePress={() => this.setState({
+                filter: !this.state.filter
+            })}
+            onGoNext={this.ctrlNext}
+            onGoPrev={this.ctrlPrev}
+        />
+
+        {statusData}
+    </Content>
+            </Container >
         )
     }
 }

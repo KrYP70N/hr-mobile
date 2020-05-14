@@ -6,17 +6,28 @@ import { View, Text, Icon, Row, Col } from 'native-base'
 import colors from '../constant/color'
 import moment from 'moment'
 
-export default function MonthPicker({ show, onClosePress, onChangeDate }) {
+export default function MonthPicker({show, onClosePress, onGoNext, onGoPrev}) {
 
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
 
+    // next emitter
     const goNext = () => {
         setDate(moment(date).add(1, 'months'))
-        onChangeDate(moment().format('YYYY'))
+        onGoNext({
+            month: moment(date).add(1, 'months').format('MM'),
+            year: moment(date).add(1, 'months').format('YYYY')
+        })
     }
 
-    const goPrev = () => setDate(moment(date).subtract(1, 'months'))
-
+    // prev emitter
+    const goPrev = () => {
+        setDate(moment(date).subtract(1, 'months'))
+        onGoPrev({
+            month: moment(date).subtract(1, 'months').format('MM'),
+            year: moment(date).subtract(1, 'months').format('YYYY')
+        })
+    }
+    
 
     return (
         <View style={[styles.container, {
@@ -104,6 +115,7 @@ const styles = StyleSheet.create({
 MonthPicker.propTypes = {
     show: PropTypes.bool.isRequired,
     onClosePress: PropTypes.func.isRequired,
-    onChangeDate: PropTypes.func.isRequired,
+    onGoNext: PropTypes.func,
+    onGoPrev: PropTypes.func
 }
 

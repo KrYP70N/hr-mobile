@@ -20,7 +20,6 @@ export default class APIs {
             }
         }).get(`${url}/api/auth/token`)
             .then(function (res) {
-                console.log(res.data)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
@@ -75,7 +74,6 @@ export default class APIs {
 
     // user controller
     static Profile(url, auth, id) {
-        console.log(url)
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -290,7 +288,6 @@ export default class APIs {
             }
         }
 
-
         return axios.post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`,
             file.length === 0 ? null : fd, {
             headers: {
@@ -299,11 +296,9 @@ export default class APIs {
         }
         )
             .then(function (res) {
-                console.log("API Success RES::", res)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log("API return Error", error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -509,7 +504,22 @@ export default class APIs {
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log("Error", error)
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    //get leave approve list (for employee)
+    static getLeaveApprovedList = (url, auth, id, year,month) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/list/approved/leaves/${id}/${year}/${month}`)
+            .then(function (res) {
+                console.log("Api Leave Approved Data", res.data.data)
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
                 return { error: error, status: 'fail' }
             })
     }
@@ -582,13 +592,10 @@ export default class APIs {
             }
         }).get(`${url}/announcement/${id}?date_start=${startDate}&date_stop=${endDate}`)
             .then(function (res) {
-                //console.log("Announcement Data",res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
             })
     }
-
-
 }
