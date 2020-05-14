@@ -6,7 +6,14 @@ import { View, Text, Icon, Row, Col } from 'native-base'
 import colors  from '../constant/color'
 import moment from 'moment'
 
-export default function MonthPicker({show, onClosePress, onGoNext, onGoPrev}) {
+export default function MonthPicker({
+    options,
+    show, 
+    onClosePress, 
+    onGoNext, 
+    onGoPrev,
+    onChangeValue
+    }) {
 
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
 
@@ -17,6 +24,8 @@ export default function MonthPicker({show, onClosePress, onGoNext, onGoPrev}) {
             month: moment(date).add(1, 'months').format('MM'),
             year: moment(date).add(1, 'months').format('YYYY')
         })
+        // emit value change dom
+        onChangeValue(date)
     }
 
     // prev emitter
@@ -26,8 +35,11 @@ export default function MonthPicker({show, onClosePress, onGoNext, onGoPrev}) {
             month: moment(date).subtract(1, 'months').format('MM'),
             year: moment(date).subtract(1, 'months').format('YYYY')
         })
+        // emit value change dom
+        onChangeValue(date)
     }
-    
+
+    // selector
 
     return (
         <View style={[styles.container, {
@@ -65,6 +77,9 @@ export default function MonthPicker({show, onClosePress, onGoNext, onGoPrev}) {
                         </TouchableOpacity>
                     </Col>
                 </Row>
+                <View>
+                    <Text>Dolore incididunt voluptate reprehenderit irure eu enim exercitation Lorem est deserunt adipisicing fugiat exercitation.</Text>
+                </View>
             </View>
         </View>
     )
@@ -116,6 +131,8 @@ MonthPicker.propTypes = {
     show: PropTypes.bool.isRequired,
     onClosePress: PropTypes.func.isRequired,
     onGoNext: PropTypes.func,
-    onGoPrev: PropTypes.func
+    onGoPrev: PropTypes.func,
+    onChangeValue: PropTypes.func,
+    options: PropTypes.array
 }
 

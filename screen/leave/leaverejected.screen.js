@@ -70,7 +70,6 @@ export class EmployeeLeaveRejected extends Component {
                         onGoNext={this.ctrlNext}
                         onGoPrev={this.ctrlPrev}
                     />
-
                     <StatusCard 
                         leaveType="Casual Leave"
                         date="07 Nov 2019 to 09 Nov 2019"
