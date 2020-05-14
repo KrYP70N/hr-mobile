@@ -61,9 +61,7 @@ export default StyleSheet.create({
         textAlign: 'right'
     },
     checkinout: {
-        marginTop: -offset.o4,
-        marginLeft: 15,
-        marginRight: 15,
+        marginTop: -offset.o4
     },
     checkCard: {
         height: 120
@@ -127,21 +125,5 @@ export default StyleSheet.create({
     },
     menuTxt: {
         ...typo.textSmall,
-    },
-    card: {
-        minHeight: 150,
-        padding: offset.o3,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      },
-      icon: {
-        width: 35,
-        height: 35,
-        marginBottom: offset.o1
-      },
-      cardHolder: {
-        borderRadius: 5,
-        overflow: 'hidden'
-      },
+    }
 })

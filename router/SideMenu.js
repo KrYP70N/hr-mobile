@@ -10,10 +10,6 @@ export class SideMenu extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <TouchableOpacity style={styNav.item} onPress={() => { this.props.navigation.navigate('Dashboard') }}>
-          <Image source={require('../assets/icon/dashboard.png')} style={styNav.image} />
-          <Text>Dashboard</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styNav.item} onPress={() => { this.props.navigation.navigate('Profile') }}>
           <Image source={require('../assets/icon/user-icn.png')} style={styNav.image} />
           <Text>Profile</Text>
@@ -33,10 +29,6 @@ export class SideMenu extends Component {
         <TouchableOpacity style={styNav.item} onPress={() => { this.props.navigation.navigate('Payroll') }}>
           <Image source={require('../assets/icon/payroll.png')} style={styNav.image3} />
           <Text>Payroll</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styNav.item} onPress={() => { this.props.navigation.navigate('NoticeBoard') }}>
-          <Image source={require('../assets/icon/noticeboard-2.png')} style={styNav.image4} />
-          <Text>Announcement</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styNav.item} onPress={() => {
           AsyncStorage.removeItem('@hr:token')

@@ -17,34 +17,34 @@ export default class Clock extends Component {
         }
     }
 
-    componentDidMount() {
+    componentDidMount () {
         AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+            let endPoint = DB.getEndPoint(res)
+            AsyncStorage.getItem('@hr:token')
             .then((res) => {
-                let endPoint = DB.getEndPoint(res)
-                AsyncStorage.getItem('@hr:token')
-                    .then((res) => {
-                        let key = DB.getToken(res)
-
-                        // request time
-                        APIs.Time(endPoint, key)
-                            .then((response) => {
-                                if (response.status === 'success') {
-                                    this.setState({
-                                        time: Moment(response.data)
-                                    })
-                                } else {
-                                }
-                            })
-                            .catch((error) => {
-                                this.props.navigation.navigate('Login')
-                            })
-                    })
+                let key = DB.getToken(res)
+                
+                // request time
+                APIs.Time(endPoint, key)
+                .then((response) => {
+                    if(response.status === 'success') {
+                        this.setState({
+                            time: Moment(response.data)
+                        })
+                    } else {
+                    }
+                })
+                .catch((error) => {
+                    this.props.navigation.navigate('Login')
+                })
             })
+        })
     }
 
-    componentDidUpdate() {
-        // time request
-        if (this.state.time !== null) {
+    componentDidUpdate () {
+         // time request
+         if(this.state.time !== null) {
             let t = new Date(this.state.time)
             setTimeout(() => {
                 this.setState({
@@ -54,42 +54,29 @@ export default class Clock extends Component {
         }
     }
 
-    render() {
+    render () {
         let time = this.state.time
 
-        if (this.state.time !== null) {
-            if (this.props.view === 'split') {
+        if(this.state.time !== null) {
+            if(this.props.view === 'split' ) {
                 return (
                     <View style={{
                         display: 'flex',
                         alignItems: 'center'
                     }}>
                         <Text style={this.props.monthStyle ? this.props.monthStyle : null}>{Time.date(time)} {Time.month(time)} {Time.year(time)}</Text>
-                        <Text style={[this.props.style, { textAlign: 'center' }]}>{Time.hour(time)}:{Time.minute(time)}:{Time.second(time)} {Time.part(time)}</Text>
+                        <Text style={[this.props.style, {textAlign: 'center'}]}>{Time.hour(time)}:{Time.minute(time)}:{Time.second(time)} {Time.part(time)}</Text>
                     </View>
                 )
             } else {
-                if (this.props.checkScreen === "checkinout") {
-                    return (
-                        <View style = {{width: '100%', alignItems: 'center'}}>
-                            <Text style={{ marginTop: 10, fontSize: 30, color: color.primary, fontWeight: 'bold' }}>
-                                {Time.hour(time)}:{Time.minute(time)}:{Time.second(time)} {Time.part(time)}
-                            </Text>
-                            <Text style={{ marginTop: 10, fontSize: 18, }}>{Time.day(time)}, {Time.date(time)} {Time.month(time)} {Time.year(time)}</Text>
-                        </View>
-
-                    )
-                } else {
-                    return (
-                        <Text style={this.props.style}>
-                            {Time.hour(time)}:{Time.minute(time)}:{Time.second(time)} {Time.part(time)} {Time.day(time)}, {Time.date(time)} {Time.month(time)} {Time.year(time)}
-                        </Text>
-                    )
-                }
-
+                return (
+                    <Text style={this.props.style}>
+                        {Time.hour(time)}:{Time.minute(time)}:{Time.second(time)} {Time.part(time)} {Time.day(time)}, {Time.date(time)} {Time.month(time)} {Time.year(time)}
+                    </Text>
+                )
             }
         }
-
+        
         return (
             <Text style={[this.props.style, {
                 width: '100%',
@@ -97,6 +84,6 @@ export default class Clock extends Component {
                 textAlign: 'center'
             }]}>...</Text>
         )
-
+        
     }
 }

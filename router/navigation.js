@@ -14,28 +14,18 @@ import { View, Text, Button, Icon } from 'native-base';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import { NavigationActions } from 'react-navigation';
 
+import Auth from '../screen/auth/auth.screen'
 import Login from '../screen/login/login.screen'
-import Dashboard from '../screen/dashboard/dashboard.screen'
 import Main from '../screen/main/main.screen'
 import ProfileScreen from '../screen/profile/profile.screen'
 import Attendance from '../screen/attendance/attendance.screen'
 import Overtime from '../screen/overtime/overtime.screen'
 import Payroll from '../screen/payroll/payroll.screen'
 import PayrollDetail from '../screen/payroll/pryroll.detail.screen'
-import Leave from '../screen/leave/leavedashboard.screen'
-import LeaveRequest from '../screen/leave/leaverequest.screen'
+import Leave from '../screen/leave/leave.screen'
 import LeaveApprove from '../screen/leave/_approve.screen';
-import EmpLeaveApproved from '../screen/leave/leaveapproved.screen';
-import EmployeeLeaveRejected from '../screen/leave/leaverejected.screen'
-import EmployeeLeaveHistory from '../screen/leave/leavehistory.screen'
-import EmployeeLeaveBalance from '../screen/leave/leavebalance.screen'
-import EmployeeLeavePending from '../screen/leave/leavepending.screen'
 import OvertimeApprove from '../screen/overtime/_approve.screen';
-import NoticeBoard from '../screen/noticeboard/noticeboard.screen';
-import NotiboardDetail from '../screen/noticeboard/detail.screen';
 import SideMenu from '../router/SideMenu';
-import CheckIn from '../screen/checkinout/checkin.screen';
-import CheckOut from  '../screen/checkinout/checkout.screen';
 
 import styNav from './navigation.style'
 
@@ -77,7 +67,6 @@ function Navigation() {
             edgeWidth: 0
           }}
         />
-        <Drawer.Screen name='Dashboard' component={Dashboard} />
         <Drawer.Screen name='Main' component={Main} />
         <Drawer.Screen name='Profile' component={ProfileScreen} />
         <Drawer.Screen name='Attendance' component={Attendance} />
@@ -85,18 +74,8 @@ function Navigation() {
         <Drawer.Screen name='Payroll' component={Payroll} />
         <Drawer.Screen name='PayrollDetail' component={PayrollDetail} />
         <Drawer.Screen name='Leave' component={Leave} />
-        <Drawer.Screen name='LeaveRequest' component={LeaveRequest} />
         <Drawer.Screen name='LeaveApprove' component={LeaveApprove}/>
-        <Drawer.Screen name='EmployeeLeaveApproved' component={EmpLeaveApproved}/>
-        <Drawer.Screen name='EmployeeLeaveRejected' component={EmployeeLeaveRejected}/>
-        <Drawer.Screen name='EmployeeLeaveHistory' component={EmployeeLeaveHistory}/>
-        <Drawer.Screen name='EmployeeLeaveBalance' component={EmployeeLeaveBalance}/>
-        <Drawer.Screen name='EmployeeLeavePending' component={EmployeeLeavePending}/>
-        <Drawer.Screen name='NoticeBoard' component={NoticeBoard}/>
-        <Drawer.Screen name='NotiboardDetail' component={NotiboardDetail}/>
         <Drawer.Screen name='OvertimeApprove' component={OvertimeApprove}/>
-        <Drawer.Screen name='CheckIn' component={CheckIn}/>
-        <Drawer.Screen name='CheckOut' component={CheckOut}/>
       </Drawer.Navigator>
     </NavigationContainer>
   )

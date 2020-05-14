@@ -7,17 +7,13 @@ import * as IntentLauncher from 'expo-intent-launcher'
 import * as geolib from 'geolib';
 
 
-import { StyleSheet, Image, AsyncStorage, TouchableOpacity, Platform, Dimensions } from 'react-native'
+import { StyleSheet, Image, AsyncStorage, TouchableOpacity } from 'react-native'
 import { Text, Row, Col, Card, Body, View, Toast } from 'native-base'
 import offset from '../constant/offset'
 // import { TouchableOpacity } from 'react-native-gesture-handler'
 import color from '../constant/color';
 import typography from '../constant/typography';
-import APIs from '../controllers/api.controller';
-import Modal from 'react-native-modal';
-const height = Dimensions.get('screen').height;
-const width = Dimensions.get('screen').width;
-
+import APIs from '../controllers/api.controller'
 
 export default class CheckInOut extends Component {
 
@@ -34,11 +30,185 @@ export default class CheckInOut extends Component {
       officeCoord: null,
       radius: null,
       withinRadius: 'wait',
-      status: null,
-      isModalVisible: false,
-      checkMessage: '',
+      status: null
     }
-   
+    // check in control
+    this.CheckIn = () => {
+
+      const fun = () => {
+        if (this.state.geofencing) {
+          // geo true
+          APIs.Checkin(this.state.url, this.state.auth, this.state.id, {
+            lat: this.state.location['latitude'],
+            long: this.state.location['longitude']
+          }).then((res) => {
+            if (res.status === 'success') {
+              Toast.show({
+                text: 'Success check in!',
+                textStyle: {
+                  textAlign: 'center'
+                },
+                style: {
+                  backgroundColor: color.primary
+                }
+              })
+            } else {
+              Toast.show({
+                text: 'You already check in!',
+                textStyle: {
+                  textAlign: 'center'
+                },
+                style: {
+                  backgroundColor: color.primary
+                }
+              })
+            }
+            this.CheckStatus()
+          })
+            .catch((error) => {
+              this.props.navigation.navigate('Login')
+            })
+        } else {
+          // geo false
+          APIs.Checkin(this.state.url, this.state.auth, this.state.id)
+            .then((res) => {
+              if (res.status === 'success') {
+                Toast.show({
+                  text: 'Success check in!',
+                  textStyle: {
+                    textAlign: 'center'
+                  },
+                  style: {
+                    backgroundColor: color.primary
+                  }
+                })
+                this.CheckStatus()
+              } else {
+                Toast.show({
+                  text: 'You already check in!',
+                  textStyle: {
+                    textAlign: 'center'
+                  },
+                  style: {
+                    backgroundColor: color.primary
+                  }
+                })
+              }
+              this.CheckStatus()
+            })
+            .catch((error) => {
+              this.props.navigation.navigate('Login')
+            })
+        }
+      }
+
+      if (this.state.status.Multiple_checkinout === true) {
+        fun()
+      } else {
+        if (this.state.status.Checkin !== true) {
+          fun()
+        } else {
+          Toast.show({
+            text: "You're already checked in!",
+            textStyle: {
+              textAlign: 'center'
+            },
+            style: {
+              backgroundColor: color.primary
+            },
+            duration: 6000
+          })
+        }
+      }
+
+    }
+    // checkout control
+    this.CheckOut = () => {
+      const fun = () => {
+        if (this.state.geofencing) {
+          // geo true
+          APIs.Checkout(this.state.url, this.state.auth, this.state.id, {
+            lat: this.state.location['latitude'],
+            long: this.state.location['longitude']
+          }).then((res) => {
+            if (res.status === 'success') {
+              Toast.show({
+                text: 'Success check out!',
+                textStyle: {
+                  textAlign: 'center'
+                },
+                style: {
+                  backgroundColor: color.primary
+                }
+              })
+            } else {
+              Toast.show({
+                text: 'You already check out!',
+                textStyle: {
+                  textAlign: 'center'
+                },
+                style: {
+                  backgroundColor: color.danger
+                }
+              })
+            }
+
+            this.CheckStatus()
+          })
+            .catch((error) => {
+              this.props.navigation.navigate('Login')
+            })
+        } else {
+          // geo false
+          APIs.Checkout(this.state.url, this.state.auth, this.state.id)
+            .then((res) => {
+              if (res.status === 'success') {
+                Toast.show({
+                  text: 'Success check out!',
+                  textStyle: {
+                    textAlign: 'center'
+                  },
+                  style: {
+                    backgroundColor: color.primary
+                  }
+                })
+              } else {
+                Toast.show({
+                  text: 'You already check out!',
+                  textStyle: {
+                    textAlign: 'center'
+                  },
+                  style: {
+                    backgroundColor: color.danger
+                  }
+                })
+              }
+              this.CheckStatus()
+            })
+            .catch((error) => {
+              this.props.navigation.navigate('Login')
+            })
+        }
+      }
+      if (this.state.status.Multiple_checkinout === true) {
+        fun()
+      } else {
+        if (this.state.status.Checkout !== true) {
+          fun()
+          Toast.show({
+            text: "You're already checked out!",
+            textStyle: {
+              textAlign: 'center'
+            },
+            style: {
+              backgroundColor: color.primary
+            },
+            duration: 6000
+          })
+        }
+      }
+    }
+
     // check status 
     this.CheckStatus = () => {
       APIs.CheckStatus(this.state.id, this.state.auth, this.state.url)
@@ -152,7 +322,6 @@ export default class CheckInOut extends Component {
   }
 
   render() {
-
     // locatoin update
     if (this.state.locError) {
       return (
@@ -211,68 +380,54 @@ export default class CheckInOut extends Component {
     }
 
     return (
-      <View style={{ flex: 1 }}>
-        <Card style={styles.cardHolder}>
+      <Row style={styles.cardRow}>
 
-          <View style={styles.card}>
-            <Image
-              source={require('../assets/icon/checktime.png')}
-              style={[styles.icon]}
-            />
-            <Text style={{ color: color.primary, fontSize: 18 }}>Get your Attendance!</Text>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: "space-between",
-              width: '100%',
-              marginTop: 10,
+        {/* check in */}
+        <Col style={styles.left}>
+          <Card style={styles.cardHolder}>
+            <TouchableOpacity onPress={() => {
+              this.CheckIn()
             }}>
-              <TouchableOpacity onPress={() => {
-                this.props.navigation.navigate('CheckIn')
-                //this.CheckInOut()
-              }}>
-                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width/3, height: (width/3) - 30, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
+              <View style={styles.card}>
+                <Image
+                  source={require('../assets/icon/checktime.png')}
+                  style={[styles.icon, {
+                    opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
+                  }]}
+                />
+                <Text
+                  style={{
+                    opacity: this.state.status.Checkin === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
+                    fontFamily: 'Nunito-Bold',
+                    fontSize: 16
+                  }}
+                >Check In</Text>
+              </View>
+            </TouchableOpacity>
+          </Card>
+        </Col>
+
+        {/* check out */}
+        <Col style={styles.right}>
+            <Card style={styles.cardHolder}>
+              <TouchableOpacity onPress={() => this.CheckOut()}>
+                <View style={styles.card}>
                   <Image
-                    source={require('../assets/icon/checkin.png')}
-                    style={{ width: 50, height: 40 }}
+                    source={require('../assets/icon/checktime.png')}
+                    style={[styles.icon, {
+                      opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1
+                    }]}
                   />
-                  <Text style={{ color: '#fff', marginTop: 5 }}>Check In</Text>
+                  <Text style={{
+                    opacity: this.state.status.Checkout === true && this.state.status.Multiple_checkinout === false ? 0.5 : 1,
+                    fontFamily: 'Nunito-Bold',
+                    fontSize: 16
+                  }}>Check Out</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {
-                this.props.navigation.navigate('CheckOut')
-                //this.CheckInOut()
-              }}>
-                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width/3, height: (width/3) - 30, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
-                  <Image
-                    source={require('../assets/icon/checkout.png')}
-                    style={{ width: 50, height: 40 }}
-                  />
-                  <Text style={{ color: '#fff', marginTop: 5 }}>Check Out</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-        </Card>
-        <Modal isVisible={this.state.isModalVisible} >
-          <View style={styles.ModelViewContainer}>
-            <View style={styles.iconView}>
-              <Image source={require('../assets/icon/checktime.png')} style={styles.dialogIcon} />
-            </View>
-            <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
-            <View style={styles.ModalTextContainer}>
-              <TouchableOpacity style={styles.CancelOpacityContainer}
-                onPress={() => this.setState({ isModalVisible: false })} >
-                <Text style={styles.modalTextStyle} >
-                  {'Close'}
-                </Text>
-              </TouchableOpacity>
-
-            </View>
-
-          </View>
-        </Modal>
-      </View>
+            </Card>
+        </Col>
+      </Row>
     )
   }
 }
@@ -294,8 +449,8 @@ let styles = StyleSheet.create({
     overflow: 'hidden'
   },
   card: {
-    minHeight: 150,
-    padding: offset.o2,
+    minHeight: 120,
+    padding: offset.o3,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
@@ -325,48 +480,6 @@ let styles = StyleSheet.create({
     width: 64,
     height: 64,
     marginBottom: offset.o2
-  },
-  ModelViewContainer: {
-    width: width + 30,
-    height: 200,
-    backgroundColor: '#f2f2f2',
-    alignItems: 'center',
-    position: 'absolute',
-    marginLeft: -30,
-    bottom: Platform.OS === 'ios' ? 15 : -20,
-  },
-  lanTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 15,
-    textAlign: 'center',
-    marginBottom: 5,
-  },
-  lanTitleMM: {
-    fontSize: 14,
-    marginTop: 15,
-    textAlign: 'center',
-    marginBottom: 5,
-  },
-  ModalTextContainer: { width: '100%', flex: 1, position: 'absolute', bottom: 0 },
-  CancelOpacityContainer: {
-    width: '100%',
-    height: 50,
-    backgroundColor: color.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalTextStyle: { color: '#fff', textAlign: 'center', },
-  iconView: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  dialogIcon: {
-    width: 28,
-    height: 28,
-    marginBottom: offset.o1,
-    marginTop: offset.o2,
   }
-
 })
 

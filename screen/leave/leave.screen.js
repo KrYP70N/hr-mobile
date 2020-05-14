@@ -12,7 +12,7 @@ import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 import styLeave from './leave.style'
 
-export default class Leave extends Component {
+export default class TabViewExample extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -496,7 +496,6 @@ export default class Leave extends Component {
                     </Left>
                     <Right></Right>
                 </Header>
-                
                 <TabView
                     navigationState={this.state}
                     renderScene={this._renderScene}

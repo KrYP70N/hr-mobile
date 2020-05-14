@@ -197,7 +197,7 @@ export default class Main extends Component {
           </TouchableOpacity>
 
           {/* check in/out */}
-         <View style={styMain.checkinout}>
+          <View style={styMain.checkinout}>
             <CheckInOut navigation={this.props.navigation} />
           </View>
 

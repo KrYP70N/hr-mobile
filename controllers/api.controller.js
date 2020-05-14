@@ -58,12 +58,12 @@ export default class APIs {
     }
 
     // time controller
-    static Time(url, token, id) {
+    static Time(url, token) {
         return axios.create({
             headers: {
                 'Authorization': token
             }
-        }).get(`${url}/getTime/${id}`)
+        }).get(`${url}/getTime`)
             .then(function (res) {
                 return { data: res.data["data"]["Current Server Time"], status: 'success' }
             })
@@ -169,12 +169,12 @@ export default class APIs {
     }
 
     // attendance summary
-    static AttendanceSummary(url, auth, year, month, id) {
+    static AttendanceSummary(url, auth, id) {
         return axios.create({
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}/attendance/summary/${year}/${month}/${id}`)
+        }).get(`${url}/attendance/summary/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -287,6 +287,7 @@ export default class APIs {
                 )
             }
         }
+
 
         return axios.post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`,
             file.length === 0 ? null : fd, {
@@ -423,122 +424,6 @@ export default class APIs {
             })
     }
 
-    // get leave status
-    static getLeaveStatus = (url, auth) => {
-        return axios.create({
-            headers: {
-                'Authorization': auth
-            }
-        }).get(`${url}/leave/status`)
-            .then(function (res) {
-                return { data: res.data.data, status: 'success' }
-            })
-            .catch(function (error) {
-                return { error: error, status: 'fail' }
-            })
-    }
-
-    // get leave history
-    static getLeaveHistory = (url, auth, id, year, month) => {
-        return axios.create({
-            headers: {
-                'Authorization': auth
-            }
-        }).get(`${url}/list/leaves/${id}/${year}/${month}`)
-            .then(function (res) {
-                console.log("API Data", res.data)
-                return { data: res.data.data, status: 'success' }
-            })
-            .catch(function (error) {
-                console.log("Error", error)
-                return { error: error, status: 'fail' }
-            })
-    }
-
-    // get leave approve, cancel, pending
-    static getLeaveByStatus = (url, auth, id, status, year, month) => {
-        return axios.create({
-            headers: {
-                'Authorization': auth
-            }
-        }).post(`${url}/list/${status}/leaves/${id}/${year}/${month}`)
-            .then(function (res) {
-                return { data: res.data.data, status: 'success' }
-            })
-            .catch(function (error) {
-                return { error: error, status: 'fail' }
-            })
-    }
-
-    // get leave summary
-    static getLeaveSummary = (url, auth, id, year) => {
-        return axios.create({
-            headers: {
-                'Authorization': auth
-            }
-        }).get(`${url}/leave/summary/${id}/${year}`)
-            .then(function (res) {
-                return { data: res.data.data, status: 'success' }
-            })
-            .catch(function (error) {
-                console.log("Error", error)
-                return { error: error, status: 'fail' }
-            })
-    }
-
-    //list/reject/leaves/empID/year/month
-    //leave Rejected lists
-    static getLeaveRejectedList = (url, auth, id, year,month) => {
-        console.log("Auth", auth)
-        console.log("url", url)
-        console.log("ID", id)
-        console.log("Year", year)
-        console.log("Month", month)
-        return axios.create({
-            headers: {
-                'Authorization': auth
-            }
-        }).get(`${url}/list/reject/leaves/${id}/${year}/${month}`)
-            .then(function (res) {
-                console.log("Api Leave rejected Data", res.data.data)
-                return { data: res.data.data, status: 'success' }
-            })
-            .catch(function (error) {
-                return { error: error, status: 'fail' }
-            })
-    }
-
-    //get leave approve list (for employee)
-    static getLeaveApprovedList = (url, auth, id, year,month) => {
-        return axios.create({
-            headers: {
-                'Authorization': auth
-            }
-        }).get(`${url}/list/approved/leaves/${id}/${year}/${month}`)
-            .then(function (res) {
-                console.log("Api Leave Approved Data", res.data.data)
-                return { data: res.data.data, status: 'success' }
-            })
-            .catch(function (error) {
-                return { error: error, status: 'fail' }
-            })
-    }
-
-    // get leave balance
-    static getLeaveBalance = (url, auth, id, year) => {
-        return axios.create({
-            headers: {
-                'Authorization': auth
-            }
-        }).post(`${url}/leave/balance/${id}/${year}`)
-            .then(function (res) {
-                return { data: res.data.data, status: 'success' }
-            })
-            .catch(function (error) {
-                return { error: error, status: 'fail' }
-            })
-    }
-
     // post receivedPayroll
     static sendReceived = (url, auth, payrollID) => {
         return axios.create({
@@ -548,51 +433,6 @@ export default class APIs {
         }).post(`${url}/payroll/receive/${payrollID}?status=receive`)
             .then(function (res) {
                 return { data: res.data, status: 'success' }
-            })
-            .catch(function (error) {
-                return { error: error, status: 'fail' }
-            })
-    }
-
-    // get pending Leave Lists
-    static getNotice = (auth, url, channel, from, to) => {
-        return axios.create({
-            headers: {
-                'Authorization': auth
-            }
-        }).get(`${url}/noti/${channel}?from_date=${from}&to_date=${to}`)
-            .then(function (res) {
-                return { data: res.data.data, status: 'success' }
-            })
-            .catch(function (error) {
-                return { error: error, status: 'fail' }
-            })
-    }
-
-    // get channel
-    static getChannel = (auth, url, id) => {
-        return axios.create({
-            headers: {
-                'Authorization': auth
-            }
-        }).get(`${url}/channel/${id}`)
-            .then(function (res) {
-                return { data: res.data.data, status: 'success' }
-            })
-            .catch(function (error) {
-                return { error: error, status: 'fail' }
-            })
-    }
-
-    //get announcement
-    static getAnnouncement = (auth, url, id, startDate, endDate) => {
-        return axios.create({
-            headers: {
-                'Authorization': auth
-            }
-        }).get(`${url}/announcement/${id}?date_start=${startDate}&date_stop=${endDate}`)
-            .then(function (res) {
-                return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }

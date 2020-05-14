@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native'
+import { StyleSheet } from 'react-native'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
 import typo from '../../constant/typography'
@@ -8,8 +8,7 @@ export default StyleSheet.create({
         color: color.lighter
     },
     container: {
-        paddingLeft: offset.o2,
-        paddingRight: offset.o2,
+        padding: offset.o2
     },
     left: {
         paddingRight: offset.o1
@@ -39,26 +38,20 @@ export default StyleSheet.create({
     attachButton: {
         ...button.primary
     },
+    submitButton: {
+        ...button.primary,
+        width: '100%',
+        marginTop: 20,
+    },
     // submitButton: {
     //     ...button.primary,
     //     width: '100%',
-    //     marginTop: 20,
+    //     position: 'absolute',
+    //     left: 0,
+    //     bottom: 0
     // },
-    submitButton: {
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: color.primary,
-        width: '100%',
-        marginTop: 30,
-        borderRadius: 5
-        //position: 'absolute',
-        //left: 0,
-        //bottom: Platform.OS === 'ios' ? 0 : -30
-    },
     buttonText: {
-        color: color.light,
-        fontFamily: 'Nunito'
+        color: color.light
     },
     tabStyle: {
         backgroundColor: color.primary
@@ -81,6 +74,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        marginBottom: offset.o1
     },
     cardTitle: {
         ...typo.cardTitle,
@@ -90,8 +84,7 @@ export default StyleSheet.create({
     },
     cardXSText: {
         ...typo.textSmall,
-        color: '#656565',
-        marginTop: 10,
+        color: color.placeHolder
     },
     dateFromText: {
         fontSize: 14,
@@ -112,14 +105,12 @@ export default StyleSheet.create({
     cardSText: {
         ...typo.parabraph,
         color: color.placeHolder,
-        marginTop: offset.o1,
-        marginBottom: offset.o2
+        marginBottom: offset.o1
     },
     cardWarning: {
         ...typo.parabraph,
         color: color.warning,
-        marginBottom: offset.o2,
-        fontSize: 16
+        marginBottom: offset.o2
     },
     ButtonSecondary: {
         ...button.secondary,
@@ -198,9 +189,5 @@ export default StyleSheet.create({
         bottom: 0,
         color: color.placeHolder
     },
-    pdContainer: {
-        padding: 10,
-        backgroundColor: color.lighter,
-        position: 'relative'
-    }
+
 })

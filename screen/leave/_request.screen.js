@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Form, Item, Label, Picker, Input, Textarea, Row, Col, Button, Container, Content, DatePicker, Toast, Icon, } from 'native-base'
+import { Form, Item, Label, Picker, Input, Textarea, Row, Col, Button, Container, Content, DatePicker, Toast, Icon } from 'native-base'
 import color from '../../constant/color'
 import styLeave from './leave.style'
-import { View, Text, KeyboardAvoidingView, SafeAreaView, SegmentedControlIOS, TouchableOpacity } from 'react-native'
-import { RadioButton } from 'react-native-paper';
+import { View, Text, KeyboardAvoidingView, SafeAreaView, SegmentedControlIOS } from 'react-native'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system';
@@ -11,7 +10,6 @@ import po from './po'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 import { ScrollView } from 'react-native-gesture-handler'
-import offset from '../../constant/offset'
 var $this;
 var url;
 var auth;
@@ -37,8 +35,7 @@ export default class LeaveRequest extends Component {
             isEndDateVisible: false,
             binary: [],
             loading: false,
-            loadingTxt: '',
-            checked: 'first',
+            loadingTxt: ''
         }
     }
 
@@ -49,83 +46,77 @@ export default class LeaveRequest extends Component {
     }
 
     submit(auth, id, url) {
-        console.log("Day Type::", this.state.dayType)
-        console.log("Leave Type::", this.state.selectedLeaveType)
-        console.log("Day Type::", this.state.dayType)
-        console.log("Day Type::", this.state.dayType)
-        console.log("Day Type::", this.state.dayType)
-        // this.setState({
-        //     loading: true,
-        //     loadingTxt: 'requesting your leave ...'
-        // })
-        // APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
-        //     .then((res) => {
-        //         if (res.status == "success") {
-        //             if (res.data.error == false) {
-        //                 const d = new Date();
-        //                 this.setState({
-        //                     refresh: !this.state.refresh,
-        //                     startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
-        //                     endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
-        //                     //selectedLeaveType: res.data[0]['leave_type_id'],
-        //                     file: [],
-        //                     binary: [],
-        //                     description: null
-        //                 })
-        //                 this.getRequestData(auth, url);
-        //                 Toast.show({
-        //                     text: res.data.message,
-        //                     duration: 5000,
-        //                     // text: 'an error occur, please try again in later',
-        //                     textStyle: {
-        //                         textAlign: 'center'
-        //                     },
-        //                     style: {
-        //                         backgroundColor: color.primary
-        //                     }
-        //                 })
-        //             } else {
-
-        //                 // const d = new Date();
-        //                 // this.setState({
-        //                 //     refresh: !this.state.refresh,
-        //                 //     startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
-        //                 //     endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
-        //                 //     //selectedLeaveType: res.data[0]['leave_type_id'],
-        //                 //     binary: [],
-        //                 //     file: [],
-        //                 //     description: null
-        //                 // })
-        //                 // this.getRequestData(auth, url);
-        //                 Toast.show({
-        //                     duration: 5000,
-        //                     text: res.data.message,
-        //                     // text: 'an error occur, please try again in later',
-        //                     textStyle: {
-        //                         textAlign: 'center'
-        //                     },
-        //                     style: {
-        //                         backgroundColor: color.danger
-        //                     }
-        //                 })
-        //             }
-        //         } else {
-        //             Toast.show({
-        //                 text: 'Connection time out. Please check your internet connection!',
-        //                 textStyle: {
-        //                     textAlign: 'center'
-        //                 },
-        //                 style: {
-        //                     backgroundColor: color.primary
-        //                 },
-        //                 duration: 6000
-        //             })
-        //         }
-        //         this.setState({
-        //             loading: false,
-        //             loadingTxt: ''
-        //         })
-        //     })
+        this.setState({
+            loading: true,
+            loadingTxt: 'requesting your leave ...'
+        })
+        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
+            .then((res) => {
+                if (res.status == "success") {
+                    if (res.data.error == false) {
+                        const d = new Date();
+                        this.setState({
+                            refresh: !this.state.refresh,
+                            startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
+                            endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
+                            //selectedLeaveType: res.data[0]['leave_type_id'],
+                            file: [],
+                            binary: [],
+                            description: null
+                        })
+                        this.getRequestData(auth, url);
+                        Toast.show({
+                            text: res.data.message,
+                            duration: 5000,
+                            // text: 'an error occur, please try again in later',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            }
+                        })
+                    } else {
+                        const d = new Date();
+                        this.setState({
+                            refresh: !this.state.refresh,
+                            startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
+                            endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
+                            //selectedLeaveType: res.data[0]['leave_type_id'],
+                            binary: [],
+                            file: [],
+                            description: null
+                        })
+                        this.getRequestData(auth, url);
+                        Toast.show({
+                            duration: 5000,
+                            text: res.data.message,
+                            // text: 'an error occur, please try again in later',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.danger
+                            }
+                        })
+                    }
+                } else {
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
+                }
+                this.setState({
+                    loading: false,
+                    loadingTxt: ''
+                })
+            })
 
     }
 
@@ -139,7 +130,7 @@ export default class LeaveRequest extends Component {
                         startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
                         endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
                         selectedLeaveType: res.data[0]['leave_type_id'],
-                        //description: null,
+                        description: null,
                     })
                 } else {
                     Toast.show({
@@ -179,8 +170,7 @@ export default class LeaveRequest extends Component {
     pickDate = (data) => {
         let date = new Date(data)
         this.setState({
-            startDate: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
-            //startDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+            startDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
         })
         this.hideDatePicker();
     }
@@ -196,8 +186,7 @@ export default class LeaveRequest extends Component {
     pickEndDate = (data) => {
         let date = new Date(data)
         this.setState({
-            endDate: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
-            //endDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+            endDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
         })
         this.hideEndDatePicker();
     }
@@ -311,116 +300,11 @@ export default class LeaveRequest extends Component {
 
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <View style={{ flex: 1 }}>
-                    {/* <KeyboardAvoidingView behavior='padding'> */}
-                    <ScrollView>
-                        <View>
-                            <View style={{ width: '100%', padding: 5, marginTop: 10 }}>
-                                <Picker
-                                    //placeholder="Select Leve Type"
-                                    textStyle={{
-                                        fontFamily: 'Nunito',
-                                        color: 'red'
-                                    }}
-                                    iosIcon={
-                                        <Icon name="arrow-down" />
-                                    }
-                                    selectedValue={
-                                        this.state.selectedLeaveType
-                                    }
-                                    onValueChange={(value, index) => {
-                                        this.changeLeaveType(value, index)
-                                    }}>
-                                    {
-                                        this.state.leaveType.map((type) => {
-                                            return (
-                                                <Picker.Item label={type['name']} value={type['leave_type_id']} key={type['leave_type_id']} />
-                                            )
-                                        })
-                                    }
-                                </Picker>
-                            </View>
-
-                            <View style={styLeave.container}>
-                                <View style={{ width: '100%', height: 1, backgroundColor: color.placeHolder, }} />
-
-                                <View style={{ flexDirection: 'row', width: '100%', marginTop: offset.o3 }}>
-                                    <View>
-                                        <Text>From</Text>
-                                        <View style={{ marginTop: 5, justifyContent: 'center', alignItems: 'center', borderColor: color.placeHolder, borderRadius: 5, borderWidth: 1, width: 80, height: 80 }}>
-                                            <Text>Apr</Text>
-                                            <Text style={{ marginTop: 5, fontWeight: 'bold', fontSize: 18 }}>28</Text>
-                                        </View>
-                                    </View>
-                                    <View style={{ marginLeft: 20 }}>
-                                        <Text>To</Text>
-                                        <View style={{ marginTop: 5, justifyContent: 'center', alignItems: 'center', borderColor: color.placeHolder, borderRadius: 5, borderWidth: 1, width: 80, height: 80 }}>
-                                            <Text>Apr</Text>
-                                            <Text style={{ marginTop: 5, fontWeight: 'bold', fontSize: 18 }}>28</Text>
-                                        </View>
-                                    </View>
-
-                                    <View style={{ marginLeft: 20 }}>
-                                        <Text>Total Day</Text>
-                                        <View style={{ marginTop: 5, justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: color.primary, width: 80, height: 80 }}>
-                                            <Text style={{ color: '#fff', fontSize: 18 }}>1</Text>
-                                        </View>
-                                    </View>
-                                </View>
-
-                                <View style={{ width: '100%', marginTop: 30 }}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <View style={{ width: 20, height: 20, borderRadius: 20 / 2, borderColor: color.dark, borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                                <View style={{ width: 15, height: 15, borderRadius: 15 / 2, backgroundColor: color.primary }}></View>
-                                            </View>
-                                            <Text style={{ marginLeft: 5, fontSize: 16 }}>Morning Leave</Text>
-                                        </View>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
-                                            <View style={{ width: 20, height: 20, borderRadius: 20 / 2, borderColor: color.dark, borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                                <View style={{ width: 15, height: 15, borderRadius: 15 / 2, backgroundColor: color.primary }}></View>
-                                            </View>
-                                            <Text style={{ marginLeft: 5, fontSize: 16 }}>Evening Leave</Text>
-                                        </View>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
-                                        <View style={{ width: 20, height: 20, borderRadius: 20 / 2, borderColor: color.dark, borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                            <View style={{ width: 15, height: 15, borderRadius: 15 / 2, backgroundColor: color.primary }}></View>
-                                        </View>
-                                        <Text style={{ marginLeft: 5, fontSize: 16 }}>Full Day Leave</Text>
-                                    </View>
-
-                                </View>
-
-                                <View style={{ marginTop: 30 }}>
-                                    <Text style={{ fontSize: 16, marginBottom: 10 }}>Reason For Leave</Text>
-                                    <Textarea
-                                        placeholderTextColor={color.placeHolder}
-                                        rowSpan={3}
-                                        bordered
-                                        style={{ backgroundColor: color.lighter }}
-                                        //placeholder='Reason for Leave'
-                                        onChangeText={(data) => {
-                                            //this.state.description = data;
-                                            this.setState({
-                                                description: data
-                                            })
-                                        }}
-                                        value={this.state.description}
-                                    />
-                                </View>
-
-                                <AttachButton />
-
-                                {/* <Button style={styLeave.submitButton} >
-                                        <Text style={styLeave.buttonText}>SUBMIT</Text>
-                                    </Button> */}
-
-
-                            </View>
-
-
-                            {/* <Form style={{
+                <Container>
+                    <Content style={styLeave.container}>
+                        <KeyboardAvoidingView behavior='padding'>
+                            <ScrollView>
+                                <Form style={{
                                     paddingBottom: 100
                                 }}>
                                     <Item picker fixedLabel last>
@@ -509,27 +393,24 @@ export default class LeaveRequest extends Component {
                                         style={styLeave.textarea}
                                         placeholder='Reason for Leave'
                                         onChangeText={(data) => {
-                                            //this.state.description = data;
                                             this.setState({
                                                 description: data
                                             })
                                         }}
-                                        value = {this.state.description}
                                     />
                                     <AttachButton />
                                     <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
                                         <Text style={styLeave.buttonText}>SUBMIT</Text>
                                     </Button>
-                                </Form> */}
-                        </View>
-                    </ScrollView>
-                    {/* </KeyboardAvoidingView> */}
-                    <TouchableOpacity onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
-                        <View style={styLeave.submitButton} >
-                            <Text style={styLeave.buttonText}>Apply Leave</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                                </Form>
+
+                            </ScrollView>
+                        </KeyboardAvoidingView>
+                    </Content>
+                    {/* <Button style={styLeave.submitButton} onPress={() => { this.submit(this.props.auth, this.props.id, this.props.url) }}>
+                        <Text style={styLeave.buttonText}>Submit</Text>
+                    </Button> */}
+                </Container>
             </SafeAreaView>
         );
 

@@ -4,11 +4,9 @@ export default {
     tertiary    :       '#656565',
     light       :       '#FFFFFF',
     lighter     :       '#F5F5F5',
-    semiLigher  :       '#f7f7f7',
     dark        :       '#2A484E',
     placeHolder :       '#A5A5A5',
     warning     :       '#FFB300',
     danger      :       '#FF0000',
-    indicator   :       '#35A9AC',
-    attendance  :       '#03b1fc'
+    indicator   :       '#35A9AC'
 }
