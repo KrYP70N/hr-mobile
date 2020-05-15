@@ -8,16 +8,16 @@ import APIs from '../../controllers/api.controller'
 const width = Dimensions.get('screen').width;
 
 
-const data = [
+const demo_data = [
     {
         title: 'AVAILABLE',
         value: 8,
-        color: color.indicator
+        color: '#35A9AC'
     },
     {
         title: 'PENDING',
         value: 4,
-        color: color.warning
+        color: '#FFB300'
     },
     {
         title: 'APPROVED',
@@ -32,44 +32,30 @@ const data = [
     {
         title: 'REJECTED',
         value: 2,
-        color: color.danger
+        color: '#FF0000'
     },
-
 ]
 
-const labelData = [
-    {
-        title: 'AVAILABLE',
-        value: 8,
-        color: color.indicator
-    },
-    {
-        title: 'PENDING',
-        value: 4,
-        color: color.warning
-    },
+const lb_color = [
     {
         title: 'APPROVED',
-        value: 5,
         color: '#92DD4D'
     },
     {
-        title: 'APPLIED',
-        value: 6,
-        color: '#47E9EE'
+        title: 'AVAILABLE',
+        color: '#35A9AC'
+    },
+    {
+        title: 'PENDING',
+        color: '#FFB300'
     },
     {
         title: 'REJECTED',
-        value: 2,
-        color: color.danger
+        color: '#FF0000'
     },
-    {
-        title: 'TOTAL',
-        value: 25,
-        color: color.light
-    },
-
 ]
+
+const colors = ['#35A9AC', '#FFB300', '#92DD4D',]
 export class chart extends Component {
     constructor(props) {
         super(props)
@@ -78,11 +64,12 @@ export class chart extends Component {
             url: null,
             id: null,
             year: null,
-            summaryData: [],
+            summaryData: null,
+            labelData: [],
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.navigation.addListener('focus', () => {
             let date = new Date()
             this.setState({
@@ -110,36 +97,100 @@ export class chart extends Component {
         })
     }
 
+    componentDidUpdate() {
+        if (
+            this.state.url !== null &&
+            this.state.auth !== null &&
+            this.state.id !== null &&
+            this.state.summaryData === null
+        ) {
+            let date = new Date();
+            let year = date.getFullYear();
+            //let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)
+            this.getSummaryData(this.state.auth, this.state.id, this.state.url, year)
+        }
+    }
+
     getSummaryData(auth, id, url, year) {
-        console.log("Auth", auth)
-        console.log("Url", url)
-        console.log("ID", id)
-        console.log("Year", year)
         APIs.getLeaveSummary(url, auth, id, year)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("Res data", res.data)
+                    console.log("Res Data", res.data)
+                    let data = []
+                    let lData = []
+                    for (let i = 0; i < 4; i++) {
+                        if (i == 0) {
+                            let obj = {
+                                title: lb_color[i].title,
+                                value: res.data.Approved[0][0],
+                                color: lb_color[i].color
+                            }
+                            data.push(obj)
+                            lData.push(obj)
+                        }
+                        if (i == 1) {
+                            let obj = {
+                                title: lb_color[i].title,
+                                value: res.data.Available[0][0],
+                                color: lb_color[i].color
+                            }
+                            data.push(obj)
+                            lData.push(obj)
+                        }
+                        if (i == 2) {
+                            let obj = {
+                                title: lb_color[i].title,
+                                value: res.data.Pending[0][0],
+                                color: lb_color[i].color
+                            }
+                            data.push(obj)
+                            lData.push(obj)
+                        }
+                        if (i == 3) {
+                            let obj = {
+                                title: lb_color[i].title,
+                                value: res.data.Rejected[0][0],
+                                color: lb_color[i].color
+                            }
+                            data.push(obj)
+                            lData.push(obj)
+                        }
+                    }
+                    lData.push({
+                        title: "TOTAL",
+                        value: res.data.Total[0][0],
+                        color: '#FFFFFF'
+                    })
+                    console.log("LData:::", lData)
                     this.setState({
-                        summaryData: res.data
+                        summaryData: data,
+                        labelData: lData
                     })
                 } else {
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
+                    // Toast.show({
+                    //     text: 'Connection time out. Please check your internet connection!',
+                    //     textStyle: {
+                    //         textAlign: 'center'
+                    //     },
+                    //     style: {
+                    //         backgroundColor: color.primary
+                    //     },
+                    //     duration: 6000
+                    // })
                 }
             })
     }
 
     render() {
+        if (this.state.summaryData === null) {
+            return (
+                <View style={{ width: '100%', height: 150, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }}>
+                    <Text style={{ fontSize: 24, color: '#fff' }}>. . .</Text>
+                </View>
+            )
+        }
         console.log("Summary Data", this.state.summaryData)
-        let pieData = data
+        let pieData = this.state.summaryData
             .filter((d) => d.value > 0)
             .map((d, index) => ({
                 value: d.value,
@@ -163,17 +214,17 @@ export class chart extends Component {
                 //height: '35%'
             }}>
                 <View style={{
-                    width: width/3,
+                    width: width / 3,
                     height: 160,
                     justifyContent: 'center',
                     backgroundColor: color.primary,
                     marginLeft: 10,
                     marginRight: 10
                 }}>
-                    <View style={{ width: width/3, height: width/3, marginRight: 20}}>
-                        <View style={{ width: width/3, height: width/3, position: 'absolute', borderRadius: width / 6, backgroundColor: '#fff', top: 0 }}></View>
+                    <View style={{ width: width / 3, height: width / 3, marginRight: 20 }}>
+                        <View style={{ width: width / 3, height: width / 3, position: 'absolute', borderRadius: width / 6, backgroundColor: '#fff', top: 0 }}></View>
                         <PieChart
-                            style={{ height: width/3, }} data={pieData}
+                            style={{ height: width / 3, }} data={pieData}
                             innerRadius="70%"
                             padAngle={0}
 
@@ -181,12 +232,31 @@ export class chart extends Component {
                         </PieChart>
                     </View>
                 </View>
-                    <View style = {{width: (2*width)/3, 
+                <View style={{
+                    width: (2 * width) / 3,
                     marginTop: 5,
-                         //height: '75%'
-                         }}>
+                    //height: '75%'
+                }}>
+                    <View style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        flexWrap: 'wrap'
+                    }}>
+                        {this.state.labelData.map((lb, index) => {
+                            return(
+                                <View key = {index} style={{ flexDirection: 'row', alignItems: 'center', width: (2*width)/6, padding: 5 }}>
+                                <View style={{ width: 20, height: 20, borderRadius: 20 / 2, backgroundColor: lb.color }}></View>
+                                <View style={{ marginLeft: 5 }}>
+                                    <Text style={{ fontSize: 12, color: color.light, fontFamily: 'Nunito-Bold' }}>{lb.value}</Text>
+                                    <Text style={{ marginTop: 2, fontSize: 12, color: color.light, fontFamily: 'Nunito' }}>{lb.title}</Text>
+                                </View>
+                            </View>
+                            )
+                        })}
+                    </View>
                     {/* <FlatList
-                        data={labelData}
+                        data={this.state.labelData}
                         numColumns={2}
                         renderItem={({ item }) => {
                            return(
@@ -204,8 +274,8 @@ export class chart extends Component {
                         }
                         keyExtractor={(item, index) => index.toString()}
                     /> */}
-                    </View>
-              
+                </View>
+
             </View>
         )
     }

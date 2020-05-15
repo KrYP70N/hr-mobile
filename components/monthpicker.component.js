@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import {StyleSheet, TouchableOpacity} from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import PropTypes from 'prop-types'
 
 import { View, Text, Icon, Row, Col } from 'native-base'
-import colors  from '../constant/color'
+import colors from '../constant/color'
 import moment from 'moment'
 
 export default function MonthPicker({
@@ -47,17 +47,17 @@ export default function MonthPicker({
         }]}>
             <View style={styles.header}>
                 <Text style={styles.headText}>Filters</Text>
-                <Icon 
-                style={styles.close} 
-                name="ios-close"
-                onPress={onClosePress}/>
-            </View> 
+                <Icon
+                    style={styles.close}
+                    name="ios-close"
+                    onPress={onClosePress} />
+            </View>
             <View style={styles.body}>
                 <Row>
                     <Col>
                         <TouchableOpacity onPress={goPrev}>
                             <Text style={styles.fitText}>
-                                <Icon name="ios-arrow-back" style={styles.chevron}/>
+                                <Icon name="ios-arrow-back" style={styles.chevron} />
                             </Text>
                         </TouchableOpacity>
                     </Col>
@@ -69,9 +69,9 @@ export default function MonthPicker({
                     <Col>
                         <TouchableOpacity onPress={goNext}>
                             <Text style={styles.fitText}>
-                                <Icon 
-                                name="ios-arrow-forward" 
-                                style={styles.chevron}
+                                <Icon
+                                    name="ios-arrow-forward"
+                                    style={styles.chevron}
                                 />
                             </Text>
                         </TouchableOpacity>

@@ -444,11 +444,13 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).post(`${url}/list/leaves/${id}/${year}/${month}`)
+        }).get(`${url}/list/leaves/${id}/${year}/${month}`)
             .then(function (res) {
+                console.log("API Data", res.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log("Error", error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -476,6 +478,45 @@ export default class APIs {
             }
         }).get(`${url}/leave/summary/${id}/${year}`)
             .then(function (res) {
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                console.log("Error", error)
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    //list/reject/leaves/empID/year/month
+    //leave Rejected lists
+    static getLeaveRejectedList = (url, auth, id, year,month) => {
+        console.log("Auth", auth)
+        console.log("url", url)
+        console.log("ID", id)
+        console.log("Year", year)
+        console.log("Month", month)
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/list/reject/leaves/${id}/${year}/${month}`)
+            .then(function (res) {
+                console.log("Api Leave rejected Data", res.data.data)
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    //get leave approve list (for employee)
+    static getLeaveApprovedList = (url, auth, id, year,month) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/list/approved/leaves/${id}/${year}/${month}`)
+            .then(function (res) {
+                console.log("Api Leave Approved Data", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
