@@ -125,6 +125,8 @@ export default class Attendance extends Component {
             )
         }
 
+        console.log("Attendance Data",this.state.dataTitle)
+
         let infos = this.state.dataTitle.map((title) => {
             let col = color.placeHolder
 

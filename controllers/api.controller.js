@@ -65,6 +65,7 @@ export default class APIs {
             }
         }).get(`${url}/getTime`)
             .then(function (res) {
+                console.log("Time Res", res)
                 return { data: res.data["data"]["Current Server Time"], status: 'success' }
             })
             .catch(function (error) {
@@ -176,6 +177,7 @@ export default class APIs {
             }
         }).get(`${url}/attendance/summary/${id}`)
             .then(function (res) {
+                console.log("Attendance Data", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
@@ -260,15 +262,19 @@ export default class APIs {
 
     // get leave type
     static getLeaveType = (auth, url) => {
+        console.log("Url", url)
+        console.log("Auth", auth)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).get(`${url}/leave/types`)
             .then(function (res) {
+                console.log("Leave Type Res", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log("Get Leave Type Error", error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -297,9 +303,11 @@ export default class APIs {
         }
         )
             .then(function (res) {
+                console.log("Res data", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log("Error", error)
                 return { error: error, status: 'fail' }
             })
     }
