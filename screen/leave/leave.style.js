@@ -35,8 +35,19 @@ export default StyleSheet.create({
     attachRow: {
         marginTop: offset.o3
     },
-    attachButton: {
-        ...button.primary
+    // attachButton: {
+    //     ...button.primary
+    // },
+    attachButton: { 
+        backgroundColor: color.primary,
+        //padding: padding.p1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 45,
+        //width: 100,
+        borderRadius: 5
     },
     submitButton: {
         ...button.primary,
