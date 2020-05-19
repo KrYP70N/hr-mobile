@@ -18,7 +18,7 @@ export default class APIs {
                 login: user,
                 password: password
             }
-        }).get(`${url}api/auth/token`)
+        }).get(`${url}/api/auth/token`)
             .then(function (res) {
                 return { data: res.data, status: 'success' }
             })
@@ -33,7 +33,7 @@ export default class APIs {
             headers: {
                 'Authorization': token
             }
-        }).get(`${url}refresh`)
+        }).get(`${url}/refresh`)
             .then(function (res) {
                 return { data: res.data, status: 'success' }
             })
@@ -48,7 +48,7 @@ export default class APIs {
             headers: {
                 'Authorization': token
             }
-        }).get(`${url}employee/level/${id}?employeeID=${id}`)
+        }).get(`${url}/employee/level/${id}?employeeID=${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -63,7 +63,7 @@ export default class APIs {
             headers: {
                 'Authorization': token
             }
-        }).get(`${url}getTime/${id}`)
+        }).get(`${url}/getTime/${id}`)
             .then(function (res) {
                 return { data: res.data["data"]["Current Server Time"], status: 'success' }
             })
@@ -78,7 +78,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}user/profile/${id}`)
+        }).get(`${url}/user/profile/${id}`)
             .then(function (res) {
                 let data = res["request"]["_response"]
 
@@ -114,7 +114,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).post(coord === undefined ? `${url}checkin/${id}` : `${url}checkin/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
+        }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
                 return { data: res, status: 'success' }
             })
@@ -129,7 +129,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).post(coord === undefined ? `${url}checkout/${id}` : `${url}checkout/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
+        }).post(coord === undefined ? `${url}/checkout/${id}` : `${url}/checkout/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
                 return { data: res, status: 'success' }
             })
@@ -144,7 +144,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}checkinout/status/${id}`)
+        }).get(`${url}/checkinout/status/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -159,7 +159,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}attendance/${month}/${id}`)
+        }).get(`${url}/attendance/${month}/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -174,7 +174,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}attendance/summary/${year}/${month}/${id}`)
+        }).get(`${url}/attendance/summary/${year}/${month}/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -189,7 +189,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).post(`${url}overtime/${id}?request_date_from=${request_date_from}&request_date_to=${request_date_to}&description=${description}`)
+        }).post(`${url}/overtime/${id}?request_date_from=${request_date_from}&request_date_to=${request_date_to}&description=${description}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -204,7 +204,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}list/OTRequest/${id}`)
+        }).get(`${url}/list/OTRequest/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -219,7 +219,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).post(`${url}approve/overtime/${otID}?status=${status}`)
+        }).post(`${url}/approve/overtime/${otID}?status=${status}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -234,7 +234,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}list/overtime/${id}/${year}/${month}`)
+        }).get(`${url}/list/overtime/${id}/${year}/${month}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -249,7 +249,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}approvelist/overtime/${id}`)
+        }).get(`${url}/approvelist/overtime/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -264,7 +264,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}leave/types`)
+        }).get(`${url}/leave/types`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -288,7 +288,7 @@ export default class APIs {
             }
         }
 
-        return axios.post(`${url}leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`,
+        return axios.post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`,
             file.length === 0 ? null : fd, {
             headers: {
                 'Authorization': auth
@@ -309,7 +309,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}list/leaves/${id}/${year}/${month}`)
+        }).get(`${url}/list/leaves/${id}/${year}/${month}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -324,7 +324,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}list/leaveRequest/${id}`)
+        }).get(`${url}/list/leaveRequest/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -339,7 +339,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}payroll/${id}/${year}`)
+        }).get(`${url}/payroll/${id}/${year}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -354,7 +354,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).post(`${url}approve/leave/${leaveID}?status=${status}`)
+        }).post(`${url}/approve/leave/${leaveID}?status=${status}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -369,7 +369,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}payroll/${slipid}`)
+        }).get(`${url}/payroll/${slipid}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -384,7 +384,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}download/payroll/${slipid}`)
+        }).get(`${url}/download/payroll/${slipid}`)
             .then(function (res) {
                 return { data: res.data, status: 'success' }
             })
@@ -399,7 +399,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}list/leaveRequest/${id}`)
+        }).get(`${url}/list/leaveRequest/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -414,7 +414,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).post(`${url}list/leaveRequest/${id}/year/month`)
+        }).post(`${url}/list/leaveRequest/${id}/year/month`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -429,7 +429,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}leave/status`)
+        }).get(`${url}/leave/status`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -444,7 +444,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}list/leaves/${id}/${year}/${month}`)
+        }).get(`${url}/list/leaves/${id}/${year}/${month}`)
             .then(function (res) {
                 console.log("API Data", res.data)
                 return { data: res.data.data, status: 'success' }
@@ -461,7 +461,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).post(`${url}list/${status}/leaves/${id}/${year}/${month}`)
+        }).post(`${url}/list/${status}/leaves/${id}/${year}/${month}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -476,7 +476,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}leave/summary/${id}/${year}`)
+        }).get(`${url}/leave/summary/${id}/${year}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -498,7 +498,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}list/reject/leaves/${id}/${year}/${month}`)
+        }).get(`${url}/list/reject/leaves/${id}/${year}/${month}`)
             .then(function (res) {
                 console.log("Api Leave rejected Data", res.data.data)
                 return { data: res.data.data, status: 'success' }
@@ -514,7 +514,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}list/approved/leaves/${id}/${year}/${month}`)
+        }).get(`${url}/list/approved/leaves/${id}/${year}/${month}`)
             .then(function (res) {
                 console.log("Api Leave Approved Data", res.data.data)
                 return { data: res.data.data, status: 'success' }
@@ -530,7 +530,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).post(`${url}leave/balance/${id}/${year}`)
+        }).post(`${url}/leave/balance/${id}/${year}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -545,7 +545,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).post(`${url}payroll/receive/${payrollID}?status=receive`)
+        }).post(`${url}/payroll/receive/${payrollID}?status=receive`)
             .then(function (res) {
                 return { data: res.data, status: 'success' }
             })
@@ -560,7 +560,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}noti/${channel}?from_date=${from}&to_date=${to}`)
+        }).get(`${url}/noti/${channel}?from_date=${from}&to_date=${to}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -575,7 +575,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}channel/${id}`)
+        }).get(`${url}/channel/${id}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
@@ -590,7 +590,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}announcement/${id}?date_start=${startDate}&date_stop=${endDate}`)
+        }).get(`${url}/announcement/${id}?date_start=${startDate}&date_stop=${endDate}`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
