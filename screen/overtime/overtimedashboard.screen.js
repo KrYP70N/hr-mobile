@@ -8,7 +8,7 @@ import Chart from '../leave/chart'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 
-export class Leave extends Component {
+export class Overtime extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -48,4 +48,4 @@ export class Leave extends Component {
     }
 }
 
-export default Leave
+export default Overtime
