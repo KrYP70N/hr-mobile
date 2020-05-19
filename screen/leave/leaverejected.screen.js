@@ -133,47 +133,46 @@ export class EmployeeLeaveRejected extends Component {
     
     return(
             <Container>
-    <Header style={{
-        backgroundColor: color.light,
-    }}>
-        <Left style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center'
-        }}>
-            <Icon name='ios-arrow-round-back' style={{
-                fontSize: offset.o4,
-                color: color.primary,
-                marginRight: offset.o2
-            }} onPress={() => { this.props.navigation.navigate('Leave') }} />
-            <Text style={{
-                color: color.secondary,
-                fontFamily: 'Nunito'
-            }}>Rejected</Text>
-        </Left>
-        <Right>
-            <Icon
-                name="ios-options"
-                onPress={() => {
-                    this.setState({
-                        filter: !this.state.filter
-                    })
-                }}
-            />
-        </Right>
-    </Header>
-    <Content style={styles.pdContainer}>
-        <MonthPicker
-            show={this.state.filter}
-            onClosePress={() => this.setState({
-                filter: !this.state.filter
-            })}
-            onGoNext={this.ctrlNext}
-            onGoPrev={this.ctrlPrev}
-        />
-
-        {statusData}
-    </Content>
+                <Header style={{
+                    backgroundColor: color.light,
+                }}>
+                    <Left style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}>
+                        <Icon name='ios-arrow-round-back' style={{
+                            fontSize: offset.o4,
+                            color: color.primary,
+                            marginRight: offset.o2
+                        }} onPress={() => { this.props.navigation.navigate('Leave') }} />
+                        <Text style={{
+                            color: color.secondary,
+                            fontFamily: 'Nunito'
+                        }}>Rejected</Text>
+                    </Left>
+                    <Right>
+                        <Icon
+                            name="ios-options"
+                            onPress={() => {
+                                this.setState({
+                                    filter: !this.state.filter
+                                })
+                            }}
+                        />
+                    </Right>
+                </Header>
+                <Content style={styles.pdContainer}>
+                    <MonthPicker
+                        show={this.state.filter}
+                        onClosePress={() => this.setState({
+                            filter: !this.state.filter
+                        })}
+                        onGoNext={this.ctrlNext}
+                        onGoPrev={this.ctrlPrev}
+                    />
+                    {statusData}
+                </Content>
             </Container >
         )
     }
