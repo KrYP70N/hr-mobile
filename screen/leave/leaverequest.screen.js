@@ -44,14 +44,6 @@ export class LeaveRequest extends Component {
     }
 
     submit(auth, id, url) {
-        console.log(auth)
-        console.log(id)
-        console.log(url)
-        console.log("Day Type::", this.state.dayType)
-        console.log("Leave Type::", this.state.selectedLeaveType)
-        console.log("Start Date::", this.state.startDate)
-        console.log("End Date::", this.state.endDate)
-        console.log("Binary Type::", this.state.binary)
         this.setState({
             loading: true,
             loadingTxt: 'requesting your leave ...'

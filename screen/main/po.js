@@ -33,7 +33,7 @@ export default {
         {
             icon: 'ios-stopwatch',
             name: 'Overtime',
-            navigate: 'Overtime'
+            navigate: 'OvertimeRequest'
         },
         {
             icon: 'md-bookmarks',

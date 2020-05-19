@@ -99,7 +99,7 @@ export default function notilist({ navigation }) {
     //         </View>
     //     )
     // } 
-    else {
+    
         return (
 
             <React.Fragment>
@@ -110,7 +110,7 @@ export default function notilist({ navigation }) {
                         <View style={{ marginTop: 20, borderWidth: 0.5, borderRadius: 5, borderColor: color.placeHolder, backgroundColor: color.light, paddingLeft: 10, flexDirection: 'row', paddingRight: 10, paddingBottom: 15, paddingTop: 15 }}>
                             <View style={{ width: '15%', alignItems: 'center', justifyContent: 'center', }}>
                                 <View style={{ width: 60, height: 60, borderRadius: 60 / 2, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }}>
-                                    <Image style={{ width: 40, height: 35 }} source={require('../../assets/icon/announcement.png')} />
+                                    <Image style={{ width: 30, height: 30 }} source={require('../../assets/icon/announcement.png')} />
                                 </View>
                             </View>
                             <View style={{ justifyContent: 'space-between', width: '85%', flexDirection: 'row' }}>
@@ -120,7 +120,7 @@ export default function notilist({ navigation }) {
                                 </View>
 
                                 <TouchableOpacity onPress={() => Linking.openURL(data['Url Link'])}>
-                                    <Image style={{ width: 40, height: 40 }} source={require('../../assets/icon/attachment.png')} />
+                                    <Image style={{ width: 30, height: 30 }} source={require('../../assets/icon/attachment.png')} />
                                 </TouchableOpacity>
 
                             </View>
@@ -130,7 +130,7 @@ export default function notilist({ navigation }) {
                 }
             </React.Fragment>
         )
-    }
+    
 
 
 

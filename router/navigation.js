@@ -20,6 +20,7 @@ import Main from '../screen/main/main.screen'
 import ProfileScreen from '../screen/profile/profile.screen'
 import Attendance from '../screen/attendance/attendance.screen'
 import Overtime from '../screen/overtime/overtime.screen'
+import OvertimeRequest from '../screen/overtime/overtimerequest.screen'
 import Payroll from '../screen/payroll/payroll.screen'
 import PayrollDetail from '../screen/payroll/pryroll.detail.screen'
 import Leave from '../screen/leave/leavedashboard.screen'
@@ -82,6 +83,7 @@ function Navigation() {
         <Drawer.Screen name='Profile' component={ProfileScreen} />
         <Drawer.Screen name='Attendance' component={Attendance} />
         <Drawer.Screen name='Overtime' component={Overtime} />
+        <Drawer.Screen name='OvertimeRequest' component={OvertimeRequest} />
         <Drawer.Screen name='Payroll' component={Payroll} />
         <Drawer.Screen name='PayrollDetail' component={PayrollDetail} />
         <Drawer.Screen name='Leave' component={Leave} />
