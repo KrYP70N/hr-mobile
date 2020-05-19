@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import PropTypes from 'prop-types'
 
-import { View, Text, Icon, Row, Col } from 'native-base'
+import { View, Text, Icon, Row, Col, Picker, Item } from 'native-base'
 import colors from '../constant/color'
 import moment from 'moment'
 
@@ -78,7 +78,12 @@ export default function MonthPicker({
                     </Col>
                 </Row>
                 <View>
-                    <Text>Dolore incididunt voluptate reprehenderit irure eu enim exercitation Lorem est deserunt adipisicing fugiat exercitation.</Text>
+                    <Picker 
+                    mode="model"
+                    placeholder="Picker Placeholder"
+                    >
+                        <Picker.Item label="Wallet" value="key0" />
+                    </Picker>
                 </View>
             </View>
         </View>
