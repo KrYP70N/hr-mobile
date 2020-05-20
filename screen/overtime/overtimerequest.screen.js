@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { Text, View, SafeAreaView, TouchableOpacity, AsyncStorage } from 'react-native'
-import { Icon, Textarea } from 'native-base'
+import { Icon, Textarea, Toast } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import APIs from '../../controllers/api.controller'
 import moment from 'moment'
 export class OTRequest extends Component {
     constructor(props) {
@@ -16,7 +17,6 @@ export class OTRequest extends Component {
             refresh: false,
             description: '',
             hour: 0,
-            description: null,
             isDatePickerVisible: false,
             isTimePickerFromVisible: false,
             isTimePickerToVisible: false,
@@ -54,6 +54,8 @@ export class OTRequest extends Component {
                 toTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
                 toTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
                 totalHR: "00:00",
+                fromTimeHr: date.getHours(),
+                fromTimeMinus: date.getMinutes(),
             })
 
             AsyncStorage.getItem('@hr:endPoint')
@@ -86,6 +88,8 @@ export class OTRequest extends Component {
         let date = new Date(data)
         this.setState({
             date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+            dateMonthLabel: months[date.getMonth()],
+            dateDayLabel: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
             //datetextColor: '#000'
         })
         this.hideDatePicker();
@@ -130,20 +134,13 @@ export class OTRequest extends Component {
         let hours = date.getHours();
         let minutes = date.getMinutes();
         let seconds = date.getSeconds();
-
-        console.log("Date", this.state.date)
         let ftime = this.state.date + " " + this.state.fromTime;
         let totime = this.state.date + " " + `${hours}:${minutes}:${seconds}`
-        console.log("From Time", ftime)
-        console.log("Totime", totime)
 
-        if (this.state.fromTimeHr <= hours) {
-            let dif = moment.utc(moment(totime, "YYYY-MM-DD HH:mm:ss").diff(moment(ftime, "YYYY-MM-DD HH:mm:ss"))).format("HH:mm")
-            console.log("Current Minutes", minutes)
-            console.log("From Time Minutes", this.state.fromTimeMinus)
+        if (ftime <= totime) {
             if (minutes < this.state.fromTimeMinus) {
                 const hr = (hours - this.state.fromTimeHr) - 1
-                const  min = (60 + minutes) - this.state.fromTimeMinus
+                const min = (60 + minutes) - this.state.fromTimeMinus
                 console.log("Diff hr", hr)
                 console.log("Diff min", min)
                 this.setState({
@@ -164,37 +161,101 @@ export class OTRequest extends Component {
                     totalHR: `${dif_hr < 10 ? '0' + dif_hr : dif_hr}:${dif_min < 10 ? '0' + dif_min : dif_min}`
                 })
             }
-
-
-            // this.setState({
-            //     toTime: `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`,
-            //     toTimehrLabel: `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`,
-            //     toTimeAMPM: hours > 11 ? "PM" : "AM",
-            //     totalHR: `${dif_hr < 10 ? '0' + dif_hr : dif_hr}:${dif_min < 10 ? '0' + dif_min : dif_min}`
-            // })
         } else {
-            console.log("To Time is not greater than From Time")
-            this.setState({
-                toTime: this.state.toTime,
-                toTimehrLabel: this.state.toTimehrLabel,
-                toTimeAMPM: this.state.toTimeAMPM,
-                totalHR: this.state.totalHR,
-
-            })
+            console.log("Date", this.state.date)
+            console.log("From Time", this.state.fromTime)
+            console.log("To Time", this.state.toTime)
         }
-
-        // var now = "04/09/2013 15:00:00";
-        // var then = "04/09/2013 14:20:30";
-        // moment.utc(moment(now, "DD/MM/YYYY HH:mm:ss").diff(moment(then, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss")
-
-
-        // this.setState({
-        //     toTime: `${hours}:${minutes}:${seconds}`, totextColor: '#000',
-        //     toTimehrLabel: `${hours}:${minutes}`,
-        //     toTimeAMPM: hours > 11 ? "PM" : "AM",
-        // })
         this.hideTimePickerto();
     };
+
+    description = (data) => {
+        this.setState({
+            description: data
+        })
+    }
+
+    submit(auth, id, url) {
+        console.log("Date", this.state.date)
+        console.log("From Time", this.state.fromTime)
+        console.log("To Time", this.state.toTime)
+        const request_from = this.state.date + " " + this.state.fromTime;
+        const request_to = this.state.date + " " + this.state.toTime;
+        APIs.OTRequest(id, auth, url, request_from, request_to, this.state.description)
+            .then((res) => {
+                if (res.status === "success") {
+                    if (res.data.error == false) {
+                        let date = new Date();
+                        //this.pickDate(d);
+                        this.setState({
+                            description: '',
+                            date: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
+                            dateMonthLabel: months[date.getMonth()],
+                            dateDayLabel: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
+                            fromTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+                            fromTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
+                            fromTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
+                            toTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+                            toTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
+                            toTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
+                            totalHR: "00:00",
+                            fromTimeHr: date.getHours(),
+                            fromTimeMinus: date.getMinutes(),
+                        })
+                        Toast.show({
+                            text: res.data.message,
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 5000
+                        })
+                    } else {
+                        this.setState({
+                            description: '',
+                            date: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
+                            dateMonthLabel: months[date.getMonth()],
+                            dateDayLabel: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
+                            fromTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+                            fromTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
+                            fromTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
+                            toTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+                            toTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
+                            toTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
+                            totalHR: "00:00",
+                            fromTimeHr: date.getHours(),
+                            fromTimeMinus: date.getMinutes(),
+                        })
+                        Toast.show({
+                            text: res.data.message,
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.danger
+                            },
+                            duration: 5000
+                        })
+                    }
+                } else {
+                    Toast.show({
+                        text: 'Connection time out. Please check your internet connection!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
+                }
+                console.log("Res Status", res.status)
+                console.log("Res Data", res.data)
+            })
+
+    }
 
 
     render() {
@@ -309,7 +370,7 @@ export class OTRequest extends Component {
                         </View>
 
                         <TouchableOpacity style={{ marginTop: 40 }}
-                        // onPress={() => { this.submit(this.state.auth, this.state.id, this.state.url) }}
+                            onPress={() => { this.submit(this.state.auth, this.state.id, this.state.url) }}
                         >
                             <View style={{
                                 height: 50,
