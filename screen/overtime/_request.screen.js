@@ -12,15 +12,13 @@ export default class Request extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            //date: null,
+
             hour: 0,
             description: null,
             isDatePickerVisible: false,
             isTimePickerFromVisible: false,
             isTimePickerToVisible: false,
-            // date: 'OT Date',
-            // fromTime: 'From Time',
-            // toTime: 'To Time',
+
             date: this.props.date,
             fromTime: this.props.fromTime,
             toTime: this.props.toTime,
