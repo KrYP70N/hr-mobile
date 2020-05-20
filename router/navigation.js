@@ -31,6 +31,8 @@ import EmployeeLeaveHistory from '../screen/leave/leavehistory.screen'
 import EmployeeLeaveBalance from '../screen/leave/leavebalance.screen'
 import EmployeeLeavePending from '../screen/leave/leavepending.screen'
 import OvertimeApprove from '../screen/overtime/_approve.screen';
+import OvertimeHistory  from '../screen/overtime/overtimehistory.screen'
+import OvertimeBalance from '../screen/overtime/overtimebalance'
 import NoticeBoard from '../screen/noticeboard/noticeboard.screen';
 import NotiboardDetail from '../screen/noticeboard/detail.screen';
 import SideMenu from '../router/SideMenu';

@@ -3,8 +3,8 @@ import { Text, View, SafeAreaView, ScrollView, AsyncStorage } from 'react-native
 import { Icon, Card, Container, Content, Header, Left, Right } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
-import Cards from '../leave/cards'
-import Chart from '../leave/chart'
+import Cards from '../overtime/card'
+import Chart from '../overtime/chart'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 
@@ -34,7 +34,7 @@ export class Overtime extends Component {
                         <Text style={{
                             color: color.secondary,
                             fontFamily: 'Nunito'
-                        }}>Leave</Text>
+                        }}>Overtime</Text>
                     </View>
 
                     <Content style={{ flex: 1 }}>
