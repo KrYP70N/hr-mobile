@@ -84,6 +84,7 @@ function Navigation() {
         <Drawer.Screen name='Profile' component={ProfileScreen} />
         <Drawer.Screen name='Attendance' component={Attendance} />
         <Drawer.Screen name='Overtime' component={Overtime} />
+        <Drawer.Screen name='OvertimeHistory' component={OvertimeHistory} />
         <Drawer.Screen name='Payroll' component={Payroll} />
         <Drawer.Screen name='PayrollDetail' component={PayrollDetail} />
         <Drawer.Screen name='Leave' component={Leave} />
