@@ -11,31 +11,31 @@ const cardList = [
         title: 'Apply',
         noti: 2,
         icon: require('../../assets/icon/leave_apply.png'),
-        page: 'LeaveRequest'
+        page: 'OvertimeRequest'
     },
     {
         title: 'History',
         noti: 3,
         icon: require('../../assets/icon/leave_history.png'),
-        page: 'EmployeeLeaveHistory'
+        page: 'OvertimeHistory'
     },
     {
         title: 'Approved',
         noti: 0,
         icon: require('../../assets/icon/leave_approve.png'),
-        page: 'EmployeeLeaveApproved'
+        page: 'OvertimeApprove'
     },
     {
         title: 'Rejected',
         noti: 0,
         icon: require('../../assets/icon/leave_reject.png'),
-        page: 'EmployeeLeaveRejected'
+        page: 'OvertimeRejected'
     },
     {
         title: 'Pending Approval',
         noti: 9,
         icon: require('../../assets/icon/leave_pending.png'),
-        page: 'EmployeeLeavePending'
+        page: 'OvertimePending'
     },
 ]
 export class cards extends Component {

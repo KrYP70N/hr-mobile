@@ -268,7 +268,7 @@ export class OTRequest extends Component {
                             color: color.primary,
                             marginRight: offset.o2,
                             marginLeft: 15,
-                        }} onPress={() => { this.props.navigation.navigate('Leave') }} />
+                        }} onPress={() => { this.props.navigation.navigate('Overtime') }} />
                         <Text style={{
                             color: color.secondary,
                             fontFamily: 'Nunito'
