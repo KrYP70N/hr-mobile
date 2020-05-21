@@ -25,7 +25,8 @@ export default {
         staff: {
             cardTitle: 'Overtime Request',
             sideTitle: 'hr ago',
-            label1: 'Date - ',
+            labelfrom: 'From - ',
+            labelto: 'To      - ',
             label2: 'OT Hour - ',
             warning: 'Your request is pending.',
             succes: 'request success',

@@ -145,7 +145,7 @@ export class OvertimeRejected extends Component {
                             fontSize: offset.o4,
                             color: color.primary,
                             marginRight: offset.o2
-                        }} onPress={() => { this.props.navigation.navigate('Leave') }} />
+                        }} onPress={() => { this.props.navigation.navigate('Overtime') }} />
                         <Text style={{
                             color: color.secondary,
                             fontFamily: 'Nunito'

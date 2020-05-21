@@ -27,7 +27,7 @@ export default function MonthPicker({
             year: moment(date).add(1, 'months').format('YYYY')
         })
         // emit value change dom
-        onChangeValue(date, selected)
+        onChangeValue && onChangeValue(date, selected)
     }
 
     // prev emitter
@@ -38,7 +38,7 @@ export default function MonthPicker({
             year: moment(date).subtract(1, 'months').format('YYYY')
         })
         // emit value change dom
-        onChangeValue(date, selected)
+        onChangeValue &&  onChangeValue(date, selected)
     }
 
     // onSelect

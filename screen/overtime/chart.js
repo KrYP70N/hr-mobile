@@ -7,38 +7,10 @@ import offset from '../../constant/color'
 import APIs from '../../controllers/api.controller'
 const width = Dimensions.get('screen').width;
 
-
-const demo_data = [
-    {
-        title: 'PENDING',
-        value: 4,
-        color: '#FFB300'
-    },
-    {
-        title: 'APPROVED',
-        value: 5,
-        color: '#92DD4D'
-    },
-    {
-        title: 'APPLIED',
-        value: 6,
-        color: '#47E9EE'
-    },
-    {
-        title: 'REJECTED',
-        value: 2,
-        color: '#FF0000'
-    },
-]
-
 const lb_color = [
     {
         title: 'APPROVED',
         color: '#92DD4D'
-    },
-    {
-        title: 'AVAILABLE',
-        color: '#35A9AC'
     },
     {
         title: 'PENDING',
@@ -107,7 +79,7 @@ export class chart extends Component {
     }
 
     getSummaryData(auth, id, url, year) {
-        APIs.getLeaveSummary(url, auth, id, year)
+        APIs.getOTSummary(url, auth, id, year)
             .then((res) => {
                 if (res.status === 'success') {
                     console.log("Res Data", res.data)
@@ -123,16 +95,8 @@ export class chart extends Component {
                             data.push(obj)
                             lData.push(obj)
                         }
+                       
                         if (i == 1) {
-                            let obj = {
-                                title: lb_color[i].title,
-                                value: res.data.Available[0][0],
-                                color: lb_color[i].color
-                            }
-                            data.push(obj)
-                            lData.push(obj)
-                        }
-                        if (i == 2) {
                             let obj = {
                                 title: lb_color[i].title,
                                 value: res.data.Pending[0][0],
@@ -141,7 +105,7 @@ export class chart extends Component {
                             data.push(obj)
                             lData.push(obj)
                         }
-                        if (i == 3) {
+                        if (i == 2) {
                             let obj = {
                                 title: lb_color[i].title,
                                 value: res.data.Rejected[0][0],
@@ -201,12 +165,9 @@ export class chart extends Component {
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
-                //justifyContent: 'center',
                 padding: offset.o2,
                 backgroundColor: color.primary,
-                //marginBottom: offset.o2,
                 borderRadius: offset.o1,
-                //height: '35%'
             }}>
                 <View style={{
                     width: width / 3,
@@ -230,7 +191,6 @@ export class chart extends Component {
                 <View style={{
                     width: (2 * width) / 3,
                     marginTop: 5,
-                    //height: '75%'
                 }}>
                     <View style={{
                         display: 'flex',
@@ -250,25 +210,6 @@ export class chart extends Component {
                             )
                         })}
                     </View>
-                    {/* <FlatList
-                        data={this.state.labelData}
-                        numColumns={2}
-                        renderItem={({ item }) => {
-                           return(
-                                <View style={{ flexDirection: 'row', alignItems: 'center', width: (2*width)/6, padding: 5 }}>
-                                    <View style={{ width: 20, height: 20, borderRadius: 20 / 2, backgroundColor: item.color }}></View>
-                                    <View style={{ marginLeft: 5 }}>
-                                        <Text style={{ fontSize: 12, color: color.light, fontFamily: 'Nunito-Bold' }}>{item.value}</Text>
-                                        <Text style={{ marginTop: 2, fontSize: 12, color: color.light, fontFamily: 'Nunito' }}>{item.title}</Text>
-                                    </View>
-                                </View>
-                          
-                           )
-                        }
-
-                        }
-                        keyExtractor={(item, index) => index.toString()}
-                    /> */}
                 </View>
 
             </View>
