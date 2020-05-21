@@ -88,7 +88,7 @@ function Navigation() {
         <Drawer.Screen name='Attendance' component={Attendance} />
         <Drawer.Screen name='Overtime' component={Overtime} />
         <Drawer.Screen name='AdminOvertimeApprove' component={AdminOvertimeApprove} />
-        <Drawer.Screen name='OvertimePending' component={OvertimeRequest} />
+        <Drawer.Screen name='OvertimePending' component={OvertimePending} />
         <Drawer.Screen name='OvertimeRequest' component={OvertimeRequest} />
         <Drawer.Screen name='OvertimeHistory' component={OvertimeHistory} />
         <Drawer.Screen name='OvertimeApprove' component={OvertimeApprove} />
