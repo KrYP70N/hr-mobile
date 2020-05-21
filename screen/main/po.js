@@ -43,12 +43,12 @@ export default {
         {
             icon: 'ios-calendar',
             name: 'Approve Leave ',
-            navigate: 'LeaveApprove'
+            navigate: 'AdminLeaveApprove'
         },
         {
             icon: 'ios-walk',
             name: 'Approve OT',
-            navigate: 'OvertimeApprove'
+            navigate: 'AdminOvertimeApprove'
         },
         {
             icon: 'md-cash',
