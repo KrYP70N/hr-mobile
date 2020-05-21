@@ -19,7 +19,6 @@ import Dashboard from '../screen/dashboard/dashboard.screen'
 import Main from '../screen/main/main.screen'
 import ProfileScreen from '../screen/profile/profile.screen'
 import Attendance from '../screen/attendance/attendance.screen'
-import OvertimeRequest from '../screen/overtime/overtimerequest.screen'
 import Overtime from '../screen/overtime/overtimedashboard.screen'
 import Payroll from '../screen/payroll/payroll.screen'
 import PayrollDetail from '../screen/payroll/pryroll.detail.screen'
@@ -32,6 +31,8 @@ import EmployeeLeaveHistory from '../screen/leave/leavehistory.screen'
 import EmployeeLeaveBalance from '../screen/leave/leavebalance.screen'
 import EmployeeLeavePending from '../screen/leave/leavepending.screen'
 import AdminOvertimeApprove from '../screen/overtime/_approve.screen'
+import OvertimeRequest from '../screen/overtime/overtimerequest.screen'
+import OvertimePending from '../screen/overtime/overtimepending.screen'
 import OvertimeHistory  from '../screen/overtime/overtimehistory.screen'
 import OvertimeApprove from '../screen/overtime/overtimeapprove'
 import OvertimeRejected from '../screen/overtime/overtimerejected'
@@ -87,6 +88,7 @@ function Navigation() {
         <Drawer.Screen name='Attendance' component={Attendance} />
         <Drawer.Screen name='Overtime' component={Overtime} />
         <Drawer.Screen name='AdminOvertimeApprove' component={AdminOvertimeApprove} />
+        <Drawer.Screen name='OvertimePending' component={OvertimeRequest} />
         <Drawer.Screen name='OvertimeRequest' component={OvertimeRequest} />
         <Drawer.Screen name='OvertimeHistory' component={OvertimeHistory} />
         <Drawer.Screen name='OvertimeApprove' component={OvertimeApprove} />

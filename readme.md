@@ -13,3 +13,10 @@
 - get leave by status : getLeaveByStatus(url, auth, id, status, year, month)
 - leave summary : getLeaveSummary(url, auth, id, year)
 - leave balance : getLeaveBalance(url, auth, id, year)
+
+## ot callback
+getOTStatus(url, auth, status)
+getOTSummary(url, auth, id, year)
+getOTApprovedList(url, auth, id, year,month)
+getOTRejectedList(url, auth, id, year,month)
+getOTHistory(url, auth, id, year, month)
