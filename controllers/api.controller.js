@@ -455,6 +455,23 @@ export default class APIs {
             })
     }
 
+    // get ot history
+    static getOTHistory = (url, auth, id, year, month) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/list/overtime/${id}/${year}/${month}`)
+            .then(function (res) {
+                console.log("API Data", res.data)
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                console.log("Error", error)
+                return { error: error, status: 'fail' }
+            })
+    }
+
     // get leave approve, cancel, pending
     static getLeaveByStatus = (url, auth, id, status, year, month) => {
         return axios.create({
@@ -530,6 +547,27 @@ export default class APIs {
                 'Authorization': auth
             }
         }).get(`${url}/list/reject/leaves/${id}/${year}/${month}`)
+            .then(function (res) {
+                console.log("Api Leave rejected Data", res.data.data)
+                return { data: res.data.data, status: 'success' }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    // ot rejected
+    static getOTRejectedList = (url, auth, id, year,month) => {
+        console.log("Auth", auth)
+        console.log("url", url)
+        console.log("ID", id)
+        console.log("Year", year)
+        console.log("Month", month)
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/list/rejected/ot/${id}/${year}/${month}`)
             .then(function (res) {
                 console.log("Api Leave rejected Data", res.data.data)
                 return { data: res.data.data, status: 'success' }
