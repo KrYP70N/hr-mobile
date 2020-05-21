@@ -81,13 +81,18 @@ export class EmployeeLeaveHistory extends Component {
     ctrlNext = ({ year, month }) => {
         this.setState({ month, year })
         this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, year, month)
-
     }
 
     // filter prev ctrl
     ctrlPrev = ({ year, month }) => {
         this.setState({ month, year })
         this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, year, month)
+    }
+
+    // change value
+    changeValue = (date, selected) => {
+        alert(date)
+        alert(selected)
     }
 
     render() {
@@ -142,6 +147,7 @@ export class EmployeeLeaveHistory extends Component {
                         onGoNext={this.ctrlNext}
                         onGoPrev={this.ctrlPrev}
                         optionList={this.state.leaveType}
+                        onChangeValue={this.changeValue}
                     />
                     {statusData}
                 </Content>

@@ -27,7 +27,7 @@ export default function MonthPicker({
             year: moment(date).add(1, 'months').format('YYYY')
         })
         // emit value change dom
-        onChangeValue(date)
+        onChangeValue(date, selected)
     }
 
     // prev emitter
@@ -38,18 +38,22 @@ export default function MonthPicker({
             year: moment(date).subtract(1, 'months').format('YYYY')
         })
         // emit value change dom
-        onChangeValue(date)
+        onChangeValue(date, selected)
     }
 
     // onSelect
     const goSelect = (data) => {
         setselected(data)
+        onChangeValue(date, data)
     }
 
     // selector
     const getList = optionList.map((list, key) => (
         <Picker.Item label={list.name} value={list.leave_type_id} key={key} />
     ))
+
+    console.log(optionList)
+
     return (
         <View style={[styles.container, {
             display: show ? 'flex' : 'none'
