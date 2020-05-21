@@ -21,12 +21,13 @@ export default class Clock extends Component {
         AsyncStorage.getItem('@hr:endPoint')
             .then((res) => {
                 let endPoint = DB.getEndPoint(res)
+
                 AsyncStorage.getItem('@hr:token')
                     .then((res) => {
                         let key = DB.getToken(res)
-
+                        let id = DB.getUserId(res)
                         // request time
-                        APIs.Time(endPoint, key)
+                        APIs.Time(endPoint, key, id)
                             .then((response) => {
                                 if (response.status === 'success') {
                                     this.setState({

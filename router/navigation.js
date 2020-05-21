@@ -25,12 +25,13 @@ import Payroll from '../screen/payroll/payroll.screen'
 import PayrollDetail from '../screen/payroll/pryroll.detail.screen'
 import Leave from '../screen/leave/leavedashboard.screen'
 import LeaveRequest from '../screen/leave/leaverequest.screen'
-import LeaveApprove from '../screen/leave/_approve.screen';
+import AdminLeaveApprove from '../screen/leave/_approve.screen';
 import EmpLeaveApproved from '../screen/leave/leaveapproved.screen';
 import EmployeeLeaveRejected from '../screen/leave/leaverejected.screen'
 import EmployeeLeaveHistory from '../screen/leave/leavehistory.screen'
 import EmployeeLeaveBalance from '../screen/leave/leavebalance.screen'
 import EmployeeLeavePending from '../screen/leave/leavepending.screen'
+import AdminOvertimeApprove from '../screen/overtime/_approve.screen'
 import OvertimeHistory  from '../screen/overtime/overtimehistory.screen'
 import OvertimeApprove from '../screen/overtime/overtimeapprove'
 import OvertimeRejected from '../screen/overtime/overtimerejected'
@@ -85,6 +86,7 @@ function Navigation() {
         <Drawer.Screen name='Profile' component={ProfileScreen} />
         <Drawer.Screen name='Attendance' component={Attendance} />
         <Drawer.Screen name='Overtime' component={Overtime} />
+        <Drawer.Screen name='AdminOvertimeApprove' component={AdminOvertimeApprove} />
         <Drawer.Screen name='OvertimeRequest' component={OvertimeRequest} />
         <Drawer.Screen name='OvertimeHistory' component={OvertimeHistory} />
         <Drawer.Screen name='OvertimeApprove' component={OvertimeApprove} />
@@ -93,7 +95,7 @@ function Navigation() {
         <Drawer.Screen name='PayrollDetail' component={PayrollDetail} />
         <Drawer.Screen name='Leave' component={Leave} />
         <Drawer.Screen name='LeaveRequest' component={LeaveRequest} />
-        <Drawer.Screen name='LeaveApprove' component={LeaveApprove}/>
+        <Drawer.Screen name='AdminLeaveApprove' component={AdminLeaveApprove}/>
         <Drawer.Screen name='EmployeeLeaveApproved' component={EmpLeaveApproved}/>
         <Drawer.Screen name='EmployeeLeaveRejected' component={EmployeeLeaveRejected}/>
         <Drawer.Screen name='EmployeeLeaveHistory' component={EmployeeLeaveHistory}/>
