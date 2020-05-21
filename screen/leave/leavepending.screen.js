@@ -21,14 +21,6 @@ export class EmployeeLeavePending extends Component {
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
-            // let date = new Date()
-            // this.setState({
-            //     refresh: !this.state.refresh,
-            //     index: 0,
-            //     year: date.getFullYear(),
-            //     month: date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
-            // })
-
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
                     const url = JSON.parse(res).ApiEndPoint

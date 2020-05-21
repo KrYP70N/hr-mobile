@@ -83,6 +83,7 @@ export default {
         fontSize: 15,
         color: color.dark,
         fontWeight: 'bold',
+        marginBottom: 10,
     },
     cardSText: {
         ...typo.parabraph,
