@@ -13,13 +13,13 @@ const leavesColor = {
 
 // registered status type color
 const statusColor = {
-    "Approved": '#47E9EE',
+    "Approved": colors.primary,
     "Rejected": '#FF0000',
-    "Cancellation": '#F5F5F5',
+    "Cancellation": '#656565',
     "Pending": '#FFB300'
 }
 
-export default function StatusCard({ hour, date, status }) {
+export default function StatusCard({ hour, date_from, date_to, status }) {
     return (
         <View style={styles.container}>
             <View style={styles.mainRow}>
@@ -28,8 +28,8 @@ export default function StatusCard({ hour, date, status }) {
                 </View>
                 <View style={styles.content}>
                     <View style={styles.left}>
-                        <Text style={styles.date}>{date}</Text>
-                        <Text>16:00:00 to 18:00:00</Text>
+                        <Text style={styles.date}>From - {date_from}</Text>
+                        <Text style={styles.date}>To      - {date_to}</Text>
                         <Text>{hour} hr</Text>
                     </View>
                     <View style={styles.right}>
@@ -78,15 +78,15 @@ const styles = StyleSheet.create({
     },
     statusTxt: {
         textAlign: 'right',
-        fontFamily: 'Nunito',
+        fontFamily: 'Nunito-Bold',
         fontSize: 14,
         fontWeight: 'bold',
         color: colors.primary
     },
     date: {
         fontFamily: 'Nunito',
-        fontSize: 13,
-        color: colors.placeHolder,
+        fontSize: 16,
+        color: '#656565',
         marginBottom: 10
     }
 })

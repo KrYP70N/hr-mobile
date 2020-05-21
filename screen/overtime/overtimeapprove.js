@@ -8,7 +8,7 @@ import styles from '../leave/leave.style'
 
 // components
 import MonthPicker from '../../components/monthpicker.component'
-import StatusCard from '../../components/statuscard.component'
+import StatusCard from '../../components/otstatuscard.component'
 
 import APIs from '../../controllers/api.controller'
 import moment from 'moment'
@@ -23,7 +23,7 @@ export class OvertimeApprove extends Component {
             id: null,
             year: moment().format('YYYY'),
             month: moment().format('MM'),
-            leaveApproveList: [],
+            OTApproveList: [],
             filter: true
         }
     }
@@ -42,19 +42,19 @@ export class OvertimeApprove extends Component {
                                 auth: JSON.parse(res).key,
                                 id: JSON.parse(res).id
                             })
-                            this.getLeaveApproved(auth, id, url, this.state.year, this.state.month);
+                            this.getOTApprovedList(auth, id, url, this.state.year, this.state.month);
                         })
                 })
         })
     }
 
-    getLeaveApproved(auth, id, url, year, month) {
-        APIs.getLeaveApprovedList(url, auth, id, year, month)
+    getOTApprovedList(auth, id, url, year, month) {
+        APIs.getOTApprovedList(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
                     console.log("Leave Data", res.data)
                     this.setState({
-                        leaveApproveList: res.data
+                        OTApproveList: res.data
                     })
                 } else {
                     Toast.show({
@@ -74,19 +74,19 @@ export class OvertimeApprove extends Component {
     // filter next ctrl
     ctrlNext = ({ year, month }) => {
         this.setState({ month, year })
-        this.getLeaveApproved(this.state.auth, this.state.id, this.state.url, year, month)
+        this.getOTApprovedList(this.state.auth, this.state.id, this.state.url, year, month)
 
     }
 
     // filter prev ctrl
     ctrlPrev = ({ year, month }) => {
         this.setState({ month, year })
-        this.getLeaveApproved(this.state.auth, this.state.id, this.state.url, year, month)
+        this.getOTApprovedList(this.state.auth, this.state.id, this.state.url, year, month)
 
     }
 
     render() {
-        let statusData = this.state.leaveApproveList.map((approved, index) => {
+        let statusData = this.state.OTApproveList.map((approved, index) => {
             return (
                 <StatusCard
                     key={index}
@@ -138,6 +138,22 @@ export class OvertimeApprove extends Component {
                         onGoPrev={this.ctrlPrev}
                     />
                     {statusData}
+
+                    <StatusCard
+                        //key={index}
+                        hour={2}
+                        date_from={`2020-5-2020 03:01:15`}
+                        date_to={`2020-5-2020 05:01:15`}
+                        status={`Approved`}
+                    />
+                    <StatusCard
+                        //key={index}
+                        hour={3}
+                        date={`2020-5-22 03:01:15 to 2020-5-22 06:01:15`}
+                        date_from={`2020-5-2020 03:01:15`}
+                        date_to={`2020-5-2020 05:01:15`}
+                        status={`Approved`}
+                    />
                     {/* <StatusCard 
                         leaveType="Casual Leave"
                         date="07 Nov 2019 to 09 Nov 2019"

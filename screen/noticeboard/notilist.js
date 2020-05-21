@@ -35,11 +35,16 @@ export default function notilist({ navigation }) {
 
                 APIs.getAnnouncement(token['key'], endPoint['ApiEndPoint'], token['id'], `${moment().format('YYYY')}-${month}-01`, `${moment().format('YYYY')}-${month}-${last_day}`)
                     .then((res) => {
-                        //console.log("res", res)
-                        //console.log("res.data",res.data)
-                        if (res.data !== null) {
-                            setCollection(res.data)
+                        console.log("res", res)
+                        console.log("res.data", res.data)
+                        if(res.status === 'success'){
+                            if (res.data !== null) {
+                                setCollection(res.data)
+                            }
+                        }else{
+                            console.log("Error", res.error)
                         }
+                       
                     })
 
             })
@@ -79,8 +84,8 @@ export default function notilist({ navigation }) {
             </Picker>
         </View>
     )
-    //console.log("Collection Data", Collection)
-    if (Collection === null || Collection.length === 0) {
+    console.log("Collection Data", Collection)
+    if (Collection === null) {
         return (
             <View style={styles.loading}>
                 <Spinner />
@@ -88,29 +93,20 @@ export default function notilist({ navigation }) {
             </View>
         )
     } 
-    // else if (Collection.length === 0) {
-    //     return (
-    //         <View>
-    //             {MonthOptions}
-    //             <View style={styles.emptyCard}>
-    //                 <Icon name='ios-information-circle-outline' style={styles.emptyIcn} />
-    //                 <Text style={styles.emptyTxt}>There is no announcement.</Text>
-    //             </View>
-    //         </View>
-    //     )
-    // } 
-    
-        return (
 
-            <React.Fragment>
-                {MonthOptions}
 
-                {
+    return (
+
+        <React.Fragment>
+            {MonthOptions}
+
+            {
                     Collection.map((data, key) => (
-                        <View style={{ marginTop: 20, borderWidth: 0.5, borderRadius: 5, borderColor: color.placeHolder, backgroundColor: color.light, paddingLeft: 10, flexDirection: 'row', paddingRight: 10, paddingBottom: 15, paddingTop: 15 }}>
+                        <TouchableOpacity onPress = {() => {navigation.navigate('NotiboardDetail', {Subject: data.Title, Date: data['Date Start'], Body: data['Body'] })}}>
+                        <View key = {key} style={{ marginTop: 20, borderWidth: 0.5, borderRadius: 5, borderColor: color.placeHolder, backgroundColor: color.light, paddingLeft: 10, flexDirection: 'row', paddingRight: 10, paddingBottom: 15, paddingTop: 15 }}>
                             <View style={{ width: '15%', alignItems: 'center', justifyContent: 'center', }}>
-                                <View style={{ width: 60, height: 60, borderRadius: 60 / 2, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }}>
-                                    <Image style={{ width: 30, height: 30 }} source={require('../../assets/icon/announcement.png')} />
+                                <View style={{ width: 40, height: 40, borderRadius: 40 / 2, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }}>
+                                    <Image style={{ width: 22, height: 22 }} source={require('../../assets/icon/announcement.png')} />
                                 </View>
                             </View>
                             <View style={{ justifyContent: 'space-between', width: '85%', flexDirection: 'row' }}>
@@ -120,17 +116,37 @@ export default function notilist({ navigation }) {
                                 </View>
 
                                 <TouchableOpacity onPress={() => Linking.openURL(data['Url Link'])}>
-                                    <Image style={{ width: 30, height: 30 }} source={require('../../assets/icon/attachment.png')} />
+                                    <Image style={{ width: 22, height: 22 }} source={require('../../assets/icon/attachment.png')} />
                                 </TouchableOpacity>
 
                             </View>
                         </View>
+                        </TouchableOpacity>
                     ))
 
                 }
-            </React.Fragment>
-        )
-    
+
+            {/* <View style={{ marginTop: 20, borderWidth: 0.5, borderRadius: 5, borderColor: color.placeHolder, backgroundColor: color.light, paddingLeft: 10, flexDirection: 'row', paddingRight: 10, paddingBottom: 15, paddingTop: 15 }}>
+                <View style={{ width: '15%', alignItems: 'center', justifyContent: 'center', }}>
+                    <View style={{ width: 40, height: 40, borderRadius: 40 / 2, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }}>
+                        <Image style={{ width: 22, height: 22 }} source={require('../../assets/icon/announcement.png')} />
+                    </View>
+                </View>
+                <View style={{ justifyContent: 'space-between', width: '85%', flexDirection: 'row' }}>
+                    <View style={{ marginLeft: 15 }}>
+                        <Text style={{ fontSize: 18, fontFamily: 'Nunito-Bold' }}>{`Announcement`}</Text>
+                        <Text style={{ marginTop: 5, fontSize: 16, fontFamily: 'Nunito', color: "#656565" }}>{`Date - 2020-05-20`}</Text>
+                    </View>
+
+                    <TouchableOpacity>
+                        <Image style={{ width: 22, height: 22 }} source={require('../../assets/icon/attachment.png')} />
+                    </TouchableOpacity>
+
+                </View>
+            </View> */}
+        </React.Fragment>
+    )
+
 
 
 

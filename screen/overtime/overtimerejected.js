@@ -47,15 +47,15 @@ export class OvertimeRejected extends Component {
                                 auth: JSON.parse(res).key,
                                 id: JSON.parse(res).id
                             })
-                            this.getLeaveRejectedList(auth, id, url, this.state.year, this.state.month);
+                            this.getOTRejectedList(auth, id, url, this.state.year, this.state.month);
 
                         })
                 })
         })
     }
 
-    getLeaveRejectedList(auth, id, url, year, month) {
-        APIs.getLeaveRejectedList(url, auth, id, year, month)
+    getOTRejectedList(auth, id, url, year, month) {
+        APIs.getOTRejectedList(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
                     console.log("Leave Data", res.data)
@@ -84,14 +84,14 @@ export class OvertimeRejected extends Component {
     // filter next ctrl
     ctrlNext = ({ year, month }) => {
         this.setState({ month, year })
-        this.getLeaveRejectedList(this.state.auth, this.state.id, this.state.url, year, month)
+        this.getOTRejectedList(this.state.auth, this.state.id, this.state.url, year, month)
 
     }
 
     // filter prev ctrl
     ctrlPrev = ({ year, month }) => {
         this.setState({ month, year })
-        this.getLeaveRejectedList(this.state.auth, this.state.id, this.state.url, year, month)
+        this.getOTRejectedList(this.state.auth, this.state.id, this.state.url, year, month)
 
     }
 
@@ -102,15 +102,15 @@ export class OvertimeRejected extends Component {
             return (
                 <StatusCard
                     key={index}
-                    hour = {2}
+                    hour={2}
                     date={`${reject.date_from} to ${reject.date_to}`}
                     status={reject.state}
                 />
             )
         })
 
-    
-    return(
+
+        return (
             <Container>
                 <Header style={{
                     backgroundColor: color.light,
@@ -150,7 +150,22 @@ export class OvertimeRejected extends Component {
                         onGoNext={this.ctrlNext}
                         onGoPrev={this.ctrlPrev}
                     />
-                    {statusData}
+
+                    <StatusCard
+                        //key={index}
+                        hour={2}
+                        date_from={`2020-5-20 03:01:15`}
+                        date_to={`2020-5-2020 05:01:15`}
+                        status={`Rejected`}
+                    />
+                    <StatusCard
+                        //key={index}
+                        hour={3}
+                        date_from={`2020-5-20 03:01:15`}
+                        date_to={`2020-5-2020 05:01:15`}
+                        status={`Rejected`}
+                    />
+                    {/* {statusData} */}
                 </Content>
             </Container >
         )
