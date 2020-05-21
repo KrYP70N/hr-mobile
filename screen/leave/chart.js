@@ -115,7 +115,6 @@ export class chart extends Component {
         APIs.getLeaveSummary(url, auth, id, year)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("Res Data", res.data)
                     let data = []
                     let lData = []
                     for (let i = 0; i < 4; i++) {
@@ -161,7 +160,6 @@ export class chart extends Component {
                         value: res.data.Total[0][0],
                         color: '#FFFFFF'
                     })
-                    console.log("LData:::", lData)
                     this.setState({
                         summaryData: data,
                         labelData: lData

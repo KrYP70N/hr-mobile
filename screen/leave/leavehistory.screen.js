@@ -24,7 +24,8 @@ export class EmployeeLeaveHistory extends Component {
             year: moment().format('YYYY'),
             month: moment().format('MM'),
             leaveHistoryLists: [],
-            filter: true
+            filter: true,
+            leaveType: []
         }
     }
 
@@ -43,6 +44,12 @@ export class EmployeeLeaveHistory extends Component {
                                 id: JSON.parse(res).id
                             })
                             this.getLeaveHistory(auth, id, url, this.state.year, this.state.month);
+                            APIs.getLeaveType(auth, url)
+                            .then((res) => {
+                                this.setState({
+                                    leaveType: res.data
+                                })
+                            })
                         })
                 })
         })
@@ -52,7 +59,6 @@ export class EmployeeLeaveHistory extends Component {
         APIs.getLeaveHistory(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("Leave Data", res.data)
                     this.setState({
                         leaveHistoryLists: res.data
                     })
@@ -75,18 +81,21 @@ export class EmployeeLeaveHistory extends Component {
     ctrlNext = ({ year, month }) => {
         this.setState({ month, year })
         this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, year, month)
-
     }
 
     // filter prev ctrl
     ctrlPrev = ({ year, month }) => {
         this.setState({ month, year })
         this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, year, month)
+    }
 
+    // change value
+    changeValue = (date, selected) => {
+        alert(date)
+        alert(selected)
     }
 
     render() {
-        console.log("Leave History List", this.state.leaveHistoryLists)
         let statusData =  this.state.leaveHistoryLists.map((history, index) => {
             return(
                 <StatusCard
@@ -137,6 +146,8 @@ export class EmployeeLeaveHistory extends Component {
                         })}
                         onGoNext={this.ctrlNext}
                         onGoPrev={this.ctrlPrev}
+                        optionList={this.state.leaveType}
+                        onChangeValue={this.changeValue}
                     />
                     {statusData}
                 </Content>

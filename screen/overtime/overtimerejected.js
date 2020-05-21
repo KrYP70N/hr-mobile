@@ -8,7 +8,7 @@ import styles from '../leave/leave.style'
 
 // components
 import MonthPicker from '../../components/monthpicker.component'
-import StatusCard from '../../components/statuscard.component'
+import StatusCard from '../../components/otstatuscard.component'
 import moment from 'moment'
 
 import APIs from '../../controllers/api.controller'
@@ -23,7 +23,7 @@ export class OvertimeRejected extends Component {
             id: null,
             // year: null,
             // month: null,
-            leaveRejectedList: [],
+            OTRejectedList: [],
             filter: true,
             year: moment().format('YYYY'),
             month: moment().format('MM')
@@ -32,12 +32,6 @@ export class OvertimeRejected extends Component {
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
-            //let date = new Date()
-            // this.setState({
-            //     year: date.getFullYear(),
-            //     month: `${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}`,
-            // })
-
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
                     let date = new Date()
@@ -66,7 +60,7 @@ export class OvertimeRejected extends Component {
                 if (res.status === 'success') {
                     console.log("Leave Data", res.data)
                     this.setState({
-                        leaveRejectedList: res.data
+                        OTRejectedList: res.data
                     })
                 } else {
                     Toast.show({
@@ -87,22 +81,6 @@ export class OvertimeRejected extends Component {
         console.log("Clicked Date", clickedDate)
     }
 
-    // render() {
-    //     console.log("Rejected Leave List", this.state.leaveRejectedList)
-    //     let statusData =  this.state.leaveRejectedList.map((reject, index) => {
-    //         return(
-    //             <StatusCard
-    //             key = {index}
-    //             leaveType={reject.Leave_Type}
-    //             date={`${reject.date_from} to ${reject.date_to}`}
-    //             status={reject.state}
-    //         />
-    //         )
-    //     })
-
-    //     }
-    // }
-
     // filter next ctrl
     ctrlNext = ({ year, month }) => {
         this.setState({ month, year })
@@ -119,11 +97,12 @@ export class OvertimeRejected extends Component {
 
     render() {
         console.log(this.state.year, this.state.month)
-        let statusData = this.state.leaveRejectedList.map((reject, index) => {
+        console.log("OT RejectedList", this.state.OTRejectedList)
+        let statusData = this.state.OTRejectedList.map((reject, index) => {
             return (
                 <StatusCard
                     key={index}
-                    leaveType={reject.Leave_Type}
+                    hour = {2}
                     date={`${reject.date_from} to ${reject.date_to}`}
                     status={reject.state}
                 />
