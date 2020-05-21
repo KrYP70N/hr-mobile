@@ -12,10 +12,12 @@ export default function MonthPicker({
     onClosePress, 
     onGoNext, 
     onGoPrev,
-    onChangeValue
+    onChangeValue,
+    optionList = []
     }) {
 
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
+    const [selected, setselected] = useState("all")
 
     // next emitter
     const goNext = () => {
@@ -39,8 +41,15 @@ export default function MonthPicker({
         onChangeValue(date)
     }
 
-    // selector
+    // onSelect
+    const goSelect = (data) => {
+        setselected(data)
+    }
 
+    // selector
+    const getList = optionList.map((list, key) => (
+        <Picker.Item label={list.name} value={list.leave_type_id} key={key} />
+    ))
     return (
         <View style={[styles.container, {
             display: show ? 'flex' : 'none'
@@ -78,12 +87,18 @@ export default function MonthPicker({
                     </Col>
                 </Row>
                 <View>
-                    <Picker 
-                    mode="model"
-                    placeholder="Picker Placeholder"
-                    >
-                        <Picker.Item label="Wallet" value="key0" />
-                    </Picker>
+                    {
+                        optionList.length !== 0 &&
+                        <Picker 
+                        mode="model"
+                        placeholder="Picker Placeholder"
+                        selectedValue={selected}
+                        onValueChange={goSelect.bind(this)}
+                        >
+                            <Picker.Item label="all" value="all" />
+                            {getList}
+                        </Picker>
+                    }
                 </View>
             </View>
         </View>
@@ -138,6 +153,6 @@ MonthPicker.propTypes = {
     onGoNext: PropTypes.func,
     onGoPrev: PropTypes.func,
     onChangeValue: PropTypes.func,
-    options: PropTypes.array
+    optionList: PropTypes.array
 }
 
