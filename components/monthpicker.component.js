@@ -49,7 +49,7 @@ export default function MonthPicker({
 
     // selector
     const getList = optionList.map((list, key) => (
-        <Picker.Item label={list} value={list} key={key} />
+        <Picker.Item label={list.charAt(0).toUpperCase() + list.substr(1).toLowerCase()} value={list} key={key} />
     ))
 
     return (
@@ -101,7 +101,7 @@ export default function MonthPicker({
                         selectedValue={selected}
                         onValueChange={goSelect.bind(this)}
                         >
-                            <Picker.Item label="all" value="all" />
+                            <Picker.Item label="All" value="all" />
                             {getList}
                         </Picker>
                         </View>

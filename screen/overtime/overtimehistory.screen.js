@@ -60,7 +60,7 @@ export class OvertimeHistory extends Component {
         APIs.getOTHistory(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("OT Data", res.data)
+                    console.log("Leave Data", res.data)
                         this.setState({
                             OTHistoryLists: status === 'all' ? res.data : res.data.filter(list => list.state.toLowerCase() === status)
                         })

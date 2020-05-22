@@ -241,9 +241,9 @@ export class CheckInOut extends Component {
     }
 
     render() {
-        console.log(this.props.navigation);
-        console.log("Current Location", this.state.location);
-        console.log("Current Map Location", this.state.mapCoord)
+        //console.log(this.props.navigation);
+       // console.log("Current Location", this.state.location);
+       // console.log("Current Map Location", this.state.mapCoord)
         return (
 
             <Container style={{ flex: 1 }}>
@@ -301,7 +301,7 @@ export class CheckInOut extends Component {
                             {this.state.userName === null ? <Text style={{ fontSize: 40 }}>...</Text> :
                                 <Text>{`Have a nice day! ${this.state.userName}`}</Text>}
                             <Clock style={styles.time} navigation={this.props.navigation} checkScreen="checkinout" />
-                            <View style={{
+                            {/* <View style={{
                                 flexDirection: 'row',
                                 width: '100%',
                                 alignItems: 'center',
@@ -319,7 +319,7 @@ export class CheckInOut extends Component {
                                     marginLeft: 10,
 
                                 }}>OfficeShift (09:00 AM-06:00 PM)</Text>
-                            </View>
+                            </View> */}
                             <View style={{
                                 //flexDirection: 'row',
                                 width: '100%',
@@ -332,10 +332,10 @@ export class CheckInOut extends Component {
                                 <TouchableOpacity onPress={() => {
                                    this.CheckIn()
                                 }}>
-                                    <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: 150, height: 90, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
+                                    <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width/3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
                                         <Image
                                             source={require('../../assets/icon/checkin.png')}
-                                            style={{ width: 50, height: 40 }}
+                                            style={{ width: 30, height: 30 }}
                                         />
                                         <Text style={{ color: '#fff', marginTop: 5 }}>Check In</Text>
                                     </View>

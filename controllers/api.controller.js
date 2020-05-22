@@ -65,7 +65,9 @@ export default class APIs {
             }
         }).get(`${url}/getTime/${id}`)
             .then(function (res) {
-                return { data: res.data["data"]["Current Server Time"], status: 'success' }
+                console.log("Api Get Time Data", res.data)
+                return { data: res.data.data, status: 'success' }
+               // return { data: res.data["data"]["Current Server Time"], status: 'success' }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
