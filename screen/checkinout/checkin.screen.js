@@ -300,7 +300,7 @@ export class CheckInOut extends Component {
                         }}>
                             {this.state.userName === null ? <Text style={{ fontSize: 40 }}>...</Text> :
                                 <Text>{`Have a nice day! ${this.state.userName}`}</Text>}
-                            <Clock style={styles.time} navigation={this.props.navigation} checkScreen="checkinout" />
+                            <Clock style={styles.time} navigation={this.props.navigation} checkScreen="checkinout" checkIconChange="checkin" />
                             {/* <View style={{
                                 flexDirection: 'row',
                                 width: '100%',
@@ -340,36 +340,13 @@ export class CheckInOut extends Component {
                                         <Text style={{ color: '#fff', marginTop: 5 }}>Check In</Text>
                                     </View>
                                 </TouchableOpacity>
-
-                                {/* <TouchableOpacity onPress={() => { this.CheckIn() }}>
-                                    <View style={{
-                                        width: 120,
-                                        height: 50,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: color.primary,
-                                        borderRadius: 15
-                                    }}><Text style={{
-                                        color: '#fff'
-                                    }} >In</Text></View>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { this.CheckOut() }}>
-                                    <View style={{
-                                        width: 120,
-                                        height: 50,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: color.primary,
-                                        borderRadius: 15
-                                    }}><Text style={{ color: '#fff' }}>Out</Text></View>
-                                </TouchableOpacity> */}
                             </View>
 
                         </View>
                         <Modal isVisible={this.state.isModalVisible} >
                             <View style={styles.ModelViewContainer}>
                                 <View style={styles.iconView}>
-                                    <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} />
+                                    <Image source={require('../../assets/icon/checkintime.png')} style={styles.dialogIcon} />
                                 </View>
                                 <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
                                 <View style={styles.ModalTextContainer}>

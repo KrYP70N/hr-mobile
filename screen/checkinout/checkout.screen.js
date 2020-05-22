@@ -296,7 +296,7 @@ export class CheckOut extends Component {
                         }}>
                             {this.state.userName === null ? <Text style = {{fontSize: 40}}>...</Text> : 
                             <Text>{`Have a nice day! ${this.state.userName}`}</Text>}
-                            <Clock style={styles.time} navigation={this.props.navigation} checkScreen="checkinout" />
+                            <Clock style={styles.time} navigation={this.props.navigation} checkScreen="checkinout" checkIconChange="checkout" />
                             {/* <View style={{
                                 flexDirection: 'row',
                                 width: '100%',
@@ -342,7 +342,7 @@ export class CheckOut extends Component {
                         <Modal isVisible={this.state.isModalVisible} >
                             <View style={styles.ModelViewContainer}>
                                 <View style={styles.iconView}>
-                                    <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} />
+                                    <Image source={require('../../assets/icon/checkouttime.png')} style={styles.dialogIcon} />
                                 </View>
                                 <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
                                 <View style={styles.ModalTextContainer}>

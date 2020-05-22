@@ -20,6 +20,7 @@ export class OvertimePending extends Component {
             overtimes: [],
             isModalVisible: false,
             checkMessage: '',
+            changeIconStatus: '',
         }
     }
 
@@ -51,12 +52,14 @@ export class OvertimePending extends Component {
                     this.getApproveData(this.state.auth, this.state.id, this.state.url)
                     this.setState({
                         checkMessage: 'Cancellation Successful!',
+                        changeIconStatus: 'success',
                         isModalVisible: true,
 
                     })
                 } else {
                     this.setState({
                         checkMessage: 'Cancellation Failed!',
+                        changeIconStatus: 'fail',
                         isModalVisible: true,
 
                     })
@@ -72,6 +75,9 @@ export class OvertimePending extends Component {
                         overtimes: res.data
                     })
                 } else {
+                    this.setState({
+                        overtimes: []
+                    })
                     Toast.show({
                         text: 'Connection time out. Please check your internet connection!',
                         textStyle: {
@@ -146,7 +152,8 @@ export class OvertimePending extends Component {
                         <Modal isVisible={this.state.isModalVisible} >
                             <View style={styles.ModelViewContainer}>
                                 <View style={styles.iconView}>
-                                    <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} />
+                                    {/* <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} /> */}
+                                   {this.state.changeIconStatus === "success" ?  <Image source={require('../../assets/icon/success_icon.png')} style={styles.dialogIcon} /> :  <Image source={require('../../assets/icon/fail_icon.png')} style={styles.dialogIcon} />}
                                 </View>
                                 <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
                                 <View style={styles.ModalTextContainer}>

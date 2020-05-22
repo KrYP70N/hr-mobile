@@ -216,7 +216,7 @@ export default class CheckInOut extends Component {
 
           <View style={styles.card}>
             <Image
-              source={require('../assets/icon/checktime.png')}
+              source={require('../assets/icon/checkintime.png')}
               style={[styles.icon]}
             />
             <Text style={{ color: color.primary, fontSize: 18 }}>Get your Attendance!</Text>

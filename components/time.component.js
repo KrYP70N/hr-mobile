@@ -60,7 +60,6 @@ export default class Clock extends Component {
     }
 
     render() {
-        console.log("Shift Data", this.state.shiftData)
         let time = this.state.time
 
         if (this.state.time !== null) {
@@ -93,20 +92,24 @@ export default class Clock extends Component {
                                 backgroundColor: color.lighter,
                                 marginTop: 20,
                             }}>
-                                <Image style={{
+                                {this.props.checkIconChange === "checkin" ?  <Image style={{
                                     width: 20,
                                     height: 20,
-                                }} source={require('../assets/icon/checktime.png')} />
+                                }} 
+
+                                source={require('../assets/icon/checkintime.png')} /> :  <Image style={{
+                                    width: 20,
+                                    height: 20,
+                                }} 
+
+                                source={require('../assets/icon/checkouttime.png')} />}
+                               
                                 <Text style={{
                                     marginLeft: 10,
 
                                 }}>{this.state.shiftData}</Text>
                             </View>
                             </View>
-                           
-                      
-
-
                     )
                 } else {
                     return (

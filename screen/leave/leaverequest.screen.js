@@ -47,6 +47,7 @@ export class LeaveRequest extends Component {
             totalDay: 1,
             isModalVisible: false,
             checkMessage: '',
+            changeIconStatus: '',
         }
     }
 
@@ -70,18 +71,21 @@ export class LeaveRequest extends Component {
                             binary: [],
                             description: '',
                             checkMessage: 'Leave Request Successful!',
+                            changeIconStatus: 'success',
                             isModalVisible: true,
                         })
                         this.getRequestData(auth, url);
                     } else {
                         this.setState({
                             checkMessage: res.data.message,
+                            changeIconStatus: 'fail',
                             isModalVisible: true,
                         })
                     }
                 } else {
                     this.setState({
                         checkMessage: 'Leave Request Failed!',
+                        changeIconStatus: 'fail',
                         isModalVisible: true,
 
                     })
@@ -476,7 +480,8 @@ export class LeaveRequest extends Component {
                         <Modal isVisible={this.state.isModalVisible} >
                             <View style={styles.ModelViewContainer}>
                                 <View style={styles.iconView}>
-                                    <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} />
+                                    {/* <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} /> */}
+                                   {this.state.changeIconStatus === "success" ?  <Image source={require('../../assets/icon/success_icon.png')} style={styles.dialogIcon} /> :  <Image source={require('../../assets/icon/fail_icon.png')} style={styles.dialogIcon} />}
                                 </View>
                                 <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
                                 <View style={styles.ModalTextContainer}>

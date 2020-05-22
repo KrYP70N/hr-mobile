@@ -101,9 +101,9 @@ export default function notilist({ navigation }) {
             {MonthOptions}
 
             {
-                    Collection.map((data, key) => (
-                        <TouchableOpacity onPress = {() => {navigation.navigate('NotiboardDetail', {Subject: data.Title, Date: data['Date Start'], Body: data['Body'] })}}>
-                        <View key = {key} style={{ marginTop: 20, borderWidth: 0.5, borderRadius: 5, borderColor: color.placeHolder, backgroundColor: color.light, paddingLeft: 10, flexDirection: 'row', paddingRight: 10, paddingBottom: 15, paddingTop: 15 }}>
+                    Collection.map((data, index) => (
+                        <TouchableOpacity key = {index} onPress = {() => {navigation.navigate('NotiboardDetail', {Subject: data.Title, Date: data['Date Start'], Body: data['Body'] })}}>
+                        <View key = {index} style={{ marginTop: 20, borderWidth: 0.5, borderRadius: 5, borderColor: color.placeHolder, backgroundColor: color.light, paddingLeft: 10, flexDirection: 'row', paddingRight: 10, paddingBottom: 15, paddingTop: 15 }}>
                             <View style={{ width: '15%', alignItems: 'center', justifyContent: 'center', }}>
                                 <View style={{ width: 40, height: 40, borderRadius: 40 / 2, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }}>
                                     <Image style={{ width: 22, height: 22 }} source={require('../../assets/icon/announcement.png')} />

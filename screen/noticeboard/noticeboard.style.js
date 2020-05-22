@@ -107,8 +107,13 @@ export default StyleSheet.create({
         ...typography.placeholder
     },
     optionBox: {
-        borderBottomWidth: 1,
-        borderBottomColor: color.placeHolder,
-        marginBottom: offset.o2
+        borderWidth: 0.5,
+        borderColor: color.placeHolder,
+        width: '100%',
+        height: 50,
+        borderRadius: 5,
+        justifyContent: 'center',
+        //alignItems: 'center'
+        //marginBottom: offset.o2
     }
 })

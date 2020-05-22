@@ -22,13 +22,13 @@ const cardList = [
     {
         title: 'Approved',
         noti: 0,
-        icon: require('../../assets/icon/leave_approve.png'),
+        icon: require('../../assets/icon/otapprove.png'),
         page: 'OvertimeApprove'
     },
     {
         title: 'Rejected',
         noti: 0,
-        icon: require('../../assets/icon/leave_reject.png'),
+        icon: require('../../assets/icon/otreject.png'),
         page: 'OvertimeRejected'
     },
     {
@@ -75,11 +75,15 @@ export class cards extends Component {
                          justifyContent: 'center',
                         // height: height/6,
                     }} key={key}>
-                        {card.title === 'Balance' ?  <Image source={card.icon} style={{
-                            width: 40,
-                            height: 40,
+                        {(card.title === 'Rejected')  ?  <Image source={card.icon} style={{
+                            width: 45,
+                            height: 43,
                             marginBottom: offset.oh
-                        }} /> :  <Image source={card.icon} style={{
+                        }} /> : (card.title === 'Approved') ?<Image source={card.icon} style={{
+                            width: 48,
+                            height: 42,
+                            marginBottom: offset.oh
+                        }} /> : <Image source={card.icon} style={{
                             width: 35,
                             height: 40,
                             marginBottom: offset.oh

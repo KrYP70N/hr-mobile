@@ -16,39 +16,53 @@ export default {
         }
     },
     menu: [
+        //0
         {
             icon: 'ios-speedometer',
-            name: 'Dashboard'
+            name: 'Dashboard',
+            navigate: 'Dashboard'
         },
+        //1
         {
             icon: 'ios-calendar',
             name: 'Attendance',
             navigate: 'Attendance'
         },
+        //2
         {
             icon: 'ios-walk',
             name: 'Leave',
             navigate: 'Leave'
         },
+        //3
         {
             icon: 'ios-stopwatch',
             name: 'Overtime',
             navigate: 'Overtime'
         },
-        {
-            icon: 'md-bookmarks',
-            name: 'Payroll',
-            navigate :'Payroll'
-        },
+        //4
         {
             icon: 'ios-calendar',
             name: 'Approve Leave ',
             navigate: 'AdminLeaveApprove'
         },
+        //5
         {
             icon: 'ios-walk',
             name: 'Approve OT',
             navigate: 'AdminOvertimeApprove'
+        },
+        //6
+        {
+            icon: 'md-bookmarks',
+            name: 'Payroll',
+            navigate :'Payroll'
+        },
+        //7
+        {
+            icon: 'ios-walk',
+            name: 'Announcement',
+            navigate: 'NoticeBoard'
         },
         {
             icon: 'md-cash',
