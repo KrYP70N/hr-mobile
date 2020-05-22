@@ -56,14 +56,15 @@ export class OvertimeHistory extends Component {
         })
     }
 
-    getOTHistory(auth, id, url, year, month) {
+    getOTHistory(auth, id, url, year, month, status='all') {
         APIs.getOTHistory(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("Leave Data", res.data)
-                    this.setState({
-                        OTHistoryLists: res.data
-                    })
+                    console.log("OT Data", res.data)
+                        this.setState({
+                            OTHistoryLists: status === 'all' ? res.data : res.data.filter(list => list.state.toLowerCase() === status)
+                        })
+                  
                 } else {
                     Toast.show({
                         text: 'Connection time out. Please check your internet connection!',
@@ -81,11 +82,14 @@ export class OvertimeHistory extends Component {
 
     // change value
     changeValue = (date, status) => {
+        console.log("Change Value Date", date)
+        console.log("Change Value Status", status)
         this.getOTHistory(this.state.auth, this.state.id, this.state.url, moment(date).format('YYYY'), moment(date).format('MM'), status)
     }
 
     render() {
         console.log("OT History List", this.state.OTHistoryLists)
+        console.log("OT Status", this.state.OTStatus)
         let statusData = this.state.OTHistoryLists.map((history, index) => {
             return (
                 <StatusCard
@@ -140,20 +144,6 @@ export class OvertimeHistory extends Component {
                         onChangeValue={this.changeValue}
                     />
                     {statusData}
-                    {/* <StatusCard
-                        key={index}
-                        hour={2}
-                        date_from={`2020-5-20 03:01:15`}
-                        date_to={`2020-5-2020 05:01:15`}
-                        status={`Approved`}
-                    />
-                    <StatusCard
-                        key={index}
-                        hour={3}
-                        date_from={`2020-5-20 03:01:15`}
-                        date_to={`2020-5-2020 05:01:15`}
-                        status={`Rejected`}
-                    /> */}
                 </Content>
             </Container>
         )

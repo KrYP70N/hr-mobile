@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, SafeAreaView, Dimensions, AsyncStorage } from 'react-native'
+import { Text, View, SafeAreaView, Dimensions, AsyncStorage, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Content, Container, Toast, Icon, Card, CardItem, Body, Button, } from 'native-base'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
@@ -7,6 +7,7 @@ import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 import styOt from '../overtime/overtime.style'
 import po from './po'
+import Modal from 'react-native-modal';
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height
 export class OvertimePending extends Component {
@@ -17,6 +18,8 @@ export class OvertimePending extends Component {
             auth: null,
             id: null,
             overtimes: [],
+            isModalVisible: false,
+            checkMessage: '',
         }
     }
 
@@ -46,25 +49,16 @@ export class OvertimePending extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     this.getApproveData(this.state.auth, this.state.id, this.state.url)
-                    Toast.show({
-                        text: 'Cancel Success!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        }
+                    this.setState({
+                        checkMessage: 'Cancellation Successful!',
+                        isModalVisible: true,
+
                     })
                 } else {
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
+                    this.setState({
+                        checkMessage: 'Cancellation Failed!',
+                        isModalVisible: true,
+
                     })
                 }
             })
@@ -94,30 +88,6 @@ export class OvertimePending extends Component {
 
     render() {
         console.log("Overtimes::::", this.state.overtimes)
-        // let GetLeave = this.state.overtimes.map((leave) => {
-        //     return (
-        //         <Card key={leave['Obj id']} style = {{marginBottom: 16, padding: 10}}>
-        //             <CardItem>
-        //                 <Body>
-        //                     <View style={styLeave.cardTitleContainer}>
-        //                         <Text style={styLeave.cardTitle}>{leave['Leave Type']}</Text>
-        //                     </View>
-        //                     <Text style={styLeave.cardXSText}>{leave['date_from']} to {leave['date_to']}</Text>
-        //                     <Text style={styLeave.cardSText}>Leave left - {leave['number of days']} Days</Text>
-        //                     <Text style={styLeave.cardWarning}>Your request is pending</Text>
-        //                     <Button
-        //                         style={styLeave.ButtonSecondary}
-        //                         onPress={() => {
-        //                             this.cancelOT(leave['Obj id'])
-        //                         }}
-        //                     >
-        //                         <Text>Cancel Request</Text>
-        //                     </Button>
-        //                 </Body>
-        //             </CardItem>
-        //         </Card>
-        //     )
-        // })
         let requests = this.state.overtimes.map((req) => {
             return (
                 <Card key={req['Obj Id']} >
@@ -173,12 +143,74 @@ export class OvertimePending extends Component {
                                 color: color.placeHolder
                             }}>There is no pending OT request!</Text>
                         </View>
+                        <Modal isVisible={this.state.isModalVisible} >
+                            <View style={styles.ModelViewContainer}>
+                                <View style={styles.iconView}>
+                                    <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} />
+                                </View>
+                                <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
+                                <View style={styles.ModalTextContainer}>
+                                    <TouchableOpacity style={styles.CancelOpacityContainer}
+                                        onPress={() => this.setState({ isModalVisible: false })} >
+                                        <Text style={styles.modalTextStyle} >
+                                            {'Close'}
+                                        </Text>
+                                    </TouchableOpacity>
+
+                                </View>
+
+                            </View>
+                        </Modal>
                     </Content>
                 </Container>
             </SafeAreaView>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    ModelViewContainer: {
+        width: width + 30,
+        height: 200,
+        backgroundColor: '#f2f2f2',
+        alignItems: 'center',
+        position: 'absolute',
+        marginLeft: -30,
+        bottom: Platform.OS === 'ios' ? 15 : -20,
+    },
+    lanTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 15,
+        textAlign: 'center',
+        marginBottom: 5,
+    },
+    lanTitleMM: {
+        fontSize: 14,
+        marginTop: 15,
+        textAlign: 'center',
+        marginBottom: 5,
+    },
+    ModalTextContainer: { width: '100%', flex: 1, position: 'absolute', bottom: 0 },
+    CancelOpacityContainer: {
+        width: '100%',
+        height: 50,
+        backgroundColor: color.primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalTextStyle: { color: '#fff', textAlign: 'center', },
+    iconView: {
+        width: '100%',
+        alignItems: 'center',
+    },
+    dialogIcon: {
+        width: 28,
+        height: 28,
+        marginBottom: offset.o1,
+        marginTop: offset.o2,
+    }
+});
 
 export default OvertimePending
 

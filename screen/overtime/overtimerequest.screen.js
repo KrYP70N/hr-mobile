@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
-import { Text, View, SafeAreaView, TouchableOpacity, AsyncStorage } from 'react-native'
+import { Text, View, SafeAreaView, TouchableOpacity, AsyncStorage, StyleSheet, Image, Dimensions } from 'react-native'
 import { Icon, Textarea, Toast } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import APIs from '../../controllers/api.controller'
+import Modal from 'react-native-modal';
+const width = Dimensions.get('screen').width;
+const height = Dimensions.get('screen').height
 import moment from 'moment'
 export class OTRequest extends Component {
     constructor(props) {
@@ -24,6 +27,7 @@ export class OTRequest extends Component {
             date: '',
             dateDayLabel: '',
             dateMonthLabel: '',
+            dateYearLabel: '',
             fromTime: '',
             fromTimehrLabel: '',
             fromTimeAMPM: '',
@@ -31,11 +35,11 @@ export class OTRequest extends Component {
             toTimehrLabel: '',
             toTimeAMPM: '',
             totalHR: '00:00',
-
-
             //show label
             fromTimeHr: 0,
-            fromTimeMinus: 0
+            fromTimeMinus: 0,
+            isModalVisible: false,
+            checkMessage: '',
         }
     }
 
@@ -46,6 +50,7 @@ export class OTRequest extends Component {
                 refresh: !this.state.refresh,
                 date: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
                 dateMonthLabel: months[date.getMonth()],
+                dateYearLabel: date.getFullYear(),
                 dateDayLabel: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
                 fromTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
                 fromTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
@@ -89,6 +94,7 @@ export class OTRequest extends Component {
         this.setState({
             date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
             dateMonthLabel: months[date.getMonth()],
+            dateYearLabel: date.getFullYear(),
             dateDayLabel: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
             //datetextColor: '#000'
         })
@@ -191,6 +197,7 @@ export class OTRequest extends Component {
                             description: '',
                             date: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
                             dateMonthLabel: months[date.getMonth()],
+                            dateYearLabel: date.getFullYear(),
                             dateDayLabel: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
                             fromTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
                             fromTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
@@ -201,22 +208,15 @@ export class OTRequest extends Component {
                             totalHR: "00:00",
                             fromTimeHr: date.getHours(),
                             fromTimeMinus: date.getMinutes(),
-                        })
-                        Toast.show({
-                            text: res.data.message,
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 5000
+                            checkMessage: 'Overtime Request Successful!',
+                            isModalVisible: true,
                         })
                     } else {
                         this.setState({
                             description: '',
                             date: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
                             dateMonthLabel: months[date.getMonth()],
+                            dateYearLabel: date.getFullYear(),
                             dateDayLabel: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
                             fromTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
                             fromTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
@@ -227,32 +227,17 @@ export class OTRequest extends Component {
                             totalHR: "00:00",
                             fromTimeHr: date.getHours(),
                             fromTimeMinus: date.getMinutes(),
-                        })
-                        Toast.show({
-                            text: res.data.message,
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.danger
-                            },
-                            duration: 5000
+                            checkMessage: res.data.message,
+                            isModalVisible: true,
                         })
                     }
                 } else {
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
+                    this.setState({
+                        checkMessage: 'Overtime Request Failed!',
+                        isModalVisible: true,
+
                     })
                 }
-                console.log("Res Status", res.status)
-                console.log("Res Data", res.data)
             })
 
     }
@@ -289,7 +274,8 @@ export class OTRequest extends Component {
                                 />
                                 <View style={{ flexDirection: 'row', }}>
                                     <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 18 }}>{this.state.dateDayLabel}</Text>
-                                    <Text style={{ marginLeft: 5, color: '#656565', fontSize: 18, fontFamily: 'Nunito' }}>{this.state.dateMonthLabel}</Text>
+                                    <Text style={{ marginLeft: 5, color: '#656565', fontSize: 18, fontFamily: 'Nunito' }}>{this.state.dateMonthLabel} {this.state.dateYearLabel}</Text>
+
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -388,10 +374,72 @@ export class OTRequest extends Component {
                             </View>
                         </TouchableOpacity>
                     </View>
+                    <Modal isVisible={this.state.isModalVisible} >
+                        <View style={styles.ModelViewContainer}>
+                            <View style={styles.iconView}>
+                                <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} />
+                            </View>
+                            <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
+                            <View style={styles.ModalTextContainer}>
+                                <TouchableOpacity style={styles.CancelOpacityContainer}
+                                    onPress={() => this.setState({ isModalVisible: false })} >
+                                    <Text style={styles.modalTextStyle} >
+                                        {'Close'}
+                                    </Text>
+                                </TouchableOpacity>
+
+                            </View>
+
+                        </View>
+                    </Modal>
                 </View>
             </SafeAreaView >
         )
     }
 }
+
+const styles = StyleSheet.create({
+    ModelViewContainer: {
+        width: width + 30,
+        height: 200,
+        backgroundColor: '#f2f2f2',
+        alignItems: 'center',
+        position: 'absolute',
+        marginLeft: -30,
+        bottom: Platform.OS === 'ios' ? 15 : -20,
+    },
+    lanTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 15,
+        textAlign: 'center',
+        marginBottom: 5,
+    },
+    lanTitleMM: {
+        fontSize: 14,
+        marginTop: 15,
+        textAlign: 'center',
+        marginBottom: 5,
+    },
+    ModalTextContainer: { width: '100%', flex: 1, position: 'absolute', bottom: 0 },
+    CancelOpacityContainer: {
+        width: '100%',
+        height: 50,
+        backgroundColor: color.primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalTextStyle: { color: '#fff', textAlign: 'center', },
+    iconView: {
+        width: '100%',
+        alignItems: 'center',
+    },
+    dialogIcon: {
+        width: 28,
+        height: 28,
+        marginBottom: offset.o1,
+        marginTop: offset.o2,
+    }
+});
 
 export default OTRequest

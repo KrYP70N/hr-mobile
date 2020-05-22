@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, SafeAreaView, ScrollView, TouchableOpacity, AsyncStorage, KeyboardAvoidingView } from 'react-native'
+import { Text, View, SafeAreaView, ScrollView, TouchableOpacity, AsyncStorage, KeyboardAvoidingView, StyleSheet, Image, Dimensions } from 'react-native'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import { Picker, Textarea, Row, Col, Button, Toast, Icon, Container, Content, Header } from 'native-base'
@@ -10,6 +10,9 @@ import po from './po'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 import styLeave from './leave.style'
+import Modal from 'react-native-modal';
+const width = Dimensions.get('screen').width;
+const height = Dimensions.get('screen').height
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 export class LeaveRequest extends Component {
@@ -22,7 +25,9 @@ export class LeaveRequest extends Component {
             leaveType: [],
             attachment: null,
             selectedLeaveType: null,
-            dayType: false,
+            morning_leave: false,
+            evening_leave: false,
+            //dayType: false,
             description: null,
             file: [],
             refresh: false,
@@ -39,7 +44,9 @@ export class LeaveRequest extends Component {
             startDateDayLabel: '',
             endDateMonthLabel: '',
             endDateDayLabel: '',
-            totalDay: 1
+            totalDay: 1,
+            isModalVisible: false,
+            checkMessage: '',
         }
     }
 
@@ -48,8 +55,9 @@ export class LeaveRequest extends Component {
             loading: true,
             loadingTxt: 'requesting your leave ...'
         })
-        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.dayType, this.state.description, this.state.binary)
+        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.morning_leave,this.state.evening_leave, this.state.description, this.state.binary)
             .then((res) => {
+                console.log("Res", res)
                 if (res.status == "success") {
                     if (res.data.error == false) {
                         const d = new Date();
@@ -60,44 +68,22 @@ export class LeaveRequest extends Component {
                             //selectedLeaveType: res.data[0]['leave_type_id'],
                             file: [],
                             binary: [],
-                            description: null
+                            description: '',
+                            checkMessage: 'Leave Request Successful!',
+                            isModalVisible: true,
                         })
                         this.getRequestData(auth, url);
-                        Toast.show({
-                            text: res.data.message,
-                            duration: 5000,
-                            // text: 'an error occur, please try again in later',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            }
-                        })
                     } else {
-                        Toast.show({
-                            duration: 5000,
-                            text: res.data.message,
-                            // text: 'an error occur, please try again in later',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.danger
-                            }
+                        this.setState({
+                            checkMessage: res.data.message,
+                            isModalVisible: true,
                         })
                     }
                 } else {
-                    console.log(res)
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
+                    this.setState({
+                        checkMessage: 'Leave Request Failed!',
+                        isModalVisible: true,
+
                     })
                 }
                 this.setState({
@@ -157,16 +143,7 @@ export class LeaveRequest extends Component {
                         //description: null,
                     })
                 } else {
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
+                   
                 }
             })
     }
@@ -365,10 +342,10 @@ export class LeaveRequest extends Component {
                             fontFamily: 'Nunito'
                         }}>Apply Leave</Text>
                     </View>
-                   
+
 
                     <Content>
-                    <View style={{ width: '100%', height: 20, backgroundColor: color.lighter }}></View>
+                        <View style={{ width: '100%', height: 20, backgroundColor: color.lighter }}></View>
                         <KeyboardAvoidingView behavior='padding'>
                             <View style={{ width: '100%', paddingLeft: 10, paddingRight: 10, marginTop: 10 }}>
                                 <Picker
@@ -442,7 +419,7 @@ export class LeaveRequest extends Component {
 
                                 <View style={{ width: '100%', marginTop: 30 }}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <TouchableOpacity onPress={() => { this.setState({ checked: 'mhalf', dayType: true }) }}>
+                                        <TouchableOpacity onPress={() => { this.setState({ checked: 'mhalf', morning_leave: true }) }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                 <View style={{ width: 20, height: 20, borderRadius: 20 / 2, borderColor: color.dark, borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
                                                     <View style={{ width: 13, height: 13, borderRadius: 13 / 2, backgroundColor: this.state.checked === 'mhalf' ? color.primary : color.light }}></View>
@@ -450,7 +427,7 @@ export class LeaveRequest extends Component {
                                                 <Text style={{ marginLeft: 5, fontSize: 16, color: '#333333', fontFamily: 'Nunito', }}>Morning Leave</Text>
                                             </View>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => { this.setState({ checked: 'ehalf', dayType: true }) }}>
+                                        <TouchableOpacity onPress={() => { this.setState({ checked: 'ehalf', evening_leave: true }) }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
                                                 <View style={{ width: 20, height: 20, borderRadius: 20 / 2, borderColor: color.dark, borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
                                                     <View style={{ width: 13, height: 13, borderRadius: 13 / 2, backgroundColor: this.state.checked === 'ehalf' ? color.primary : color.light }}></View>
@@ -459,7 +436,7 @@ export class LeaveRequest extends Component {
                                             </View>
                                         </TouchableOpacity>
                                     </View>
-                                    <TouchableOpacity onPress={() => { this.setState({ checked: 'full', dayType: false }) }}>
+                                    <TouchableOpacity onPress={() => { this.setState({ checked: 'full', morning_leave: false, evening_leave: false }) }}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
                                             <View style={{ width: 20, height: 20, borderRadius: 20 / 2, borderColor: color.dark, borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
                                                 <View style={{ width: 13, height: 13, borderRadius: 13 / 2, backgroundColor: this.state.checked === 'full' ? color.primary : color.light }}></View>
@@ -496,6 +473,24 @@ export class LeaveRequest extends Component {
                                 </TouchableOpacity>
                             </View>
                         </KeyboardAvoidingView>
+                        <Modal isVisible={this.state.isModalVisible} >
+                            <View style={styles.ModelViewContainer}>
+                                <View style={styles.iconView}>
+                                    <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} />
+                                </View>
+                                <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
+                                <View style={styles.ModalTextContainer}>
+                                    <TouchableOpacity style={styles.CancelOpacityContainer}
+                                        onPress={() => this.setState({ isModalVisible: false })} >
+                                        <Text style={styles.modalTextStyle} >
+                                            {'Close'}
+                                        </Text>
+                                    </TouchableOpacity>
+
+                                </View>
+
+                            </View>
+                        </Modal>
                     </Content>
 
 
@@ -505,5 +500,49 @@ export class LeaveRequest extends Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    ModelViewContainer: {
+        width: width + 30,
+        height: 200,
+        backgroundColor: '#f2f2f2',
+        alignItems: 'center',
+        position: 'absolute',
+        marginLeft: -30,
+        bottom: Platform.OS === 'ios' ? 15 : -20,
+    },
+    lanTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 15,
+        textAlign: 'center',
+        marginBottom: 5,
+    },
+    lanTitleMM: {
+        fontSize: 14,
+        marginTop: 15,
+        textAlign: 'center',
+        marginBottom: 5,
+    },
+    ModalTextContainer: { width: '100%', flex: 1, position: 'absolute', bottom: 0 },
+    CancelOpacityContainer: {
+        width: '100%',
+        height: 50,
+        backgroundColor: color.primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalTextStyle: { color: '#fff', textAlign: 'center', },
+    iconView: {
+        width: '100%',
+        alignItems: 'center',
+    },
+    dialogIcon: {
+        width: 28,
+        height: 28,
+        marginBottom: offset.o1,
+        marginTop: offset.o2,
+    }
+});
 
 export default LeaveRequest

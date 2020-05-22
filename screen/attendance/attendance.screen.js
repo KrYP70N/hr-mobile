@@ -19,8 +19,8 @@ export default class Attendance extends Component {
             url: null,
             token: null,
             id: null,
-            data: null,
-            dataTitle: null,
+            data: [],
+            dataTitle: [],
             CalendarMarkedData: [],
         }
     }
@@ -138,6 +138,8 @@ export default class Attendance extends Component {
             let month = (date.month) < 10 ? '0' + (date.month) : (date.month)
             APIs.AttendanceSummary(this.state.url, this.state.token, year, month, this.state.id)
                 .then((res) => {
+                    console.log("REs ", res)
+                    console.log("Res Data", res.data)
                     if (res.status === 'success') {
                         this.setState({
                             data: res.data
@@ -165,13 +167,15 @@ export default class Attendance extends Component {
 
     render() {
 
+        console.log("Attendance List", this.state.data)
+
         if (this.state.data === null || this.state.dataTitle === null) {
             return (
                 <Loading />
             )
         }
         let MarkedData = [];
-        if (this.state.data.list_att["Attendance List"].length > 0) {
+        if (this.state.data.length > 0 && this.state.data.list_att["Attendance List"].length > 0) {
             for (let i = 0; i < this.state.data.list_att["Attendance List"].length; i++) {
                 MarkedData.push({
                     "Date": this.state.data.list_att["Attendance List"][i].Date,
@@ -179,7 +183,7 @@ export default class Attendance extends Component {
                 })
             }
         }
-        if (this.state.data.list_holidays["Holiday List"].length > 0) {
+        if (this.state.data.length > 0 && this.state.data.list_holidays["Holiday List"].length > 0) {
             for (let i = 0; i < this.state.data.list_att["Holiday List"].length; i++) {
                 MarkedData.push({
                     "Date": this.state.data.list_att["Holiday List"][i],
@@ -188,7 +192,7 @@ export default class Attendance extends Component {
             }
         }
 
-        if (this.state.data["Absence list"].length > 0) {
+        if (this.state.data.length > 0 && this.state.data["Absence list"].length > 0) {
             for (let i = 0; i < this.state.data["Absence list"].length; i++) {
                 MarkedData.push({
                     "Date": this.state.data["Absence list"][i],

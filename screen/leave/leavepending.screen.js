@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Text, View, SafeAreaView, Dimensions, AsyncStorage } from 'react-native'
+import { Text, View, SafeAreaView, Dimensions, AsyncStorage, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Content, Container, Toast, Icon, Card, CardItem, Body, Button, } from 'native-base'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
 import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 import styLeave from './leave.style'
+import Modal from 'react-native-modal';
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height
 export class EmployeeLeavePending extends Component {
@@ -16,6 +17,8 @@ export class EmployeeLeavePending extends Component {
             auth: null,
             id: null,
             leaves: [],
+            isModalVisible: false,
+            checkMessage: '',
         }
     }
 
@@ -45,25 +48,16 @@ export class EmployeeLeavePending extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     this.getApproveData(this.state.auth, this.state.id, this.state.url)
-                    Toast.show({
-                        text: 'Cancel Success!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        }
+                    this.setState({
+                        checkMessage: 'Cancellation Successful!',
+                        isModalVisible: true,
+
                     })
                 } else {
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
+                    this.setState({
+                        checkMessage: "Cancellation Failed!",
+                        isModalVisible: true,
+
                     })
                 }
             })
@@ -77,15 +71,8 @@ export class EmployeeLeavePending extends Component {
                         leaves: res.data
                     })
                 } else {
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
+                    this.setState({
+                        leaves: []
                     })
                 }
             })
@@ -148,6 +135,25 @@ export class EmployeeLeavePending extends Component {
                                 color: color.placeHolder
                             }}>There is no pending leave request!</Text>
                         </View>
+
+                        <Modal isVisible={this.state.isModalVisible} >
+                            <View style={styles.ModelViewContainer}>
+                                <View style={styles.iconView}>
+                                    <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} />
+                                </View>
+                                <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
+                                <View style={styles.ModalTextContainer}>
+                                    <TouchableOpacity style={styles.CancelOpacityContainer}
+                                        onPress={() => this.setState({ isModalVisible: false })} >
+                                        <Text style={styles.modalTextStyle} >
+                                            {'Close'}
+                                        </Text>
+                                    </TouchableOpacity>
+
+                                </View>
+
+                            </View>
+                        </Modal>
                     </Content>
                 </Container>
             </SafeAreaView>
@@ -155,4 +161,47 @@ export class EmployeeLeavePending extends Component {
     }
 }
 
+const styles = StyleSheet.create({
+    ModelViewContainer: {
+        width: width + 30,
+        height: 200,
+        backgroundColor: '#f2f2f2',
+        alignItems: 'center',
+        position: 'absolute',
+        marginLeft: -30,
+        bottom: Platform.OS === 'ios' ? 15 : -20,
+    },
+    lanTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 15,
+        textAlign: 'center',
+        marginBottom: 5,
+    },
+    lanTitleMM: {
+        fontSize: 14,
+        marginTop: 15,
+        textAlign: 'center',
+        marginBottom: 5,
+    },
+    ModalTextContainer: { width: '100%', flex: 1, position: 'absolute', bottom: 0 },
+    CancelOpacityContainer: {
+        width: '100%',
+        height: 50,
+        backgroundColor: color.primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalTextStyle: { color: '#fff', textAlign: 'center', },
+    iconView: {
+        width: '100%',
+        alignItems: 'center',
+    },
+    dialogIcon: {
+        width: 28,
+        height: 28,
+        marginBottom: offset.o1,
+        marginTop: offset.o2,
+    }
+});
 export default EmployeeLeavePending

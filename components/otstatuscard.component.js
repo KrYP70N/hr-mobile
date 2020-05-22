@@ -13,14 +13,14 @@ const leavesColor = {
 
 // registered status type color
 const statusColor = {
-    "Approved": colors.primary,
-    "Rejected": '#FF0000',
-    "Cancellation": '#656565',
-    "Pending": colors.warning,
-    "Draft": '#33ccaa',
-    "Approved1": colors.indicator,
-    "Approved2": colors.secondary,
-    "Refused": colors.placeHolder,
+    "approved": colors.primary,
+    "rejected": '#FF0000',
+    "cancellation": '#656565',
+    "pending": colors.warning,
+    "draft": '#33ccaa',
+    "approved1": colors.indicator,
+    "approved2": colors.secondary,
+    "refused": colors.placeHolder,
     "refuse": colors.placeHolder,
 }
 
@@ -28,9 +28,9 @@ export default function StatusCard({ hour, date_from, date_to, description, stat
     return (
         <View style={styles.container}>
             <View style={styles.mainRow}>
-                {/* <View style={styles.status}>
-                    <Text style={{ ...styles.statusCircle, backgroundColor: statusColor[status] }}></Text>
-                </View> */}
+                <View style={styles.status}>
+                    <Text style={{ ...styles.statusCircle, backgroundColor: statusColor[status.toLowerCase()] }}></Text>
+                </View>
                 <View style={styles.content}>
                     <View style={styles.left}>
                         <Text style={styles.date}>From - {date_from}</Text>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     content: {
-        width: '100%',
+        width: '90%',
         display: 'flex',
         flexDirection: 'row'
     },
