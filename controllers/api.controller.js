@@ -170,6 +170,11 @@ export default class APIs {
 
     // attendance summary
     static AttendanceSummary(url, auth, year, month, id) {
+        console.log(url)
+        console.log(auth)
+        console.log(id)
+        console.log(year)
+        console.log(month)
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -274,7 +279,7 @@ export default class APIs {
     }
 
     // request leave
-    static requestLeave(auth, url, id, leaveType, from, to, dayType, description, file) {
+    static requestLeave(auth, url, id, leaveType, from, to, mroning_leave,evening_leave, description, file) {
         let fd = new FormData()
         for(let i=0; i<file.length; i++) {
             if(i === 0) {
@@ -288,7 +293,7 @@ export default class APIs {
             }
         }
 
-        return axios.post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&half_day=${dayType}&description=${description}`,
+        return axios.post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&morning_leave=${mroning_leave}&evening_leave=${evening_leave}&description=${description}`,
             file.length === 0 ? null : fd, {
             headers: {
                 'Authorization': auth
@@ -463,11 +468,11 @@ export default class APIs {
             }
         }).get(`${url}/list/overtime/${id}/${year}/${month}`)
             .then(function (res) {
-                console.log("API Data", res.data)
+               // console.log("API Data", res.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
-                console.log("Error", error)
+               // console.log("Error", error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -488,12 +493,12 @@ export default class APIs {
     }
 
     // ot status
-    static getOTStatus = (url, auth, status) => {
+    static getOTStatus = (url, auth) => {
         return axios.create({
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}//OT/status`)
+        }).get(`${url}/OT/status`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })

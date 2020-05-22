@@ -91,15 +91,20 @@ export default function MonthPicker({
                 <View>
                     {
                         optionList.length !== 0 &&
-                        <Picker 
+                        <View style = {{ justifyContent: 'center',marginTop: 15,height: 40, borderRadius: 5, borderWidth: 0.5, borderColor: colors.placeHolder}}>
+                        <Picker
                         mode="model"
-                        placeholder="Picker Placeholder"
+                        iosIcon={
+                            <Icon name="arrow-down" />
+                        }
+                        placeholder="Status"
                         selectedValue={selected}
                         onValueChange={goSelect.bind(this)}
                         >
                             <Picker.Item label="all" value="All" />
                             {getList}
                         </Picker>
+                        </View>
                     }
                 </View>
             </View>

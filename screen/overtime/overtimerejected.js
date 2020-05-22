@@ -101,11 +101,13 @@ export class OvertimeRejected extends Component {
         let statusData = this.state.OTRejectedList.map((reject, index) => {
             return (
                 <StatusCard
-                    key={index}
-                    hour={2}
-                    date={`${reject.date_from} to ${reject.date_to}`}
-                    status={reject.state}
-                />
+                key={index}
+                hour={`${reject['hour']}:${reject['minute']}`}
+                date_from={reject['date_from']}
+                date_to={reject['date_to']}
+                description = {reject['name']}
+                status={reject.state}
+            />
             )
         })
 
@@ -150,22 +152,7 @@ export class OvertimeRejected extends Component {
                         onGoNext={this.ctrlNext}
                         onGoPrev={this.ctrlPrev}
                     />
-
-                    <StatusCard
-                        //key={index}
-                        hour={2}
-                        date_from={`2020-5-20 03:01:15`}
-                        date_to={`2020-5-2020 05:01:15`}
-                        status={`Rejected`}
-                    />
-                    <StatusCard
-                        //key={index}
-                        hour={3}
-                        date_from={`2020-5-20 03:01:15`}
-                        date_to={`2020-5-2020 05:01:15`}
-                        status={`Rejected`}
-                    />
-                    {/* {statusData} */}
+                    {statusData}
                 </Content>
             </Container >
         )
