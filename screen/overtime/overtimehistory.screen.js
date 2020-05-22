@@ -8,7 +8,7 @@ import styles from '../leave/leave.style'
 
 // components
 import MonthPicker from '../../components/monthpicker.component'
-import StatusCard from '../../components/statuscard.component'
+import StatusCard from '../../components/otstatuscard.component'
 
 import APIs from '../../controllers/api.controller'
 import moment from 'moment'
@@ -23,8 +23,9 @@ export class OvertimeHistory extends Component {
             id: null,
             year: moment().format('YYYY'),
             month: moment().format('MM'),
-            leaveHistoryLists: [],
-            filter: true
+            OTHistoryLists: [],
+            filter: true,
+            OTStatus: []
         }
     }
 
@@ -42,19 +43,26 @@ export class OvertimeHistory extends Component {
                                 auth: JSON.parse(res).key,
                                 id: JSON.parse(res).id
                             })
-                            this.getLeaveHistory(auth, id, url, this.state.year, this.state.month);
+                            this.getOTHistory(auth, id, url, this.state.year, this.state.month);
+                            APIs.getOTStatus(url, auth)
+                                .then((res) => {
+                                    console.log('OT Status', res.data)
+                                    this.setState({
+                                        OTStatus: res.data
+                                    })
+                                })
                         })
                 })
         })
     }
 
-    getLeaveHistory(auth, id, url, year, month) {
-        APIs.getLeaveHistory(url, auth, id, year, month)
+    getOTHistory(auth, id, url, year, month) {
+        APIs.getOTHistory(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
                     console.log("Leave Data", res.data)
                     this.setState({
-                        leaveHistoryLists: res.data
+                        OTHistoryLists: res.data
                     })
                 } else {
                     Toast.show({
@@ -71,30 +79,23 @@ export class OvertimeHistory extends Component {
             })
     }
 
-    // filter next ctrl
-    ctrlNext = ({ year, month }) => {
-        this.setState({ month, year })
-        this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, year, month)
-
-    }
-
-    // filter prev ctrl
-    ctrlPrev = ({ year, month }) => {
-        this.setState({ month, year })
-        this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, year, month)
-
+    // change value
+    changeValue = (date, status) => {
+        this.getOTHistory(this.state.auth, this.state.id, this.state.url, moment(date).format('YYYY'), moment(date).format('MM'), status)
     }
 
     render() {
-        console.log("Leave History List", this.state.leaveHistoryLists)
-        let statusData =  this.state.leaveHistoryLists.map((history, index) => {
-            return(
+        console.log("OT History List", this.state.OTHistoryLists)
+        let statusData = this.state.OTHistoryLists.map((history, index) => {
+            return (
                 <StatusCard
-                key = {index}
-                leaveType={history.Leave_Type}
-                date={`${history.date_from} to ${history.date_to}`}
-                status={history.state}
-            />
+                    key={index}
+                    hour={`${history['hour']}:${history['minute']}`}
+                    date_from={history['date_from']}
+                    date_to={history['date_to']}
+                    description = {history['name']=== null ? '': history['name']}
+                    status={history.state}
+                />
             )
         })
 
@@ -135,10 +136,24 @@ export class OvertimeHistory extends Component {
                         onClosePress={() => this.setState({
                             filter: !this.state.filter
                         })}
-                        onGoNext={this.ctrlNext}
-                        onGoPrev={this.ctrlPrev}
+                        optionList={this.state.OTStatus}
+                        onChangeValue={this.changeValue}
                     />
                     {statusData}
+                    {/* <StatusCard
+                        key={index}
+                        hour={2}
+                        date_from={`2020-5-20 03:01:15`}
+                        date_to={`2020-5-2020 05:01:15`}
+                        status={`Approved`}
+                    />
+                    <StatusCard
+                        key={index}
+                        hour={3}
+                        date_from={`2020-5-20 03:01:15`}
+                        date_to={`2020-5-2020 05:01:15`}
+                        status={`Rejected`}
+                    /> */}
                 </Content>
             </Container>
         )

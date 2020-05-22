@@ -16,25 +16,32 @@ const statusColor = {
     "Approved": colors.primary,
     "Rejected": '#FF0000',
     "Cancellation": '#656565',
-    "Pending": '#FFB300'
+    "Pending": colors.warning,
+    "Draft": '#33ccaa',
+    "Approved1": colors.indicator,
+    "Approved2": colors.secondary,
+    "Refused": colors.placeHolder,
+    "refuse": colors.placeHolder,
 }
 
-export default function StatusCard({ hour, date_from, date_to, status }) {
+export default function StatusCard({ hour, date_from, date_to, description, status }) {
     return (
         <View style={styles.container}>
             <View style={styles.mainRow}>
-                <View style={styles.status}>
+                {/* <View style={styles.status}>
                     <Text style={{ ...styles.statusCircle, backgroundColor: statusColor[status] }}></Text>
-                </View>
+                </View> */}
                 <View style={styles.content}>
                     <View style={styles.left}>
                         <Text style={styles.date}>From - {date_from}</Text>
                         <Text style={styles.date}>To      - {date_to}</Text>
                         <Text>{hour} hr</Text>
+                        <Text style = {{marginTop: 10, color: '#656565'}}>Reason : {description}</Text>
                     </View>
                     <View style={styles.right}>
                         <Text style={[styles.statusTxt, {
-                            color: statusColor[status]
+                            color: colors.primary
+                           // color: statusColor[status]
                         }]}>{status}</Text>
                     </View>
                 </View>
@@ -50,7 +57,9 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderWidth: 0.5,
         borderColor: colors.semiLigher,
-        marginBottom: 10
+        marginBottom: 10,
+        borderWidth: 0.3,
+        borderColor: colors.placeHolder
     },
     mainRow: {
         display: 'flex',
@@ -66,7 +75,7 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     content: {
-        width: '90%',
+        width: '100%',
         display: 'flex',
         flexDirection: 'row'
     },

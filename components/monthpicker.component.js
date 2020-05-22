@@ -22,23 +22,23 @@ export default function MonthPicker({
     // next emitter
     const goNext = () => {
         setDate(moment(date).add(1, 'months'))
-        onGoNext({
+        onGoNext && onGoNext({
             month: moment(date).add(1, 'months').format('MM'),
             year: moment(date).add(1, 'months').format('YYYY')
         })
         // emit value change dom
-        onChangeValue && onChangeValue(date, selected)
+        onChangeValue && onChangeValue(moment(date).add(1, 'months'), selected)
     }
 
     // prev emitter
     const goPrev = () => {
         setDate(moment(date).subtract(1, 'months'))
-        onGoPrev({
+        onGoPrev && onGoPrev({
             month: moment(date).subtract(1, 'months').format('MM'),
             year: moment(date).subtract(1, 'months').format('YYYY')
         })
         // emit value change dom
-        onChangeValue && onChangeValue(date, selected)
+        onChangeValue && onChangeValue(moment(date).subtract(1, 'months'), selected)
     }
 
     // onSelect
@@ -49,10 +49,8 @@ export default function MonthPicker({
 
     // selector
     const getList = optionList.map((list, key) => (
-        <Picker.Item label={list.name} value={list.leave_type_id} key={key} />
+        <Picker.Item label={list} value={list} key={key} />
     ))
-
-    console.log(optionList)
 
     return (
         <View style={[styles.container, {
@@ -93,15 +91,20 @@ export default function MonthPicker({
                 <View>
                     {
                         optionList.length !== 0 &&
-                        <Picker 
+                        <View style = {{ justifyContent: 'center',marginTop: 15,height: 40, borderRadius: 5, borderWidth: 0.5, borderColor: colors.placeHolder}}>
+                        <Picker
                         mode="model"
-                        placeholder="Picker Placeholder"
+                        iosIcon={
+                            <Icon name="arrow-down" />
+                        }
+                        placeholder="Status"
                         selectedValue={selected}
                         onValueChange={goSelect.bind(this)}
                         >
                             <Picker.Item label="all" value="all" />
                             {getList}
                         </Picker>
+                        </View>
                     }
                 </View>
             </View>

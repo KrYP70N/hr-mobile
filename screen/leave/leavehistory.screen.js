@@ -25,7 +25,8 @@ export class EmployeeLeaveHistory extends Component {
             month: moment().format('MM'),
             leaveHistoryLists: [],
             filter: true,
-            leaveType: []
+            leaveType: [],
+            leaveStatus: []
         }
     }
 
@@ -44,10 +45,16 @@ export class EmployeeLeaveHistory extends Component {
                                 id: JSON.parse(res).id
                             })
                             this.getLeaveHistory(auth, id, url, this.state.year, this.state.month);
-                            APIs.getLeaveType(auth, url)
+                            // APIs.getLeaveType(auth, url)
+                            // .then((res) => {
+                            //     this.setState({
+                            //         leaveType: res.data
+                            //     })
+                            // })
+                            APIs.getLeaveStatus(url, auth)
                             .then((res) => {
                                 this.setState({
-                                    leaveType: res.data
+                                    leaveStatus: res.data
                                 })
                             })
                         })
@@ -55,12 +62,12 @@ export class EmployeeLeaveHistory extends Component {
         })
     }
 
-    getLeaveHistory(auth, id, url, year, month) {
+    getLeaveHistory(auth, id, url, year, month, status='all') {
         APIs.getLeaveHistory(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
                     this.setState({
-                        leaveHistoryLists: res.data
+                        leaveHistoryLists: status === 'all' ? res.data : res.data.filter(list => list.state.toLowerCase() === status)
                     })
                 } else {
                     Toast.show({
@@ -78,21 +85,20 @@ export class EmployeeLeaveHistory extends Component {
     }
 
     // filter next ctrl
-    ctrlNext = ({ year, month }) => {
-        this.setState({ month, year })
-        this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, year, month)
-    }
+    // ctrlNext = ({ year, month }) => {
+    //     this.setState({ month, year })
+        
+    // }
 
     // filter prev ctrl
-    ctrlPrev = ({ year, month }) => {
-        this.setState({ month, year })
-        this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, year, month)
-    }
+    // ctrlPrev = ({ year, month }) => {
+    //     this.setState({ month, year })
+    //     this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, year, month)
+    // }
 
     // change value
-    changeValue = (date, selected) => {
-        alert(date)
-        alert(selected)
+    changeValue = (date, status) => {
+        this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, moment(date).format('YYYY'), moment(date).format('MM'), status)
     }
 
     render() {
@@ -144,9 +150,7 @@ export class EmployeeLeaveHistory extends Component {
                         onClosePress={() => this.setState({
                             filter: !this.state.filter
                         })}
-                        onGoNext={this.ctrlNext}
-                        onGoPrev={this.ctrlPrev}
-                        optionList={this.state.leaveType}
+                        optionList={this.state.leaveStatus}
                         onChangeValue={this.changeValue}
                     />
                     {statusData}

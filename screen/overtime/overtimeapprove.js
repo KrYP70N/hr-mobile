@@ -89,11 +89,13 @@ export class OvertimeApprove extends Component {
         let statusData = this.state.OTApproveList.map((approved, index) => {
             return (
                 <StatusCard
-                    key={index}
-                    leaveType={approved.Leave_Type}
-                    date={`${approved.date_from} to ${approved.date_to}`}
-                    status={approved.state}
-                />
+                key={index}
+                hour={`${approved['hour']}:${approved['minute']}`}
+                date_from={approved['date_from']}
+                date_to={approved['date_to']}
+                description = {approved['name']}
+                status={approved.state}
+            />
             )
         })
 
@@ -138,37 +140,6 @@ export class OvertimeApprove extends Component {
                         onGoPrev={this.ctrlPrev}
                     />
                     {statusData}
-
-                    <StatusCard
-                        //key={index}
-                        hour={2}
-                        date_from={`2020-5-2020 03:01:15`}
-                        date_to={`2020-5-2020 05:01:15`}
-                        status={`Approved`}
-                    />
-                    <StatusCard
-                        //key={index}
-                        hour={3}
-                        date={`2020-5-22 03:01:15 to 2020-5-22 06:01:15`}
-                        date_from={`2020-5-2020 03:01:15`}
-                        date_to={`2020-5-2020 05:01:15`}
-                        status={`Approved`}
-                    />
-                    {/* <StatusCard 
-                        leaveType="Casual Leave"
-                        date="07 Nov 2019 to 09 Nov 2019"
-                        status="Approved"
-                    />
-                    <StatusCard 
-                        leaveType="Medical Leave"
-                        date="07 Nov 2019 to 09 Nov 2019"
-                        status="Approved"
-                    />
-                    <StatusCard 
-                        leaveType="Annual Leave"
-                        date="07 Nov 2019 to 09 Nov 2019"
-                        status="Approved"
-                    /> */}
                 </Content>
             </Container>
         )

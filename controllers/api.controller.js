@@ -488,12 +488,12 @@ export default class APIs {
     }
 
     // ot status
-    static getOTStatus = (url, auth, status) => {
+    static getOTStatus = (url, auth) => {
         return axios.create({
             headers: {
                 'Authorization': auth
             }
-        }).get(`${url}//OT/status`)
+        }).get(`${url}/OT/status`)
             .then(function (res) {
                 return { data: res.data.data, status: 'success' }
             })
