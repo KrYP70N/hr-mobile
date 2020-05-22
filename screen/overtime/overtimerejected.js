@@ -8,7 +8,7 @@ import styles from '../leave/leave.style'
 
 // components
 import MonthPicker from '../../components/monthpicker.component'
-import StatusCard from '../../components/statuscard.component'
+import StatusCard from '../../components/otstatuscard.component'
 import moment from 'moment'
 
 import APIs from '../../controllers/api.controller'
@@ -23,7 +23,7 @@ export class OvertimeRejected extends Component {
             id: null,
             // year: null,
             // month: null,
-            leaveRejectedList: [],
+            OTRejectedList: [],
             filter: true,
             year: moment().format('YYYY'),
             month: moment().format('MM')
@@ -32,12 +32,6 @@ export class OvertimeRejected extends Component {
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
-            //let date = new Date()
-            // this.setState({
-            //     year: date.getFullYear(),
-            //     month: `${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}`,
-            // })
-
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
                     let date = new Date()
@@ -53,20 +47,20 @@ export class OvertimeRejected extends Component {
                                 auth: JSON.parse(res).key,
                                 id: JSON.parse(res).id
                             })
-                            this.getLeaveRejectedList(auth, id, url, this.state.year, this.state.month);
+                            this.getOTRejectedList(auth, id, url, this.state.year, this.state.month);
 
                         })
                 })
         })
     }
 
-    getLeaveRejectedList(auth, id, url, year, month) {
-        APIs.getLeaveRejectedList(url, auth, id, year, month)
+    getOTRejectedList(auth, id, url, year, month) {
+        APIs.getOTRejectedList(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
                     console.log("Leave Data", res.data)
                     this.setState({
-                        leaveRejectedList: res.data
+                        OTRejectedList: res.data
                     })
                 } else {
                     Toast.show({
@@ -87,51 +81,36 @@ export class OvertimeRejected extends Component {
         console.log("Clicked Date", clickedDate)
     }
 
-    // render() {
-    //     console.log("Rejected Leave List", this.state.leaveRejectedList)
-    //     let statusData =  this.state.leaveRejectedList.map((reject, index) => {
-    //         return(
-    //             <StatusCard
-    //             key = {index}
-    //             leaveType={reject.Leave_Type}
-    //             date={`${reject.date_from} to ${reject.date_to}`}
-    //             status={reject.state}
-    //         />
-    //         )
-    //     })
-
-    //     }
-    // }
-
     // filter next ctrl
     ctrlNext = ({ year, month }) => {
         this.setState({ month, year })
-        this.getLeaveRejectedList(this.state.auth, this.state.id, this.state.url, year, month)
+        this.getOTRejectedList(this.state.auth, this.state.id, this.state.url, year, month)
 
     }
 
     // filter prev ctrl
     ctrlPrev = ({ year, month }) => {
         this.setState({ month, year })
-        this.getLeaveRejectedList(this.state.auth, this.state.id, this.state.url, year, month)
+        this.getOTRejectedList(this.state.auth, this.state.id, this.state.url, year, month)
 
     }
 
     render() {
         console.log(this.state.year, this.state.month)
-        let statusData = this.state.leaveRejectedList.map((reject, index) => {
+        console.log("OT RejectedList", this.state.OTRejectedList)
+        let statusData = this.state.OTRejectedList.map((reject, index) => {
             return (
                 <StatusCard
                     key={index}
-                    leaveType={reject.Leave_Type}
+                    hour={2}
                     date={`${reject.date_from} to ${reject.date_to}`}
                     status={reject.state}
                 />
             )
         })
 
-    
-    return(
+
+        return (
             <Container>
                 <Header style={{
                     backgroundColor: color.light,
@@ -171,7 +150,22 @@ export class OvertimeRejected extends Component {
                         onGoNext={this.ctrlNext}
                         onGoPrev={this.ctrlPrev}
                     />
-                    {statusData}
+
+                    <StatusCard
+                        //key={index}
+                        hour={2}
+                        date_from={`2020-5-20 03:01:15`}
+                        date_to={`2020-5-2020 05:01:15`}
+                        status={`Rejected`}
+                    />
+                    <StatusCard
+                        //key={index}
+                        hour={3}
+                        date_from={`2020-5-20 03:01:15`}
+                        date_to={`2020-5-2020 05:01:15`}
+                        status={`Rejected`}
+                    />
+                    {/* {statusData} */}
                 </Content>
             </Container >
         )

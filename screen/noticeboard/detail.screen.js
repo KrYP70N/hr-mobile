@@ -9,7 +9,7 @@ import styles from './noticeboard.style'
 
 // components
 
-export default class Dashboard extends Component {
+export default class NoticBoardDetail extends Component {
     render() {
         const { params } = this.props.route
         
@@ -53,15 +53,15 @@ export default class Dashboard extends Component {
                     {/* body */}
                     <View style={styles.container}>
                         <Text style={styles.detailDate}>{params['Date']}</Text>
-                        <Text style={styles.detailTitle}>{
+                        {/* <Text style={styles.detailTitle}>{
                             params['Channel']
-                        }</Text>
+                        }</Text> */}
                         <Text style={styles.detailBody}>{
                             params['Body']
                             .replace(/<\/?[^>]+(>|$)/g, "")
                             .replace(/\s+/g,' ').trim()
                         }</Text>
-                        <Text style={styles.detailSender}>- {params['Author']}</Text>
+                        {/* <Text style={styles.detailSender}>- {params['Author']}</Text> */}
                     </View>
                 </Content>
             </Container>

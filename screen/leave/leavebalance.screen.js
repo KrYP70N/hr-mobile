@@ -45,9 +45,9 @@ export class EmployeeLeaveBalance extends Component {
     }
     render() {
 
-        let leaveData = data.map((leave) => {
+        let leaveData = data.map((leave, index) => {
             return (
-                <View style={{ width: '100%', }}>
+                <View key = {index} style={{ width: '100%', }}>
                     <View style={{ width: '100%', paddingTop: 10, paddingBottom: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <View style={{ width: 20, height: 20, borderRadius: 20 / 2, backgroundColor: leave.color }}></View>
