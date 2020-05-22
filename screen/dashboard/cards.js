@@ -9,19 +9,22 @@ const cardList = [
         title: 'Leave Request',
         noti: 2,
         icon: require('../../assets/icon/dashboard-leave.png'),
-        page: 'DashboardLeaveRequest'
+       // page: 'DashboardLeaveRequest'
+       page: 'LeaveRequest'
     },
     {
         title: 'Request',
         noti: 3,
         icon: require('../../assets/icon/dashboard-request.png'),
-        page: 'DashboardRequest'
+       // page: 'DashboardRequest'
+       page: 'NoticeBoard'
     },
     {
         title: 'Pending',
         noti: 4,
         icon: require('../../assets/icon/dashboard-pending.png'),
-        page: 'Pending'
+        //page: 'Pending'
+        page: 'NoticeBoard'
     },
     {
         title: 'Payroll',
@@ -33,7 +36,8 @@ const cardList = [
         title: 'Attendance Record',
         noti: 0,
         icon: require('../../assets/icon/dashboard-leave.png'),
-        page: 'AttendanceRecord'
+        //page: 'AttendanceRecord'
+        page: 'Attendance'
     },
     {
         title: 'Announcement',
