@@ -25,8 +25,9 @@ export class EmployeeLeaveHistory extends Component {
             month: moment().format('MM'),
             leaveHistoryLists: [],
             filter: true,
-            leaveType: [],
-            leaveStatus: []
+            leaveTypeList: [],
+            leaveStatus: [],
+            status: 'All'
         }
     }
 
@@ -45,12 +46,12 @@ export class EmployeeLeaveHistory extends Component {
                                 id: JSON.parse(res).id
                             })
                             this.getLeaveHistory(auth, id, url, this.state.year, this.state.month);
-                            // APIs.getLeaveType(auth, url)
-                            // .then((res) => {
-                            //     this.setState({
-                            //         leaveType: res.data
-                            //     })
-                            // })
+                            APIs.getLeaveType(auth, url)
+                            .then((res) => {
+                                this.setState({
+                                    leaveTypeList: res.data
+                                })
+                            })
                             APIs.getLeaveStatus(url, auth)
                             .then((res) => {
                                 this.setState({
@@ -84,24 +85,18 @@ export class EmployeeLeaveHistory extends Component {
             })
     }
 
-    // filter next ctrl
-    // ctrlNext = ({ year, month }) => {
-    //     this.setState({ month, year })
-        
-    // }
-
-    // filter prev ctrl
-    // ctrlPrev = ({ year, month }) => {
-    //     this.setState({ month, year })
-    //     this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, year, month)
-    // }
+    
 
     // change value
     changeValue = (date, status) => {
+        this.setState({
+            status: status
+        })
         this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, moment(date).format('YYYY'), moment(date).format('MM'), status)
     }
 
     render() {
+        //console.log("Leave Type", this.state.leaveTypeList)
         let statusData =  this.state.leaveHistoryLists.map((history, index) => {
             return(
                 <StatusCard
@@ -109,6 +104,9 @@ export class EmployeeLeaveHistory extends Component {
                 leaveType={history.Leave_Type}
                 date={`${history.date_from} to ${history.date_to}`}
                 status={history.state}
+                //leaveTypes = {this.state.leaveTypeList}
+                auth = {this.state.auth}
+                url = {this.state.url}
             />
             )
         })
@@ -153,7 +151,21 @@ export class EmployeeLeaveHistory extends Component {
                         optionList={this.state.leaveStatus}
                         onChangeValue={this.changeValue}
                     />
+                    
                     {statusData}
+                    <View style={{
+                        marginTop: 20,
+                            display: this.state.leaveHistoryLists.length === 0 ? 'flex' : 'none',
+                            alignItems: 'center'
+                        }}>
+                            <Icon name='ios-information-circle-outline' style={{
+                                color: color.placeHolder,
+                                fontSize: 40
+                            }} />
+                            <Text style={{
+                                color: color.placeHolder
+                            }}>There is no leave history for {this.state.status.charAt(0).toUpperCase() + this.state.status.substr(1).toLowerCase()}!</Text>
+                        </View>
                 </Content>
             </Container>
         )

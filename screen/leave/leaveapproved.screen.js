@@ -93,6 +93,8 @@ export class EmployeeLeaveApproved extends Component {
                     leaveType={approved.Leave_Type}
                     date={`${approved.date_from} to ${approved.date_to}`}
                     status={approved.state}
+                    auth={this.state.auth}
+                    url={this.state.url}
                 />
             )
         })
@@ -138,21 +140,20 @@ export class EmployeeLeaveApproved extends Component {
                         onGoPrev={this.ctrlPrev}
                     />
                     {statusData}
-                    {/* <StatusCard 
-                        leaveType="Casual Leave"
-                        date="07 Nov 2019 to 09 Nov 2019"
-                        status="Approved"
-                    />
-                    <StatusCard 
-                        leaveType="Medical Leave"
-                        date="07 Nov 2019 to 09 Nov 2019"
-                        status="Approved"
-                    />
-                    <StatusCard 
-                        leaveType="Annual Leave"
-                        date="07 Nov 2019 to 09 Nov 2019"
-                        status="Approved"
-                    /> */}
+                    <View style={{
+                        marginTop: 20,
+                            display: this.state.leaveApproveList.length === 0 ? 'flex' : 'none',
+                            alignItems: 'center'
+                        }}>
+                            <Icon name='ios-information-circle-outline' style={{
+                                color: color.placeHolder,
+                                fontSize: 40
+                            }} />
+                            <Text style={{
+                                color: color.placeHolder
+                            }}>There is no leave approved data!</Text>
+                        </View>
+                   
                 </Content>
             </Container>
         )

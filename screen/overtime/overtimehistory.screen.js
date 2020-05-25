@@ -25,7 +25,8 @@ export class OvertimeHistory extends Component {
             month: moment().format('MM'),
             OTHistoryLists: [],
             filter: true,
-            OTStatus: []
+            OTStatus: [],
+            status: 'All',
         }
     }
 
@@ -82,6 +83,9 @@ export class OvertimeHistory extends Component {
 
     // change value
     changeValue = (date, status) => {
+        this.setState({
+            status: status
+        })
         console.log("Change Value Date", date)
         console.log("Change Value Status", status)
         this.getOTHistory(this.state.auth, this.state.id, this.state.url, moment(date).format('YYYY'), moment(date).format('MM'), status)
@@ -144,6 +148,18 @@ export class OvertimeHistory extends Component {
                         onChangeValue={this.changeValue}
                     />
                     {statusData}
+                    <View style={{
+                            display: this.state.OTHistoryLists.length === 0 ? 'flex' : 'none',
+                            alignItems: 'center'
+                        }}>
+                            <Icon name='ios-information-circle-outline' style={{
+                                color: color.placeHolder,
+                                fontSize: 40
+                            }} />
+                            <Text style={{
+                                color: color.placeHolder
+                            }}>There is no overtime history for {this.state.status.charAt(0).toUpperCase() + this.state.status.substr(1).toLowerCase()}!</Text>
+                        </View>
                 </Content>
             </Container>
         )

@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet } from 'react-native'
+import { StyleSheet,} from 'react-native'
 import { View, Text, Row, Col } from 'native-base'
 import colors from '../constant/color'
+import APIs from '../controllers/api.controller'
 
 // registered leave type color
 const leavesColor = {
@@ -13,18 +14,42 @@ const leavesColor = {
 
 // registered status type color
 const statusColor = {
-    "Approved": '#47E9EE',
-    "Rejected": '#FF0000',
-    "Cancellation": '#F5F5F5',
-    "Pending": '#FFB300'
+    "approved": colors.primary,
+    "rejected": '#FF0000',
+    "cancellation": '#656565',
+    "cancel": '#656565',
+    "pending": colors.warning,
+    "draft": '#33ccaa',
+    "approved1": colors.indicator,
+    "approved2": colors.secondary,
+    "refused": colors.placeHolder,
+    "refuse": colors.placeHolder,
 }
 
-export default function StatusCard({leaveType, date, status}) {
+export default function StatusCard({ leaveType, date, status, auth, url}) {
+    const [leaveTypes, setLeaveTypes] = useState([])
+    APIs.getLeaveType(auth, url)
+        .then((res) => {
+            setLeaveTypes(res.data)
+        })
+   
+
     return (
         <View style={styles.container}>
             <View style={styles.mainRow}>
                 <View style={styles.status}>
-                    <Text style={{...styles.statusCircle, backgroundColor: leavesColor[leaveType]}}></Text>
+
+                    {
+                         leaveTypes.map((leave) =>{
+                            if(leave.name === leaveType){
+                                return(
+                                    <Text style={{ ...styles.statusCircle, backgroundColor: leave["color_code"] }}></Text>
+                                )
+                            }
+                        })
+                       
+                    }
+
                 </View>
                 <View style={styles.content}>
                     <View style={styles.left}>
@@ -32,9 +57,22 @@ export default function StatusCard({leaveType, date, status}) {
                         <Text>{leaveType}</Text>
                     </View>
                     <View style={styles.right}>
-                        <Text style={[styles.statusTxt, {
+                    {
+                         leaveTypes.map((leave) =>{
+                            if(leave.name === leaveType){
+                                return(
+                                    <Text style={[styles.statusTxt, {
+                                        color: leave['color_code']
+                                    }]}>{status}</Text>
+                                    // <Text style={{ ...styles.statusCircle, backgroundColor: leave["color_code"] }}></Text>
+                                )
+                            }
+                        })
+                       
+                    }
+                        {/* <Text style={[styles.statusTxt, {
                             color: statusColor[status]
-                        }]}>{status}</Text>
+                        }]}>{status}</Text> */}
                     </View>
                 </View>
             </View>
@@ -93,5 +131,7 @@ const styles = StyleSheet.create({
 StatusCard.propTypes = {
     leaveType: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired
+    status: PropTypes.string.isRequired,
+    auth: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
 }

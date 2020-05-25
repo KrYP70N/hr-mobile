@@ -153,6 +153,19 @@ export class OvertimeRejected extends Component {
                         onGoPrev={this.ctrlPrev}
                     />
                     {statusData}
+                    <View style={{
+                        marginTop: 20,
+                            display: this.state.OTRejectedList.length === 0 ? 'flex' : 'none',
+                            alignItems: 'center'
+                        }}>
+                            <Icon name='ios-information-circle-outline' style={{
+                                color: color.placeHolder,
+                                fontSize: 40
+                            }} />
+                            <Text style={{
+                                color: color.placeHolder
+                            }}>There is no overtime rejected data!</Text>
+                        </View>
                 </Content>
             </Container >
         )

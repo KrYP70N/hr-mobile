@@ -9,6 +9,8 @@ import offset from '../../constant/offset'
 import color from '../../constant/color'
 import Loading from '../../components/loading.component'
 
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
 export default function notilist({ navigation }) {
 
     const [Collection, setCollection] = useState([])
@@ -37,14 +39,14 @@ export default function notilist({ navigation }) {
                     .then((res) => {
                         console.log("res", res)
                         console.log("res.data", res.data)
-                        if(res.status === 'success'){
+                        if (res.status === 'success') {
                             if (res.data !== null) {
                                 setCollection(res.data)
                             }
-                        }else{
+                        } else {
                             console.log("Error", res.error)
                         }
-                       
+
                     })
 
             })
@@ -92,7 +94,7 @@ export default function notilist({ navigation }) {
                 <Text style={styles.loadingTxt}>Loading data ...</Text>
             </View>
         )
-    } 
+    }
 
 
     return (
@@ -101,9 +103,9 @@ export default function notilist({ navigation }) {
             {MonthOptions}
 
             {
-                    Collection.map((data, index) => (
-                        <TouchableOpacity key = {index} onPress = {() => {navigation.navigate('NotiboardDetail', {Subject: data.Title, Date: data['Date Start'], Body: data['Body'] })}}>
-                        <View key = {index} style={{ marginTop: 20, borderWidth: 0.5, borderRadius: 5, borderColor: color.placeHolder, backgroundColor: color.light, paddingLeft: 10, flexDirection: 'row', paddingRight: 10, paddingBottom: 15, paddingTop: 15 }}>
+                Collection.map((data, index) => (
+                    <TouchableOpacity key={index} onPress={() => { navigation.navigate('NotiboardDetail', { Subject: data.Title, Date: data['Date Start'], Body: data['Body'] }) }}>
+                        <View key={index} style={{ marginTop: 20, borderWidth: 0.5, borderRadius: 5, borderColor: color.placeHolder, backgroundColor: color.light, paddingLeft: 10, flexDirection: 'row', paddingRight: 10, paddingBottom: 15, paddingTop: 15 }}>
                             <View style={{ width: '15%', alignItems: 'center', justifyContent: 'center', }}>
                                 <View style={{ width: 40, height: 40, borderRadius: 40 / 2, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }}>
                                     <Image style={{ width: 22, height: 22 }} source={require('../../assets/icon/announcement.png')} />
@@ -121,10 +123,23 @@ export default function notilist({ navigation }) {
 
                             </View>
                         </View>
-                        </TouchableOpacity>
-                    ))
+                    </TouchableOpacity>
+                ))
 
-                }
+            }
+            <View style={{
+                marginTop: 20,
+                display: Collection.length === 0 ? 'flex' : 'none',
+                alignItems: 'center'
+            }}>
+                <Icon name='ios-information-circle-outline' style={{
+                    color: color.placeHolder,
+                    fontSize: 40
+                }} />
+                <Text style={{
+                    color: color.placeHolder
+                }}>There is no announcement!</Text>
+            </View>
 
             {/* <View style={{ marginTop: 20, borderWidth: 0.5, borderRadius: 5, borderColor: color.placeHolder, backgroundColor: color.light, paddingLeft: 10, flexDirection: 'row', paddingRight: 10, paddingBottom: 15, paddingTop: 15 }}>
                 <View style={{ width: '15%', alignItems: 'center', justifyContent: 'center', }}>

@@ -140,6 +140,20 @@ export class OvertimeApprove extends Component {
                         onGoPrev={this.ctrlPrev}
                     />
                     {statusData}
+
+                    <View style={{
+                        marginTop: 20,
+                            display: this.state.OTApproveList.length === 0 ? 'flex' : 'none',
+                            alignItems: 'center'
+                        }}>
+                            <Icon name='ios-information-circle-outline' style={{
+                                color: color.placeHolder,
+                                fontSize: 40
+                            }} />
+                            <Text style={{
+                                color: color.placeHolder
+                            }}>There is no overtime approved data!</Text>
+                        </View>
                 </Content>
             </Container>
         )

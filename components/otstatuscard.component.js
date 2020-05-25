@@ -16,6 +16,7 @@ const statusColor = {
     "approved": colors.primary,
     "rejected": '#FF0000',
     "cancellation": '#656565',
+    "cancel": '#656565',
     "pending": colors.warning,
     "draft": '#33ccaa',
     "approved1": colors.indicator,
@@ -40,7 +41,7 @@ export default function StatusCard({ hour, date_from, date_to, description, stat
                     </View>
                     <View style={styles.right}>
                         <Text style={[styles.statusTxt, {
-                            color: colors.primary
+                            color: statusColor[status.toLowerCase()]
                            // color: statusColor[status]
                         }]}>{status}</Text>
                     </View>

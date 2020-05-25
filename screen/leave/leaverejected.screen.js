@@ -126,6 +126,8 @@ export class EmployeeLeaveRejected extends Component {
                     leaveType={reject.Leave_Type}
                     date={`${reject.date_from} to ${reject.date_to}`}
                     status={reject.state}
+                    auth={this.state.auth}
+                    url={this.state.url}
                 />
             )
         })
@@ -172,6 +174,20 @@ export class EmployeeLeaveRejected extends Component {
                         onGoPrev={this.ctrlPrev}
                     />
                     {statusData}
+
+                    <View style={{
+                        marginTop: 20,
+                            display: this.state.leaveRejectedList.length === 0 ? 'flex' : 'none',
+                            alignItems: 'center'
+                        }}>
+                            <Icon name='ios-information-circle-outline' style={{
+                                color: color.placeHolder,
+                                fontSize: 40
+                            }} />
+                            <Text style={{
+                                color: color.placeHolder
+                            }}>There is no leave rejected data!</Text>
+                        </View>
                 </Content>
             </Container >
         )
