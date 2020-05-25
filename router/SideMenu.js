@@ -9,11 +9,11 @@ export class SideMenu extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <TouchableOpacity style={styNav.item} onPress={() => { this.props.navigation.navigate('Dashboard') }}>
+      <View style={{ flex: 1, marginTop: 20 }}>
+        {/* <TouchableOpacity style={styNav.item} onPress={() => { this.props.navigation.navigate('Dashboard') }}>
           <Image source={require('../assets/icon/dashboard.png')} style={styNav.image} />
           <Text>Dashboard</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styNav.item} onPress={() => { this.props.navigation.navigate('Profile') }}>
           <Image source={require('../assets/icon/user-icn.png')} style={styNav.image} />
           <Text>Profile</Text>

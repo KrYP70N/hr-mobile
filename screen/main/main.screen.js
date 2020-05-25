@@ -217,6 +217,182 @@ export default class Main extends Component {
                 }>
                   <CardItem>
                     <Body style={styMain.menuBody}>
+                      <Image style={styMain.imgIcn} source={require('../../assets/icon/attendance.png')} />
+                      <Text style={styMain.menuTxt}>{po.menu[0].name}</Text>
+                    </Body>
+                  </CardItem>
+                </TouchableOpacity>
+              </Card>
+            </Col>
+            <Col style={styMain.cardRight}>
+              <Card style={[!po.menu[1].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
+                <TouchableOpacity onPress={() =>
+                  po.menu[1].navigate ?
+                    this.props.navigation.navigate(
+                      po.menu[1].navigate
+                    ) : null
+                }>
+                  <CardItem>
+                    <Body style={styMain.menuBody}>
+                      <Image style={styMain.imgIcn} source={require('../../assets/icon/leave.png')} />
+                      <Text style={styMain.menuTxt} >{po.menu[1].name}</Text>
+                    </Body>
+                  </CardItem>
+                </TouchableOpacity>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row style={styMain.menuHolder}>
+            <Col style={styMain.cardLft}>
+              <Card style={[!po.menu[2].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
+                <TouchableOpacity onPress={() =>
+                  po.menu[2].navigate ?
+                    this.props.navigation.navigate(
+                      po.menu[2].navigate
+                    ) : null
+                }>
+                  <CardItem>
+                    <Body style={styMain.menuBody}>
+                    <Image style={[styMain.imgIcn, { height: 45 }]} source={require('../../assets/icon/ot.png')} />
+                      <Text style={styMain.menuTxt}>{po.menu[2].name}</Text>
+                    </Body>
+                  </CardItem>
+                </TouchableOpacity>
+              </Card>
+            </Col>
+            <Col style={styMain.cardRight}>
+              <Card style={[!po.menu[3].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
+                <TouchableOpacity onPress={() =>
+                  po.menu[3].navigate ?
+                    this.props.navigation.navigate(
+                      po.menu[3].navigate
+                    ) : null
+                }>
+                  <CardItem>
+                    <Body style={styMain.menuBody}>
+                    <Image style={[styMain.imgIcn, { width: 46, height: 47 }]} source={require('../../assets/icon/payroll.png')} />
+                      <Text style={styMain.menuTxt} >{po.menu[3].name}</Text>
+                    </Body>
+                  </CardItem>
+                </TouchableOpacity>
+              </Card>
+            </Col>
+          </Row>
+          <Row style={[styMain.menuHolder, {
+            display: this.state.lowestLevel === true ? 'none' : 'flex'
+          }]}>
+            <Col style={styMain.cardLft}>
+              <Card style={[!po.menu[4].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
+                <TouchableOpacity onPress={() =>
+                  po.menu[4].navigate ?
+                    this.props.navigation.navigate(
+                      po.menu[4].navigate
+                    ) : null
+                }>
+                  <CardItem>
+                    <Body style={styMain.menuBody}>
+                      <Image style={[styMain.imgIcn, { width: 50, height: 42 }]} source={require('../../assets/icon/approve-leave.png')} />
+                      <Text style={styMain.menuTxt}>{po.menu[4].name}</Text>
+                    </Body>
+                  </CardItem>
+                </TouchableOpacity>
+              </Card>
+            </Col>
+            <Col style={styMain.cardRight}>
+              <Card style={[!po.menu[5].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
+                <TouchableOpacity onPress={() =>
+                  po.menu[5].navigate ?
+                    this.props.navigation.navigate(
+                      po.menu[5].navigate,
+                    ) : null
+                }>
+                  <CardItem>
+                    <Body style={styMain.menuBody}>
+                      <Image style={[styMain.imgIcn, { width: 45, height: 43 }]} source={require('../../assets/icon/approve-ot.png')} />
+                      <Text style={styMain.menuTxt}>{po.menu[5].name}</Text>
+                    </Body>
+                  </CardItem>
+                </TouchableOpacity>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row style={styMain.menuHolder}>
+            <Col style={styMain.cardLft}>
+            <Card style={[!po.menu[6].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
+                <TouchableOpacity onPress={() =>
+                  po.menu[6].navigate ?
+                    this.props.navigation.navigate(
+                      po.menu[6].navigate
+                    ) : null
+                }>
+                  <CardItem>
+                    <Body style={styMain.menuBody}>
+                    <Image style={[styMain.imgIcn, { width: 46, height: 47 }]} source={require('../../assets/icon/noticebo.png')} />
+                      <Text style={styMain.menuTxt} >{po.menu[6].name}</Text>
+                    </Body>
+                  </CardItem>
+                </TouchableOpacity>
+              </Card>
+            </Col>
+            <Col style={styMain.cardRight}>
+              {/* <Card style={[!po.menu[1].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
+                <TouchableOpacity onPress={() =>
+                  po.menu[1].navigate ?
+                    this.props.navigation.navigate(
+                      po.menu[1].navigate
+                    ) : null
+                }>
+                  <CardItem>
+                    <Body style={styMain.menuBody}>
+                      <Image style={styMain.imgIcn} source={require('../../assets/icon/leave.png')} />
+                      <Text style={styMain.menuTxt} >{po.menu[1].name}</Text>
+                    </Body>
+                  </CardItem>
+                </TouchableOpacity>
+              </Card> */}
+            </Col>
+          </Row>
+          
+
+
+          {/* including dashboard */}
+          {/* <Row style={styMain.menuHolder}>
+            <Col style={styMain.cardLft}>
+              <Card style={[!po.menu[0].navigate ? styMain.disabledMenu : null, {
+                borderRadius: 10,
+                overflow: 'hidden'
+              }]}>
+                <TouchableOpacity onPress={() =>
+                  po.menu[0].navigate ?
+                    this.props.navigation.navigate(
+                      po.menu[0].navigate
+                    ) : null
+                }>
+                  <CardItem>
+                    <Body style={styMain.menuBody}>
                       <Image style={styMain.imgIcn} source={require('../../assets/icon/dashboard.png')} />
                       <Text style={styMain.menuTxt}>{po.menu[0].name}</Text>
                     </Body>
@@ -370,137 +546,6 @@ export default class Main extends Component {
                     <Body style={styMain.menuBody}>
                     <Image style={[styMain.imgIcn, { width: 46, height: 47 }]} source={require('../../assets/icon/noticebo.png')} />
                       <Text style={styMain.menuTxt} >{po.menu[7].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card>
-            </Col>
-          </Row>
-
-          {/* <Row style={styMain.menuHolder}>
-            <Col style={styMain.cardLft}>
-              <Card style={[!po.menu[1].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[1].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[1].navigate
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                      <Image style={styMain.imgIcn} source={require('../../assets/icon/attendance.png')} />
-                      <Text style={styMain.menuTxt}>{po.menu[1].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card>
-            </Col>
-            <Col style={styMain.cardRight}>
-              <Card style={[!po.menu[2].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[2].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[2].navigate
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                      <Image style={styMain.imgIcn} source={require('../../assets/icon/leave.png')} />
-                      <Text style={styMain.menuTxt} >{po.menu[2].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card>
-            </Col>
-          </Row>
-
-          <Row style={styMain.menuHolder}>
-            <Col style={styMain.cardLft}>
-              <Card style={[!po.menu[3].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[3].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[3].navigate
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                      <Image style={[styMain.imgIcn, { height: 45 }]} source={require('../../assets/icon/ot.png')} />
-                      <Text style={styMain.menuTxt}>{po.menu[3].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card>
-            </Col>
-            <Col style={styMain.cardRight}>
-              <Card style={[!po.menu[4].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[4].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[4].navigate
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                      <Image style={[styMain.imgIcn, { width: 46, height: 47 }]} source={require('../../assets/icon/payroll.png')} />
-                      <Text style={styMain.menuTxt}>{po.menu[4].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card>
-            </Col>
-          </Row>
-
-          <Row style={[styMain.menuHolder, {
-            display: this.state.lowestLevel === true ? 'none' : 'flex'
-          }]}>
-            <Col style={styMain.cardLft}>
-              <Card style={[!po.menu[5].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[5].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[5].navigate
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                      <Image style={[styMain.imgIcn, { width: 50, height: 42 }]} source={require('../../assets/icon/approve-leave.png')} />
-                      <Text style={styMain.menuTxt}>{po.menu[5].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card>
-            </Col>
-            <Col style={styMain.cardRight}>
-              <Card style={[!po.menu[6].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[6].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[6].navigate,
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                      <Image style={[styMain.imgIcn, { width: 45, height: 43 }]} source={require('../../assets/icon/approve-ot.png')} />
-                      <Text style={styMain.menuTxt}>{po.menu[6].name}</Text>
                     </Body>
                   </CardItem>
                 </TouchableOpacity>

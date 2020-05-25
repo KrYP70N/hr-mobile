@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 import { View, Text, Row, Col } from 'native-base'
 import colors from '../constant/color'
+import color from '../constant/color'
 
 // registered leave type color
 const leavesColor = {
@@ -15,14 +16,14 @@ const leavesColor = {
 const statusColor = {
     "approved": colors.primary,
     "rejected": '#FF0000',
-    "cancellation": '#656565',
-    "cancel": '#656565',
+    "cancellation": color.placeHolder,
+    "cancel": color.placeHolder,
     "pending": colors.warning,
-    "draft": '#33ccaa',
+    "draft": '#33dc99',
     "approved1": colors.indicator,
     "approved2": colors.secondary,
-    "refused": colors.placeHolder,
-    "refuse": colors.placeHolder,
+    "refused": colors.danger,
+    "refuse": colors.danger,
 }
 
 export default function StatusCard({ hour, date_from, date_to, description, status }) {

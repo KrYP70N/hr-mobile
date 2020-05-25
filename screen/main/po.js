@@ -17,11 +17,11 @@ export default {
     },
     menu: [
         //0
-        {
-            icon: 'ios-speedometer',
-            name: 'Dashboard',
-            navigate: 'Dashboard'
-        },
+        // {
+        //     icon: 'ios-speedometer',
+        //     name: 'Dashboard',
+        //     navigate: 'Dashboard'
+        // },
         //1
         {
             icon: 'ios-calendar',
@@ -42,22 +42,23 @@ export default {
         },
         //4
         {
+            icon: 'md-bookmarks',
+            name: 'Payroll',
+            navigate :'Payroll'
+        },
+         //5
+        {
             icon: 'ios-calendar',
             name: 'Approve Leave ',
             navigate: 'AdminLeaveApprove'
         },
-        //5
+       //6
         {
             icon: 'ios-walk',
             name: 'Approve OT',
             navigate: 'AdminOvertimeApprove'
         },
-        //6
-        {
-            icon: 'md-bookmarks',
-            name: 'Payroll',
-            navigate :'Payroll'
-        },
+       
         //7
         {
             icon: 'ios-walk',
