@@ -65,6 +65,7 @@ export default class APIs {
             }
         }).get(`${url}/getTime/${id}`)
             .then(function (res) {
+                console.log("Api Get Time Data", res.data)
                 return { data: res.data.data, status: 'success' }
                // return { data: res.data["data"]["Current Server Time"], status: 'success' }
             })
@@ -171,6 +172,11 @@ export default class APIs {
 
     // attendance summary
     static AttendanceSummary(url, auth, year, month, id) {
+        console.log(url)
+        console.log(auth)
+        console.log(id)
+        console.log(year)
+        console.log(month)
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -447,9 +453,11 @@ export default class APIs {
             }
         }).get(`${url}/list/leaves/${id}/${year}/${month}`)
             .then(function (res) {
+                console.log("API Data", res.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log("Error", error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -462,9 +470,11 @@ export default class APIs {
             }
         }).get(`${url}/list/overtime/${id}/${year}/${month}`)
             .then(function (res) {
+               // console.log("API Data", res.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
+               // console.log("Error", error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -510,6 +520,7 @@ export default class APIs {
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log("Error", error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -525,6 +536,7 @@ export default class APIs {
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log("Error", error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -532,12 +544,18 @@ export default class APIs {
     //list/reject/leaves/empID/year/month
     //leave Rejected lists
     static getLeaveRejectedList = (url, auth, id, year,month) => {
+        console.log("Auth", auth)
+        console.log("url", url)
+        console.log("ID", id)
+        console.log("Year", year)
+        console.log("Month", month)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).get(`${url}/list/reject/leaves/${id}/${year}/${month}`)
             .then(function (res) {
+                console.log("Api Leave rejected Data", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
@@ -547,12 +565,18 @@ export default class APIs {
 
     // ot rejected
     static getOTRejectedList = (url, auth, id, year,month) => {
+        console.log("Auth", auth)
+        console.log("url", url)
+        console.log("ID", id)
+        console.log("Year", year)
+        console.log("Month", month)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).get(`${url}/list/rejected/ot/${id}/${year}/${month}`)
             .then(function (res) {
+                console.log("Api Leave rejected Data", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
@@ -568,6 +592,7 @@ export default class APIs {
             }
         }).get(`${url}/list/approved/leaves/${id}/${year}/${month}`)
             .then(function (res) {
+                console.log("Api Leave Approved Data", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
@@ -583,6 +608,7 @@ export default class APIs {
             }
         }).get(`${url}/list/approved/ot/${id}/${year}/${month}`)
             .then(function (res) {
+                console.log("Api Leave Approved Data", res.data.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {

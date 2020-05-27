@@ -47,6 +47,7 @@ export class OvertimeHistory extends Component {
                             this.getOTHistory(auth, id, url, this.state.year, this.state.month);
                             APIs.getOTStatus(url, auth)
                                 .then((res) => {
+                                    console.log('OT Status', res.data)
                                     this.setState({
                                         OTStatus: res.data
                                     })
@@ -60,6 +61,7 @@ export class OvertimeHistory extends Component {
         APIs.getOTHistory(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
+                    console.log("Leave Data", res.data)
                         this.setState({
                             OTHistoryLists: status === 'all' ? res.data : res.data.filter(list => list.state.toLowerCase() === status)
                         })
@@ -84,10 +86,14 @@ export class OvertimeHistory extends Component {
         this.setState({
             status: status
         })
+        console.log("Change Value Date", date)
+        console.log("Change Value Status", status)
         this.getOTHistory(this.state.auth, this.state.id, this.state.url, moment(date).format('YYYY'), moment(date).format('MM'), status)
     }
 
     render() {
+        console.log("OT History List", this.state.OTHistoryLists)
+        console.log("OT Status", this.state.OTStatus)
         let statusData = this.state.OTHistoryLists.map((history, index) => {
             return (
                 <StatusCard

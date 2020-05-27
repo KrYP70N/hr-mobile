@@ -96,6 +96,7 @@ export class EmployeeLeaveHistory extends Component {
     }
 
     render() {
+        //console.log("Leave Type", this.state.leaveTypeList)
         let statusData =  this.state.leaveHistoryLists.map((history, index) => {
             return(
                 <StatusCard

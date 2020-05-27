@@ -58,6 +58,7 @@ export class OvertimeRejected extends Component {
         APIs.getOTRejectedList(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
+                    console.log("Leave Data", res.data)
                     this.setState({
                         OTRejectedList: res.data
                     })
@@ -77,6 +78,7 @@ export class OvertimeRejected extends Component {
     }
 
     onChangeDate(clickedDate) {
+        console.log("Clicked Date", clickedDate)
     }
 
     // filter next ctrl
@@ -94,6 +96,8 @@ export class OvertimeRejected extends Component {
     }
 
     render() {
+        console.log(this.state.year, this.state.month)
+        console.log("OT RejectedList", this.state.OTRejectedList)
         let statusData = this.state.OTRejectedList.map((reject, index) => {
             return (
                 <StatusCard
