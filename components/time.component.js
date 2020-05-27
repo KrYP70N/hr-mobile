@@ -31,7 +31,6 @@ export default class Clock extends Component {
                         // request time
                         APIs.Time(endPoint, key, id)
                             .then((response) => {
-                                // console.log("Time Response Data", response.data)
                                 if (response.status === 'success') {
                                     this.setState({
                                         time: Moment(response.data["Current Server Time"]),

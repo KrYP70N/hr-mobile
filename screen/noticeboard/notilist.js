@@ -17,34 +17,25 @@ export default function notilist({ navigation }) {
 
     const [month, setmonth] = useState(moment().format('MM'))
     const loader = (month) => {
-        console.log("Month", month)
         let token = AsyncStorage.getItem('@hr:token')
             .then(res => JSON.parse(res))
         let endPoint = AsyncStorage.getItem('@hr:endPoint')
             .then(res => JSON.parse(res))
         Promise.all([token, endPoint])
             .then((res) => {
-                //console.log("RES", res)
                 let token = res[0]
                 let endPoint = res[1]
-                console.log("Auth", token['key'])
-                console.log("URL", endPoint['ApiEndPoint'])
-                console.log("ID", token['id'])
                 let date = new Date()
                 let last_day = moment(`"${date.getFullYear()}-${month}"`, "YYYY-MM").daysInMonth();
-                console.log("Start Date", `${moment().format('YYYY')}-${month}-01`)
-                console.log("End Date", `${moment().format('YYYY')}-${month}-${last_day}`)
 
                 APIs.getAnnouncement(token['key'], endPoint['ApiEndPoint'], token['id'], `${moment().format('YYYY')}-${month}-01`, `${moment().format('YYYY')}-${month}-${last_day}`)
                     .then((res) => {
-                        console.log("res", res)
-                        console.log("res.data", res.data)
                         if (res.status === 'success') {
                             if (res.data !== null) {
                                 setCollection(res.data)
                             }
                         } else {
-                            console.log("Error", res.error)
+                            //console.log("Error", res.error)
                         }
 
                     })
@@ -86,7 +77,6 @@ export default function notilist({ navigation }) {
             </Picker>
         </View>
     )
-    console.log("Collection Data", Collection)
     if (Collection === null) {
         return (
             <View style={styles.loading}>

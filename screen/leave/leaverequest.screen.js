@@ -56,7 +56,7 @@ export class LeaveRequest extends Component {
             loading: true,
             loadingTxt: 'requesting your leave ...'
         })
-        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.morning_leave,this.state.evening_leave, this.state.description, this.state.binary)
+        APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.morning_leave, this.state.evening_leave, this.state.description, this.state.binary)
             .then((res) => {
                 console.log("Res", res)
                 if (res.status == "success") {
@@ -147,7 +147,7 @@ export class LeaveRequest extends Component {
                         //description: null,
                     })
                 } else {
-                   
+
                 }
             })
     }
@@ -481,9 +481,11 @@ export class LeaveRequest extends Component {
                             <View style={styles.ModelViewContainer}>
                                 <View style={styles.iconView}>
                                     {/* <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} /> */}
-                                   {this.state.changeIconStatus === "success" ?  <Image source={require('../../assets/icon/success_icon.png')} style={styles.dialogIcon} /> :  <Image source={require('../../assets/icon/fail_icon.png')} style={styles.dialogIcon} />}
+                                    {this.state.changeIconStatus === "success" ? <Image source={require('../../assets/icon/success_icon.png')} style={styles.dialogIcon} /> : <Image source={require('../../assets/icon/fail_icon.png')} style={styles.dialogIcon} />}
                                 </View>
-                                <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
+                                <View style={{ width: '100%', padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+                                    <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
+                                </View>
                                 <View style={styles.ModalTextContainer}>
                                     <TouchableOpacity style={styles.CancelOpacityContainer}
                                         onPress={() => this.setState({ isModalVisible: false })} >

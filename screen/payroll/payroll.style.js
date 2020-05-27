@@ -57,7 +57,8 @@ export default StyleSheet.create({
     salary: {
         ...typo.paragraph,
         color: color.placeHolder,
-        marginBottom: offset.o2
+        marginTop: offset.o1,
+        marginBottom: offset.o1
     },
     cardButton: {
         ...button.secondary,

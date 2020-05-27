@@ -187,7 +187,6 @@ export class chart extends Component {
                 </View>
             )
         }
-        console.log("Summary Data", this.state.summaryData)
         let pieData = this.state.summaryData
             .filter((d) => d.value > 0)
             .map((d, index) => ({

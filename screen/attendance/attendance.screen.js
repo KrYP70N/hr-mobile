@@ -127,8 +127,6 @@ export default class Attendance extends Component {
     }
 
     monthChange(date) {
-        console.log('month changed', date);
-
         if (
             this.state.url !== null &&
             this.state.token !== null &&
@@ -164,9 +162,6 @@ export default class Attendance extends Component {
     }
 
     render() {
-
-        console.log("Attendance List", this.state.data)
-
         if (this.state.data === null || this.state.dataTitle === null) {
             return (
                 <Loading />
@@ -213,7 +208,6 @@ export default class Attendance extends Component {
                 .replace(/ /ig, '"')
                 .replace(/,/ig, '",')
                 .replace(/}/ig, '"}'))
-            // console.log(val)
 
             markedDateData[a.slice(1, a.indexOf('\' :'))] = val
         })

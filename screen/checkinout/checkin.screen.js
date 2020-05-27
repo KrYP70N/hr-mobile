@@ -47,7 +47,6 @@ export class CheckInOut extends Component {
         }
 
         this.CheckIn = () => {
-            console.log('Click Check In')
             const fun = () => {
                 if (this.state.geofencing) {
                     // geo true
@@ -55,7 +54,6 @@ export class CheckInOut extends Component {
                         lat: this.state.location['latitude'],
                         long: this.state.location['longitude']
                     }).then((res) => {
-                        console.log("Check In Api REturn Message", res)
                         if (res.status === 'success') {
                             this.setState({
                                 checkMessage: 'Check In Successful!',
@@ -149,7 +147,6 @@ export class CheckInOut extends Component {
                 })
             } else {
                 let location = await Location.getCurrentPositionAsync({})
-                console.log('Current Position Location', location.coords);
                 this.setState({
                     location: location.coords,
                     mapCoord: {
@@ -189,7 +186,6 @@ export class CheckInOut extends Component {
         if (this.state.url !== null && this.state.auth !== null && this.state.id !== null && this.state.data === null) {
             APIs.Profile(this.state.url, this.state.auth, this.state.id)
                 .then((res) => {
-                    console.log("User Profile Data", res.data)
                     this.setState({
                         data: res.data,
                         geofencing: res.data['General Information']['Geo Fencing'],
@@ -241,9 +237,6 @@ export class CheckInOut extends Component {
     }
 
     render() {
-        //console.log(this.props.navigation);
-       // console.log("Current Location", this.state.location);
-       // console.log("Current Map Location", this.state.mapCoord)
         return (
 
             <Container style={{ flex: 1 }}>

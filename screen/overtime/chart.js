@@ -82,7 +82,6 @@ export class chart extends Component {
         APIs.getOTSummary(url, auth, id, year)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("Res Data", res.data)
                     let data = []
                     let lData = []
                     for (let i = 0; i < 4; i++) {
@@ -120,7 +119,6 @@ export class chart extends Component {
                         value: res.data.Total[0][0],
                         color: '#FFFFFF'
                     })
-                    console.log("LData:::", lData)
                     this.setState({
                         summaryData: data,
                         labelData: lData
@@ -148,7 +146,6 @@ export class chart extends Component {
                 </View>
             )
         }
-        console.log("Summary Data", this.state.summaryData)
         let pieData = this.state.summaryData
             .filter((d) => d.value > 0)
             .map((d, index) => ({

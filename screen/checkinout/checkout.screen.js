@@ -145,7 +145,6 @@ export class CheckOut extends Component {
                 })
             } else {
                 let location = await Location.getCurrentPositionAsync({})
-                console.log('Current Position Location', location.coords);
                 this.setState({
                     location: location.coords,
                     mapCoord: {
@@ -185,7 +184,6 @@ export class CheckOut extends Component {
         if (this.state.url !== null && this.state.auth !== null && this.state.id !== null && this.state.data === null) {
             APIs.Profile(this.state.url, this.state.auth, this.state.id)
                 .then((res) => {
-                    console.log("User Profile Data", res.data)
                     this.setState({
                         data: res.data,
                         geofencing: res.data['General Information']['Geo Fencing'],
@@ -237,9 +235,6 @@ export class CheckOut extends Component {
     }
 
     render() {
-        console.log(this.props.navigation);
-        console.log("Current Location", this.state.location);
-        console.log("Current Map Location", this.state.mapCoord)
         return (
 
             <Container style={{ flex: 1 }}>
