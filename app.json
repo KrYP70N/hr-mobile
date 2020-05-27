@@ -34,7 +34,7 @@
     },
     "android": {
       "package": "com.innovixhr.hrmobile",
-      "versionCode": 4,
+      "versionCode": 5,
       "config": {
         "googleMaps": {
           "apiKey" : "AIzaSyC53THKHx9WGSDTpJIc9YpJZZDz8emWeaA"
