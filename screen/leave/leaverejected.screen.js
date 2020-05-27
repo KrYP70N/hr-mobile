@@ -21,8 +21,6 @@ export class EmployeeLeaveRejected extends Component {
             auth: null,
             url: null,
             id: null,
-            // year: null,
-            // month: null,
             leaveRejectedList: [],
             filter: true,
             year: moment().format('YYYY'),
@@ -32,12 +30,6 @@ export class EmployeeLeaveRejected extends Component {
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
-            //let date = new Date()
-            // this.setState({
-            //     year: date.getFullYear(),
-            //     month: `${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}`,
-            // })
-
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
                     let date = new Date()
@@ -64,7 +56,6 @@ export class EmployeeLeaveRejected extends Component {
         APIs.getLeaveRejectedList(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("Leave Data", res.data)
                     this.setState({
                         leaveRejectedList: res.data
                     })
@@ -84,24 +75,9 @@ export class EmployeeLeaveRejected extends Component {
     }
 
     onChangeDate(clickedDate) {
-        console.log("Clicked Date", clickedDate)
     }
 
-    // render() {
-    //     console.log("Rejected Leave List", this.state.leaveRejectedList)
-    //     let statusData =  this.state.leaveRejectedList.map((reject, index) => {
-    //         return(
-    //             <StatusCard
-    //             key = {index}
-    //             leaveType={reject.Leave_Type}
-    //             date={`${reject.date_from} to ${reject.date_to}`}
-    //             status={reject.state}
-    //         />
-    //         )
-    //     })
-
-    //     }
-    // }
+    
 
     // filter next ctrl
     ctrlNext = ({ year, month }) => {
@@ -118,7 +94,6 @@ export class EmployeeLeaveRejected extends Component {
     }
 
     render() {
-        console.log(this.state.year, this.state.month)
         let statusData = this.state.leaveRejectedList.map((reject, index) => {
             return (
                 <StatusCard

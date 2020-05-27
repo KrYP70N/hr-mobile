@@ -52,7 +52,6 @@ export class OvertimeApprove extends Component {
         APIs.getOTApprovedList(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("Leave Data", res.data)
                     this.setState({
                         OTApproveList: res.data
                     })

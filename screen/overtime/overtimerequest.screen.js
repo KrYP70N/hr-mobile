@@ -148,8 +148,6 @@ export class OTRequest extends Component {
             if (minutes < this.state.fromTimeMinus) {
                 const hr = (hours - this.state.fromTimeHr) - 1
                 const min = (60 + minutes) - this.state.fromTimeMinus
-                console.log("Diff hr", hr)
-                console.log("Diff min", min)
                 this.setState({
                     toTime: `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`,
                     toTimehrLabel: `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`,
@@ -159,8 +157,6 @@ export class OTRequest extends Component {
             } else {
                 const dif_hr = hours - this.state.fromTimeHr
                 const dif_min = minutes - this.state.fromTimeMinus
-                console.log("hr", dif_hr)
-                console.log("min", dif_min)
                 this.setState({
                     toTime: `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`,
                     toTimehrLabel: `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`,
@@ -169,9 +165,9 @@ export class OTRequest extends Component {
                 })
             }
         } else {
-            console.log("Date", this.state.date)
-            console.log("From Time", this.state.fromTime)
-            console.log("To Time", this.state.toTime)
+            // console.log("Date", this.state.date)
+            // console.log("From Time", this.state.fromTime)
+            // console.log("To Time", this.state.toTime)
         }
         this.hideTimePickerto();
     };
