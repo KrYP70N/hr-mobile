@@ -17,11 +17,11 @@ export default {
     },
     menu: [
         //0
-        // {
-        //     icon: 'ios-speedometer',
-        //     name: 'Dashboard',
-        //     navigate: 'Dashboard'
-        // },
+        {
+            icon: 'ios-speedometer',
+            name: 'Dashboard',
+            navigate: 'Dashboard'
+        },
         //1
         {
             icon: 'ios-calendar',

@@ -95,17 +95,24 @@ export class EmployeeLeaveHistory extends Component {
         this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, moment(date).format('YYYY'), moment(date).format('MM'), status)
     }
 
+    // componentDidUpdate(){
+    //     if(this.state.url !== null && this.state.id !== null && this.state.auth !== null && this.state.leaveHistoryLists === null) {
+    //     this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, moment(date).format('YYYY'), moment(date).format('MM'), status)
+    //     }
+    // }
+
     render() {
+        console.log("Leave History", this.state.leaveHistoryLists)
         let statusData =  this.state.leaveHistoryLists.map((history, index) => {
             return(
                 <StatusCard
-                key = {index}
+                key={index}
                 leaveType={history.Leave_Type}
                 date={`${history.date_from} to ${history.date_to}`}
                 status={history.state}
                 //leaveTypes = {this.state.leaveTypeList}
-                auth = {this.state.auth}
-                url = {this.state.url}
+                auth={this.state.auth}
+                url= {this.state.url}
             />
             )
         })

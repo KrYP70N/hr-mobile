@@ -27,6 +27,8 @@ export default class NoticeBoard extends Component {
     }
 
     render() {
+        console.log("get Param", this.props.route.params.pageFrom)
+     
         return (
             <Container>
                 <Header style={{
@@ -44,7 +46,10 @@ export default class NoticeBoard extends Component {
                             fontSize: offset.o4,
                             color: color.primary,
                             marginRight: offset.o2
-                        }} onPress={() => { this.props.navigation.navigate('Main') }} />
+                        }} onPress={() => { 
+                            this.props.route.params.pageFrom == "Dashboard" ? this.props.navigation.navigate('Dashboard') : this.props.navigation.navigate('Main') 
+                            //this.props.navigation.navigate('Main')
+                        }}/>
                         <Text style={{
                             color: color.secondary,
                             fontFamily: 'Nunito'

@@ -246,6 +246,7 @@ export class LeaveRequest extends Component {
     }
 
     render() {
+        console.log("Leave Type:", this.state.leaveType)
         if (this.state.startDate === null || this.state.endDate === null || this.state.attachment === null || this.state.loading === true) {
             return (
                 <Loading info={this.state.loadingTxt} />

@@ -26,7 +26,7 @@ const statusColor = {
     "refuse": colors.placeHolder,
 }
 
-export default function StatusCard({ leaveType, date, status, auth, url}) {
+export default function StatusCard({key, leaveType, date, status, auth, url}) {
     const [leaveTypes, setLeaveTypes] = useState([])
     APIs.getLeaveType(auth, url)
         .then((res) => {
@@ -35,7 +35,7 @@ export default function StatusCard({ leaveType, date, status, auth, url}) {
    
 
     return (
-        <View style={styles.container}>
+        <View key={key} style={styles.container}>
             <View style={styles.mainRow}>
                 <View style={styles.status}>
 

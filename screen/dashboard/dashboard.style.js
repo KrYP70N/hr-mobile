@@ -19,7 +19,10 @@ export default StyleSheet.create({
         padding: offset.o1 + offset.oh,
         backgroundColor: color.light,
         marginBottom: offset.o2,
-        borderRadius: offset.oh
+        borderRadius: offset.o1,
+        borderWidth: 0.5,
+        borderColor: color.placeHolder,
+
     },
     notiIcn: {
         width: 35,
@@ -40,14 +43,15 @@ export default StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
+        //justifyContent: 'center',
         padding: offset.o2,
-        backgroundColor: color.light,
+        backgroundColor: color.primary,
         marginBottom: offset.o2,
-        borderRadius: offset.o1
+        //borderRadius: offset.o1
     },
     pieBox: {
         width: '50%',
-        height: 160
+        height: 130
     },
     pieInfo: {
         paddingLeft: offset.o2
@@ -59,7 +63,10 @@ export default StyleSheet.create({
         marginBottom: offset.o1
     },
     pietxt: {
-        ...typography.textSmall
+        ...typography.textSmall,
+        color: color.light,
+        fontSize: 14,
+        fontFamily: 'Nunito'
     },
     pieicn: {
         fontSize: 14,

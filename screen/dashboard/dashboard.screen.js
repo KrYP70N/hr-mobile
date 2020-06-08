@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react'
-import { Container, Header, Left, Icon, Text, Right, Content } from 'native-base'
+import { Container, Header, Left, Icon, Text, Right, Content, View } from 'native-base'
 
 // variable
 import color from '../../constant/color'
@@ -12,7 +12,19 @@ import Chart from './chart'
 
 export default class Dashboard extends Component {
 
-    
+    constructor(props) {
+        super(props)
+        this.state = {
+            url: null,
+            id: null,
+            auth: null,
+            dashboardData: [],
+        }
+    }
+
+    componentDidMount(){
+        
+    }
     render() {
         return (
             <Container>
@@ -37,12 +49,12 @@ export default class Dashboard extends Component {
                     </Left>
                     <Right></Right>
                 </Header>
-                
-                <Content style={
-                    styles.container
-                }>  
-                    <Chart />
-                    <Cards navigation = {this.props.navigation}/>
+
+                <Content style = {{backgroundColor: color.lighter}}>
+                    <Chart navigation={this.props.navigation} />
+                    <View style={{backgroundColor: color.lighter, paddingLeft: offset.o1 + offset.oh, paddingRight: offset.o1 + offset.oh}}>
+                        <Cards navigation={this.props.navigation} />
+                    </View>
                 </Content>
             </Container>
         )

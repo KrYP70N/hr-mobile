@@ -203,7 +203,7 @@ export default class Main extends Component {
 
           {/* menu */}
 
-          <Row style={styMain.menuHolder}>
+          {/* <Row style={styMain.menuHolder}>
             <Col style={styMain.cardLft}>
               <Card style={[!po.menu[0].navigate ? styMain.disabledMenu : null, {
                 borderRadius: 10,
@@ -355,31 +355,14 @@ export default class Main extends Component {
               </Card>
             </Col>
             <Col style={styMain.cardRight}>
-              {/* <Card style={[!po.menu[1].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[1].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[1].navigate
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                      <Image style={styMain.imgIcn} source={require('../../assets/icon/leave.png')} />
-                      <Text style={styMain.menuTxt} >{po.menu[1].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card> */}
+             
             </Col>
-          </Row>
+          </Row> */}
           
 
 
           {/* including dashboard */}
-          {/* <Row style={styMain.menuHolder}>
+          <Row style={styMain.menuHolder}>
             <Col style={styMain.cardLft}>
               <Card style={[!po.menu[0].navigate ? styMain.disabledMenu : null, {
                 borderRadius: 10,
@@ -539,7 +522,7 @@ export default class Main extends Component {
                 <TouchableOpacity onPress={() =>
                   po.menu[7].navigate ?
                     this.props.navigation.navigate(
-                      po.menu[7].navigate
+                      po.menu[7].navigate, {pageFrom: "Main"}
                     ) : null
                 }>
                   <CardItem>
@@ -551,7 +534,7 @@ export default class Main extends Component {
                 </TouchableOpacity>
               </Card>
             </Col>
-          </Row> */}
+          </Row>
 
         </Content>
 

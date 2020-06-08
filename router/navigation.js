@@ -16,6 +16,16 @@ import { NavigationActions } from 'react-navigation';
 
 import Login from '../screen/login/login.screen'
 import Dashboard from '../screen/dashboard/dashboard.screen'
+import EmployeeList from '../screen/dashboard/employeelist.screen'
+import Department from '../screen/dashboard/department.screen'
+import UpcomingBirthday from '../screen/dashboard/upcomingbirthday.screen'
+import TodayLeave from '../screen/dashboard/todayleaves.screens'
+import ContractProfile from '../screen/dashboard/contracrprofile.screen'
+import ExitEmployeeList from '../screen/dashboard/exitemployee.screen'
+import JoinEmployeeList from '../screen/dashboard/joinemployeelist.screen'
+import AbsentEmployeeList from '../screen/dashboard/todayabsentlist.screen'
+import DashboardLeaveRequestList from '../screen/dashboard/dashboardleaverequestlist.screen'
+import DashboardAttendance from '../screen/dashboard/todayattendence.screen'
 import Main from '../screen/main/main.screen'
 import ProfileScreen from '../screen/profile/profile.screen'
 import Attendance from '../screen/attendance/attendance.screen'
@@ -83,6 +93,16 @@ function Navigation() {
           }}
         />
         <Drawer.Screen name='Dashboard' component={Dashboard} />
+        <Drawer.Screen name='EmployeeList' component={EmployeeList} />
+        <Drawer.Screen name='Department' component={Department} />
+        <Drawer.Screen name='UpcomingBirthday' component={UpcomingBirthday} />
+        <Drawer.Screen name='TodayLeave' component={TodayLeave} />
+        <Drawer.Screen name="ContractProfile" component={ContractProfile} />
+        <Drawer.Screen name="ExitEmployeeList" component={ExitEmployeeList} />
+        <Drawer.Screen name="JoinEmployeeList" component={JoinEmployeeList} />
+        <Drawer.Screen name="AbsentEmployeeList" component={AbsentEmployeeList} />
+        <Drawer.Screen name="DashboardLeaveRequestList" component={DashboardLeaveRequestList} />
+        <Drawer.Screen name="DashboardAttendance" component={DashboardAttendance} />
         <Drawer.Screen name='Main' component={Main} />
         <Drawer.Screen name='Profile' component={ProfileScreen} />
         <Drawer.Screen name='Attendance' component={Attendance} />
