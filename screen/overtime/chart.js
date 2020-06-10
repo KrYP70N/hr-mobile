@@ -82,6 +82,7 @@ export class chart extends Component {
         APIs.getOTSummary(url, auth, id, year)
             .then((res) => {
                 if (res.status === 'success') {
+                    console.log("OT Summary Data", res.data)
                     let data = []
                     let lData = []
                     for (let i = 0; i < 4; i++) {

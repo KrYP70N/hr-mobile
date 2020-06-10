@@ -49,6 +49,7 @@ export class OvertimePending extends Component {
         APIs.OTUpdateStatus(otId, this.state.auth, this.state.url, 'cancel')
             .then((res) => {
                 if (res.status === 'success') {
+                    console.log("Cancel OT Return Message", res.data)
                     this.getApproveData(this.state.auth, this.state.id, this.state.url)
                     this.setState({
                         checkMessage: 'Cancellation Successful!',
@@ -70,6 +71,7 @@ export class OvertimePending extends Component {
     getApproveData(auth, id, url) {
         APIs.OTPending(id, auth, url)
             .then((res) => {
+                console.log("OT Pending Data", res.data)
                 if (res.status === 'success') {
                     this.setState({
                         overtimes: res.data

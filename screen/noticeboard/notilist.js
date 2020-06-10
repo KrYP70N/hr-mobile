@@ -32,6 +32,7 @@ export default function notilist({ navigation }) {
                     .then((res) => {
                         if (res.status === 'success') {
                             if (res.data !== null) {
+                                console.log("Announcement Data", res.data)
                                 setCollection(res.data)
                             }
                         } else {

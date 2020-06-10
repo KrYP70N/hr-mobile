@@ -4,6 +4,7 @@ import { Container, Content, Icon } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
 export class TodayAbsentList extends Component {
     constructor(props) {
         super(props)
@@ -12,7 +13,10 @@ export class TodayAbsentList extends Component {
             id: null,
             url: null,
             year: null,
+            loading: true,
+            loadingTxt: 'Loading...',
             empLists: [],
+            requestData: true,
         }
     }
 
@@ -48,15 +52,28 @@ export class TodayAbsentList extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     this.setState({
-                        empLists: res.data
+                        loading: false,
+                        loadingTxt: '',
+                        empLists: res.data,
+                        requestData: false,
                     })
                 } else {
-                    this.setState({ empLists: [] })
+                    this.setState({ 
+                        empLists: [],
+                        loading: false,
+                        loadingTxt: '',
+                        requestData: false,
+                     })
                 }
             })
     }
 
     render() {
+        if (this.state.requestData == true) {
+            return (
+                <Loading info={this.state.loadingTxt} />
+            )
+        }
         //console.log("Today Absent Employee", this.state.empLists)
         return (
             <SafeAreaView style={{ flex: 1 }}>
@@ -79,10 +96,11 @@ export class TodayAbsentList extends Component {
                                 return (
                                     <View key={index} style={{ marginLeft: 15, marginRight: 15, marginTop: 15, borderRadius: 8, backgroundColor: color.light, padding: 10, alignItems: 'center', flexDirection: 'row', borderWidth: 0.3, borderColor: color.placeHolder }}>
                                         <Image style={{ width: 60, height: 60, borderRadius: 60 / 2 }} source={require('../../assets/icon/user.png')}></Image>
-                                        <View style={{ marginLeft: 10 }}>
+                                        <View style={{flex: 1, marginLeft: 15}}>
                                             <Text style={{ fontSize: 14, fontFamily: 'Nunito-Bold' }}>{emp["name"]}</Text>
-                                            <Text style={{ marginTop: 5, fontSize: 13, fontFamily: 'Nunito', color: '#656565' }}>{emp["job"] == null ? "Untitle Job" : emp["job"]}, {emp["dept"] == null ? "Untitle Department" : emp["dept"]}</Text>
-                                            <Text style={{ marginTop: 8, fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>Last Work Date - {emp["last work date"]}</Text>
+                                            <Text style={{ marginTop: 5, fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>ID - {emp["employee id"]}</Text>
+                                            <Text style={{ marginTop: 8, fontSize: 13, fontFamily: 'Nunito', color: '#656565' }}>{emp["position"] == null ? "Untitle Position" : emp["position"]}, {emp["department"] == null ? "Untitle Department" : emp["department"]}</Text>
+                                           
                                         </View>
                                     </View>
                                 )

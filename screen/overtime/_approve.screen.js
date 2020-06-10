@@ -57,6 +57,7 @@ export default class OvertimeApprove extends Component {
     getApproveStatus(url, auth, id) {
         APIs.OTApproval(url, auth, id)
             .then((res) => {
+                console.log("OT Approved Data", res.data)
                 if (res.status === 'success') {
                     this.setState({
                         refresh: !this.state.refresh,
@@ -73,6 +74,7 @@ export default class OvertimeApprove extends Component {
     sendApproveRejectOT(otID, auth, url, status) {
         APIs.OTUpdateStatus(otID, auth, url, status)
             .then((res) => {
+                console.log("OT Approvement by HR", res.data)
                 if (res.status === 'success') {
                     if (res.data.error == false) {
                         this.setState({

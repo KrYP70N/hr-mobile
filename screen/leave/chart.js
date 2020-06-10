@@ -7,35 +7,6 @@ import offset from '../../constant/color'
 import APIs from '../../controllers/api.controller'
 const width = Dimensions.get('screen').width;
 
-
-const demo_data = [
-    {
-        title: 'AVAILABLE',
-        value: 8,
-        color: '#35A9AC'
-    },
-    {
-        title: 'PENDING',
-        value: 4,
-        color: '#FFB300'
-    },
-    {
-        title: 'APPROVED',
-        value: 5,
-        color: '#92DD4D'
-    },
-    {
-        title: 'APPLIED',
-        value: 6,
-        color: '#47E9EE'
-    },
-    {
-        title: 'REJECTED',
-        value: 2,
-        color: '#FF0000'
-    },
-]
-
 const lb_color = [
     {
         title: 'APPROVED',
@@ -54,8 +25,6 @@ const lb_color = [
         color: '#FF0000'
     },
 ]
-
-const colors = ['#35A9AC', '#FFB300', '#92DD4D',]
 export class chart extends Component {
     constructor(props) {
         super(props)
@@ -165,16 +134,7 @@ export class chart extends Component {
                         labelData: lData
                     })
                 } else {
-                    // Toast.show({
-                    //     text: 'Connection time out. Please check your internet connection!',
-                    //     textStyle: {
-                    //         textAlign: 'center'
-                    //     },
-                    //     style: {
-                    //         backgroundColor: color.primary
-                    //     },
-                    //     duration: 6000
-                    // })
+    
                 }
             })
     }

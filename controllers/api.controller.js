@@ -323,6 +323,9 @@ export default class APIs {
 
     // Leave Approval List Manager
     static leaveApproval(url, auth, id) {
+        console.log(url)
+        console.log(auth)
+        console.log(id)
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -520,9 +523,9 @@ static getDashboardAttendanceEmployeeListData = (url, auth, id, year) => {
        headers: {
            'Authorization': auth
        }
-   }).get(`${url}/contractlist/dashboard/${id}`)
+   }).get(`${url}/attendance/today/dashboard/${id}`)
        .then(function (res) {
-           console.log("Res Data", res.data)
+           console.log("Attendance Res Data", res.data)
            return { data: res.data.data, status: 'success' }
        })
        .catch(function (error) {
@@ -786,12 +789,17 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
 
     // get leave balance
     static getLeaveBalance = (url, auth, id, year) => {
+        console.log(url)
+        console.log(auth)
+        console.log(id)
+        //console.log(year)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
-        }).post(`${url}/leave/balance/${id}/${year}`)
+        }).get(`${url}/list/leave/balance/${id}`)
             .then(function (res) {
+                //console.log("Leave Balance res data", res.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {

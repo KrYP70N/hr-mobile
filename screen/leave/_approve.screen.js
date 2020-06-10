@@ -57,6 +57,7 @@ export default class LeaveApprove extends Component {
     getApproveStatus(url, auth, id) {
         APIs.leaveApproval(url, auth, id)
             .then((res) => {
+                console.log("Leave Approved Data", res.data)
                 if (res.status === 'success') {
                     this.setState({
                         refresh: !this.state.refresh,
@@ -71,8 +72,8 @@ export default class LeaveApprove extends Component {
     sendApproveRejectLeave(url, auth, leaveID, status) {
         APIs.leaveStatusUpdate(url, auth, leaveID, status)
             .then((res) => {
-
                 if (res.status === 'success') {
+                    console.log("Leave Status Update::", res.data)
                     if (res.data.error == false) {
                         this.setState({
                             refresh: !this.state.refresh,

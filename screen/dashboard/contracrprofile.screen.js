@@ -4,6 +4,7 @@ import color from '../../constant/color'
 import offset from '../../constant/offset'
 import { Container, Content, Icon } from 'native-base'
 import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
 
 
 export class ContractProfile extends Component {
@@ -13,7 +14,11 @@ export class ContractProfile extends Component {
             auth: null,
             id: null,
             url: null,
-            profileData: []
+            loading: true,
+            loadingTxt: 'Loading....',
+            profileData: null,
+            workingSchedule: [],
+            testSchedules:[],
         }
     }
 
@@ -49,11 +54,16 @@ export class ContractProfile extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     this.setState({
-                        profileData: res.data
+                        loading: false,
+                        loadingTxt: '',
+                        profileData: res.data[0],
+                        workingSchedule: res.data[1]
                     })
                 } else {
                     this.setState({
-                        profileData: []
+                        profileData: null,
+                        loadingTxt: '',
+                        workingSchedule: []
                     })
                 }
             })
@@ -61,7 +71,14 @@ export class ContractProfile extends Component {
 
 
     render() {
-        //console.log(this.state.profileData[0])
+
+        if (this.state.profileData == null) {
+            return (
+                <Loading info={this.state.loadingTxt} />
+            )
+        }
+        console.log("Contract Profile Data", this.state.profileData)
+        console.log("Schedule Lists", this.state.workingSchedule)
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ backgroundColor: color.lighter }}>
@@ -78,90 +95,87 @@ export class ContractProfile extends Component {
                         }}>Contract Profile</Text>
                     </View>
                     <Content>
-                        {
-                            this.state.profileData.map((profileData, index) => {
-                                return (
-                                    <View key = {index} style={{ marginTop: offset.o5, backgroundColor: color.lighter, borderRadius: 8, margin: 10, borderColor: color.placeHolder, borderWidth: 0.3, }}>
-                                        <View style={{ backgroundColor: color.light, display: 'flex', alignItems: 'center', padding: offset.o2, borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
-                                            <Image source={
-                                                require('../../assets/icon/user.png')
-                                                // this.props.data['Profile Picture'][0] === false ?
-                                                //     require('../../assets/icon/user.png') :
-                                                //     {
-                                                //         uri: `data:${this.props.data['Profile Picture'][1]};base64,${this.props.data['Profile Picture'][0]}`
-                                                //     }
-                                            } style={{
-                                                width: 100,
-                                                height: 100,
-                                                borderRadius: 50,
-                                                borderColor: color.primary,
-                                                borderWidth: 2,
-                                                marginTop: - (offset.o5 + offset.o1),
-                                                backgroundColor: color.light,
-                                                marginBottom: offset.o1
-                                            }} />
+                        <View style={{ marginTop: offset.o5, backgroundColor: color.lighter, borderRadius: 8, margin: 10, borderColor: color.placeHolder, borderWidth: 0.3, }}>
+                            <View style={{ backgroundColor: color.light, display: 'flex', alignItems: 'center', padding: offset.o2, borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
+                                <Image source={
+                                    require('../../assets/icon/user.png')
+                                } style={{
+                                    width: 100,
+                                    height: 100,
+                                    borderRadius: 50,
+                                    borderColor: color.primary,
+                                    borderWidth: 2,
+                                    marginTop: - (offset.o5 + offset.o1),
+                                    backgroundColor: color.light,
+                                    marginBottom: offset.o1
+                                }} />
 
-                                            <Text style={{
-                                                color: color.placeHolder,
-                                                marginBottom: offset.oh,
-                                                textAlign: 'center',
-                                                marginTop: 10,
-                                                fontSize: 13,
-                                            }}>ID - {profileData["employee_id"]}</Text>
-                                            <Text style={{
-                                                color: color.primary,
-                                                fontFamily: 'Nunito-Bold',
-                                                textAlign: 'center',
-                                                fontSize: 20,
-                                                marginTop: 3,
+                                <Text style={{
+                                    color: color.placeHolder,
+                                    marginBottom: offset.oh,
+                                    textAlign: 'center',
+                                    marginTop: 10,
+                                    fontSize: 13,
+                                }}>ID - {this.state.profileData["employee_id"]}</Text>
+                                <Text style={{
+                                    color: color.primary,
+                                    fontFamily: 'Nunito-Bold',
+                                    textAlign: 'center',
+                                    fontSize: 20,
+                                    marginTop: 3,
 
-                                            }}>{profileData["name"]}</Text>
-                                            <Text style={{
-                                                textAlign: 'center',
-                                                color: '#333333',
-                                                marginTop: 5,
-                                                fontSize: 14,
-                                                //marginBottom: offset.o3
-                                            }}>
-                                                {profileData["job"]}
-                                          </Text>
+                                }}>{this.state.profileData["name"]}</Text>
+                                <Text style={{
+                                    textAlign: 'center',
+                                    color: '#333333',
+                                    marginTop: 5,
+                                    fontSize: 14,
+                                }}>
+                                    {this.state.profileData["job"]}
+                                </Text>
+                            </View>
+                            <View style={{ padding: 15, backgroundColor: color.light, }}>
+                                <Text style={{ fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>Department</Text>
+                                <Text style={{ marginTop: 10, fontSize: 16, color: '#333333', fontFamily: 'Nunito' }}>{this.state.profileData["department"]}</Text>
+                            </View>
+                            <View style={{ height: 0.5, width: '100%', backgroundColor: color.placeHolder }}></View>
+                            <View style={{ padding: 15, backgroundColor: color.light }}>
+                                <Text style={{ fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>Emplyoee Type</Text>
+                                <Text style={{ marginTop: 10, fontSize: 16, color: '#333333', fontFamily: 'Nunito' }}>Contract</Text>
+                            </View>
+                            <View style={{ height: 0.5, width: '100%', backgroundColor: color.placeHolder }}></View>
+                            <View style={{ padding: 15, backgroundColor: color.light }}>
+                                <Text style={{ fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>Salary Reference</Text>
+                                <Text style={{ marginTop: 10, fontSize: 16, color: '#333333', fontFamily: 'Nunito' }}>{this.state.profileData["wage"]}</Text>
+                            </View>
+                            <View style={{ height: 0.5, width: '100%', backgroundColor: color.placeHolder }}></View>
+                            <View style={{ padding: 15, backgroundColor: color.light }}>
+                                <Text style={{ fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>Working Schedule</Text>
+                                {/* <Text style={{ marginTop: 10, fontSize: 16, color: '#333333', fontFamily: 'Nunito' }}>09:00 AM - 06:00 PM</Text> */}
+                                {this.state.workingSchedule.map((schedule, index) => {
+                                    return (
+                                        <View key={index} style={{flex: 1, marginTop: 10, flexDirection: 'row', width: '100%', alignItems: 'center' }}>
+                                            <Text style={{ width: '50%', fontSize: 16, color: '#333333', fontFamily: 'Nunito' }}>{schedule["working schedule"]["name"]} </Text>
+                                            <Text style={{ fontSize: 16, color: '#333333' }}>-</Text>
+                                            <Text style={{ marginLeft: 5, width: '50%', fontSize: 16, color: '#333333', fontFamily: 'Nunito' }}> {schedule["working schedule"]["hour from"]} : {schedule["working schedule"]["hour to"]}</Text>
                                         </View>
-                                        <View style={{ padding: 15, backgroundColor: color.light, }}>
-                                            <Text style={{ fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>Department</Text>
-                                            <Text style={{ marginTop: 10, fontSize: 16, color: '#333333', fontFamily: 'Nunito' }}>{profileData["department"]}</Text>
-                                        </View>
-                                        <View style={{ height: 0.5, width: '100%', backgroundColor: color.placeHolder }}></View>
-                                        <View style={{ padding: 15, backgroundColor: color.light }}>
-                                            <Text style={{ fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>Emplyoee Type</Text>
-                                            <Text style={{ marginTop: 10, fontSize: 16, color: '#333333', fontFamily: 'Nunito' }}>Contract</Text>
-                                        </View>
-                                        <View style={{ height: 0.5, width: '100%', backgroundColor: color.placeHolder }}></View>
-                                        <View style={{ padding: 15, backgroundColor: color.light }}>
-                                            <Text style={{ fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>Salary Reference</Text>
-                                            <Text style={{ marginTop: 10, fontSize: 16, color: '#333333', fontFamily: 'Nunito' }}>{profileData["wage"]}</Text>
-                                        </View>
-                                        <View style={{ height: 0.5, width: '100%', backgroundColor: color.placeHolder }}></View>
-                                        <View style={{ padding: 15, backgroundColor: color.light }}>
-                                            <Text style={{ fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>Working Schedule</Text>
-                                            <Text style={{ marginTop: 10, fontSize: 16, color: '#333333', fontFamily: 'Nunito' }}>09:00 AM - 06:00 PM</Text>
-                                        </View>
-                                        {/* <View style={{ height: 0.5, width: '100%', backgroundColor: color.placeHolder }}></View> */}
-                                        <View style={{ backgroundColor: color.lighter, flexDirection: 'row', borderColor: color.placeHolder, borderWidth: 0.3, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
+                                    )
+                                })}
+                            </View>
+                            <View style={{ backgroundColor: color.lighter, flexDirection: 'row', borderColor: color.placeHolder, borderWidth: 0.3, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
 
-                                            <View style={{ padding: 20, width: '50%', justifyContent: 'center', alignItems: 'center' }}>
-                                                <Text style={{ fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>Start Date</Text>
-                                                <Text style={{ marginTop: 10, fontSize: 16, fontFamily: 'Nunito', color: '#333333' }}>{profileData["date_start"]}</Text>
-                                            </View>
-                                            <View style={{ width: 1, backgroundColor: color.placeHolder, height: '100%' }}></View>
-                                            <View style={{ padding: 20, justifyContent: 'center', alignItems: 'center', width: '50%' }}>
-                                                <Text style={{ fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>End Date</Text>
-                                                <Text style={{ marginTop: 10, fontSize: 16, fontFamily: 'Nunito', color: '#333333' }}>{profileData["contract_expire"] == null ? "-" : profileData["contract_expire"]}</Text>
-                                            </View>
-                                        </View>
-                                    </View>
-                                )
-                            })
-                        }
+                                <View style={{ padding: 20, width: '50%', justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={{ fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>Start Date</Text>
+                                    <Text style={{ marginTop: 10, fontSize: 16, fontFamily: 'Nunito', color: '#333333' }}>{this.state.profileData["date_start"]}</Text>
+                                </View>
+                                <View style={{ width: 1, backgroundColor: color.placeHolder, height: '100%' }}></View>
+                                <View style={{ padding: 20, justifyContent: 'center', alignItems: 'center', width: '50%' }}>
+                                    <Text style={{ fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>End Date</Text>
+                                    <Text style={{ marginTop: 10, fontSize: 16, fontFamily: 'Nunito', color: '#333333' }}>{this.state.profileData["contract_expire"] == null ? "-" : profileData["contract_expire"]}</Text>
+                                </View>
+                            </View>
+                        </View>
+
                     </Content>
                 </Container>
             </SafeAreaView>

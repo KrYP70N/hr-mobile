@@ -48,6 +48,7 @@ export class EmployeeLeavePending extends Component {
         APIs.leaveStatusUpdate(this.state.url, this.state.auth, cid, 'cancel')
             .then((res) => {
                 if (res.status === 'success') {
+                    console.log("Leave Cancellation::", res.data)
                     this.getApproveData(this.state.auth, this.state.id, this.state.url)
                     this.setState({
                         checkMessage: 'Cancellation Successful!',
@@ -69,6 +70,7 @@ export class EmployeeLeavePending extends Component {
     getApproveData(auth, id, url) {
         APIs.getLeaveRequest(auth, url, id)
             .then((res) => {
+                console.log("Leave Pending List::", res.data)
                 if (res.status === 'success') {
                     this.setState({
                         leaves: res.data

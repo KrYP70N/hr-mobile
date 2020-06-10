@@ -56,20 +56,24 @@ export class EmployeeLeaveRejected extends Component {
         APIs.getLeaveRejectedList(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
+                    console.log("Leave Rejected List::", res.data)
                     this.setState({
                         leaveRejectedList: res.data
                     })
                 } else {
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
+                    this.setState({
+                        leaveRejectedList: []
                     })
+                    // Toast.show({
+                    //     text: 'Connection time out. Please check your internet connection!',
+                    //     textStyle: {
+                    //         textAlign: 'center'
+                    //     },
+                    //     style: {
+                    //         backgroundColor: color.primary
+                    //     },
+                    //     duration: 6000
+                    // })
                 }
             })
     }

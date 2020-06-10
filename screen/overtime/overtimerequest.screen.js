@@ -179,9 +179,6 @@ export class OTRequest extends Component {
     }
 
     submit(auth, id, url) {
-        console.log("Date", this.state.date)
-        console.log("From Time", this.state.fromTime)
-        console.log("To Time", this.state.toTime)
         const request_from = this.state.date + " " + this.state.fromTime;
         const request_to = this.state.date + " " + this.state.toTime;
         APIs.OTRequest(id, auth, url, request_from, request_to, this.state.description)

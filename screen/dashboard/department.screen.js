@@ -4,6 +4,7 @@ import { Container, Icon, Content, } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
 
 const deptLists = [
     {
@@ -35,6 +36,9 @@ export class DepartmentScreen extends Component {
             auth: null,
             year: null,
             deptLists: [],   
+            loading: true,
+            loadingTxt: 'Loading...',
+            requestData: true,
         }
     }
     componentDidMount(){
@@ -71,17 +75,28 @@ export class DepartmentScreen extends Component {
             if(res.status == "success"){
                 console.log("Dept List", res.data)
                 this.setState({
-                    deptLists: res.data
+                    deptLists: res.data,
+                    loading: false,
+                    loadingTxt: '',
+                    requestData: false,
                 })
             }else{
                 this.setState({
-                    deptLists: []
+                    deptLists: [],
+                    loading: false,
+                    loadingTxt: '',
+                    requestData: false,
                 })
             }
         })
     }
 
     render() {
+        if (this.state.requestData == true) {
+            return (
+                <Loading info={this.state.loadingTxt} />
+            )
+        }
         return (
             <SafeAreaView style = {{flex: 1}}>
                 <Container style = {{backgroundColor: color.lighter}}>

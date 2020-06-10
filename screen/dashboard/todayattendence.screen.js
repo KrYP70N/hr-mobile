@@ -4,6 +4,7 @@ import { Container, Content, Icon } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
 
 export class TodayAttendanceList extends Component {
     constructor(props) {
@@ -14,33 +15,36 @@ export class TodayAttendanceList extends Component {
             url: null,
             year: null,
             empLists: [],
+            loading: true,
+            loadingTxt: 'Loading...',
+            requestData: true,
         }
     }
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
-        let date = new Date()
-        this.setState({
-            year: date.getFullYear(),
-        })
-
-        AsyncStorage.getItem('@hr:endPoint')
-            .then((res) => {
-                let date = new Date()
-                const currentYear = date.getFullYear()
-                const url = JSON.parse(res).ApiEndPoint
-                this.setState({ url: JSON.parse(res).ApiEndPoint })
-                AsyncStorage.getItem('@hr:token')
-                    .then((res) => {
-                        const auth = JSON.parse(res).key;
-                        const id = JSON.parse(res).id;
-                        this.setState({
-                            auth: JSON.parse(res).key,
-                            id: JSON.parse(res).id
-                        })
-                        this.getEmployeeListData(auth, id, url, currentYear);
-                    })
+            let date = new Date()
+            this.setState({
+                year: date.getFullYear(),
             })
+
+            AsyncStorage.getItem('@hr:endPoint')
+                .then((res) => {
+                    let date = new Date()
+                    const currentYear = date.getFullYear()
+                    const url = JSON.parse(res).ApiEndPoint
+                    this.setState({ url: JSON.parse(res).ApiEndPoint })
+                    AsyncStorage.getItem('@hr:token')
+                        .then((res) => {
+                            const auth = JSON.parse(res).key;
+                            const id = JSON.parse(res).id;
+                            this.setState({
+                                auth: JSON.parse(res).key,
+                                id: JSON.parse(res).id
+                            })
+                            this.getEmployeeListData(auth, id, url, currentYear);
+                        })
+                })
         })
     }
 
@@ -49,15 +53,28 @@ export class TodayAttendanceList extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     this.setState({
-                        empLists: res.data
+                        loading: false,
+                        loadingTxt: '',
+                        empLists: res.data,
+                        requestData: false,
                     })
                 } else {
-                    this.setState({ empLists: [] })
+                    this.setState({
+                        empLists: [],
+                        loading: false,
+                        loadingTxt: '',
+                        requestData: false,
+                    })
                 }
             })
     }
 
     render() {
+        if (this.state.requestData == true) {
+            return (
+                <Loading info={this.state.loadingTxt} />
+            )
+        }
         console.log("Today Attendance Employee", this.state.empLists)
         return (
             <SafeAreaView style={{ flex: 1 }}>
@@ -78,12 +95,12 @@ export class TodayAttendanceList extends Component {
                         {
                             this.state.empLists.map((emp, index) => {
                                 return (
-                                    <View key={index} style={{marginLeft: 15, marginRight: 15, marginTop: 15, borderRadius: 8, backgroundColor: color.light, padding: 10, alignItems: 'center', flexDirection: 'row', borderWidth: 0.3, borderColor: color.placeHolder }}>
+                                    <View key={index} style={{ marginLeft: 15, marginRight: 15, marginTop: 15, borderRadius: 8, backgroundColor: color.light, padding: 10, alignItems: 'center', flexDirection: 'row', borderWidth: 0.3, borderColor: color.placeHolder }}>
                                         <Image style={{ width: 60, height: 60, borderRadius: 60 / 2 }} source={require('../../assets/icon/user.png')}></Image>
-                                        <View style={{flex: 1, marginLeft: 15}}>
+                                        <View style={{ flex: 1, marginLeft: 15 }}>
                                             <Text style={{ fontSize: 14, fontFamily: 'Nunito-Bold' }}>{emp["name"]}</Text>
-                                            <Text style={{ marginTop: 5, fontSize: 13, fontFamily: 'Nunito', color: '#656565' }}>{emp["job"] == null ? "Untitle Job" : emp["job"]}, {emp["department"] == null ? "Untitle Department" : emp["department"]}</Text>
-                                            <Text style={{ marginTop: 8, fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>Join Date - {emp["date_start"]}</Text>
+                                            <Text style={{ marginTop: 5, fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>ID - {emp["employee id"]}</Text>
+                                            <Text style={{ marginTop: 8, fontSize: 13, fontFamily: 'Nunito', color: '#656565' }}>{emp["position"] == null ? "Untitle Position" : emp["position"]}, {emp["dept"] == null ? "Untitle Department" : emp["dept"]}</Text>
                                         </View>
                                     </View>
                                 )

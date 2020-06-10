@@ -4,6 +4,7 @@ import { Container, Content, Icon, } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
 //import { SafeAreaView } from 'react-native-safe-area-context'
 
 const todayLeaveLists = [
@@ -36,6 +37,9 @@ export class TodayLeaves extends Component {
             url: null,
             year: null,
             todayLeaveListData: [],
+            loading: true,
+            loadingTxt: 'Loading....',
+            requestData: true,
 
         }
     }
@@ -64,7 +68,7 @@ export class TodayLeaves extends Component {
                             this.getTodayLeavesData(auth, id, url, currentYear);
                         })
                 })
-       })
+        })
     }
 
     getTodayLeavesData(auth, id, url, year) {
@@ -73,17 +77,28 @@ export class TodayLeaves extends Component {
                 console.log("Today Leave Data", res.data)
                 if (res.status == 'success') {
                     this.setState({
-                        todayLeaveListData: res.data
+                        todayLeaveListData: res.data,
+                        loading: false,
+                        requestData: false,
+                        loadingTxt: ''
                     })
                 } else {
                     this.setState({
-                        todayLeaveListData: []
+                        todayLeaveListData: [],
+                        loading: false,
+                        requestData: false,
+                        loadingTxt: ''
                     })
                 }
             })
     }
 
     render() {
+        if (this.state.requestData == true) {
+            return (
+                <Loading info={this.state.loadingTxt} />
+            )
+        }
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ backgroundColor: color.lighter }}>
@@ -114,6 +129,20 @@ export class TodayLeaves extends Component {
                                 )
                             })
                         }
+
+                        <View style={{
+                            marginTop: 20,
+                            display: this.state.todayLeaveListData.length === 0 ? 'flex' : 'none',
+                            alignItems: 'center'
+                        }}>
+                            <Icon name='ios-information-circle-outline' style={{
+                                color: color.placeHolder,
+                                fontSize: 40
+                            }} />
+                            <Text style={{
+                                color: color.placeHolder
+                            }}>There is no Absent Employee!</Text>
+                        </View>
                     </Content>
                 </Container>
 

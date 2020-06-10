@@ -2,37 +2,31 @@ import React, { useState, Component } from 'react'
 
 import { View, Text, Icon } from 'native-base'
 import { PieChart } from 'react-native-svg-charts'
-import { AsyncStorage } from 'react-native'
+import { AsyncStorage, Dimensions } from 'react-native'
 import styles from './dashboard.style'
 import colors from "../../constant/color";
 import APIs from '../../controllers/api.controller'
+const width = Dimensions.get('screen').width;
 
 const lb_color = [
     {
         title: 'Presents',
-        //value: 70,
-        color: colors.indicator
+        color: '#35A9AC'
     },
     {
         title: 'Absents',
-        //value: 20,
-        color: colors.danger
+        color: '#FF0000'
     },
-    // {
-    //     title: 'Overtime',
-    //     //value: 10,
-    //     color: colors.warning
-    // },
 ]
 export default class Chart extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            auth: null,
             url: null,
             id: null,
-            auth: null,
             year: null,
-            summaryData: [],
+            summaryData: null,
             labelData: [],
         }
     }
@@ -74,7 +68,6 @@ export default class Chart extends Component {
         ) {
             let date = new Date();
             let year = date.getFullYear();
-            //let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)
             this.getSummaryData(this.state.auth, this.state.id, this.state.url, year)
         }
     }
@@ -84,9 +77,9 @@ export default class Chart extends Component {
             .then((res) => {
                 //console.log("Dashboard Data", res.data)
                 if (res.status === 'success') {
-                    let data = []
-                    let lData = []
                     if(res.data["Dashboard Type"] == "HR"){
+                        let data = []
+                        let lData = []
                         for (let i = 0; i < 2; i++) {
                             if (i == 0) {
                                 let obj = {
@@ -107,21 +100,15 @@ export default class Chart extends Component {
                                 data.push(obj)
                                 lData.push(obj)
                             }
-                            // if (i == 2) {
-                            //     let obj = {
-                            //         title: lb_color[i].title,
-                            //         value: res.data["OT Count"][0][0],
-                            //         color: lb_color[i].color
-                            //     }
-                            //     data.push(obj)
-                            //     lData.push(obj)
-                            // }
-                            this.setState({
-                                summaryData: data,
-                                labelData: lData
-                            })
+                           
                         }
+                        this.setState({
+                            summaryData: data,
+                            labelData: lData
+                        })
                     }else{
+                        let data = []
+                        let lData = []
                         for (let i = 0; i < 2; i++) {
                             if (i == 0) {
                                 let obj = {
@@ -142,20 +129,11 @@ export default class Chart extends Component {
                                 data.push(obj)
                                 lData.push(obj)
                             }
-                            // if (i == 2) {
-                            //     let obj = {
-                            //         title: lb_color[i].title,
-                            //         value: res.data["OT Count"][0][0],
-                            //         color: lb_color[i].color
-                            //     }
-                            //     data.push(obj)
-                            //     lData.push(obj)
-                            // }
-                            this.setState({
-                                summaryData: data,
-                                labelData: lData
-                            })
                         }
+                        this.setState({
+                            summaryData: data,
+                            labelData: lData
+                        })
                     }
                 } 
                 else {
@@ -169,13 +147,13 @@ export default class Chart extends Component {
     render() {
         if (this.state.summaryData === null) {
             return (
-                <View style={{ width: '100%', height: 150, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }}>
+                <View style={{ width: '100%', height: 150, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.primary }}>
                     <Text style={{ fontSize: 24, color: '#fff' }}>. . .</Text>
                 </View>
             )
         }
 
-        const pieData = this.state.summaryData
+        let pieData = this.state.summaryData
             .filter((d) => d.value > 0)
             .map((d, index) => ({
                 value: d.value,
@@ -189,18 +167,36 @@ export default class Chart extends Component {
 
         return (
             <View style={styles.pieRow}>
-                <View style={styles.pieBox}>
+                {/* <View style={styles.pieBox}>
                     <PieChart
                         style={{ height: 130 }} data={pieData}
                         innerRadius="75%"
                     />
+                </View> */}
+                 <View style={{
+                    width: width / 3,
+                    height: 160,
+                    justifyContent: 'center',
+                    backgroundColor: colors.primary,
+                    marginLeft: 10,
+                    marginRight: 10
+                }}>
+                    <View style={{ width: width / 3, height: width / 3, marginRight: 20 }}>
+                        <View style={{ width: width / 3, height: width / 3, position: 'absolute', borderRadius: width / 6, backgroundColor: colors.primary, top: 0 }}></View>
+                        <PieChart
+                            style={{ height: width / 3, }} data={pieData}
+                            innerRadius="70%"
+                            padAngle={0}
+                        >
+                        </PieChart>
+                    </View>
                 </View>
                 <View style={styles.pieInfo}>
                     {
                         this.state.labelData.map((d, key) => (
                             <View style={styles.pieTxtContainer} key={key}>
                                 <Icon name="md-square" style={[styles.pieicn, { color: d.color }]} />
-                                <Text style={styles.pietxt}>{d.title} - {d.value}%</Text>
+                                <Text style={styles.pietxt}>{d.title} - {d.value}</Text>
                             </View>
                         ))
                     }
