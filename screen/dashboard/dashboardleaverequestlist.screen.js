@@ -4,6 +4,7 @@ import { Container, Content, Icon } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
 
 export class DashboardLeaveRequestList extends Component {
     constructor(props) {
@@ -14,6 +15,9 @@ export class DashboardLeaveRequestList extends Component {
             url: null,
             year: null,
             leaveLists: [],
+            loading: true,
+            loadingTxt: 'Loading....',
+            requestData: true,
         }
     }
 
@@ -49,15 +53,28 @@ export class DashboardLeaveRequestList extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     this.setState({
-                        leaveLists: res.data
+                        leaveLists: res.data,
+                        loading: false,
+                        requestData: false,
+                        loadingTxt: ''
                     })
                 } else {
-                    this.setState({ leaveLists: [] })
+                    this.setState({ 
+                        leaveLists: [],
+                        loading: false,
+                        requestData: false,
+                        loadingTxt: '',
+                     })
                 }
             })
     }
 
     render() {
+        if (this.state.requestData == true) {
+            return (
+                <Loading info={this.state.loadingTxt} />
+            )
+        }
         console.log("Leave Request", this.state.leaveLists)
         return (
             <SafeAreaView style={{ flex: 1 }}>

@@ -47,6 +47,7 @@ export class CheckInOut extends Component {
         }
 
         this.CheckIn = () => {
+            console.log("Click Check In")
             const fun = () => {
                 if (this.state.geofencing) {
                     // geo true
@@ -54,6 +55,7 @@ export class CheckInOut extends Component {
                         lat: this.state.location['latitude'],
                         long: this.state.location['longitude']
                     }).then((res) => {
+                        console.log("Check In Screen Data", res)
                         if (res.status === 'success') {
                             this.setState({
                                 checkMessage: 'Check In Successful!',
@@ -77,13 +79,14 @@ export class CheckInOut extends Component {
                     // geo false
                     APIs.Checkin(this.state.url, this.state.auth, this.state.id)
                         .then((res) => {
+                            console.log("Check In Data", res)
                             if (res.status === 'success') {
                                 this.setState({
                                     checkMessage: 'Check In Successful!',
                                     isModalVisible: true,
 
                                 })
-                                this.CheckStatus()
+                                //this.CheckStatus()
                             } else {
                                 this.setState({
                                     checkMessage: "You're already check in!",
@@ -120,6 +123,7 @@ export class CheckInOut extends Component {
         this.CheckStatus = () => {
             APIs.CheckStatus(this.state.id, this.state.auth, this.state.url)
                 .then((res) => {
+                    console.log("Check In Status", res)
                     if (res.status === 'success') {
                         this.setState({
                             status: res.data

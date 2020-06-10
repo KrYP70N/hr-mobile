@@ -102,6 +102,7 @@ export default class Cards extends Component {
         APIs.getDashboardSummary(url, auth, id, year)
             .then((res) => {
                 console.log("Dashboard Data", res.data["Dashboard Type"])
+                console.log("Dash Data", res.data)
                 let list = [];
                 if (res.status == 'success') {
                     if (res.data["Dashboard Type"] == "employee") {
@@ -109,7 +110,7 @@ export default class Cards extends Component {
                             {
                                 title: 'Today Leaves',
                                 noti: res.data["Today Leave Count"][0][0] == "0" ? "0" : res.data["Today Leave Count"][0][0],
-                                icon: require('../../assets/icon/dashboard-request.png'),
+                                icon: require('../../assets/icon/leave.png'),
                                 // page: 'DashboardRequest'
                                 page: 'TodayLeave'
                             }
@@ -137,7 +138,7 @@ export default class Cards extends Component {
                             {
                                 title: 'Announcement',
                                 noti: res.data["Announcement Count"] == "0" ? "0" : res.data["Announcement Count"],
-                                icon: require('../../assets/icon/dashboard-notification.png'),
+                                icon: require('../../assets/icon/noticebo.png'),
                                 page: 'NoticeBoard'
                             }
                         )
@@ -191,7 +192,7 @@ export default class Cards extends Component {
                             {
                                 title: 'Today Leaves',
                                 noti: res.data["Today Leave Count"][0][0] == "0" ? "0" : res.data["Today Leave Count"][0][0],
-                                icon: require('../../assets/icon/dashboard-request.png'),
+                                icon: require('../../assets/icon/leave.png'),
                                 page: 'TodayLeave'
                             }
                         )
@@ -235,7 +236,7 @@ export default class Cards extends Component {
                             {
                                 title: 'Announcement',
                                 noti: res.data["Announcement Count"] == "0" ? "0" : res.data["Announcement Count"],
-                                icon: require('../../assets/icon/dashboard-notification.png'),
+                                icon: require('../../assets/icon/noticebo.png'),
                                 page: 'NoticeBoard'
                             }
                         )

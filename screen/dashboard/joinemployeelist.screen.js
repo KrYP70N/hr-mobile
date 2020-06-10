@@ -4,6 +4,7 @@ import { Container, Content, Icon } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
 const empLists = [
     {
         "name": "Hla Hla",
@@ -34,6 +35,9 @@ export class JoinEmployeeList extends Component {
             url: null,
             year: null,
             empLists: [],
+            loading: true,
+            loadingTxt: 'Loading....',
+            requestData: true,
 
         }
     }
@@ -71,15 +75,28 @@ export class JoinEmployeeList extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     this.setState({
-                        empLists: res.data
+                        empLists: res.data,
+                        loading: false,
+                        requestData: false,
+                        loadingTxt: ''
                     })
                 } else {
-                    this.setState({ empLists: [] })
+                    this.setState({ 
+                        empLists: [],
+                        loading: false,
+                        requestData: false,
+                        loadingTxt: ''
+                     })
                 }
             })
     }
 
     render() {
+        if (this.state.requestData == true) {
+            return (
+                <Loading info={this.state.loadingTxt} />
+            )
+        }
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ flex: 1, backgroundColor: color.lighter }}>

@@ -55,6 +55,7 @@ export class CheckOut extends Component {
                         lat: this.state.location['latitude'],
                         long: this.state.location['longitude']
                     }).then((res) => {
+                        console.log("Check out Screen Data", res)
                         if (res.status === 'success') {
                             this.setState({
                                 checkMessage: 'Check Out Successful!',
@@ -118,6 +119,7 @@ export class CheckOut extends Component {
         this.CheckStatus = () => {
             APIs.CheckStatus(this.state.id, this.state.auth, this.state.url)
                 .then((res) => {
+                    console.log("Check Out Status", res)
                     if (res.status === 'success') {
                         this.setState({
                             status: res.data

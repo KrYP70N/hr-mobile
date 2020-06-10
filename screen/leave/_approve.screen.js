@@ -134,7 +134,8 @@ export default class LeaveApprove extends Component {
                             display: this.state.leaveLists.length === 0 ? 'flex' : 'none',
                             alignItems: "center",
                             position: "absolute",
-                            top: 100,
+                            marginTop: 20,
+                            //top: 100,
                             width: '100%',
                             opacity: this.state.leaveLists.length === 0 ? 1 : 0
                         }}>

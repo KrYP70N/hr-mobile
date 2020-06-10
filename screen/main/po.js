@@ -42,29 +42,29 @@ export default {
         },
         //4
         {
-            icon: 'md-bookmarks',
-            name: 'Payroll',
-            navigate :'Payroll'
-        },
-         //5
-        {
             icon: 'ios-calendar',
             name: 'Approve Leave ',
             navigate: 'AdminLeaveApprove'
         },
-       //6
+       //5
         {
             icon: 'ios-walk',
             name: 'Approve OT',
             navigate: 'AdminOvertimeApprove'
         },
-       
+        //6
+        {
+            icon: 'md-bookmarks',
+            name: 'Payroll',
+            navigate :'Payroll'
+        },
         //7
         {
             icon: 'ios-walk',
             name: 'Announcement',
             navigate: 'NoticeBoard'
         },
+         //8
         {
             icon: 'md-cash',
             name: 'Loan'

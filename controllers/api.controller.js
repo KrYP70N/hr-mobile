@@ -22,6 +22,7 @@ export default class APIs {
             }
         }).get(`${url}/api/auth/token`)
             .then(function (res) {
+                console.log("Token", res)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
@@ -37,6 +38,7 @@ export default class APIs {
             }
         }).get(`${url}/refresh`)
             .then(function (res) {
+                console.log("Refresh Token", res)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
@@ -52,6 +54,7 @@ export default class APIs {
             }
         }).get(`${url}/employee/level/${id}?employeeID=${id}`)
             .then(function (res) {
+                console.log("Employee Level", res)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
@@ -67,6 +70,7 @@ export default class APIs {
             }
         }).get(`${url}/getTime/${id}`)
             .then(function (res) {
+                //console.log("Time Data",res)
                 return { data: res.data.data, status: 'success' }
                // return { data: res.data["data"]["Current Server Time"], status: 'success' }
             })
@@ -83,6 +87,7 @@ export default class APIs {
             }
         }).get(`${url}/user/profile/${id}`)
             .then(function (res) {
+                //console.log("Profile Data", res)
                 let data = res["request"]["_response"]
 
                 let dataStr = data.slice(data.indexOf('"data":') + '"data":'.length, data.length - 1)
@@ -113,12 +118,14 @@ export default class APIs {
 
     // checkin controller
     static Checkin(url, auth, id, coord) {
+        console.log("Coordinate", coord)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
+                console.log("Check In Data")
                 return { data: res, status: 'success' }
             })
             .catch(function (error) {
@@ -134,6 +141,7 @@ export default class APIs {
             }
         }).post(coord === undefined ? `${url}/checkout/${id}` : `${url}/checkout/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
+                console.log("Check out Data", res)
                 return { data: res, status: 'success' }
             })
             .catch(function (error) {

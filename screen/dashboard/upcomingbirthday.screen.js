@@ -4,6 +4,7 @@ import { Container, Content, Icon } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
+import Loading from '../../components/loading.component'
 
 const birthdayLists = [
     {
@@ -34,6 +35,9 @@ export class UpcomingBirthday extends Component {
             url: null,
             year: null,
             birthdayLists: [],
+            loading: true,
+            loadingTxt: 'Loading....',
+            requestData: true,
         }
     }
 
@@ -70,17 +74,28 @@ export class UpcomingBirthday extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     this.setState({
-                        birthdayLists: res.data
+                        birthdayLists: res.data,
+                        loading: false,
+                        requestData: false,
+                        loadingTxt: ''
                     })
                 } else {
                     this.setState({
-                        birthdayLists: []
+                        birthdayLists: [],
+                        loading: false,
+                        requestData: false,
+                        loadingTxt: ''
                     })
                 }
             })
     }
 
     render() {
+        if (this.state.requestData == true) {
+            return (
+                <Loading info={this.state.loadingTxt} />
+            )
+        }
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ backgroundColor: color.lighter }}>
