@@ -123,7 +123,7 @@ export default class Chart extends Component {
                                 let obj = {
                                     title: lb_color[i].title,
                                    // value: res.data["Today Absent Count"][0][0],
-                                   value: res.data["Today Absent Count"][0][0],
+                                   value: res.data["Today Absent Count"],
                                     color: lb_color[i].color
                                 }
                                 data.push(obj)
