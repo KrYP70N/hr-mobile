@@ -240,8 +240,6 @@ export default class Cards extends Component {
                                 page: 'ContractProfile'
                             }
                         )
-                        
-
                     }
                     this.setState({
                         cardList: list

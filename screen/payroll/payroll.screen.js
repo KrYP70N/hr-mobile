@@ -21,7 +21,7 @@ export default class Payroll extends Component {
             id: null,
             month: null,
             year: null,
-            payroll: ""
+            payroll: "",
         }
 
         // handel year
@@ -132,6 +132,7 @@ export default class Payroll extends Component {
                 <Loading />
             )
         }
+        console.log("Payroll Lists", this.state.payroll)
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={styPayroll.container}>

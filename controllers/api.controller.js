@@ -4,10 +4,8 @@ import axios from 'axios'
 export default class APIs {
 
     static Auth(key, version) {
-        console.log("Key", key)
         return axios.get(`http://apiendpoint.innovixhr.com/api/build/hr?siteKey=${key}&appVersion=${1}`)
             .then(function (res) {
-                console.log("Res::", res.data)
                 return { data: res.data.model, status: res.data.success }
             })
     }
@@ -22,7 +20,6 @@ export default class APIs {
             }
         }).get(`${url}/api/auth/token`)
             .then(function (res) {
-                console.log("Token", res)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
@@ -38,7 +35,6 @@ export default class APIs {
             }
         }).get(`${url}/refresh`)
             .then(function (res) {
-                console.log("Refresh Token", res)
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
@@ -54,7 +50,6 @@ export default class APIs {
             }
         }).get(`${url}/employee/level/${id}?employeeID=${id}`)
             .then(function (res) {
-                console.log("Employee Level", res)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
@@ -70,9 +65,7 @@ export default class APIs {
             }
         }).get(`${url}/getTime/${id}`)
             .then(function (res) {
-                //console.log("Time Data",res)
                 return { data: res.data.data, status: 'success' }
-               // return { data: res.data["data"]["Current Server Time"], status: 'success' }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -87,7 +80,6 @@ export default class APIs {
             }
         }).get(`${url}/user/profile/${id}`)
             .then(function (res) {
-                //console.log("Profile Data", res)
                 let data = res["request"]["_response"]
 
                 let dataStr = data.slice(data.indexOf('"data":') + '"data":'.length, data.length - 1)
@@ -118,14 +110,12 @@ export default class APIs {
 
     // checkin controller
     static Checkin(url, auth, id, coord) {
-        console.log("Coordinate", coord)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
-                console.log("Check In Data")
                 return { data: res, status: 'success' }
             })
             .catch(function (error) {
@@ -141,7 +131,6 @@ export default class APIs {
             }
         }).post(coord === undefined ? `${url}/checkout/${id}` : `${url}/checkout/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
-                console.log("Check out Data", res)
                 return { data: res, status: 'success' }
             })
             .catch(function (error) {
@@ -331,9 +320,6 @@ export default class APIs {
 
     // Leave Approval List Manager
     static leaveApproval(url, auth, id) {
-        console.log(url)
-        console.log(auth)
-        console.log(id)
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -430,7 +416,6 @@ export default class APIs {
             }
         }).get(`${url}/todayleave/list/dashboard/${id}`)
             .then(function (res) {
-                console.log("Res Data", res.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
@@ -446,7 +431,6 @@ export default class APIs {
            }
        }).get(`${url}/employeelist/dashboard/${id}`)
            .then(function (res) {
-               console.log("Res Data", res.data)
                return { data: res.data.data, status: 'success' }
            })
            .catch(function (error) {
@@ -462,7 +446,6 @@ export default class APIs {
        }
    }).get(`${url}/deptemployee/list/dashboard/${id}`)
        .then(function (res) {
-           console.log("Res Data", res.data)
            return { data: res.data.data, status: 'success' }
        })
        .catch(function (error) {
@@ -478,7 +461,6 @@ export default class APIs {
        }
    }).get(`${url}/birthday/list/dashboard/${id}`)
        .then(function (res) {
-           console.log("Res Data", res.data)
            return { data: res.data.data, status: 'success' }
        })
        .catch(function (error) {
@@ -494,7 +476,6 @@ export default class APIs {
        }
    }).get(`${url}/contractlist/dashboard/${id}`)
        .then(function (res) {
-           console.log("Res Data", res.data)
            return { data: res.data.data, status: 'success' }
        })
        .catch(function (error) {
@@ -504,36 +485,27 @@ export default class APIs {
 
 //Dashboard Absent Emp List
 static getDashboardTodayAbsentEmpListData = (url, auth, id, year) => {
-    console.log("Url", url)
-    console.log("Auth", auth)
-    console.log("Id", id)
    return axios.create({
        headers: {
            'Authorization': auth
        }
    }).get(`${url}/absent/list/dashboard/${id}`)
        .then(function (res) {
-           console.log("Res Data", res.data)
            return { data: res.data.data, status: 'success' }
        })
        .catch(function (error) {
-           console.log("Res Data", error)
            return { error: error, status: 'fail' }
        })
 }
 
 //Dashboard Attendance Emp List
 static getDashboardAttendanceEmployeeListData = (url, auth, id, year) => {
-    console.log("Url", url)
-    console.log("Auth", auth)
-    console.log("Id", id)
    return axios.create({
        headers: {
            'Authorization': auth
        }
    }).get(`${url}/attendance/today/dashboard/${id}`)
        .then(function (res) {
-           console.log("Attendance Res Data", res.data)
            return { data: res.data.data, status: 'success' }
        })
        .catch(function (error) {
@@ -542,16 +514,12 @@ static getDashboardAttendanceEmployeeListData = (url, auth, id, year) => {
 }
 //Dashboard Exit Employee Lists
 static getExitEmployeeListData = (url, auth, id, year) => {
-    console.log("Url", url)
-    console.log("Auth", auth)
-    console.log("Id", id)
    return axios.create({
        headers: {
            'Authorization': auth
        }
    }).get(`${url}/exit/list/dashboard/${id}`)
        .then(function (res) {
-           console.log("Res Data", res.data)
            return { data: res.data.data, status: 'success' }
        })
        .catch(function (error) {
@@ -561,16 +529,12 @@ static getExitEmployeeListData = (url, auth, id, year) => {
 
 //Dashboard Join Employee List
 static getJoinEmployeeListData = (url, auth, id, year) => {
-    console.log("Url", url)
-    console.log("Auth", auth)
-    console.log("Id", id)
    return axios.create({
        headers: {
            'Authorization': auth
        }
    }).get(`${url}/join/list/dashboard/${id}`)
        .then(function (res) {
-           console.log("Res Data", res.data)
            return { data: res.data.data, status: 'success' }
        })
        .catch(function (error) {
@@ -580,16 +544,12 @@ static getJoinEmployeeListData = (url, auth, id, year) => {
 
 //Dashboard Leave Request Employee List
 static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
-    console.log("Url", url)
-    console.log("Auth", auth)
-    console.log("Id", id)
    return axios.create({
        headers: {
            'Authorization': auth
        }
    }).get(`${url}/leaveRequest/list/dashboard/${id}`)
        .then(function (res) {
-           console.log("Res Data", res.data)
            return { data: res.data.data, status: 'success' }
        })
        .catch(function (error) {
@@ -797,17 +757,12 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
 
     // get leave balance
     static getLeaveBalance = (url, auth, id, year) => {
-        console.log(url)
-        console.log(auth)
-        console.log(id)
-        //console.log(year)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).get(`${url}/list/leave/balance/${id}`)
             .then(function (res) {
-                //console.log("Leave Balance res data", res.data)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {

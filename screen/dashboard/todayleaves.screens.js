@@ -122,7 +122,7 @@ export class TodayLeaves extends Component {
                                         <Image style={{ width: 60, height: 60, borderRadius: 60 / 2 }} source={require('../../assets/icon/user.png')}></Image>
                                         <View style={{ marginLeft: 10 }}>
                                             <Text style={{ fontSize: 14, fontFamily: 'Nunito-Bold' }}>{leave["emp_name"]}</Text>
-                                            <Text style={{ marginTop: 5, fontSize: 13, fontFamily: 'Nunito', color: '#656565' }}>{leave[date_from]} to {leave[date_to]}</Text>
+                                            <Text style={{ marginTop: 5, fontSize: 13, fontFamily: 'Nunito', color: '#656565' }}>{leave["date_from"]} to {leave["date"]}</Text>
                                             <Text style={{ marginTop: 8, fontSize: 14, fontFamily: 'Nunito', color: '#FF0000' }}>{leave["leave_name"]}</Text>
                                         </View>
                                     </View>

@@ -66,7 +66,7 @@ export default class PayrollDetail extends Component {
             APIs.downloadPaySlip(this.state.url, this.state.auth, this.props.route.params.slipid)
             .then((res) => {
                 // WebBrowser.openBrowserAsync(res.data.data['Payslip PDF'][0])
-
+                console.log("Payroll Download", res)
                 if(res.status === 'success') {
                     Linking.openURL(res.data.data['Payslip PDF'][0])
                 } else {
@@ -94,6 +94,7 @@ export default class PayrollDetail extends Component {
             APIs.getPaySlip(this.props.route.params.slipid, this.state.auth, this.state.url)
             .then((res) => {
                 if (res.status === 'success') {
+                    console.log("Pay", res)
                     this.setState({
                         data: res.data,
                         receive: res.data[0]['state']

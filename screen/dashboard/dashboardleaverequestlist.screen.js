@@ -23,33 +23,33 @@ export class DashboardLeaveRequestList extends Component {
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
-        let date = new Date()
-        this.setState({
-            year: date.getFullYear(),
-        })
-
-        AsyncStorage.getItem('@hr:endPoint')
-            .then((res) => {
-                let date = new Date()
-                const currentYear = date.getFullYear()
-                const url = JSON.parse(res).ApiEndPoint
-                this.setState({ url: JSON.parse(res).ApiEndPoint })
-                AsyncStorage.getItem('@hr:token')
-                    .then((res) => {
-                        const auth = JSON.parse(res).key;
-                        const id = JSON.parse(res).id;
-                        this.setState({
-                            auth: JSON.parse(res).key,
-                            id: JSON.parse(res).id
-                        })
-                        this.getEmployeeListData(auth, id, url, currentYear);
-                    })
+            let date = new Date()
+            this.setState({
+                year: date.getFullYear(),
             })
+
+            AsyncStorage.getItem('@hr:endPoint')
+                .then((res) => {
+                    let date = new Date()
+                    const currentYear = date.getFullYear()
+                    const url = JSON.parse(res).ApiEndPoint
+                    this.setState({ url: JSON.parse(res).ApiEndPoint })
+                    AsyncStorage.getItem('@hr:token')
+                        .then((res) => {
+                            const auth = JSON.parse(res).key;
+                            const id = JSON.parse(res).id;
+                            this.setState({
+                                auth: JSON.parse(res).key,
+                                id: JSON.parse(res).id
+                            })
+                            this.getEmployeeListData(auth, id, url, currentYear);
+                        })
+                })
         })
     }
 
     getEmployeeListData(auth, id, url, year) {
-        APIs.getExitEmployeeListData(url, auth, id, year)
+        APIs.getDashboardLeaveRequestEmpListData(url, auth, id, year)
             .then((res) => {
                 if (res.status == "success") {
                     this.setState({
@@ -59,12 +59,12 @@ export class DashboardLeaveRequestList extends Component {
                         loadingTxt: ''
                     })
                 } else {
-                    this.setState({ 
+                    this.setState({
                         leaveLists: [],
                         loading: false,
                         requestData: false,
                         loadingTxt: '',
-                     })
+                    })
                 }
             })
     }
@@ -99,8 +99,8 @@ export class DashboardLeaveRequestList extends Component {
                                         <Image style={{ width: 60, height: 60, borderRadius: 60 / 2 }} source={require('../../assets/icon/user.png')}></Image>
                                         <View style={{ marginLeft: 10 }}>
                                             <Text style={{ fontSize: 14, fontFamily: 'Nunito-Bold' }}>{request["emp_name"]}</Text>
-                                <Text style={{ marginTop: 5, fontSize: 13, fontFamily: 'Nunito', color: '#656565' }}>{request["leave_name"]}</Text>
-                                <Text style={{ marginTop: 8, fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>{request["date_from"]} to {request["date_to"]}</Text>
+                                            <Text style={{ marginTop: 5, fontSize: 13, fontFamily: 'Nunito', color: '#656565' }}>{request["leave_name"]}</Text>
+                                            <Text style={{ marginTop: 8, fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>{request["date_from"]} to {request["date_to"]}</Text>
                                         </View>
                                     </View>
                                 )
