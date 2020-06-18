@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, SafeAreaView, AsyncStorage, Image } from 'react-native'
+import { Text, View, SafeAreaView, AsyncStorage, Image, TouchableOpacity } from 'react-native'
 import { Container, Content, Icon } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
@@ -53,6 +53,7 @@ export class DashboardLeaveRequestList extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     this.setState({
+                        //leaveLists: [],
                         leaveLists: res.data,
                         loading: false,
                         requestData: false,
@@ -91,11 +92,11 @@ export class DashboardLeaveRequestList extends Component {
                             fontFamily: 'Nunito'
                         }}>Leave Request</Text>
                     </View>
-                    <Content style={{ flex: 1 }}>
+                    <Content style={{ flex: 1, marginBottom: this.state.leaveLists.length === 0 ? 0 : 50 }}>
                         {
                             this.state.leaveLists.map((request, index) => {
                                 return (
-                                    <View key={index} style={{ marginLeft: 15, marginRight: 15, marginTop: 15, borderRadius: 8, backgroundColor: color.light, padding: 10, alignItems: 'center', flexDirection: 'row', borderWidth: 0.3, borderColor: color.placeHolder }}>
+                                    <View key={index} style={{ marginLeft: 15, marginRight: 15, marginTop: 10, marginBottom: 5, borderRadius: 8, backgroundColor: color.light, padding: 10, alignItems: 'center', flexDirection: 'row', borderWidth: 0.3, borderColor: color.placeHolder }}>
                                         <Image style={{ width: 60, height: 60, borderRadius: 60 / 2 }} source={require('../../assets/icon/user.png')}></Image>
                                         <View style={{ marginLeft: 10 }}>
                                             <Text style={{ fontSize: 14, fontFamily: 'Nunito-Bold' }}>{request["emp_name"]}</Text>
@@ -106,7 +107,6 @@ export class DashboardLeaveRequestList extends Component {
                                 )
                             })
                         }
-
                         <View style={{
                             marginTop: 20,
                             display: this.state.leaveLists.length === 0 ? 'flex' : 'none',
@@ -120,8 +120,11 @@ export class DashboardLeaveRequestList extends Component {
                                 color: color.placeHolder
                             }}>There is no Leave Request List!</Text>
                         </View>
-
+                       
                     </Content>
+                    <TouchableOpacity style={{ display: this.state.leaveLists.length === 0 ? 'none' : 'flex', position: 'absolute', bottom: 0, width: '100%', height: 50, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center' }} onPress={() => { this.props.navigation.navigate('AdminLeaveApprove') }}>
+                            <View><Text style={{ fontFamily: 'Nunito', fontSize: 14, color: color.light }}>Approve Leave</Text></View>
+                        </TouchableOpacity>
                 </Container>
             </SafeAreaView>
         )

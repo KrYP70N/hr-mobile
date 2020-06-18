@@ -138,7 +138,7 @@ export default class Cards extends Component {
                             {
                                 title: 'Contract',
                                 noti: res.data["Contract Count"][0][0] == "0" ? "0" : res.data["Contract Count"][0][0],
-                                icon: require('../../assets/icon/dashboard-payroll.png'),
+                                icon: require('../../assets/icon/user-icn.png'),
                                 page: 'ContractProfile'
                             }
                         )

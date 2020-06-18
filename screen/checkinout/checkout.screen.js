@@ -47,15 +47,89 @@ export class CheckOut extends Component {
         }
 
         // checkout control
+        // this.CheckOut = () => {
+        //     const fun = () => {
+        //         if (this.state.geofencing) {
+        //             console.log("Lat", this.state.location['latitude'])
+        //             console.log("Long", this.state.location['longitude'])
+        //             // geo true
+        //             APIs.Checkout(this.state.url, this.state.auth, this.state.id, {
+        //                 lat: this.state.location['latitude'],
+        //                 long: this.state.location['longitude']
+        //             }).then((res) => {
+        //                 console.log("Check out Screen Data", res)
+        //                 if (res.status === 'success') {
+        //                     this.setState({
+        //                         checkMessage: 'Check Out Successful!',
+        //                         isModalVisible: true,
+
+        //                     })
+        //                 } else {
+        //                     this.setState({
+        //                         checkMessage: "You're already check out!",
+        //                         isModalVisible: true,
+
+        //                     })
+        //                 }
+
+        //                 this.CheckStatus()
+        //             })
+        //                 .catch((error) => {
+        //                     this.props.navigation.navigate('Login')
+        //                 })
+        //         } else {
+        //             // geo false
+        //             APIs.Checkout(this.state.url, this.state.auth, this.state.id)
+        //                 .then((res) => {
+        //                     if (res.status === 'success') {
+        //                         this.setState({
+        //                             checkMessage: 'Check Out Successful!',
+        //                             isModalVisible: true,
+        //                         })
+
+        //                     } else {
+        //                         this.setState({
+        //                             checkMessage: "You're Already Check Out!",
+        //                             isModalVisible: true,
+
+        //                         })
+
+        //                     }
+        //                     this.CheckStatus()
+        //                 })
+        //                 .catch((error) => {
+        //                     this.props.navigation.navigate('Login')
+        //                 })
+        //         }
+        //     }
+        //     if (this.state.status.Multiple_checkinout === true) {
+        //         fun()
+        //     } else {
+        //         if (this.state.status.Checkout !== true) {
+        //             fun()
+        //         } else {
+        //             this.setState({
+        //                 checkMessage: "You're already checked out!",
+        //                 isModalVisible: true,
+
+        //             })
+        //         }
+        //     }
+        // }
+
+
         this.CheckOut = () => {
+            console.log("Click Check Out", this.state.geofencing)
             const fun = () => {
                 if (this.state.geofencing) {
                     // geo true
+                    console.log("Lat", this.state.location['latitude'])
+                    console.log("Long", this.state.location['longitude'])
                     APIs.Checkout(this.state.url, this.state.auth, this.state.id, {
                         lat: this.state.location['latitude'],
                         long: this.state.location['longitude']
                     }).then((res) => {
-                        console.log("Check out Screen Data", res)
+                        console.log("Check In Screen Data", res)
                         if (res.status === 'success') {
                             this.setState({
                                 checkMessage: 'Check Out Successful!',
@@ -68,8 +142,8 @@ export class CheckOut extends Component {
                                 isModalVisible: true,
 
                             })
-                        }
 
+                        }
                         this.CheckStatus()
                     })
                         .catch((error) => {
@@ -79,19 +153,20 @@ export class CheckOut extends Component {
                     // geo false
                     APIs.Checkout(this.state.url, this.state.auth, this.state.id)
                         .then((res) => {
+                            //console.log("Check In Data", res)
                             if (res.status === 'success') {
                                 this.setState({
                                     checkMessage: 'Check Out Successful!',
                                     isModalVisible: true,
-                                })
 
+                                })
+                                //this.CheckStatus()
                             } else {
                                 this.setState({
-                                    checkMessage: "You're Already Check Out!",
+                                    checkMessage: "You're already check out!",
                                     isModalVisible: true,
 
                                 })
-
                             }
                             this.CheckStatus()
                         })
@@ -100,6 +175,7 @@ export class CheckOut extends Component {
                         })
                 }
             }
+
             if (this.state.status.Multiple_checkinout === true) {
                 fun()
             } else {
@@ -111,10 +187,11 @@ export class CheckOut extends Component {
                         isModalVisible: true,
 
                     })
+
                 }
             }
-        }
 
+        }
         // check status 
         this.CheckStatus = () => {
             APIs.CheckStatus(this.state.id, this.state.auth, this.state.url)
@@ -186,6 +263,7 @@ export class CheckOut extends Component {
         if (this.state.url !== null && this.state.auth !== null && this.state.id !== null && this.state.data === null) {
             APIs.Profile(this.state.url, this.state.auth, this.state.id)
                 .then((res) => {
+                    console.log()
                     this.setState({
                         data: res.data,
                         geofencing: res.data['General Information']['Geo Fencing'],
@@ -237,6 +315,8 @@ export class CheckOut extends Component {
     }
 
     render() {
+        console.log("Geofencing", this.state.geofencing)
+        console.log("Check Out Location", this.state.location)
         return (
 
             <Container style={{ flex: 1 }}>

@@ -66,7 +66,8 @@ export default StyleSheet.create({
         ...typography.textSmall,
         color: color.light,
         fontSize: 14,
-        fontFamily: 'Nunito'
+        fontFamily: 'Nunito',
+        width: '50%',
     },
     pieicn: {
         fontSize: 14,

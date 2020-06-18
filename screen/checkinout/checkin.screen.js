@@ -47,10 +47,12 @@ export class CheckInOut extends Component {
         }
 
         this.CheckIn = () => {
-            console.log("Click Check In")
+            console.log("Click Check In", this.state.geofencing)
             const fun = () => {
                 if (this.state.geofencing) {
                     // geo true
+                    console.log("Lat", this.state.location['latitude'])
+                    console.log("Long", this.state.location['longitude'])
                     APIs.Checkin(this.state.url, this.state.auth, this.state.id, {
                         lat: this.state.location['latitude'],
                         long: this.state.location['longitude']
@@ -241,6 +243,7 @@ export class CheckInOut extends Component {
     }
 
     render() {
+        console.log("Location::", this.state.location)
         return (
 
             <Container style={{ flex: 1 }}>
