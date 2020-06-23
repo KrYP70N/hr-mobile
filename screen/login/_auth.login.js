@@ -16,7 +16,7 @@ export default class Auth extends Component {
         super(props)
         this.state = {
             key: null,
-            version: 1,
+            version: 2,
             loading: false,
             secure: true,
             error: false
@@ -55,7 +55,6 @@ export default class Auth extends Component {
                     }
                     
                 })
-
         }
     }
 
@@ -80,14 +79,14 @@ export default class Auth extends Component {
     }
 
     render() {
-
+        console.log("Key", this.state.key)
+        console.log("Version", this.state.version)
         if(this.state.loading === true) {
             return (
                 <Loading />
             )
         }
         
-
         return (
             <Container>
                 <Content contentContainerStyle={styAuth.content}>

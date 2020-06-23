@@ -7,6 +7,7 @@ import Cards from '../overtime/card'
 import Chart from '../overtime/chart'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
+import BottomTab from '../../components/bottomtab.component'
 
 export class Overtime extends Component {
     constructor(props) {
@@ -23,7 +24,7 @@ export class Overtime extends Component {
     render() {
         return (
             <SafeAreaView style = {{flex: 1}}>
-                <Container>
+                <Container style = {{flex: 1, backgroundColor: color.lighter}}>
                     <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name='ios-arrow-round-back' style={{
                             fontSize: offset.o4,
@@ -41,6 +42,7 @@ export class Overtime extends Component {
                         <Chart navigation={this.props.navigation}/>
                         <Cards navigation={this.props.navigation} />
                     </Content>
+                    <BottomTab navigation={this.props.navigation} screen='ot' />
                 </Container>
             </SafeAreaView>
 

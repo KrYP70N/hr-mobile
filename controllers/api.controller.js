@@ -7,6 +7,8 @@ export default class APIs {
         return axios.get(`http://apiendpoint.innovixhr.com/api/build/hr?siteKey=${key}&appVersion=${1}`)
             .then(function (res) {
                 return { data: res.data.model, status: res.data.success }
+            }).catch((e) => {
+                console.log("Error::", e)
             })
     }
 

@@ -11,6 +11,7 @@ import color from '../../constant/color'
 import { AsyncStorage, StatusBar, Platform, BackHandler, SafeAreaView, TouchableOpacity } from 'react-native'
 import { Calendar, CalendarList, Agenda, } from 'react-native-calendars';
 import { ScrollView } from 'react-native-gesture-handler'
+import BottomTab from '../../components/bottomtab.component'
 
 export default class Attendance extends Component {
     constructor(props) {
@@ -234,7 +235,7 @@ export default class Attendance extends Component {
         })
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <View style={{ flex: 1, backgroundColor: color.light, }}>
+                <View style={{ flex: 1, backgroundColor: color.lighter, }}>
                     <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name='ios-arrow-round-back' style={{
                             fontSize: offset.o4,
@@ -249,7 +250,7 @@ export default class Attendance extends Component {
                     </View>
                     <View style={{ flex: 1 }}>
                         <ScrollView>
-                            <View style={{ flex: 1, marginBottom: 30 }}>
+                            <View style={{ flex: 1,}}>
                                 <View style={styAttend.contentContainer}>
                                     <View style={[styAttend.container, {
                                         marginTop: offset.o1
@@ -298,14 +299,14 @@ export default class Attendance extends Component {
 
                             </View>
                         </ScrollView>
-                        <TouchableOpacity onPress={() => { this.props.navigation.navigate('LeaveRequest') }}>
+                        {/* <TouchableOpacity onPress={() => { this.props.navigation.navigate('LeaveRequest') }}>
                             <View style={styAttend.submitButton} >
                                 <Text style={styAttend.buttonText}>Apply Leave</Text>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                     </View>
-
+                    <BottomTab navigation={this.props.navigation} screen='attendance' />
                 </View>
             </SafeAreaView>
 

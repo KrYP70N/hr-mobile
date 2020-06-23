@@ -108,7 +108,7 @@ export default class Cards extends Component {
                     if (res.data["Dashboard Type"] == "employee") {
                         list.push(
                             {
-                                title: 'Today Leaves',
+                                title: 'Today dept Leaves',
                                 noti: res.data["Today Leave Count"][0][0] == "0" ? "0" : res.data["Today Leave Count"][0][0],
                                 icon: require('../../assets/icon/leave.png'),
                                 // page: 'DashboardRequest'
@@ -181,7 +181,7 @@ export default class Cards extends Component {
 
                         list.push(
                             {
-                                title: 'Today Leaves',
+                                title: 'Today on Leaves',
                                 noti: res.data["Today Leave Count"][0][0] == "0" ? "0" : res.data["Today Leave Count"][0][0],
                                 icon: require('../../assets/icon/leave.png'),
                                 page: 'TodayLeave'
@@ -190,7 +190,7 @@ export default class Cards extends Component {
 
                         list.push(
                             {
-                                title: 'Leave Request',
+                                title: 'Leave Request Lists',
                                 noti: res.data["Leave Request Count"][0][0] == "0" ? "0" : res.data["Leave Request Count"][0][0],
                                 icon: require('../../assets/icon/dashboard-leave.png'),
                                 page: 'DashboardLeaveRequestList'

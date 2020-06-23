@@ -9,8 +9,12 @@ import {
   DrawerItem
 } from '@react-navigation/drawer'
 
+// import {
+//   createBottomTabNavigator
+// } from '@react-navigation/bottom-tabs'
+
 import { Image, TouchableOpacity } from 'react-native'
-import { View, Text, Button, Icon } from 'native-base';
+import { View, Text, Button, Icon, Form } from 'native-base';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import { NavigationActions } from 'react-navigation';
 
@@ -49,7 +53,7 @@ import OvertimeRejected from '../screen/overtime/overtimerejected'
 import NoticeBoard from '../screen/noticeboard/noticeboard.screen';
 import NotiboardDetail from '../screen/noticeboard/detail.screen';
 import SideMenu from '../router/SideMenu';
-import CheckIn from '../screen/checkinout/checkin.screen';
+import CheckIn from '../screen/checkinout/checkin';
 import CheckOut from  '../screen/checkinout/checkout.screen';
 
 import styNav from './navigation.style'
@@ -62,21 +66,8 @@ function CustomdrawerContent(props) {
   )
 }
 
+
 const Drawer = createDrawerNavigator()
-
-
-// function Profile(props) {
-//   // useFocusEffect(
-//   //   React.useCallback(() => {
-//   //     // Do something when the screen is focuse
-//   //     return () => {
-//   //     };
-//   //   }, [])
-//   // );
-
-//   return <ProfileScreen navigation={props.navigation}/>
-// }
-
 function Navigation() {
   return (
     <NavigationContainer>
@@ -92,6 +83,7 @@ function Navigation() {
             edgeWidth: 0
           }}
         />
+      
         <Drawer.Screen name='Dashboard' component={Dashboard} />
         <Drawer.Screen name='EmployeeList' component={EmployeeList} />
         <Drawer.Screen name='Department' component={Department} />

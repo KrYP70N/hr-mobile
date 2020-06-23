@@ -286,32 +286,32 @@ export class CheckOut extends Component {
 
         }
 
-        if (this.state.location !== null && this.state.geofencing === true) {
-            setTimeout(async () => {
-                let location = await Location.getCurrentPositionAsync({})
+        // if (this.state.location !== null && this.state.geofencing === true) {
+        //     setTimeout(async () => {
+        //         let location = await Location.getCurrentPositionAsync({})
 
-                if (
-                    geolib.isPointWithinRadius(
-                        this.state.officeCoord,
-                        // this.state.officeCoord,
-                        {
-                            latitude: this.state.location['latitude'],
-                            longitude: this.state.location['longitude'],
-                        },
-                        this.state.radius
-                    )
-                ) {
-                    this.setState({
-                        withinRadius: true
-                    })
-                } else {
-                    this.setState({
-                        withinRadius: false
-                    })
-                }
+        //         if (
+        //             geolib.isPointWithinRadius(
+        //                 this.state.officeCoord,
+        //                 // this.state.officeCoord,
+        //                 {
+        //                     latitude: this.state.location['latitude'],
+        //                     longitude: this.state.location['longitude'],
+        //                 },
+        //                 this.state.radius
+        //             )
+        //         ) {
+        //             this.setState({
+        //                 withinRadius: true
+        //             })
+        //         } else {
+        //             this.setState({
+        //                 withinRadius: false
+        //             })
+        //         }
 
-            }, 2000)
-        }
+        //     }, 2000)
+        // }
     }
 
     render() {

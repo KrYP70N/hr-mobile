@@ -9,7 +9,7 @@ import typo from '../../constant/typography';
 import typography from '../../constant/typography';
 import APIs from '../../controllers/api.controller';
 import Modal from 'react-native-modal';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Circle } from 'react-native-maps';
 
 import Constants from 'expo-constants'
 import * as Location from 'expo-location'
@@ -43,6 +43,21 @@ export class CheckInOut extends Component {
             },
             mapCoord: null,
             mapMarkerCoord: null,
+            mapMarkerCoords: [],
+            markers: [{
+                title: 'first',
+                coordinates: {
+                    latitude: 16.8229109,
+                    longitude: 96.1292212
+                },
+            },
+            {
+                title: 'second',
+                coordinates: {
+                    latitude: 16.8250444,
+                    longitude: 96.1286253
+                },
+            }],
             userName: null,
         }
 
@@ -153,18 +168,30 @@ export class CheckInOut extends Component {
                 })
             } else {
                 let location = await Location.getCurrentPositionAsync({})
+                let markerCoord = [];
+                let markerCoordObj = {
+                    title: 'Current Location',
+                    coordinates: {
+                        latitude: location.coords.latitude,
+                        longitude: location.coords.longitude,
+                    }
+                }
+                markerCoord.push(markerCoordObj)
                 this.setState({
                     location: location.coords,
                     mapCoord: {
                         latitude: location.coords.latitude,
                         longitude: location.coords.longitude,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0921,
+                        latitudeDelta: 0.0009,
+                        longitudeDelta: 0.0008,
+                        //latitudeDelta: 0.0122, // previous using delta
+                        //longitudeDelta: 0.0121,
                     },
                     mapMarkerCoord: {
                         latitude: location.coords.latitude,
                         longitude: location.coords.longitude
-                    }
+                    },
+                    mapMarkerCoords: markerCoord
                 })
             }
         }
@@ -188,11 +215,42 @@ export class CheckInOut extends Component {
     }
 
     async componentDidUpdate() {
-
+        let location = await Location.getCurrentPositionAsync({})
+        let markerCoord = [];
+        let markerCoordCurrentObj = {
+            title: 'Current Location',
+            coordinates: {
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+            }
+        }
+        let markerCoordOfficObj = {
+            title: 'Office Location',
+            coordinates: {
+                latitude: 16.8227530,
+                longitude: 96.131340,
+            }
+        }
+        markerCoord.push(markerCoordCurrentObj);
+        markerCoord.push(markerCoordOfficObj);
         if (this.state.url !== null && this.state.auth !== null && this.state.id !== null && this.state.data === null) {
             APIs.Profile(this.state.url, this.state.auth, this.state.id)
                 .then((res) => {
+
+                    if (res.data['General Information']['Geo Fencing'] == true) {
+                        let markerCoordOfficeObj = {
+                            title: 'Office Location',
+                            coordinates: {
+                                latitude: res.data['General Information']['Latitude'],
+                                longitude: res.data['General Information']['Longtitude']
+                            }
+                        }
+                        //markerCoord.push(markerCoordOfficeObj);
+                    }
+
                     this.setState({
+                        location: location.coords,
+                        mapMarkerCoords: markerCoord,
                         data: res.data,
                         geofencing: res.data['General Information']['Geo Fencing'],
                         // geofencing: false,
@@ -214,36 +272,36 @@ export class CheckInOut extends Component {
 
         }
 
-        if (this.state.location !== null && this.state.geofencing === true) {
-            setTimeout(async () => {
-                let location = await Location.getCurrentPositionAsync({})
+        // if (this.state.location !== null && this.state.geofencing === true) {
+        //     setTimeout(async () => {
+        //         let location = await Location.getCurrentPositionAsync({})
 
-                if (
-                    geolib.isPointWithinRadius(
-                        this.state.officeCoord,
-                        // this.state.officeCoord,
-                        {
-                            latitude: this.state.location['latitude'],
-                            longitude: this.state.location['longitude'],
-                        },
-                        this.state.radius
-                    )
-                ) {
-                    this.setState({
-                        withinRadius: true
-                    })
-                } else {
-                    this.setState({
-                        withinRadius: false
-                    })
-                }
+        //         if (
+        //             geolib.isPointWithinRadius(
+        //                 this.state.officeCoord,
+        //                 // this.state.officeCoord,
+        //                 {
+        //                     latitude: this.state.location['latitude'],
+        //                     longitude: this.state.location['longitude'],
+        //                 },
+        //                 this.state.radius
+        //             )
+        //         ) {
+        //             this.setState({
+        //                 withinRadius: true
+        //             })
+        //         } else {
+        //             this.setState({
+        //                 withinRadius: false
+        //             })
+        //         }
 
-            }, 2000)
-        }
+        //     }, 2000)
+        // }
     }
 
     render() {
-        console.log("Location::", this.state.location)
+        console.log("Current Location", this.state.mapMarkerCoord)
         return (
 
             <Container style={{ flex: 1 }}>
@@ -269,99 +327,101 @@ export class CheckInOut extends Component {
                     <Right></Right>
                 </Header>
                 <Content>
-                    <View style={styles.container}>
-                        <View style={{ flex: 1, height: height }}>
-                            {this.state.location === null ? <Text>...</Text> :
-                                <MapView
-                                    style={styles.mapStyle}
-                                    initialRegion={this.state.mapCoord}
-                                >
-                                    <Marker coordinate={this.state.mapMarkerCoord}>
-                                        <View>
-                                            <Image style={{ width: 40, height: 40 }} source={require('../../assets/icon/marker.png')} />
-                                        </View>
-                                    </Marker>
-                                </MapView>
-                            }
-                        </View>
+                    {
+                        this.state.location === null ? <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ fontSize: 24 }}>...</Text>
+                        </View> :
+                            <View style={styles.container}>
+                                <View style={{ flex: 1, height: height }}>
+                                    {this.state.location === null ? <Text>...</Text> :
 
-                        <View style={{
-                            width: width,
-                            height: height / 2,
-                            backgroundColor: '#fff',
-                            borderTopLeftRadius: 40,
-                            borderTopRightRadius: 40,
-                            position: 'absolute',
-                            bottom: height / 4 - 50,
-                            //bottom: 150,
-                            //top: 400,
-                            padding: 30,
-                            alignItems: 'center'
-                        }}>
-                            {this.state.userName === null ? <Text style={{ fontSize: 40 }}>...</Text> :
-                                <Text>{`Have a nice day! ${this.state.userName}`}</Text>}
-                            <Clock style={styles.time} navigation={this.props.navigation} checkScreen="checkinout" checkIconChange="checkin" />
-                            {/* <View style={{
-                                flexDirection: 'row',
-                                width: '100%',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                height: 60,
-                                borderRadius: 25,
-                                backgroundColor: color.lighter,
-                                marginTop: 15,
-                            }}>
-                                <Image style={{
-                                    width: 20,
-                                    height: 20,
-                                }} source={require('../../assets/icon/checktime.png')} />
-                                <Text style={{
-                                    marginLeft: 10,
+                                        <MapView
+                                            style={styles.mapStyle}
+                                            initialRegion={this.state.mapCoord}
+                                        >
+                                            
+                                            {this.state.mapMarkerCoords.map(marker => (
+                                                <Marker coordinate={marker.coordinates} title={marker.title}>
+                                                    <View>
+                                                        
+                                                        <Image style={{ width: 40, height: 40,tintColor: marker.title === 'Current Location' ? color.placeHolder : color.primary }} source={require('../../assets/icon/marker.png')} />
+                                                    </View>
+                                                </Marker>
+                                            ))}
+                                            {this.state.mapMarkerCoord === null ? <View></View> : <Circle
+                                                //key={(this.state.currentLongitude + this.state.currentLongitude).toString()}
+                                                center={this.state.mapMarkerCoord}
+                                                radius={10}
+                                                strokeWidth={1}
+                                                strokeColor={'#1a66ff'}
+                                                fillColor={'rgba(230,238,255,0.5)'}
+                                            //onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
+                                            />}
+                                            {/*  */}
+                                        </MapView>
+                                    }
+                                </View>
 
-                                }}>OfficeShift (09:00 AM-06:00 PM)</Text>
-                            </View> */}
-                            <View style={{
-                                //flexDirection: 'row',
-                                width: '100%',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                marginTop: 40,
-                                //height: 60,
-                            }}>
-
-                                <TouchableOpacity onPress={() => {
-                                   this.CheckIn()
+                                <View style={{
+                                    width: width,
+                                    height: height / 2,
+                                    backgroundColor: '#fff',
+                                    borderTopLeftRadius: 40,
+                                    borderTopRightRadius: 40,
+                                    position: 'absolute',
+                                    bottom: height / 4 - 50,
+                                    //bottom: 150,
+                                    //top: 400,
+                                    padding: 30,
+                                    alignItems: 'center'
                                 }}>
-                                    <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width/3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
-                                        <Image
-                                            source={require('../../assets/icon/checkin.png')}
-                                            style={{ width: 30, height: 30 }}
-                                        />
-                                        <Text style={{ color: '#fff', marginTop: 5 }}>Check In</Text>
+                                    {this.state.userName === null ? <Text style={{ fontSize: 40 }}>...</Text> :
+                                        <Text>{`Have a nice day! ${this.state.userName}`}</Text>}
+                                    <Clock style={styles.time} navigation={this.props.navigation} checkScreen="checkinout" checkIconChange="checkin" />
+                                    <View style={{
+                                        //flexDirection: 'row',
+                                        width: '100%',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        marginTop: 40,
+                                        //height: 60,
+                                    }}>
+
+                                        <TouchableOpacity onPress={() => {
+                                            this.CheckIn()
+                                        }}>
+                                            <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width / 3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
+                                                <Image
+                                                    source={require('../../assets/icon/checkin.png')}
+                                                    style={{ width: 30, height: 30 }}
+                                                />
+                                                <Text style={{ color: '#fff', marginTop: 5 }}>Check In</Text>
+                                            </View>
+                                        </TouchableOpacity>
                                     </View>
-                                </TouchableOpacity>
-                            </View>
-
-                        </View>
-                        <Modal isVisible={this.state.isModalVisible} >
-                            <View style={styles.ModelViewContainer}>
-                                <View style={styles.iconView}>
-                                    <Image source={require('../../assets/icon/checkintime.png')} style={styles.dialogIcon} />
-                                </View>
-                                <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
-                                <View style={styles.ModalTextContainer}>
-                                    <TouchableOpacity style={styles.CancelOpacityContainer}
-                                        onPress={() => this.setState({ isModalVisible: false })} >
-                                        <Text style={styles.modalTextStyle} >
-                                            {'Close'}
-                                        </Text>
-                                    </TouchableOpacity>
 
                                 </View>
+                                <Modal isVisible={this.state.isModalVisible} >
+                                    <View style={styles.ModelViewContainer}>
+                                        <View style={styles.iconView}>
+                                            <Image source={require('../../assets/icon/checkintime.png')} style={styles.dialogIcon} />
+                                        </View>
+                                        <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
+                                        <View style={styles.ModalTextContainer}>
+                                            <TouchableOpacity style={styles.CancelOpacityContainer}
+                                                onPress={() => this.setState({ isModalVisible: false })} >
+                                                <Text style={styles.modalTextStyle} >
+                                                    {'Close'}
+                                                </Text>
+                                            </TouchableOpacity>
 
+                                        </View>
+
+                                    </View>
+                                </Modal>
                             </View>
-                        </Modal>
-                    </View>
+                    }
+
                 </Content>
             </Container>
         )
@@ -424,6 +484,27 @@ const styles = StyleSheet.create({
         height: 28,
         marginBottom: offset.o1,
         marginTop: offset.o2,
-    }
+    },
+    errorBox: {
+        padding: 15
+    },
+    error: {
+        backgroundColor: color.light,
+        padding: offset.o3,
+        display: 'flex',
+        alignItems: 'center'
+    },
+    errorTitle: {
+        ...typography.subHeader
+    },
+    errorTxt: {
+        ...typography.placeholder,
+        fontSize: 14
+    },
+    errImg: {
+        width: 64,
+        height: 64,
+        marginBottom: offset.o2
+    },
 });
 export default CheckInOut

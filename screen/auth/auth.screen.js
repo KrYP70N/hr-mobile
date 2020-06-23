@@ -19,7 +19,7 @@ export default class Auth extends Component {
         super(props)
         this.state = {
             key: null,
-            version: 1,
+            version: 2,
             loading: false,
             secure: true
         }
@@ -33,12 +33,14 @@ export default class Auth extends Component {
 
         // submit key
         this.submitKey = () => {
+            console.log("Key", this.state.key, this.state.version)
             Keyboard.dismiss()
             this.setState({
                 loading: true
             })
             APIs.Auth(this.state.key, this.state.version)
                 .then((res) => {
+
                     if(res.status === 'success') {
                         // save api-infomation
                         AsyncStorage.setItem('@hr:endPoint', JSON.stringify(res.data))
@@ -91,6 +93,8 @@ export default class Auth extends Component {
 
     render() {
 
+        console.log("Key", this.state.key)
+        console.log("Version", this.state.version)
         if(this.state.loading === true) {
             return (
                 <Loading />

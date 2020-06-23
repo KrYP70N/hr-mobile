@@ -37,6 +37,7 @@ export default class CheckInOut extends Component {
       status: null,
       isModalVisible: false,
       checkMessage: '',
+      refresh: true,
     }
    
     // check status 
@@ -56,24 +57,15 @@ export default class CheckInOut extends Component {
     }
   }
 
-  async componentDidMount() {
-
+    componentDidMount() {
+    //this.props.navigation.addListener('focus', () => {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       this.setState({
-        locError: true
+        locError: true,
+        //refresh: !this.state.refresh
       });
     } else {
-      let { status } = await Permissions.askAsync(Permissions.LOCATION)
-      if (status !== 'granted') {
-        this.setState({
-          locError: true
-        })
-      } else {
-        let location = await Location.getCurrentPositionAsync({})
-        this.setState({
-          location: location.coords
-        })
-      }
+     this.getLocationAsync()
     }
 
     AsyncStorage.getItem('@hr:endPoint')
@@ -91,65 +83,29 @@ export default class CheckInOut extends Component {
           id: data['id'],
         })
       })
+    //})
 
   }
 
-  async componentDidUpdate() {
+  async getLocationAsync() {
 
-    if (this.state.url !== null && this.state.auth !== null && this.state.id !== null && this.state.data === null) {
-      APIs.Profile(this.state.url, this.state.auth, this.state.id)
-        .then((res) => {
-          this.setState({
-            data: res.data,
-            geofencing: res.data['General Information']['Geo Fencing'],
-            // geofencing: false,
-            radius: res.data['General Information']['Radius(m)'],
-            officeCoord: {
-              latitude: res.data['General Information']['Latitude'],
-              longitude: res.data['General Information']['Longtitude']
-            }
-          })
-        })
-        .catch((error) => {
-          this.props.navigation.navigate('Login')
-        })
-
-      if (this.state.status === null) {
-        this.CheckStatus()
-      }
-
+    let { status } = await Permissions.askAsync(Permissions.LOCATION)
+    if (status !== 'granted') {
+      this.setState({
+        locError: true,
+        //refresh: !this.state.refresh
+      })
+    } else {
+      //let location = await Location.getCurrentPositionAsync({})
+      this.setState({
+        locError: false,
+        //refresh: !this.state.refresh
+        //location: location.coords
+      })
     }
-
-    if (this.state.location !== null && this.state.geofencing === true) {
-      setTimeout(async () => {
-        let location = await Location.getCurrentPositionAsync({})
-
-        if (
-          geolib.isPointWithinRadius(
-            this.state.officeCoord,
-            // this.state.officeCoord,
-            {
-              latitude: this.state.location['latitude'],
-              longitude: this.state.location['longitude'],
-            },
-            this.state.radius
-          )
-        ) {
-          this.setState({
-            withinRadius: true
-          })
-        } else {
-          this.setState({
-            withinRadius: false
-          })
-        }
-
-      }, 2000)
-    }
-
-
-
   }
+
+
 
   render() {
 
@@ -158,7 +114,8 @@ export default class CheckInOut extends Component {
       return (
         <View style={styles.errorBox}>
           <TouchableOpacity onPress={() => {
-            IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS)
+            this.getLocationAsync()
+            //IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS)
           }}>
             <Card style={styles.error}>
               <Image source={require('../assets/icon/location-2.png')} style={styles.errImg} />
@@ -168,44 +125,6 @@ export default class CheckInOut extends Component {
               }]}>In order to use Check In / Check Out and Attendance Functions, you will need to turn on your location service.</Text>
             </Card>
           </TouchableOpacity>
-        </View>
-      )
-    }
-
-    // checking radius
-    if (this.state.withinRadius === 'wait' && this.state.geofencing === true) {
-      return (
-        <View style={styles.errorBox}>
-          <Card style={styles.error}>
-            <Image source={require('../assets/icon/compass.png')} style={styles.errImg} />
-            <Text style={styles.errorTitle}>Checking Radius!</Text>
-            <Text style={styles.errorTxt}>It may take few seconds.</Text>
-          </Card>
-        </View>
-      )
-    }
-
-    // checking radius
-    if (this.state.withinRadius === false && this.state.geofencing === true) {
-      return (
-        <View style={styles.errorBox}>
-          <Card style={styles.error}>
-            <Image source={require('../assets/icon/location-3.png')} style={styles.errImg} />
-            <Text style={styles.errorTitle}>You are out of office area!</Text>
-            <Text style={styles.errorTxt}>Can't check in/out.</Text>
-          </Card>
-        </View>
-      )
-    }
-
-    if (this.state.status === null) {
-      return (
-        <View style={styles.errorBox}>
-          <Card style={styles.error}>
-            <Image source={require('../assets/icon/location-3.png')} style={styles.errImg} />
-            <Text style={styles.errorTitle}>loading data ...</Text>
-            <Text style={styles.errorTxt}></Text>
-          </Card>
         </View>
       )
     }

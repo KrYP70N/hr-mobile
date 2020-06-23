@@ -8,6 +8,16 @@ export default StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
+    img: {
+        width: 27,
+        height: 23,
+        marginRight: offset.o2
+    },
+    img1: {
+        width: 28,
+        height: 27,
+        marginRight: offset.o2
+    },
     image: {
         width: 25,
         height: 25,

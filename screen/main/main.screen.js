@@ -1,27 +1,22 @@
 import React, { Component } from 'react'
 import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea, Header, Left, Right, Toast } from 'native-base'
-import { Image, AsyncStorage, Platform, StatusBar, TouchableOpacity, BackHandler, Modal, TouchableHighlight } from 'react-native'
-// import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useFocusEffect } from '@react-navigation/native';
+import { Image, AsyncStorage, Platform, StatusBar, TouchableOpacity, BackHandler, Modal, SafeAreaView } from 'react-native'
 
 import po from './po'
 import color from '../../constant/color'
 import styMain from './main.style'
-
 import Loading from '../../components/loading.component'
-
 import APIs from '../../controllers/api.controller'
-import Time from '../../controllers/time.controller'
-
-// import ProfileModel from '../../model/profile.model'
-
+import BottomTab from '../../components/bottomtab.component'
 import Heading from '../../components/header.component'
 import CheckInOut from '../../components/checkinout.component'
 import Clock from '../../components/time.component'
-
 import DB from '../../model/db.model'
-import moment from 'moment'
-
+import Constants from 'expo-constants'
+import * as Location from 'expo-location'
+import * as Permissions from 'expo-permissions'
+import * as IntentLauncher from 'expo-intent-launcher'
+import * as geolib from 'geolib';
 export default class Main extends Component {
 
   constructor(props) {
@@ -31,17 +26,12 @@ export default class Main extends Component {
       auth: null,
       id: null,
       profile: null,
-      checkin: {
-        status: true,
-        disabled: false
-      },
-      checkout: {
-        status: true,
-        disabled: true
-      },
       loading: true,
       modal: false,
-      lowestLevel: true
+      location: null,
+      locError: null,
+      lowestLevel: true,
+      refresh: false,
     }
 
     this.getProfile = () => {
@@ -89,8 +79,8 @@ export default class Main extends Component {
         })
     }
 
-    this.isLowest = () => {
-      APIs.Level(this.state.url, this.state.auth, this.state.id)
+    this.isLowest = (auth, url, id) => {
+      APIs.Level(url, auth, id)
         .then((res) => {
           if (res.status === 'success') {
             this.setState({
@@ -113,39 +103,71 @@ export default class Main extends Component {
 
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', () => {
       return true
     })
+
     this.props.navigation.addListener('focus', () => {
       this.setState({
-        url: null,
-        auth: null,
-        id: null,
-        profile: null,
-        checkin: {
-          status: true,
-          disabled: false
-        },
-        checkout: {
-          status: true,
-          disabled: true
-        },
-        loading: true,
-        modal: false,
-        lowestLevel: true
+        refresh: !this.state.refresh
       })
-      this.checkToken()
+      AsyncStorage.getItem('@hr:endPoint')
+        .then((res) => {
+          let date = new Date()
+          const currentYear = date.getFullYear()
+          const url = JSON.parse(res).ApiEndPoint
+          this.setState({ url: JSON.parse(res).ApiEndPoint })
+          AsyncStorage.getItem('@hr:token')
+            .then((res) => {
+              const auth = JSON.parse(res).key;
+              const id = JSON.parse(res).id;
+              this.setState({
+                auth: JSON.parse(res).key,
+                id: JSON.parse(res).id
+              })
+              this.getProfileData(auth, id, url);
+              this.isLowest(auth, url, id)
+
+            })
+        })
     })
   }
 
-  componentDidUpdate() {
-    // profile request
-    if (this.state.profile === null && this.state.url !== null && this.state.id !== null) {
-      this.getProfile()
-      this.isLowest()
-    }
+  getProfileData(auth, id, url) {
+    APIs.Profile(url, auth, id)
+      .then((res) => {
+        if (res.status === 'success') {
+          this.setState({
+            profile: res.data
+          })
+          this.setState({
+            loading: false
+          })
+        } else {
+          console.log("Profile Data Error")
+          // AsyncStorage.setItem('@hr:login', 'false')
+          // Toast.show({
+          //   text: 'Connection time out. Please check your internet connection!',
+          //   textStyle: {
+          //     textAlign: 'center'
+          //   },
+          //   style: {
+          //     backgroundColor: color.primary
+          //   },
+          //   duration: 6000
+          // })
+        }
+      })
   }
+
+  // componentDidUpdate() {
+  //   // profile request
+  //   if (this.state.profile === null && this.state.url !== null && this.state.id !== null && this.state.auth !== null) {
+  //     this.getProfileData(this.state.auth, this.state.id, this.state.url)
+  //     this.isLowest()
+  //   }
+  // }
 
   render() {
     if (this.state.loading === true || this.state.profile === null) {
@@ -154,8 +176,10 @@ export default class Main extends Component {
       )
     }
 
+    console.log("Lowest Level", this.state.lowestLevel)
+
     return (
-      <Container>
+      <SafeAreaView style={{ flex: 1 }}>
         <Heading navigation={this.props.navigation} />
         <Content>
           <TouchableOpacity style={styMain.banner}
@@ -174,7 +198,7 @@ export default class Main extends Component {
                       uri: `data:${this.state.profile['Profile Image'][1]};base64,${this.state.profile['Profile Image'][0]}`
                     }
                 } style={styMain.profilePic} />
-                <View style = {{marginLeft: 15}}>
+                <View style={{ marginLeft: 15 }}>
                   {
                     this.state.profile['General Information']['Employee Name'] ?
                       <Text style={styMain.name}>
@@ -197,169 +221,9 @@ export default class Main extends Component {
           </TouchableOpacity>
 
           {/* check in/out */}
-         <View style={styMain.checkinout}>
+          <View style={styMain.checkinout}>
             <CheckInOut navigation={this.props.navigation} />
           </View>
-
-          {/* menu */}
-
-          {/* <Row style={styMain.menuHolder}>
-            <Col style={styMain.cardLft}>
-              <Card style={[!po.menu[0].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[0].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[0].navigate
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                      <Image style={styMain.imgIcn} source={require('../../assets/icon/attendance.png')} />
-                      <Text style={styMain.menuTxt}>{po.menu[0].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card>
-            </Col>
-            <Col style={styMain.cardRight}>
-              <Card style={[!po.menu[1].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[1].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[1].navigate
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                      <Image style={styMain.imgIcn} source={require('../../assets/icon/leave.png')} />
-                      <Text style={styMain.menuTxt} >{po.menu[1].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card>
-            </Col>
-          </Row>
-
-          <Row style={styMain.menuHolder}>
-            <Col style={styMain.cardLft}>
-              <Card style={[!po.menu[2].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[2].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[2].navigate
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                    <Image style={[styMain.imgIcn, { height: 45 }]} source={require('../../assets/icon/ot.png')} />
-                      <Text style={styMain.menuTxt}>{po.menu[2].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card>
-            </Col>
-            <Col style={styMain.cardRight}>
-              <Card style={[!po.menu[3].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[3].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[3].navigate
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                    <Image style={[styMain.imgIcn, { width: 46, height: 47 }]} source={require('../../assets/icon/payroll.png')} />
-                      <Text style={styMain.menuTxt} >{po.menu[3].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card>
-            </Col>
-          </Row>
-          <Row style={[styMain.menuHolder, {
-            display: this.state.lowestLevel === true ? 'none' : 'flex'
-          }]}>
-            <Col style={styMain.cardLft}>
-              <Card style={[!po.menu[4].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[4].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[4].navigate
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                      <Image style={[styMain.imgIcn, { width: 50, height: 42 }]} source={require('../../assets/icon/approve-leave.png')} />
-                      <Text style={styMain.menuTxt}>{po.menu[4].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card>
-            </Col>
-            <Col style={styMain.cardRight}>
-              <Card style={[!po.menu[5].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[5].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[5].navigate,
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                      <Image style={[styMain.imgIcn, { width: 45, height: 43 }]} source={require('../../assets/icon/approve-ot.png')} />
-                      <Text style={styMain.menuTxt}>{po.menu[5].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card>
-            </Col>
-          </Row>
-
-          <Row style={styMain.menuHolder}>
-            <Col style={styMain.cardLft}>
-            <Card style={[!po.menu[6].navigate ? styMain.disabledMenu : null, {
-                borderRadius: 10,
-                overflow: 'hidden'
-              }]}>
-                <TouchableOpacity onPress={() =>
-                  po.menu[6].navigate ?
-                    this.props.navigation.navigate(
-                      po.menu[6].navigate
-                    ) : null
-                }>
-                  <CardItem>
-                    <Body style={styMain.menuBody}>
-                    <Image style={[styMain.imgIcn, { width: 46, height: 47 }]} source={require('../../assets/icon/noticebo.png')} />
-                      <Text style={styMain.menuTxt} >{po.menu[6].name}</Text>
-                    </Body>
-                  </CardItem>
-                </TouchableOpacity>
-              </Card>
-            </Col>
-            <Col style={styMain.cardRight}>
-             
-            </Col>
-          </Row> */}
-          
-
 
           {/* including dashboard */}
           <Row style={styMain.menuHolder}>
@@ -419,7 +283,7 @@ export default class Main extends Component {
                 }>
                   <CardItem>
                     <Body style={styMain.menuBody}>
-                    <Image style={styMain.imgIcn} source={require('../../assets/icon/leave.png')} />
+                      <Image style={styMain.imgIcn} source={require('../../assets/icon/leave.png')} />
                       <Text style={styMain.menuTxt}>{po.menu[2].name}</Text>
                     </Body>
                   </CardItem>
@@ -439,7 +303,7 @@ export default class Main extends Component {
                 }>
                   <CardItem>
                     <Body style={styMain.menuBody}>
-                    <Image style={[styMain.imgIcn, { height: 45 }]} source={require('../../assets/icon/ot.png')} />
+                      <Image style={[styMain.imgIcn, { height: 45 }]} source={require('../../assets/icon/ot.png')} />
                       <Text style={styMain.menuTxt}>{po.menu[3].name}</Text>
                     </Body>
                   </CardItem>
@@ -507,7 +371,7 @@ export default class Main extends Component {
                 }>
                   <CardItem>
                     <Body style={styMain.menuBody}>
-                    <Image style={[styMain.imgIcn, { width: 46, height: 47 }]} source={require('../../assets/icon/payroll.png')} />
+                      <Image style={[styMain.imgIcn, { width: 46, height: 47 }]} source={require('../../assets/icon/payroll.png')} />
                       <Text style={styMain.menuTxt}>{po.menu[6].name}</Text>
                     </Body>
                   </CardItem>
@@ -522,12 +386,12 @@ export default class Main extends Component {
                 <TouchableOpacity onPress={() =>
                   po.menu[7].navigate ?
                     this.props.navigation.navigate(
-                      po.menu[7].navigate, {pageFrom: "Main"}
+                      po.menu[7].navigate, { pageFrom: "Main" }
                     ) : null
                 }>
                   <CardItem>
                     <Body style={styMain.menuBody}>
-                    <Image style={[styMain.imgIcn, { width: 46, height: 47 }]} source={require('../../assets/icon/noticebo.png')} />
+                      <Image style={[styMain.imgIcn, { width: 46, height: 47 }]} source={require('../../assets/icon/noticebo.png')} />
                       <Text style={styMain.menuTxt} >{po.menu[7].name}</Text>
                     </Body>
                   </CardItem>
@@ -537,8 +401,9 @@ export default class Main extends Component {
           </Row>
 
         </Content>
+        <BottomTab navigation={this.props.navigation} screen='main' />
 
-      </Container>
+      </SafeAreaView>
     )
   }
 }
