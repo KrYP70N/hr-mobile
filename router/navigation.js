@@ -53,7 +53,7 @@ import OvertimeRejected from '../screen/overtime/overtimerejected'
 import NoticeBoard from '../screen/noticeboard/noticeboard.screen';
 import NotiboardDetail from '../screen/noticeboard/detail.screen';
 import SideMenu from '../router/SideMenu';
-import CheckIn from '../screen/checkinout/checkin';
+import CheckIn from '../screen/checkinout/checkin.screen';
 import CheckOut from  '../screen/checkinout/checkout.screen';
 
 import styNav from './navigation.style'
@@ -72,11 +72,6 @@ function Navigation() {
   return (
     <NavigationContainer>
       <Drawer.Navigator drawerContent={(props) => CustomdrawerContent(props)} edgeWidth={0}>
-        {/* <Drawer.Screen name='Auth' component={Auth}
-                options={{
-                    headerShown: false
-                }}
-                /> */}
         <Drawer.Screen name='Login' component={Login}
           options={{
             headerShown: false,

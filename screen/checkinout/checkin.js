@@ -43,8 +43,8 @@ class checkin extends Component {
         };
     }
 
-    componentDidMount() {
-        this.props.navigation.addListener('focus', () => {
+    async componentDidMount() {
+       this.props.navigation.addListener('focus', () => {
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
                     const url = JSON.parse(res).ApiEndPoint
@@ -64,11 +64,7 @@ class checkin extends Component {
                 })
         })
     }
-
-    // componentDidUpdate(){
-    //     this.getProfileData(this.state.auth, this.state.id, this.state.url)
-    //     this.CheckStatus(this.state.id, this.state.auth, this.state.url)
-    // }
+    
     async getProfileData(auth, id, url) {
         let location = await Location.getCurrentPositionAsync({});
         APIs.Profile(url, auth, id)
@@ -124,19 +120,19 @@ class checkin extends Component {
                 }
             })
             .catch((error) => {
-                this.props.navigation.navigate('Login')
+                //this.props.navigation.navigate('Login')
             })
     }
 
-    async CheckIn() {
-        let location = await Location.getCurrentPositionAsync({})
+ CheckIn() {
+        // let location = await Location.getCurrentPositionAsync({})
         if (this.state.geofencing) { //geofencing true
             if (
                 geolib.isPointWithinRadius(
                     this.state.officeCoord,
                     {
-                        latitude: location.coords.latitude,
-                        longitude: location.coords.longitude,
+                        latitude: this.state.location.coords.latitude,
+                        longitude: this.state.location.coords.longitude,
                     },
                     this.state.radius
                 )
@@ -247,18 +243,6 @@ class checkin extends Component {
     }
 
     render() {
-        // console.log("Data:::", this.state.data)
-        // console.log("Geofencing:::", this.state.geofencing)
-        //  console.log("Radius:::", this.state.radius)
-        // console.log("Office Coord:::", this.state.officeCoord)
-        // console.log("Marker Coordinates", this.state.markerCoordinates)
-        // console.log("Map Cood::", this.state.mapCoord)
-        // console.log("User Name", this.state.userName)
-        // console.log("Location Latitude", this.state.location)
-        // console.log("Url::", this.state.url)
-        // console.log("Auth:::", this.state.auth)
-        // console.log("id:::", this.state.id)
-        // console.log("Status:::", this.state.status)
         return (
             <Container style={{ flex: 1 }}>
                 <Header style={{
