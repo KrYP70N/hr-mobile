@@ -53,8 +53,8 @@ import OvertimeRejected from '../screen/overtime/overtimerejected'
 import NoticeBoard from '../screen/noticeboard/noticeboard.screen';
 import NotiboardDetail from '../screen/noticeboard/detail.screen';
 import SideMenu from '../router/SideMenu';
-import CheckIn from '../screen/checkinout/checkin.screen';
-import CheckOut from  '../screen/checkinout/checkout.screen';
+import CheckIn from '../screen/checkinout/checkin';
+import CheckOut from  '../screen/checkinout/chectout';
 
 import styNav from './navigation.style'
 

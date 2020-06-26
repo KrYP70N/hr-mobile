@@ -14,6 +14,7 @@ export default class APIs {
 
     // auth token
     static Token(url, db, user, password) {
+        
         return axios.create({
             headers: {
                 db: db,
@@ -112,6 +113,10 @@ export default class APIs {
 
     // checkin controller
     static Checkin(url, auth, id, coord) {
+        console.log(url)
+        console.log(id)
+        console.log(url)
+        console.log("test", coord)
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -127,6 +132,7 @@ export default class APIs {
 
     // cehckout controller
     static Checkout(url, auth, id, coord) {
+        console.log("test", coord)
         return axios.create({
             headers: {
                 'Authorization': auth

@@ -35,6 +35,9 @@ export default class Login extends Component {
         }
         // submit
         this.login = () => {
+            console.log(this.state.apiUrl)
+            console.log(this.state.db)
+            console.log()
             // inject keyboard
             Keyboard.dismiss()
             this.setState({
@@ -42,6 +45,7 @@ export default class Login extends Component {
             })
             APIs.Token(this.state.apiUrl, this.state.db, this.state.user, this.state.password)
                 .then((res) => {
+                    
                     // display loading
                     this.setState({
                         loading: true
@@ -141,20 +145,20 @@ export default class Login extends Component {
                             let dataEndPoint = JSON.parse(res)
                             let url = dataEndPoint.ApiEndPoint
 
-                            APIs.RefreshToken(url, token)
-                            .then((res) => {
-                                data.key = `Bearer ${res.data.access_token}`
-                                AsyncStorage.setItem('@hr:token', JSON.stringify(data))
-                                .then(() => {
-                                    this.props.navigation.navigate('Main')
-                                })
-                            })
-                            .catch(() => {
-                                this.setState({
-                                    loading: false
-                                })
-                            })
-                        })
+                        //     APIs.RefreshToken(url, token)
+                        //     .then((res) => {
+                        //         data.key = `Bearer ${res.data.access_token}`
+                        //         AsyncStorage.setItem('@hr:token', JSON.stringify(data))
+                        //         .then(() => {
+                        //             this.props.navigation.navigate('Main')
+                        //         })
+                        //     })
+                        //     .catch(() => {
+                        //         this.setState({
+                        //             loading: false
+                        //         })
+                        //     })
+                         })
                         
                     // } else if(diff <= 0) {
                     } else if(diff <= 0) {

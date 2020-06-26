@@ -44,7 +44,7 @@ class checkin extends Component {
     }
 
     async componentDidMount() {
-       this.props.navigation.addListener('focus', () => {
+        this.props.navigation.addListener('focus', () => {
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
                     const url = JSON.parse(res).ApiEndPoint
@@ -64,7 +64,7 @@ class checkin extends Component {
                 })
         })
     }
-    
+
     async getProfileData(auth, id, url) {
         let location = await Location.getCurrentPositionAsync({});
         APIs.Profile(url, auth, id)
@@ -88,22 +88,13 @@ class checkin extends Component {
                         }
                     }
                     makerCoordsArr.push(obj);
-                    // if (res.data['General Information']['Geo Fencing'] === true) {
-                    //     let obj = {
-                    //         title: 'Office Location',
-                    //         coordinate: {
-                    //             latitude: res.data['General Information']['Latitude'],
-                    //             longitude: res.data['General Information']['Longtitude']
-                    //         }
-                    //     }
-                    //     makerCoordsArr.push(obj);
-                    // }
                     this.setState({
                         location: JSON.stringify(location.coords),
                         data: res.data,
                         geofencing: res.data['General Information']['Geo Fencing'],
                         // geofencing: false,
                         radius: res.data['General Information']['Radius(m)'],
+                        //radius: 30,
                         officeCoord: {
                             latitude: res.data['General Information']['Latitude'],
                             longitude: res.data['General Information']['Longtitude']
@@ -112,28 +103,33 @@ class checkin extends Component {
                         mapCoord: {
                             latitude: location.coords.latitude,
                             longitude: location.coords.longitude,
-                            latitudeDelta: 0.0009,
-                            longitudeDelta: 0.0008
+                            latitudeDelta: 0.0019,
+                            longitudeDelta: 0.0018
                         },
                         markerCoordinates: makerCoordsArr
                     })
                 }
             })
             .catch((error) => {
+                console.log("Error", error)
                 //this.props.navigation.navigate('Login')
             })
     }
 
- CheckIn() {
-        // let location = await Location.getCurrentPositionAsync({})
+    async CheckIn() {
+        //console.log("Office Location", this.state.officeCoord)
+        let location = await Location.getCurrentPositionAsync({})
+        //console.log("Latitude", location.coords.latitude)
+        //console.log("Longitude", location.coords.longitude)
         if (this.state.geofencing) { //geofencing true
             if (
                 geolib.isPointWithinRadius(
                     this.state.officeCoord,
                     {
-                        latitude: this.state.location.coords.latitude,
-                        longitude: this.state.location.coords.longitude,
+                        latitude: location.coords.latitude,
+                        longitude: location.coords.longitude,
                     },
+                    //
                     this.state.radius
                 )
             ) {
@@ -146,10 +142,12 @@ class checkin extends Component {
                     })
                 } else {
                     console.log("Within Radius")
+                    console.log("Lat", location.coords.latitude)
+                    console.log("Long", location.coords.longitude)
                     // geo true
                     APIs.Checkin(this.state.url, this.state.auth, this.state.id, {
-                        lat: this.state.location['latitude'],
-                        long: this.state.location['longitude']
+                        lat: location.coords.latitude,
+                        long: location.coords.longitude
                     }).then((res) => {
                         console.log("Check In Screen Data", res)
                         if (res.status === 'success') {
@@ -159,8 +157,10 @@ class checkin extends Component {
 
                             })
                         } else {
+                            console.log("Error message", res)
                             this.setState({
-                                checkMessage: "You're already check in!",
+                                //checkMessage: "You're already check in!",
+                                checkMessage: "Error Message",
                                 isModalVisible: true,
 
                             })
@@ -230,19 +230,31 @@ class checkin extends Component {
             })
     }
 
-   async getCurrentLocation(){
-    let location = await Location.getCurrentPositionAsync({})
-    this.setState({
-        mapCoord: {
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.0009,
-            longitudeDelta: 0.0008,
-        }
-    })
+    async getCurrentLocation() {
+        let location = await Location.getCurrentPositionAsync({})
+        this.setState({
+            mapCoord: {
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+                latitudeDelta: 0.0009,
+                longitudeDelta: 0.0008,
+            }
+        })
     }
 
     render() {
+        //   console.log("Data:::", this.state.data)
+        console.log("Geofencing:::", this.state.geofencing)
+        console.log("Radius:::", this.state.radius)
+        //  console.log("Office Coord:::", this.state.officeCoord)
+        //  console.log("Marker Coordinates", this.state.markerCoordinates)
+        //  console.log("Map Cood::", this.state.mapCoord)
+        //  console.log("User Name", this.state.userName)
+        //  console.log("Location Latitude", this.state.location)
+        //  console.log("Url::", this.state.url)
+        //  console.log("Auth:::", this.state.auth)
+        //  console.log("id:::", this.state.id)
+        //  console.log("Status:::", this.state.status)
         return (
             <Container style={{ flex: 1 }}>
                 <Header style={{
@@ -256,17 +268,17 @@ class checkin extends Component {
                 </Header>
                 <Content>
                     {
-                        this.state.data === null ? <View style={{marginTop: 40, flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-                            <Text style={{ fontSize: 24, color: color.primary}}>Loading...</Text>
+                        this.state.data === null ? <View style={{ marginTop: 40, flex: 1, justifyContent: 'center', alignItems: 'center', }}>
+                            <Text style={{ fontSize: 24, color: color.primary }}>Loading...</Text>
                         </View> :
                             <View style={styles.container}>
                                 <View style={{ flex: 1, height: height }}>
                                     <MapView
                                         //zoomEnabled = {false}
-                                        region= {this.state.mapCoord}
+                                        region={this.state.mapCoord}
                                         style={styles.mapStyle}
                                         initialRegion={this.state.mapCoord}
-                                        >
+                                    >
                                         {this.state.markerCoordinates.map((marker, index) => (
                                             <Marker key={index} coordinate={marker.coordinate} title={marker.title} >
 
@@ -284,30 +296,6 @@ class checkin extends Component {
                                             fillColor={'rgba(230,238,255,0.5)'}
                                         />}
                                     </MapView>
-                                    {/* {this.state.location === null ? <Text>...</Text> :
-
-                                <MapView
-                                    style={styles.mapStyle}
-                                    initialRegion={this.state.mapCoord}>
-                                    
-                                    {this.state.mapMarkerCoords.map(marker => (
-                                        <Marker coordinate={marker.coordinates} title={marker.title}>
-                                            <View>
-                                                
-                                                <Image style={{ width: 40, height: 40,tintColor: marker.title === 'Current Location' ? color.placeHolder : color.primary }} source={require('../../assets/icon/marker.png')} />
-                                            </View>
-                                        </Marker>
-                                    ))}
-                                    {this.state.mapMarkerCoord === null ? <View></View> : <Circle
-                                        center={this.state.mapMarkerCoord}
-                                        radius={10}
-                                        strokeWidth={1}
-                                        strokeColor={'#1a66ff'}
-                                        fillColor={'rgba(230,238,255,0.5)'}
-                                    />}
-                                  
-                                </MapView>
-                            } */}
                                 </View>
 
                                 <View style={styles.usercontainer}>

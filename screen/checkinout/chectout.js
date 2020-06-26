@@ -43,7 +43,7 @@ class checkout extends Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.navigation.addListener('focus', () => {
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
@@ -94,6 +94,7 @@ class checkout extends Component {
                         geofencing: res.data['General Information']['Geo Fencing'],
                         // geofencing: false,
                         radius: res.data['General Information']['Radius(m)'],
+                        //radius: 30,
                         officeCoord: {
                             latitude: res.data['General Information']['Latitude'],
                             longitude: res.data['General Information']['Longtitude']
@@ -102,8 +103,8 @@ class checkout extends Component {
                         mapCoord: {
                             latitude: location.coords.latitude,
                             longitude: location.coords.longitude,
-                            latitudeDelta: 0.0009,
-                            longitudeDelta: 0.0008
+                            latitudeDelta: 0.0019,
+                            longitudeDelta: 0.0018
                         },
                         markerCoordinates: makerCoordsArr
                     })
@@ -115,32 +116,35 @@ class checkout extends Component {
     }
 
     async CheckOut() {
+        //console.log("Office Location", this.state.officeCoord)
         let location = await Location.getCurrentPositionAsync({})
+        //console.log("Latitude", location.coords.latitude)
+        //console.log("Longitude", location.coords.longitude)
         if (this.state.geofencing) {
             if (
                 geolib.isPointWithinRadius(
                     this.state.officeCoord,
                     {
-
                         latitude: location.coords.latitude,
                         longitude: location.coords.longitude,
                     },
                     this.state.radius
                 )
             ) {
-
                 if (this.state.status.Checkout !== false) {
                     this.setState({
                         checkMessage: "You're already checked out!",
                         isModalVisible: true,
-
                     })
                 } else {
                     console.log("Within Radius")
+                    console.log("Lat", location.coords.latitude)
+                    console.log("Long", location.coords.longitude)
+                    console.log("ID", this.state.id)
                     // geo true
                     APIs.Checkout(this.state.url, this.state.auth, this.state.id, {
-                        lat: this.state.location['latitude'],
-                        long: this.state.location['longitude']
+                        lat: location.coords.latitude,
+                        long: location.coords.longitude
                     }).then((res) => {
                         console.log("Check Out Screen Data", res)
                         if (res.status === 'success') {
@@ -150,8 +154,10 @@ class checkout extends Component {
 
                             })
                         } else {
+
                             this.setState({
-                                checkMessage: "You're already check out!",
+                                //checkMessage: "You're already check out!",
+                                checkMessage: "Error Return",
                                 isModalVisible: true,
 
                             })
@@ -190,6 +196,7 @@ class checkout extends Component {
 
                             })
                         } else {
+                            console.log("Return data error")
                             this.setState({
                                 checkMessage: "You're already check out!",
                                 isModalVisible: true,
@@ -199,7 +206,8 @@ class checkout extends Component {
                         this.CheckStatus(this.state.id, this.state.auth, this.state.url)
                     })
                     .catch((error) => {
-                        this.props.navigation.navigate('Login')
+                        console.log("Error", error)
+                        //this.props.navigation.navigate('Login')
                     })
             }
         }
@@ -223,17 +231,17 @@ class checkout extends Component {
 
     render() {
         // console.log("Data:::", this.state.data)
-        console.log("Geofencing:::", this.state.geofencing)
-        //  console.log("Radius:::", this.state.radius)
-        console.log("Office Coord:::", this.state.officeCoord)
-        console.log("Marker Coordinates", this.state.markerCoordinates)
-        console.log("Map Cood::", this.state.mapCoord)
+        //console.log("Geofencing:::", this.state.geofencing)
+        console.log("Radius:::", this.state.radius)
+        //console.log("Office Coord:::", this.state.officeCoord)
+        // console.log("Marker Coordinates", this.state.markerCoordinates)
+        // console.log("Map Cood::", this.state.mapCoord)
         // console.log("User Name", this.state.userName)
         // console.log("Location Latitude", this.state.location)
         // console.log("Url::", this.state.url)
         // console.log("Auth:::", this.state.auth)
         // console.log("id:::", this.state.id)
-        console.log("Status:::", this.state.status)
+        //console.log("Status:::", this.state.status)
         return (
             <Container style={{ flex: 1 }}>
                 <Header style={{
