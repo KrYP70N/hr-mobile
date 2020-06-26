@@ -23,6 +23,7 @@ export default class APIs {
             }
         }).get(`${url}/api/auth/token`)
             .then(function (res) {
+                console.log(res.data, "token <<<")
                 return { data: res.data, status: 'success' }
             })
             .catch(function (error) {
