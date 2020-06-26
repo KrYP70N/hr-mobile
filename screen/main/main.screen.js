@@ -97,6 +97,10 @@ export default class Main extends Component {
               AsyncStorage.removeItem('@hr:token').then(() => {
                 this.props.navigation.navigate('Login')
               })
+              AsyncStorage.setItem('@hr:token', "null")
+              .then(() => {
+                  this.props.navigation.navigate('Login')
+              })
             }else{
               this.setState({
                 lowestLevel: res.data.lowest_level
