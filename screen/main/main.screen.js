@@ -52,7 +52,7 @@ export default class Main extends Component {
             })
           } else {
             console.log("Arrive Here::::::")
-            // AsyncStorage.setItem('@hr:login', 'false')
+            //AsyncStorage.setItem('@hr:login', 'false')
             Toast.show({
               text: 'Connection time out. Please check your internet connection!',
               textStyle: {
@@ -87,12 +87,23 @@ export default class Main extends Component {
     }
 
     this.isLowest = () => {
-      APIs.Level(this.state.url, this.state.auth, this.state.id)
+      let auth = "access_token_48d80ebff5feee9af4494194367f43246bde0162345";
+      APIs.Level(this.state.url, auth, this.state.id)
         .then((res) => {
+
           if (res.status === 'success') {
-            this.setState({
-              lowestLevel: res.data.lowest_level
-            })
+            console.log("RES", res.data)
+            if(res.data.error){
+              AsyncStorage.removeItem('@hr:token').then(() => {
+                this.props.navigation.navigate('Login')
+              })
+            }else{
+              this.setState({
+                lowestLevel: res.data.lowest_level
+              })
+            }
+            
+            
           } else {
             Toast.show({
               text: 'Connection time out. Please check your internet connection!',
@@ -107,7 +118,6 @@ export default class Main extends Component {
           }
         })
     }
-
   }
 
   componentDidMount() {

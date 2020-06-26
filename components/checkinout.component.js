@@ -178,8 +178,8 @@ export default class CheckInOut extends Component {
       return (
         <View style={styles.errorBox}>
           <TouchableOpacity onPress={() => {
-            this.getLocationService()
-            //IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS)
+            //this.getLocationService()
+           // IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS)
           }}>
             <Card style={styles.error}>
               <Image source={require('../assets/icon/location-2.png')} style={styles.errImg} />

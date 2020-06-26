@@ -142,8 +142,9 @@ export default class Attendance extends Component {
                             data: res.data
                         })
                     } else {
+                        this.props.navigation.navigate('Login')
                         Toast.show({
-                            text: 'Connection time out. Please check your internet connection!',
+                            text: 'Token Expire!',
                             textStyle: {
                                 textAlign: 'center'
                             },
