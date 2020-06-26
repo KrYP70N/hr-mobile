@@ -350,9 +350,10 @@ class login extends Component {
                                     })
                                 })
                         } else {
-                            this.setState({
-                                loading: false
-                            })
+                            console.log('I m login!')
+                            // this.setState({
+                            //     loading: false
+                            // })
                             this.props.navigation.navigate('Main')
                         }
                     } else {
@@ -430,7 +431,6 @@ class login extends Component {
 
 
     render() {
-
         console.log("User name::", this.state.user)
         console.log("Password", this.state.password)
         if (this.state.apiUrl === null) {

@@ -88,15 +88,13 @@ export default class Main extends Component {
 
     this.isLowest = () => {
       let auth = "access_token_48d80ebff5feee9af4494194367f43246bde0162345";
-      APIs.Level(this.state.url, auth, this.state.id)
+      APIs.Level(this.state.url, this.state.auth, this.state.id)
         .then((res) => {
 
           if (res.status === 'success') {
             console.log("RES", res.data)
             if(res.data.error){
-              AsyncStorage.removeItem('@hr:token').then(() => {
-                this.props.navigation.navigate('Login')
-              })
+              this.props.navigation.navigate('Login')
             }else{
               this.setState({
                 lowestLevel: res.data.lowest_level
