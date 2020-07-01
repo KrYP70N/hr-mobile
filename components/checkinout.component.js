@@ -211,7 +211,7 @@ export default class CheckInOut extends Component {
                 <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width/3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
                   <Image
                     source={require('../assets/icon/checkout.png')}
-                    //style={{ width: 30, height: 30 }}
+                    style={{ width: 30, height: 30, }}
                   />
                   <Text style={{ color: '#fff', marginTop: 5 }}>Check Out</Text>
                 </View>
