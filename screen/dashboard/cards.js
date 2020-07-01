@@ -101,8 +101,6 @@ export default class Cards extends Component {
     getSummaryData(auth, id, url, year) {
         APIs.getDashboardSummary(url, auth, id, year)
             .then((res) => {
-                console.log("Dashboard Data", res.data["Dashboard Type"])
-                console.log("Dash Data", res.data)
                 let list = [];
                 if (res.status == 'success') {
                     if(res.error){

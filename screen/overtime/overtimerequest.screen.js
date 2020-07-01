@@ -184,6 +184,10 @@ export class OTRequest extends Component {
         APIs.OTRequest(id, auth, url, request_from, request_to, this.state.description)
             .then((res) => {
                 if (res.status === "success") {
+                    console.log("RES Error", res.error)
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
                     if (res.data.error == false) {
                         let date = new Date();
                         //this.pickDate(d);
@@ -226,6 +230,7 @@ export class OTRequest extends Component {
                             changeIconStatus: 'fail',
                             isModalVisible: true,
                         })
+                    }
                     }
                 } else {
                     this.setState({

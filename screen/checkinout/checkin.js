@@ -73,6 +73,7 @@ class checkin extends Component {
                     if(res.error){
                         this.props.navigation.navigate('Login')
                     }else{
+                        console.log("Current Location", location.coords)
                         let makerCoordsArr = [];
                     let Cobj = {
                         title: 'You Are Here',
@@ -283,7 +284,7 @@ class checkin extends Component {
     }
 
     render() {
-        //console.log("Data:::", this.state.data)
+        console.log("Marker Coordinate:::", this.state.markerCoordinates)
         console.log("Geofencing:::", this.state.geofencing)
         console.log("Radius:::", this.state.radius)
         console.log("Status:::", this.state.status)

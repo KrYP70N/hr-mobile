@@ -54,17 +54,21 @@ export default class APIs {
 
     // employee level
     static Level(url, token, id) {
+        console.log("Level url", url)
+        console.log("Level token", token)
+        console.log("Level id", id)
         return axios.create({
             headers: {
                 'Authorization': token
             }
-        }).get(`${url}/employee/level/${id}?employeeID=${id}`)
+        }).get(`${url}/employee/level/${id}`)
             .then(function (res) {
+                console.log("Level Result", res.data)
                 if(res.data.data.error){
-                    return { error: true, status: 'success'}
+                    return {error: true, status: 'success'}
                 }else{
                     return { data: res.data.data, status: 'success' }
-                }   
+                }       
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -233,11 +237,11 @@ export default class APIs {
     static OTRequest(id, auth, url, request_date_from, request_date_to, description) {
         return axios.create({
             headers: {
-                'Authorization': auth
+                'Authorization': 'Bearer access_token_857336a23c565908405ee6abaebf939da0914b3c11'
             }
         }).post(`${url}/overtime/${id}?request_date_from=${request_date_from}&request_date_to=${request_date_to}&description=${description}`)
             .then(function (res) {
-                if (res.data.data.error) {
+                if (res.data.data.code=='token') {
                     return { error: true, status: 'success' }
                 } else {
                     return { data: res.data.data, status: 'success' }

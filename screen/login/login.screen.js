@@ -310,13 +310,14 @@ class login extends Component {
 
             AsyncStorage.getItem('@hr:token')
                 .then((res) => {
+                    console.log("Reach Login")
                     if (res !== null) {
                         let data = JSON.parse(res)
 
                         let diff = moment(data.exp).diff(moment(new Date()), 'minutes')
                         // let diff = moment('2020-06-27 04:17:02').diff(moment(new Date()), 'mintues')
                         console.log("Diff", diff)
-                        if (diff < 5 && diff > 0) {
+                        if (diff < 2 && diff > 0) {
                             // refresh
                             let token = data.key
                             let id = data.id
@@ -367,14 +368,9 @@ class login extends Component {
 
     login = () => {
         console.log("Click Login :::")
-        // console.log("URL", this.state.apiUrl)
-        // console.log("DB", this.state.db)
-        // console.log("User", this.state.user)
-        // console.log("Password", this.state.password)
-
         APIs.Token(this.state.apiUrl, this.state.db, this.state.user, this.state.password)
             .then((res) => {
-                console.log("RES:::", res)
+                console.log("Login RES:::", res)
                 if (res.status === 'success') {
                     if (res.geterror) {
                         Toast.show({

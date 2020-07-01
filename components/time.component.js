@@ -52,7 +52,7 @@ export default class Clock extends Component {
                                 }
                             })
                             .catch((error) => {
-                                this.props.navigation.navigate('Login')
+                                //this.props.navigation.navigate('Login')
                             })
                     })
             })
