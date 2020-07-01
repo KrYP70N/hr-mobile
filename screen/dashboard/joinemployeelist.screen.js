@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, SafeAreaView, AsyncStorage, Image } from 'react-native'
-import { Container, Content, Icon } from 'native-base'
+import { Container, Content, Icon, Toast } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
@@ -75,6 +75,16 @@ export class JoinEmployeeList extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     if(res.error){
+                        Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                         this.props.navigation.navigate('Login')
                     }else{
                         this.setState({
@@ -85,6 +95,16 @@ export class JoinEmployeeList extends Component {
                         })
                     }               
                 } else {
+                    Toast.show({
+                        text: 'Authentication Failed!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
                     this.setState({ 
                         empLists: [],
                         loading: false,

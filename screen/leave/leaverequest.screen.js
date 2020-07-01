@@ -56,19 +56,8 @@ export class LeaveRequest extends Component {
             loading: true,
             loadingTxt: 'requesting your leave ...'
         })
-        // console.log("auth::::", auth)
-        // console.log("url", url)
-        // console.log("id:::", id)
-        // console.log("Selected Leave:::", this.state.selectedLeaveType)
-        // console.log("Start Date", this.state.startDate)
-        // console.log("End Date", this.state.endDate)
-        // console.log("Morning Leave", this.state.morning_leave)
-        // console.log("Evening Leave", this.state.evening_leave)
-        // console.log("Description", this.state.description)
-        // console.log("Binary", this.state.binary)
         APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.morning_leave, this.state.evening_leave, this.state.description, this.state.binary)
             .then((res) => {
-                console.log("Res", res)
                 if (res.status == "success") {
                     if (res.data.error == false) {
                         const d = new Date();
@@ -146,6 +135,16 @@ export class LeaveRequest extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     if (res.error) {
+                        Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                         this.props.navigation.navigate('Login')
                     } else {
                         this.setState({
@@ -162,6 +161,16 @@ export class LeaveRequest extends Component {
                     }
 
                 } else {
+                    Toast.show({
+                        text: 'Authentication Failed!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 3000
+                    })
                     this.setState({
                         leaveType: []
                     })
@@ -209,19 +218,16 @@ export class LeaveRequest extends Component {
     };
 
     pickEndDate = (data) => {
-        console.log("End Date Data", data)
         let date = new Date(data)
         // difference between Start Date and End Date
         let secondDate = `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`;
         let eDate = new Date(secondDate);
         let sDate = new Date(this.state.startDate);
-        console.log("Start DAte", this.state.startDate);
-        console.log(secondDate);
 
         if (sDate <= eDate) {
             let diffTime = eDate - sDate;
             let diffDay = (diffTime / (1000 * 3600 * 24)) + 1;
-            console.log(diffDay);
+            //console.log(diffDay);
             this.setState({
                 endDate: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
                 endDateMonthLabel: months[date.getMonth()],
@@ -263,7 +269,6 @@ export class LeaveRequest extends Component {
     }
 
     render() {
-        console.log("Leave Type:", this.state.leaveType)
         if (this.state.startDate === null || this.state.endDate === null || this.state.attachment === null || this.state.loading === true) {
             return (
                 <Loading info={this.state.loadingTxt} />

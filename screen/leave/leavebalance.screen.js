@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, SafeAreaView, Dimensions, TouchableOpacity, AsyncStorage } from 'react-native'
-import { Container, Content, Icon } from 'native-base'
+import { Container, Content, Icon, Toast} from 'native-base'
 import { PieChart } from 'react-native-svg-charts'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
@@ -85,10 +85,18 @@ export class EmployeeLeaveBalance extends Component {
         .then((res) => {
             if(res.status == "success"){
                 if(res.error){
+                    Toast.show({
+                        text: 'Please login again. Your token is expried!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
                     this.props.navigation.navigate('Login')
                 }else{
-                    console.log("API leave Balance", res.data)
-                    console.log("API leave balance length", res.data.length)
                     let data = [];
                     for(let i=0; i<res.data.length; i++){
                         let obj = {
@@ -98,19 +106,27 @@ export class EmployeeLeaveBalance extends Component {
                         }
                         data.push(obj)
                     }
-                    console.log("Res Data", data)
                     this.setState({
                         leaveBalanceData: data
                     })
                 }
             }else{
+                Toast.show({
+                    text: 'Authentication Failed!',
+                    textStyle: {
+                        textAlign: 'center'
+                    },
+                    style: {
+                        backgroundColor: color.primary
+                    },
+                    duration: 6000
+                })
                 this.setState({leaveBalanceData: []})
             }
         })
     }
 
     render() {
-        //console.log("leave balance data", this.state.leaveBalanceData)
         let leaveData = this.state.leaveBalanceData.map((leave, index) => {
             return (
                 <View key = {index} style={{ width: '100%', }}>
@@ -171,7 +187,11 @@ export class EmployeeLeaveBalance extends Component {
                         </View>
                        
                     </Content>
-                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('LeaveRequest') }}>
+                    <TouchableOpacity
+                    style={{ position: 'absolute', bottom: 0, width: '100%', height: 55, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }}
+                     onPress={() => { 
+                        this.props.navigation.navigate('LeaveRequest') 
+                        }}>
                             <View style={{ position: 'absolute', bottom: 0, width: '100%', height: 55, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }} >
                                 <Text style={styLeave.buttonText}>Apply Leave</Text>
                             </View>

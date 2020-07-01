@@ -127,7 +127,6 @@ export default class Payroll extends Component {
                 <Loading />
             )
         }
-        console.log("Payroll Lists", this.state.payroll)
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={styPayroll.container}>

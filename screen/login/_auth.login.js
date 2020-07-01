@@ -79,8 +79,6 @@ export default class Auth extends Component {
     }
 
     render() {
-        console.log("Key", this.state.key)
-        console.log("Version", this.state.version)
         if(this.state.loading === true) {
             return (
                 <Loading />

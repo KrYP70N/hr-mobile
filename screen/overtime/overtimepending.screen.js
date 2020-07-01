@@ -49,7 +49,6 @@ export class OvertimePending extends Component {
         APIs.OTUpdateStatus(otId, this.state.auth, this.state.url, 'cancel')
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("Cancel OT Return Message", res.data)
                     this.getApproveData(this.state.auth, this.state.id, this.state.url)
                     this.setState({
                         checkMessage: 'Cancellation Successful!',
@@ -71,9 +70,19 @@ export class OvertimePending extends Component {
     getApproveData(auth, id, url) {
         APIs.OTPending(id, auth, url)
             .then((res) => {
-                console.log("OT Pending Data", res.data)
+               
                 if (res.status === 'success') {
                     if(res.error){
+                        Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                         this.props.navigation.navigate('Login')
                     }else{
                         this.setState({
@@ -81,6 +90,16 @@ export class OvertimePending extends Component {
                         })
                     }
                 } else {
+                    Toast.show({
+                        text: 'Authentication Failed!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
                     this.setState({
                         overtimes: []
                     })

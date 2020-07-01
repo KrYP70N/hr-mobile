@@ -12,135 +12,6 @@ import Heading from '../../components/header.component'
 import CheckInOut from '../../components/checkinout.component'
 import Clock from '../../components/time.component'
 import DB from '../../model/db.model'
-// export default class Main extends Component {
-
-//   constructor(props) {
-//     super(props)
-//     this.state = {
-//       url: null,
-//       auth: null,
-//       id: null,
-//       profile: null,
-//       checkin: {
-//         status: true,
-//         disabled: false
-//       },
-//       checkout: {
-//         status: true,
-//         disabled: true
-//       },
-//       loading: true,
-//       modal: false,
-//       lowestLevel: true
-//     }
-
-//     this.getProfile = (url, auth, id) => {
-//       console.log("Auth", auth)
-//       console.log("url", url)
-//       console.log("id", id)
-//       APIs.Profile(url, auth, id)
-//         .then((res) => {
-//           console.log("Arrive Main")
-//           if (res.status == 'success') {
-//             //console.log("main token expire", res.error)
-//             // if(res.error){
-//             //   this.props.navigation.navigate("Login")
-//             //   Toast.show({
-//             //     text: 'Please login again. Your token is expried!',
-//             //     textStyle: {
-//             //       textAlign: 'center'
-//             //     },
-//             //     style: {
-//             //       backgroundColor: color.primary
-//             //     },
-//             //     duration: 6000
-//             //   })
-
-//             // }else{
-//               this.setState({
-//                 profile: res.data
-//               })
-//            // }
-
-//             this.setState({
-//               loading: false
-//             })
-//           } else {
-//             console.log("Main Error Arrive Here::::::")
-//             //this.props.navigation.navigate('Login')
-//             //AsyncStorage.setItem('@hr:login', 'false')
-//           }
-//         })
-//     }
-
-//     this.checkToken = () => {
-//       AsyncStorage.getItem('@hr:token')
-//         .then((res) => {
-//           let auth = DB.getToken(res)
-//           let id = DB.getUserId(res)
-//           this.setState({
-//             auth: DB.getToken(res),
-//             id: DB.getUserId(res)
-//           })
-//           AsyncStorage.getItem('@hr:endPoint')
-//             .then((res) => {
-//               let url = DB.getEndPoint(res)
-//               this.setState({
-//                 url: DB.getEndPoint(res)
-//               })
-
-//               this.getProfile(url, auth, id)
-//               this.isLowest(url, auth, id)
-//             })
-//         })
-//     }
-
-//     this.isLowest = (url, auth, id) => {
-//       APIs.Level(url, auth, id)
-//         .then((res) => {
-//           if (res.status === 'success') {
-//             // if(res.error){
-//             //   this.props.navigation.navigate('Login')
-//             // }else{
-//               this.setState({
-//                 lowestLevel: res.data.lowest_level
-//               })
-//             //} 
-//           } else {
-//           //  this.setState({
-//           //    profile: null
-//           //  })
-//           }
-//         })
-//     }
-//   }
-
-//   componentDidMount() {
-//     BackHandler.addEventListener('hardwareBackPress', () => {
-//       return true
-//     })
-//     this.props.navigation.addListener('focus', () => {
-//       AsyncStorage.getItem('@hr:token')
-//         .then((res) => {
-//           let auth = DB.getToken(res)
-//           let id = DB.getUserId(res)
-//           this.setState({
-//             auth: DB.getToken(res),
-//             id: DB.getUserId(res)
-//           })
-//           AsyncStorage.getItem('@hr:endPoint')
-//             .then((res) => {
-//               let url = DB.getEndPoint(res)
-//               this.setState({
-//                 url: DB.getEndPoint(res)
-//               })
-
-//               this.getProfile(url, auth, id)
-//               this.isLowest(url, auth, id)
-//             })
-//         })
-//     })
-//   }
 
 export default class Main extends Component {
 
@@ -175,7 +46,6 @@ export default class Main extends Component {
     this.props.navigation.addListener('focus', () => {
       AsyncStorage.getItem('@hr:token')
         .then((res) => {
-          console.log("Main Screen Auth", DB.getToken(res))
           const auth = DB.getToken(res)
           const id = DB.getUserId(res)
           this.setState({
@@ -200,7 +70,18 @@ export default class Main extends Component {
       .then((res) => {
         if (res.status === 'success') {
           if (res.error) {
+            Toast.show({
+              text: 'Please login again. Your token is expried!',
+              textStyle: {
+                  textAlign: 'center'
+              },
+              style: {
+                  backgroundColor: color.primary
+              },
+              duration: 6000
+          })
             this.props.navigation.navigate('Login')
+            
           } else {
             this.setState({
               profile: res.data,
@@ -208,8 +89,6 @@ export default class Main extends Component {
             })
           }
         } else {
-          // AsyncStorage.setItem('@hr:login', 'false')
-          //console.log("Arrive ")
           Toast.show({
             text: 'Authentication Failed!',
             textStyle: {
@@ -227,7 +106,6 @@ export default class Main extends Component {
   isLowest(url, auth, id) {
     APIs.Level(url, auth, id)
       .then((res) => {
-        console.log("Main Level Result", res)
         if (res.status == 'success') {
           if (res.error) {
             this.props.navigation.navigate('Login')
@@ -237,7 +115,6 @@ export default class Main extends Component {
             })
           }
         } else {
-          console.log("Arrive Level Error")
           Toast.show({
             text: 'Authentication Failed!',
             textStyle: {
@@ -251,14 +128,6 @@ export default class Main extends Component {
         }
       })
   }
-
-  // componentDidUpdate() {
-  //   // profile request
-  //   if (this.state.profile === null && this.state.url !== null && this.state.id !== null) {
-  //     this.getProfile(this.state.url, this.state.auth, this.state.id)
-  //     this.isLowest(this.state.url, this.state.auth, this.state.id)
-  //   }
-  // }
 
   render() {
     if (this.state.loading === true || this.state.profile === null) {

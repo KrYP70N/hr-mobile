@@ -71,9 +71,18 @@ class checkin extends Component {
             .then((res) => {
                 if (res.status === "success") {
                     if(res.error){
+                        Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                         this.props.navigation.navigate('Login')
                     }else{
-                        console.log("Current Location", location.coords)
                         let makerCoordsArr = [];
                     let Cobj = {
                         title: 'You Are Here',
@@ -114,19 +123,25 @@ class checkin extends Component {
                     })
                     }
                     
+                }else{
+                    Toast.show({
+                        text: 'Authentication Failed!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
                 }
             })
             .catch((error) => {
-                console.log("Error", error)
-                //this.props.navigation.navigate('Login')
             })
     }
 
     async CheckIn() {
-        //console.log("Office Location", this.state.officeCoord)
         let location = await Location.getCurrentPositionAsync({})
-        //console.log("Latitude", location.coords.latitude)
-        //console.log("Longitude", location.coords.longitude)
         if (this.state.geofencing) { //geofencing true
             if (
                 geolib.isPointWithinRadius(
@@ -147,17 +162,13 @@ class checkin extends Component {
 
                     })
                 } else {
-                    console.log("Within Radius")
-                    console.log("Lat", location.coords.latitude)
-                    console.log("Long", location.coords.longitude)
+                    // Within Radius"
                     // geo true
                     APIs.Checkin(this.state.url, this.state.auth, this.state.id, {
                         lat: location.coords.latitude,
                         long: location.coords.longitude
                     }).then((res) => {
-                        //console.log("Check In Screen Data", res)
                         if (res.status === 'success') {
-                            console.log("Error Message", res.data.data.data.error)
                             if (res.error) {
                                 this.props.navigation.navigate('Login')
                                 Toast.show({
@@ -179,10 +190,8 @@ class checkin extends Component {
                             }
 
                         } else {
-                            console.log("Error message", res)
                             this.setState({
-                                //checkMessage: "You're already check in!",
-                                checkMessage: "Error Message",
+                                checkMessage: "Authentication Failed",
                                 isModalVisible: true,
 
                             })
@@ -196,7 +205,6 @@ class checkin extends Component {
                 }
 
             } else {
-                console.log("Not within radius")
                 //not within radius
                 this.setState({
                     checkMessage: "You're out of office area!",
@@ -215,7 +223,6 @@ class checkin extends Component {
                 APIs.Checkin(this.state.url, this.state.auth, this.state.id)
                     .then((res) => {
                         if (res.status === 'success') {
-                            console.log("Error Message", res.data.data.data.error)
                             if (res.error) {
                                 this.props.navigation.navigate('Login')
                                 Toast.show({
@@ -254,7 +261,6 @@ class checkin extends Component {
     CheckStatus(id, auth, url) {
         APIs.CheckStatus(id, auth, url)
             .then((res) => {
-                console.log("Check In Status", res)
                 if (res.status === 'success') {
                     if (res.error) {
                         this.props.navigation.navigate('Login')
@@ -284,10 +290,6 @@ class checkin extends Component {
     }
 
     render() {
-        console.log("Marker Coordinate:::", this.state.markerCoordinates)
-        console.log("Geofencing:::", this.state.geofencing)
-        console.log("Radius:::", this.state.radius)
-        console.log("Status:::", this.state.status)
         return (
             <Container style={{ flex: 1 }}>
                 <Header style={{

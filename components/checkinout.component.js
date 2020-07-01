@@ -92,62 +92,7 @@ export default class CheckInOut extends Component {
           id: data['id'],
         })
       })
-
   }
-
-  // async componentDidUpdate() {
-
-  //   if (this.state.url !== null && this.state.auth !== null && this.state.id !== null && this.state.data === null) {
-  //     APIs.Profile(this.state.url, this.state.auth, this.state.id)
-  //       .then((res) => {
-  //         this.setState({
-  //           data: res.data,
-  //           geofencing: res.data['General Information']['Geo Fencing'],
-  //           // geofencing: false,
-  //           radius: res.data['General Information']['Radius(m)'],
-  //           officeCoord: {
-  //             latitude: res.data['General Information']['Latitude'],
-  //             longitude: res.data['General Information']['Longtitude']
-  //           }
-  //         })
-  //       })
-  //       .catch((error) => {
-  //         this.props.navigation.navigate('Login')
-  //       })
-
-  //     if (this.state.status === null) {
-  //       this.CheckStatus()
-  //     }
-
-  //   }
-
-  //   if (this.state.location !== null && this.state.geofencing === true) {
-  //     setTimeout(async () => {
-  //       let location = await Location.getCurrentPositionAsync({})
-
-  //       if (
-  //         geolib.isPointWithinRadius(
-  //           this.state.officeCoord,
-  //           // this.state.officeCoord,
-  //           {
-  //             latitude: this.state.location['latitude'],
-  //             longitude: this.state.location['longitude'],
-  //           },
-  //           this.state.radius
-  //         )
-  //       ) {
-  //         this.setState({
-  //           withinRadius: true
-  //         })
-  //       } else {
-  //         this.setState({
-  //           withinRadius: false
-  //         })
-  //       }
-
-  //     }, 2000)
-  //   }
-  // }
 
   async getLocationService(){
     if (Platform.OS === 'android' && !Constants.isDevice) {

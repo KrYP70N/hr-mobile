@@ -48,7 +48,6 @@ export class EmployeeLeavePending extends Component {
 		APIs.leaveStatusUpdate(this.state.url, this.state.auth, cid, 'cancel')
 			.then((res) => {
 				if (res.status === 'success') {
-					console.log("Leave Cancellation::", res.data)
 					this.getApproveData(this.state.auth, this.state.id, this.state.url)
 					this.setState({
 						checkMessage: 'Cancellation Successful!',
@@ -70,9 +69,18 @@ export class EmployeeLeavePending extends Component {
 	getApproveData(auth, id, url) {
 		APIs.getLeaveRequest(auth, url, id)
 			.then((res) => {
-				console.log("Leave Pending List::", res.data)
 				if (res.status === 'success') {
 					if (res.error) {
+						Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
 						this.props.navigation.navigate('Login')
 					} else {
 						this.setState({
@@ -80,6 +88,16 @@ export class EmployeeLeavePending extends Component {
 						})
 					}
 				} else {
+					Toast.show({
+						text: 'Authentication Failed!',
+						textStyle: {
+							textAlign: 'center'
+						},
+						style: {
+							backgroundColor: color.primary
+						},
+						duration: 3000
+					})
 					this.setState({
 						leaves: []
 					})

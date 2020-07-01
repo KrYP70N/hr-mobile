@@ -14,52 +14,6 @@ export class SideMenu extends Component {
     }
   }
 
-//   componentDidMount() {
-//      //this.props.navigation.addListener('focus', () => {
-//       AsyncStorage.getItem('@hr:endPoint')
-//       .then((res) => {
-//           const url = JSON.parse(res).ApiEndPoint
-//           this.setState({ url: JSON.parse(res).ApiEndPoint })
-//           AsyncStorage.getItem('@hr:token')
-//               .then((res) => {
-//                   const auth = JSON.parse(res).key;
-//                   const id = JSON.parse(res).id;
-//                   this.setState({
-//                       auth: JSON.parse(res).key,
-//                       id: JSON.parse(res).id
-//                   })
-//                   this.getLevel(auth, id, url);
-
-//               })
-//       })
-     
-//     // })
-//   }
-
-//   componentDidUpdate() {
-//     if (
-//         this.state.url !== null &&
-//         this.state.auth !== null &&
-//         this.state.id !== null 
-       
-//     ) {
-//         this.getLevel(this.state.url, this.state.auth, this.state.id)
-//     }
-// }
-
-  getLevel(url, auth, id){
-    APIs.Level(url, auth, id)
-    .then((res) => {
-      if (res.status === 'success') {
-        this.setState({
-          level: res.data.lowest_level
-        })
-      } else {
-        // api errors 
-      }
-    })
-  }
-
   render() {
     return (
       <View style={{ flex: 1, marginTop: 20 }}>

@@ -1,21 +1,13 @@
 import React, { Component } from 'react'
 import { Text, View, Dimensions, StyleSheet, StatusBar, TouchableOpacity, AsyncStorage, SafeAreaView, Image } from 'react-native'
-import { Icon, Header, Toast, Left, Right, Container, Content } from 'native-base'
+import { Icon, Toast, Container, Content } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
-import Loading from '../../components/loading.component'
 import styles from './leave.style';
 import Modal from 'react-native-modal';
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height
-const data = [
-    { name: 'Phoe Phoe', email: 'phoephoe@gmail.com' },
-    { name: 'Thet Su', email: 'thetsu@gmail.com' },
-    { name: 'Lwin', email: 'lwin@gmail.com' },
-    { name: 'Ei Zon', email: 'eizon@gmail.com' },
-
-];
 
 export default class LeaveApprove extends Component {
     constructor(props) {
@@ -57,9 +49,18 @@ export default class LeaveApprove extends Component {
     getApproveStatus(url, auth, id) {
         APIs.leaveApproval(url, auth, id)
             .then((res) => {
-                console.log("Leave Approved Data", res.data)
                 if (res.status === 'success') {
                     if(res.error){
+                        Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                         this.props.navigation.navigate('Login')
                     }else{
                         this.setState({
@@ -69,6 +70,16 @@ export default class LeaveApprove extends Component {
                     }
                     
                 } else {
+                    Toast.show({
+                        text: 'Authentication Failed!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 3000
+                    })
                     this.setState({ leaveLists: [] })
                 }
             })
@@ -78,7 +89,6 @@ export default class LeaveApprove extends Component {
         APIs.leaveStatusUpdate(url, auth, leaveID, status)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("Leave Status Update::", res.data)
                     if (res.data.error == false) {
                         this.setState({
                             refresh: !this.state.refresh,
@@ -88,13 +98,28 @@ export default class LeaveApprove extends Component {
                         })
                         this.getApproveStatus(this.state.url, this.state.auth, this.state.id)
                     } else {
-                        this.setState({
-                            refresh: !this.state.refresh,
-                            checkMessage: res.data.message,
-                            changeIconStatus: 'fail',
-                            isModalVisible: true,
-                        })
-                        this.getApproveStatus(this.state.url, this.state.auth, this.state.id)
+                        if(res.data.code == 'token'){
+                            Toast.show({
+                                text: 'Please login again. Your token is expried!',
+                                textStyle: {
+                                    textAlign: 'center'
+                                },
+                                style: {
+                                    backgroundColor: color.primary
+                                },
+                                duration: 6000
+                            })
+                            this.props.navigation.navigate('Login')
+                        }else{
+                            this.setState({
+                                refresh: !this.state.refresh,
+                                checkMessage: res.data.message,
+                                changeIconStatus: 'fail',
+                                isModalVisible: true,
+                            })
+                            this.getApproveStatus(this.state.url, this.state.auth, this.state.id)
+                        }
+                       
 
                     }
                 } else {
@@ -106,7 +131,6 @@ export default class LeaveApprove extends Component {
                     this.getApproveStatus(this.state.url, this.state.auth, this.state.id)
                 }
             })
-
     }
 
     render() {

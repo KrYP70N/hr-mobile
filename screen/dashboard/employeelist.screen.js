@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, SafeAreaView, AsyncStorage, Image } from 'react-native'
-import { Container, Icon, Content, } from 'native-base'
+import { Container, Icon, Content, Toast} from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
@@ -74,10 +74,20 @@ export class EmployeeListScreen extends Component {
         APIs.getEmployeeListData(url, auth, id, year)
             .then((res) => {
                 if (res.status == "success") {
-                    if (res.data == true) {
+                    if (res.error == true) {
+                        Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                         this.props.navigation.navigate('Login')
                     } else {
-                        console.log("Emp List::", res.data)
+                        
                         this.setState({
                             empLists: res.data,
                             loading: false,
@@ -87,6 +97,16 @@ export class EmployeeListScreen extends Component {
                     }
 
                 } else {
+                    Toast.show({
+                        text: 'Authentication Failed!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
                     this.setState({
                         empLists: [],
                         loading: false,
@@ -103,7 +123,6 @@ export class EmployeeListScreen extends Component {
                 <Loading info={this.state.loadingTxt} />
             )
         }
-        console.log("Emp Lists", this.state.empLists)
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ backgroundColor: color.lighter }}>

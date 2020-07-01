@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, AsyncStorage, StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
-import { Container, Content, Header, Left, Right, Icon } from 'native-base'
+import { Container, Content, Header, Left, Right, Icon, Toast } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import typo from '../../constant/typography'
@@ -120,10 +120,7 @@ class checkout extends Component {
     }
 
     async CheckOut() {
-        //console.log("Office Location", this.state.officeCoord)
         let location = await Location.getCurrentPositionAsync({})
-        //console.log("Latitude", location.coords.latitude)
-        //console.log("Longitude", location.coords.longitude)
         if (this.state.geofencing) {
             if (
                 geolib.isPointWithinRadius(
@@ -142,20 +139,13 @@ class checkout extends Component {
                     })
                 } else {
                     console.log("Within Radius")
-                    console.log("Lat", location.coords.latitude)
-                    console.log("Long", location.coords.longitude)
-                    console.log("ID", this.state.id)
                     // geo true
                     APIs.Checkout(this.state.url, this.state.auth, this.state.id, {
                         lat: location.coords.latitude,
                         long: location.coords.longitude
                     }).then((res) => {
-                        
-                        //console.log("Check Out Screen Data", res)
                         if (res.status === 'success') {
-                            console.log("Error", res.data.data.data.error)
                             if (res.error) {
-                                console.log("Error is true")
                                 Toast.show({
                                     text: 'Please login again. Your token is expried!',
                                     textStyle: {
@@ -180,7 +170,7 @@ class checkout extends Component {
 
                             this.setState({
                                 //checkMessage: "You're already check out!",
-                                checkMessage: "Error Return",
+                                checkMessage: "Authentication Failed",
                                 isModalVisible: true,
 
                             })
@@ -213,7 +203,6 @@ class checkout extends Component {
                 APIs.Checkout(this.state.url, this.state.auth, this.state.id)
                     .then((res) => {
                         if (res.status === 'success') {
-                            console.log("Res Data", res.data)
                             if (res.error) {
                                 //this.props.navigation.navigate('Login')
                                 Toast.show({
@@ -234,9 +223,8 @@ class checkout extends Component {
                                 })
                             }
                         } else {
-                            console.log("Return data error")
                             this.setState({
-                                checkMessage: "You're already check out!",
+                                checkMessage: "Authentication Failed!",
                                 isModalVisible: true,
 
                             })
@@ -244,8 +232,16 @@ class checkout extends Component {
                         this.CheckStatus(this.state.id, this.state.auth, this.state.url)
                     })
                     .catch((error) => {
-                        console.log("Error", error)
-                        //this.props.navigation.navigate('Login')
+                        Toast.show({
+                            text: 'Authentication Failed!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                     })
             }
         }
@@ -254,9 +250,18 @@ class checkout extends Component {
     CheckStatus(id, auth, url) {
         APIs.CheckStatus(id, auth, url)
             .then((res) => {
-                //console.log("Check Out Status", res)
                 if (res.status === 'success') {
                     if (res.error) {
+                        Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                         this.props.navigation.navigate('Login')
                     } else {
                         this.setState({
@@ -264,16 +269,24 @@ class checkout extends Component {
                         })
                     }
                 } else {
-                    this.setState({
-                        status: null
+                    Toast.show({
+                        text: 'Authentication Failed!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 3000
                     })
+                    // this.setState({
+                    //     status: null
+                    // })
                 }
             })
     }
 
     render() {
-        console.log("Radius:::", this.state.radius)
-
         return (
             <Container style={{ flex: 1 }}>
                 <Header style={{

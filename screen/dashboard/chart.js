@@ -1,6 +1,6 @@
 import React, { useState, Component } from 'react'
 
-import { View, Text, Icon } from 'native-base'
+import { View, Text, Icon, Toast } from 'native-base'
 import { PieChart } from 'react-native-svg-charts'
 import { AsyncStorage, Dimensions } from 'react-native'
 import styles from './dashboard.style'
@@ -82,10 +82,19 @@ export default class Chart extends Component {
         APIs.getDashboardSummary(url, auth, id, year)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("Dashboard Res Data", res.data)
+                   
                     if (res.error) {
+                        Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                         this.props.navigation.navigate('Login')
-                        console.log("Error is ture here:::::")
                     } else {
                         if (res.data["Dashboard Type"] == "HR") {
                             let data = []
@@ -169,7 +178,16 @@ export default class Chart extends Component {
                     }
                 }
                 else {
-                    console.log("Else Condition")
+                    Toast.show({
+                        text: 'Authentication Failed!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 3000
+                    })
                 }
 
             })

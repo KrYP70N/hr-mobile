@@ -57,9 +57,18 @@ export default class OvertimeApprove extends Component {
     getApproveStatus(url, auth, id) {
         APIs.OTApproval(url, auth, id)
             .then((res) => {
-                console.log("OT Approved Data", res.data)
                 if (res.status === 'success') {
                     if(res.error){
+                        Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                         this.props.navigation.navigate('Login')
                     }else{
                         this.setState({
@@ -68,6 +77,16 @@ export default class OvertimeApprove extends Component {
                         })
                     }
                 } else {
+                    Toast.show({
+                        text: 'Authentication Failed!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 3000
+                    })
                     this.setState({
                         overtimeList: []
                     })
@@ -78,7 +97,6 @@ export default class OvertimeApprove extends Component {
     sendApproveRejectOT(otID, auth, url, status) {
         APIs.OTUpdateStatus(otID, auth, url, status)
             .then((res) => {
-                console.log("OT Approvement by HR", res.data)
                 if (res.status === 'success') {
                     if (res.data.error == false) {
                         this.setState({
@@ -105,7 +123,6 @@ export default class OvertimeApprove extends Component {
                         isModalVisible: true,
                     })
                     this.getApproveStatus(this.state.url, this.state.auth, this.state.id)
-
                 }
 
             })

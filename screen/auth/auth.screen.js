@@ -33,7 +33,6 @@ export default class Auth extends Component {
 
         // submit key
         this.submitKey = () => {
-            console.log("Key", this.state.key, this.state.version)
             Keyboard.dismiss()
             this.setState({
                 loading: true
@@ -92,9 +91,6 @@ export default class Auth extends Component {
     }
 
     render() {
-
-        console.log("Key", this.state.key)
-        console.log("Version", this.state.version)
         if(this.state.loading === true) {
             return (
                 <Loading />

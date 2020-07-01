@@ -14,10 +14,6 @@ export default class APIs {
 
     // auth token
     static Token(url, db, user, password) {
-        console.log("Url", url)
-        console.log("DB", db)
-        console.log("Login", user)
-        console.log("Password", password)
         return axios.create({
             headers: {
                 db: db,
@@ -26,7 +22,6 @@ export default class APIs {
             }
         }).get(`${url}/api/auth/token`)
             .then(function (res) {
-                    console.log("Res Data", res.data)
                     if(res.data.data == undefined){
                         return { data: res.data, status: 'success' }
                     }else{
@@ -54,16 +49,12 @@ export default class APIs {
 
     // employee level
     static Level(url, token, id) {
-        console.log("Level url", url)
-        console.log("Level token", token)
-        console.log("Level id", id)
         return axios.create({
             headers: {
                 'Authorization': token
             }
         }).get(`${url}/employee/level/${id}`)
             .then(function (res) {
-                console.log("Level Result", res.data)
                 if(res.data.data.error){
                     return {error: true, status: 'success'}
                 }else{
@@ -133,10 +124,6 @@ export default class APIs {
 
     // checkin controller
     static Checkin(url, auth, id, coord) {
-        console.log(url)
-        console.log(id)
-        console.log(url)
-        console.log("test", coord)
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -157,7 +144,6 @@ export default class APIs {
 
     // cehckout controller
     static Checkout(url, auth, id, coord) {
-        console.log("test", coord)
         return axios.create({
             headers: {
                 'Authorization': auth

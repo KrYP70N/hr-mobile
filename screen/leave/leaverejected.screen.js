@@ -57,14 +57,33 @@ export class EmployeeLeaveRejected extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     if(res.error){
+                        Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                         this.props.navigation.navigate('Login')
                     }else{
-                        console.log("Leave Rejected List::", res.data)
                         this.setState({
                             leaveRejectedList: res.data
                         })
                     }  
                 } else {
+                    Toast.show({
+                        text: 'Authentication Failed!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
                     this.setState({
                         leaveRejectedList: []
                     })

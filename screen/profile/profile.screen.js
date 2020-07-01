@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, Header, Left, Right, Container, Content, Icon } from 'native-base'
+import { Text, Container, Content, Icon, Toast } from 'native-base'
 
 import Heading from '../../components/header.component'
 import styProfile from './profile.style'
@@ -38,8 +38,6 @@ export default class Profile extends Component {
 
 
   componentDidMount() {
-    // this.backHandler = BackHandler.addEventListener("hardwareBackPress", this.backAction)
-    // request endpoint
     AsyncStorage.getItem('@hr:endPoint')
       .then((res) => {
         this.setState({
@@ -50,7 +48,6 @@ export default class Profile extends Component {
     AsyncStorage.getItem('@hr:token')
       .then((res) => {
         let data = JSON.parse(res)
-        console.log(data.id, '<<<<')
         this.setState({
           auth: data['key'],
           id: data['id']
@@ -63,6 +60,16 @@ export default class Profile extends Component {
           .then((res) => {
             if (res.status === 'success') {
               if (res.error) {
+                Toast.show({
+                  text: 'Please login again. Your token is expried!',
+                  textStyle: {
+                    textAlign: 'center'
+                  },
+                  style: {
+                    backgroundColor: color.primary
+                  },
+                  duration: 6000
+                })
                 this.props.navigation.navigate('Login')
               } else {
                 this.setState({
@@ -70,22 +77,37 @@ export default class Profile extends Component {
                 })
               }
             } else {
+              Toast.show({
+                text: 'Authentication Failed!',
+                textStyle: {
+                  textAlign: 'center'
+                },
+                style: {
+                  backgroundColor: color.primary
+                },
+                duration: 3000
+              })
               this.setState({
                 data: []
               })
-              //this.props.navigation.navigate('Login')
             }
           })
           .catch((error) => {
-            this.props.navigation.navigate('Login')
+            Toast.show({
+              text: 'Authentication Failed!',
+              textStyle: {
+                textAlign: 'center'
+              },
+              style: {
+                backgroundColor: color.primary
+              },
+              duration: 3000
+            })
           })
       }
     });
 
   }
-  // componentWillUnmount() {
-  //   this.backHandler.remove();
-  // }
 
   componentDidUpdate() {
     if (this.state.url !== null && this.state.auth !== null && this.state.id !== null && this.state.data === null) {
@@ -93,6 +115,16 @@ export default class Profile extends Component {
         .then((res) => {
           if (res.status === 'success') {
             if (res.error) {
+              Toast.show({
+                text: 'Please login again. Your token is expried!',
+                textStyle: {
+                    textAlign: 'center'
+                },
+                style: {
+                    backgroundColor: color.primary
+                },
+                duration: 6000
+            })
               this.props.navigation.navigate('Login')
             } else {
               this.setState({
@@ -100,13 +132,32 @@ export default class Profile extends Component {
               })
             }
           } else {
+            Toast.show({
+              text: 'Authentication Failed!',
+              textStyle: {
+                  textAlign: 'center'
+              },
+              style: {
+                  backgroundColor: color.primary
+              },
+              duration: 3000
+          })
             this.setState({
               data: []
             })
           }
         })
         .catch((error) => {
-          this.props.navigation.navigate('Login')
+          Toast.show({
+            text: 'Authentication Failed!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
         })
     }
   }

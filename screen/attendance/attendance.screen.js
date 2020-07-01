@@ -105,8 +105,17 @@ export default class Attendance extends Component {
         APIs.AttendanceSummary(url, token, year, month, id)
         .then((res) => {
             if (res.status === 'success') {
-                console.log("RES Error", res.error)
                 if (res.error) {
+                    Toast.show({
+                        text: 'Please login again. Your token is expried!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 6000
+                    })
                     this.props.navigation.navigate('Login')
                 } else {
                     this.setState({
@@ -115,6 +124,16 @@ export default class Attendance extends Component {
                 }
 
             } else {
+                Toast.show({
+                    text: 'Authentication Failed!',
+                    textStyle: {
+                        textAlign: 'center'
+                    },
+                    style: {
+                        backgroundColor: color.primary
+                    },
+                    duration: 6000
+                })
                this.setState({
                    data: []
                })

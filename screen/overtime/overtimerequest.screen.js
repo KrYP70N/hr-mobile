@@ -165,9 +165,7 @@ export class OTRequest extends Component {
                 })
             }
         } else {
-            // console.log("Date", this.state.date)
-            // console.log("From Time", this.state.fromTime)
-            // console.log("To Time", this.state.toTime)
+          //console.log("")
         }
         this.hideTimePickerto();
     };
@@ -184,8 +182,17 @@ export class OTRequest extends Component {
         APIs.OTRequest(id, auth, url, request_from, request_to, this.state.description)
             .then((res) => {
                 if (res.status === "success") {
-                    console.log("RES Error", res.error)
                     if(res.error){
+                        Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                         this.props.navigation.navigate('Login')
                     }else{
                     if (res.data.error == false) {

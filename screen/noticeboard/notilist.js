@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { TouchableOpacity, Linking } from 'react-native'
-import { Text, View, Icon, Spinner, Picker } from 'native-base'
+import { Text, View, Icon, Spinner, Picker, Toast } from 'native-base'
 import { AsyncStorage, Image } from 'react-native'
 import styles from './noticeboard.style'
 import APIs from '../../controllers/api.controller'
@@ -32,15 +32,33 @@ export default function notilist({ navigation }) {
                     .then((res) => {
                         if (res.status === 'success') {
                             if (res.error) {
+                                Toast.show({
+                                    text: 'Please login again. Your token is expried!',
+                                    textStyle: {
+                                        textAlign: 'center'
+                                    },
+                                    style: {
+                                        backgroundColor: color.primary
+                                    },
+                                    duration: 6000
+                                })
                                 navigation.navigate('Login')
                             } else {
                                 if (res.data !== null) {
-                                    console.log("Announcement Data", res.data)
                                     setCollection(res.data)
                                 }
                             }
                         } else {
-                            //console.log("Error", res.error)
+                            Toast.show({
+                                text: 'Authentication Failed!',
+                                textStyle: {
+                                    textAlign: 'center'
+                                },
+                                style: {
+                                    backgroundColor: color.primary
+                                },
+                                duration: 6000
+                            })
                         }
 
                     })

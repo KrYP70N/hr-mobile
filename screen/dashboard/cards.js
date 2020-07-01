@@ -145,7 +145,6 @@ export default class Cards extends Component {
                             )
                         }
                         else {
-                            console.log("Employee Type", res.data["Dashboard Type"]);
                             list.push(
                                 {
                                     title: 'Employees',

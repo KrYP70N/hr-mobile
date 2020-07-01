@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, SafeAreaView, Image, AsyncStorage } from 'react-native'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
-import { Container, Content, Icon } from 'native-base'
+import { Container, Content, Icon, Toast } from 'native-base'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 
@@ -54,6 +54,16 @@ export class ContractProfile extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     if(res.error){
+                        Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                         this.props.navigatin.navigate('Login')
                     }else{
                         this.setState({
@@ -65,6 +75,16 @@ export class ContractProfile extends Component {
                     }
                    
                 } else {
+                    Toast.show({
+                        text: 'Authentication Failed!',
+                        textStyle: {
+                            textAlign: 'center'
+                        },
+                        style: {
+                            backgroundColor: color.primary
+                        },
+                        duration: 3000
+                    })
                     this.setState({
                         profileData: null,
                         loadingTxt: '',
@@ -82,8 +102,6 @@ export class ContractProfile extends Component {
                 <Loading info={this.state.loadingTxt} />
             )
         }
-        console.log("Contract Profile Data", this.state.profileData)
-        console.log("Schedule Lists", this.state.workingSchedule)
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ backgroundColor: color.lighter }}>

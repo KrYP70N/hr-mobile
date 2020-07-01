@@ -28,8 +28,6 @@ export default class NoticeBoard extends Component {
     }
 
     render() {
-        console.log("get Param", this.props.route.params.pageFrom)
-
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container>
