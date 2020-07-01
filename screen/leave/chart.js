@@ -75,7 +75,6 @@ export class chart extends Component {
         ) {
             let date = new Date();
             let year = date.getFullYear();
-            //let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)
             this.getSummaryData(this.state.auth, this.state.id, this.state.url, year)
         }
     }
@@ -84,57 +83,64 @@ export class chart extends Component {
         APIs.getLeaveSummary(url, auth, id, year)
             .then((res) => {
                 if (res.status === 'success') {
-                    let data = []
-                    let lData = []
-                    for (let i = 0; i < 4; i++) {
-                        if (i == 0) {
-                            let obj = {
-                                title: lb_color[i].title,
-                                value: res.data.Approved[0][0],
-                                color: lb_color[i].color
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        let data = []
+                        let lData = []
+                        for (let i = 0; i < 4; i++) {
+                            if (i == 0) {
+                                let obj = {
+                                    title: lb_color[i].title,
+                                    value: res.data.Approved[0][0],
+                                    color: lb_color[i].color
+                                }
+                                data.push(obj)
+                                lData.push(obj)
                             }
-                            data.push(obj)
-                            lData.push(obj)
-                        }
-                        if (i == 1) {
-                            let obj = {
-                                title: lb_color[i].title,
-                                value: res.data.Available[0][0],
-                                color: lb_color[i].color
+                            if (i == 1) {
+                                let obj = {
+                                    title: lb_color[i].title,
+                                    value: res.data.Available[0][0],
+                                    color: lb_color[i].color
+                                }
+                                data.push(obj)
+                                lData.push(obj)
                             }
-                            data.push(obj)
-                            lData.push(obj)
-                        }
-                        if (i == 2) {
-                            let obj = {
-                                title: lb_color[i].title,
-                                value: res.data.Pending[0][0],
-                                color: lb_color[i].color
+                            if (i == 2) {
+                                let obj = {
+                                    title: lb_color[i].title,
+                                    value: res.data.Pending[0][0],
+                                    color: lb_color[i].color
+                                }
+                                data.push(obj)
+                                lData.push(obj)
                             }
-                            data.push(obj)
-                            lData.push(obj)
-                        }
-                        if (i == 3) {
-                            let obj = {
-                                title: lb_color[i].title,
-                                value: res.data.Rejected[0][0],
-                                color: lb_color[i].color
+                            if (i == 3) {
+                                let obj = {
+                                    title: lb_color[i].title,
+                                    value: res.data.Rejected[0][0],
+                                    color: lb_color[i].color
+                                }
+                                data.push(obj)
+                                lData.push(obj)
                             }
-                            data.push(obj)
-                            lData.push(obj)
                         }
+                        lData.push({
+                            title: "TOTAL",
+                            value: res.data.Total[0][0],
+                            color: '#FFFFFF'
+                        })
+                        this.setState({
+                            summaryData: data,
+                            labelData: lData
+                        })
                     }
-                    lData.push({
-                        title: "TOTAL",
-                        value: res.data.Total[0][0],
-                        color: '#FFFFFF'
-                    })
-                    this.setState({
-                        summaryData: data,
-                        labelData: lData
-                    })
                 } else {
-    
+                    this.setState({
+                        summaryData: [],
+                        labelData: []
+                    })
                 }
             })
     }
@@ -163,12 +169,9 @@ export class chart extends Component {
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
-                //justifyContent: 'center',
                 padding: offset.o2,
                 backgroundColor: color.primary,
-                //marginBottom: offset.o2,
                 borderRadius: offset.o1,
-                //height: '35%'
             }}>
                 <View style={{
                     width: width / 3,
@@ -181,7 +184,7 @@ export class chart extends Component {
                     <View style={{ width: width / 3, height: width / 3, marginRight: 20 }}>
                         <View style={{ width: width / 3, height: width / 3, position: 'absolute', borderRadius: width / 6, backgroundColor: '#fff', top: 0 }}></View>
                         <PieChart
-                            style={{ height: width / 3, }} data={pieData}
+                            style={{ width: width/3, height: width / 3, }} data={pieData}
                             innerRadius="70%"
                             padAngle={0}
 
@@ -192,7 +195,6 @@ export class chart extends Component {
                 <View style={{
                     width: (2 * width) / 3,
                     marginTop: 5,
-                    //height: '75%'
                 }}>
                     <View style={{
                         display: 'flex',
@@ -212,25 +214,6 @@ export class chart extends Component {
                             )
                         })}
                     </View>
-                    {/* <FlatList
-                        data={this.state.labelData}
-                        numColumns={2}
-                        renderItem={({ item }) => {
-                           return(
-                                <View style={{ flexDirection: 'row', alignItems: 'center', width: (2*width)/6, padding: 5 }}>
-                                    <View style={{ width: 20, height: 20, borderRadius: 20 / 2, backgroundColor: item.color }}></View>
-                                    <View style={{ marginLeft: 5 }}>
-                                        <Text style={{ fontSize: 12, color: color.light, fontFamily: 'Nunito-Bold' }}>{item.value}</Text>
-                                        <Text style={{ marginTop: 2, fontSize: 12, color: color.light, fontFamily: 'Nunito' }}>{item.title}</Text>
-                                    </View>
-                                </View>
-                          
-                           )
-                        }
-
-                        }
-                        keyExtractor={(item, index) => index.toString()}
-                    /> */}
                 </View>
 
             </View>

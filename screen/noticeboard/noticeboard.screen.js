@@ -1,5 +1,6 @@
 import React, { Component, useState } from 'react'
-import { Container, Header, Left, Icon, Text, Right, Content, View } from 'native-base'
+import { Container, Header, Left, Icon, Text, Right, Content, } from 'native-base'
+import { View, SafeAreaView } from 'react-native'
 
 // variable
 import color from '../../constant/color'
@@ -12,7 +13,7 @@ import NotiList from './notilist'
 import Loading from '../../components/loading.component'
 
 export default class NoticeBoard extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             url: null,
@@ -22,16 +23,29 @@ export default class NoticeBoard extends Component {
             endDate: ''
         }
     }
-    componentDidMount(){
+    componentDidMount() {
 
     }
 
     render() {
         console.log("get Param", this.props.route.params.pageFrom)
-     
+
         return (
-            <Container>
-                <Header style={{
+            <SafeAreaView style={{ flex: 1 }}>
+                <Container>
+                    <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name='ios-arrow-round-back' style={{
+                            fontSize: offset.o4,
+                            color: color.primary,
+                            marginRight: offset.o2,
+                            marginLeft: 15,
+                        }} onPress={() => { this.props.navigation.navigate('Main') }} />
+                        <Text style={{
+                            color: color.secondary,
+                            fontFamily: 'Nunito'
+                        }}>Notice Board</Text>
+                    </View>
+                    {/* <Header style={{
                     backgroundColor: color.light,
                     // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                 }}>
@@ -55,14 +69,13 @@ export default class NoticeBoard extends Component {
                             fontFamily: 'Nunito'
                         }}>Notice Board</Text>
                     </View>    
-                
-                    {/* <Right /> */}
-                </Header>
-                
-                <Content style={styles.container}>
-                    <NotiList navigation={this.props.navigation}/>
-                </Content>
-            </Container>
+                </Header> */}
+
+                    <Content style={styles.container}>
+                        <NotiList navigation={this.props.navigation} />
+                    </Content>
+                </Container>
+            </SafeAreaView>
         )
     }
 }

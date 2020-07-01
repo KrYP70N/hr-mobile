@@ -70,44 +70,48 @@ class checkout extends Component {
         APIs.Profile(url, auth, id)
             .then((res) => {
                 if (res.status === "success") {
-                    let makerCoordsArr = [];
-                    let Cobj = {
-                        title: 'Current Location',
-                        coordinate: {
-                            latitude: location.coords.latitude,
-                            longitude: location.coords.longitude
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        let makerCoordsArr = [];
+                        let Cobj = {
+                            title: 'You Are Here',
+                            coordinate: {
+                                latitude: location.coords.latitude,
+                                longitude: location.coords.longitude
+                            }
                         }
-                    }
-                    makerCoordsArr.push(Cobj);
-
-                    let obj = {
-                        title: 'Office Location',
-                        coordinate: {
-                            latitude: res.data['General Information']['Latitude'],
-                            longitude: res.data['General Information']['Longtitude']
+                        makerCoordsArr.push(Cobj);
+    
+                        let obj = {
+                            title: 'Office Location',
+                            coordinate: {
+                                latitude: res.data['General Information']['Latitude'],
+                                longitude: res.data['General Information']['Longtitude']
+                            }
                         }
+                        makerCoordsArr.push(obj);
+                        this.setState({
+                            location: JSON.stringify(location.coords),
+                            data: res.data,
+                            geofencing: res.data['General Information']['Geo Fencing'],
+                            // geofencing: false,
+                            radius: res.data['General Information']['Radius(m)'],
+                            //radius: 30,
+                            officeCoord: {
+                                latitude: res.data['General Information']['Latitude'],
+                                longitude: res.data['General Information']['Longtitude']
+                            },
+                            userName: res.data['General Information']['Employee Name'],
+                            mapCoord: {
+                                latitude: location.coords.latitude,
+                                longitude: location.coords.longitude,
+                                latitudeDelta: 0.0019,
+                                longitudeDelta: 0.0018
+                            },
+                            markerCoordinates: makerCoordsArr
+                        })
                     }
-                    makerCoordsArr.push(obj);
-                    this.setState({
-                        location: JSON.stringify(location.coords),
-                        data: res.data,
-                        geofencing: res.data['General Information']['Geo Fencing'],
-                        // geofencing: false,
-                        radius: res.data['General Information']['Radius(m)'],
-                        //radius: 30,
-                        officeCoord: {
-                            latitude: res.data['General Information']['Latitude'],
-                            longitude: res.data['General Information']['Longtitude']
-                        },
-                        userName: res.data['General Information']['Employee Name'],
-                        mapCoord: {
-                            latitude: location.coords.latitude,
-                            longitude: location.coords.longitude,
-                            latitudeDelta: 0.0019,
-                            longitudeDelta: 0.0018
-                        },
-                        markerCoordinates: makerCoordsArr
-                    })
                 }
             })
             .catch((error) => {
@@ -146,13 +150,32 @@ class checkout extends Component {
                         lat: location.coords.latitude,
                         long: location.coords.longitude
                     }).then((res) => {
-                        console.log("Check Out Screen Data", res)
+                        
+                        //console.log("Check Out Screen Data", res)
                         if (res.status === 'success') {
-                            this.setState({
-                                checkMessage: 'Check Out Successful!',
-                                isModalVisible: true,
+                            console.log("Error", res.data.data.data.error)
+                            if (res.error) {
+                                console.log("Error is true")
+                                Toast.show({
+                                    text: 'Please login again. Your token is expried!',
+                                    textStyle: {
+                                        textAlign: 'center'
+                                    },
+                                    style: {
+                                        backgroundColor: color.primary
+                                    },
+                                    duration: 6000
+                                })
+                                this.props.navigation.navigate('Login')
+                                
+                               
+                            } else {
+                                this.setState({
+                                    checkMessage: 'Check Out Successful!',
+                                    isModalVisible: true,
 
-                            })
+                                })
+                            }
                         } else {
 
                             this.setState({
@@ -190,11 +213,26 @@ class checkout extends Component {
                 APIs.Checkout(this.state.url, this.state.auth, this.state.id)
                     .then((res) => {
                         if (res.status === 'success') {
-                            this.setState({
-                                checkMessage: 'Check Out Successful!',
-                                isModalVisible: true,
+                            console.log("Res Data", res.data)
+                            if (res.error) {
+                                //this.props.navigation.navigate('Login')
+                                Toast.show({
+                                    text: 'Please login again. Your token is expried!',
+                                    textStyle: {
+                                        textAlign: 'center'
+                                    },
+                                    style: {
+                                        backgroundColor: color.primary
+                                    },
+                                    duration: 6000
+                                })
+                            } else {
+                                this.setState({
+                                    checkMessage: 'Check Out Successful!',
+                                    isModalVisible: true,
 
-                            })
+                                })
+                            }
                         } else {
                             console.log("Return data error")
                             this.setState({
@@ -216,11 +254,15 @@ class checkout extends Component {
     CheckStatus(id, auth, url) {
         APIs.CheckStatus(id, auth, url)
             .then((res) => {
-                console.log("Check Out Status", res)
+                //console.log("Check Out Status", res)
                 if (res.status === 'success') {
-                    this.setState({
-                        status: res.data
-                    })
+                    if (res.error) {
+                        this.props.navigation.navigate('Login')
+                    } else {
+                        this.setState({
+                            status: res.data
+                        })
+                    }
                 } else {
                     this.setState({
                         status: null
@@ -230,18 +272,8 @@ class checkout extends Component {
     }
 
     render() {
-        // console.log("Data:::", this.state.data)
-        //console.log("Geofencing:::", this.state.geofencing)
         console.log("Radius:::", this.state.radius)
-        //console.log("Office Coord:::", this.state.officeCoord)
-        // console.log("Marker Coordinates", this.state.markerCoordinates)
-        // console.log("Map Cood::", this.state.mapCoord)
-        // console.log("User Name", this.state.userName)
-        // console.log("Location Latitude", this.state.location)
-        // console.log("Url::", this.state.url)
-        // console.log("Auth:::", this.state.auth)
-        // console.log("id:::", this.state.id)
-        //console.log("Status:::", this.state.status)
+
         return (
             <Container style={{ flex: 1 }}>
                 <Header style={{
@@ -267,8 +299,8 @@ class checkout extends Component {
                                             <Marker key={index} coordinate={marker.coordinate} title={marker.title} >
 
                                                 <View>
-                                                    {/* <Text style={{ color: marker.title === "Current Location" ? color.danger : color.primary }}>{marker.title}</Text> */}
-                                                    {marker.title === "Current Location" ? <Image style={{ width: 30, height: 30, }} source={require('../../assets/icon/user_marker.png')} /> : <Image style={{ width: 30, height: 30, }} source={require('../../assets/icon/marker.png')} />}
+                                                    {/* <Text style={{ color: marker.title === "You Are Here" ? color.danger : color.primary }}>{marker.title}</Text> */}
+                                                    {marker.title === "You Are Here" ? <Image style={{ width: 35, height: 35, }} source={require('../../assets/icon/map_person.png')} /> : <Image style={{ width: 35, height: 35, }} source={require('../../assets/icon/marker.png')} />}
                                                 </View>
                                             </Marker>
                                         ))}

@@ -8,7 +8,7 @@ import colors from "../../constant/color";
 import APIs from '../../controllers/api.controller'
 import color from '../../constant/color'
 const width = Dimensions.get('screen').width;
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const lb_color = [
     {
         title: 'Presents',
@@ -82,82 +82,90 @@ export default class Chart extends Component {
         APIs.getDashboardSummary(url, auth, id, year)
             .then((res) => {
                 if (res.status === 'success') {
-                    if (res.data["Dashboard Type"] == "HR") {
-                        let data = []
-                        let lData = [];
-                        let total = res.data["Attendance Count"][0][0] + res.data["Today Absent Count"][0][0];
-                        for (let i = 0; i < 3; i++) {
-
-                            if (i == 0) {
-                                let obj = {
-                                    title: lb_color[i].title,
-                                    value: res.data["Attendance Count"][0][0],
-                                    color: lb_color[i].color
-                                }
-                                data.push(obj)
-                                lData.push(obj)
-                            }
-                            if (i == 1) {
-                                let obj = {
-                                    title: lb_color[i].title,
-                                    value: res.data["Today Absent Count"][0][0],
-                                    color: lb_color[i].color
-                                }
-                                data.push(obj)
-                                lData.push(obj)
-                            }
-                            if (i == 2) {
-                                let obj = {
-                                    title: lb_color[i].title,
-                                    value: total,
-                                    color: lb_color[i].color
-                                }
-                                lData.push(obj)
-                            }
-                        }
-                        this.setState({
-                            summaryData: data,
-                            labelData: lData,
-                            chartLabel: `Today's Presents & Absents`
-                        })
+                    console.log("Dashboard Res Data", res.data)
+                    if (res.error) {
+                        this.props.navigation.navigate('Login')
+                        console.log("Error is ture here:::::")
                     } else {
-                        let data = []
-                        let lData = []
-                        let total = res.data["Attendance Count"][0][0] + res.data["Today Absent Count"];
-                        for (let i = 0; i < 3; i++) {
-                            if (i == 0) {
-                                let obj = {
-                                    title: lb_color[i].title,
-                                    value: res.data["Attendance Count"][0][0],
-                                    color: lb_color[i].color
+                        if (res.data["Dashboard Type"] == "HR") {
+                            let data = []
+                            let lData = [];
+                            let total = 0;
+                            total = res.data["Attendance Count"][0][0] + res.data["Today Absent Count"][0][0];
+                            for (let i = 0; i < 3; i++) {
+
+                                if (i == 0) {
+                                    let obj = {
+                                        title: lb_color[i].title,
+                                        value: res.data["Attendance Count"][0][0],
+                                        color: lb_color[i].color
+                                    }
+                                    data.push(obj)
+                                    lData.push(obj)
                                 }
-                                data.push(obj)
-                                lData.push(obj)
-                            }
-                            if (i == 1) {
-                                let obj = {
-                                    title: lb_color[i].title,
-                                    value: res.data["Today Absent Count"],
-                                    color: lb_color[i].color
+                                if (i == 1) {
+                                    let obj = {
+                                        title: lb_color[i].title,
+                                        value: res.data["Today Absent Count"][0][0],
+                                        color: lb_color[i].color
+                                    }
+                                    data.push(obj)
+                                    lData.push(obj)
                                 }
-                                data.push(obj)
-                                lData.push(obj)
-                            }
-                            if (i == 2) {
-                                let obj = {
-                                    title: lb_color[i].title,
-                                    value: total,
-                                    color: lb_color[i].color
+                                if (i == 2) {
+                                    let obj = {
+                                        title: lb_color[i].title,
+                                        value: total,
+                                        color: lb_color[i].color
+                                    }
+                                    lData.push(obj)
                                 }
-                                lData.push(obj)
                             }
+                            this.setState({
+                                summaryData: data,
+                                labelData: lData,
+                                chartLabel: `Today's Presents & Absents`
+                            })
+                        } else {
+                            let data = []
+                            let lData = []
+                            let total = 0;
+                            total = res.data["Attendance Count"][0][0] + res.data["Today Absent Count"];
+                            for (let i = 0; i < 3; i++) {
+                                if (i == 0) {
+                                    let obj = {
+                                        title: lb_color[i].title,
+                                        value: res.data["Attendance Count"][0][0],
+                                        color: lb_color[i].color
+                                    }
+                                    data.push(obj)
+                                    lData.push(obj)
+                                }
+                                if (i == 1) {
+                                    let obj = {
+                                        title: lb_color[i].title,
+                                        value: res.data["Today Absent Count"],
+                                        color: lb_color[i].color
+                                    }
+                                    data.push(obj)
+                                    lData.push(obj)
+                                }
+                                if (i == 2) {
+                                    let obj = {
+                                        title: lb_color[i].title,
+                                        value: total,
+                                        color: lb_color[i].color
+                                    }
+                                    lData.push(obj)
+                                }
+                            }
+                            let date = new Date();
+                            this.setState({
+                                summaryData: data,
+                                labelData: lData,
+                                chartLabel: `${months[date.getMonth()]}-${date.getFullYear()}`
+                            })
                         }
-                        let date = new Date();
-                        this.setState({
-                            summaryData: data,
-                            labelData: lData,
-                            chartLabel: `${months[date.getMonth()]}-${date.getFullYear()}`
-                        })
                     }
                 }
                 else {
@@ -202,7 +210,7 @@ export default class Chart extends Component {
                     <View style={{ width: width / 3, height: width / 3, marginRight: 20 }}>
                         <View style={{ width: width / 3, height: width / 3, position: 'absolute', borderRadius: width / 6, backgroundColor: '#fff', top: 0 }}></View>
                         <PieChart
-                            style={{ height: width / 3, }} data={pieData}
+                            style={{ width: width/3, height: width / 3, }} data={pieData}
                             innerRadius="70%"
                             padAngle={0}
 
@@ -220,16 +228,16 @@ export default class Chart extends Component {
                     </View> */}
                 </View>
                 <View style={styles.pieInfo}>
-                <View><Text style = {{marginBottom: 20, color: color.light, fontFamily:'Nunito-Bold', fontSize: 14,}}>{this.state.chartLabel}</Text></View>
+                    <View><Text style={{ marginBottom: 20, color: color.light, fontFamily: 'Nunito-Bold', fontSize: 14, }}>{this.state.chartLabel}</Text></View>
                     {
                         this.state.labelData.map((d, key) => (
                             <View style={styles.pieTxtContainer} key={key}>
                                 <Icon name="md-square" style={[styles.pieicn, { color: d.color }]} />
-                                <View style = {{width: width/3,flexDirection: 'row', justifyContent: 'space-between'}}> 
-                                <Text style={styles.pietxt}>{d.title}</Text>
-                                <Text style={styles.pietxt}> -  {d.value}</Text>
+                                <View style={{ width: width / 3, flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <Text style={styles.pietxt}>{d.title}</Text>
+                                    <Text style={styles.pietxt}> -  {d.value}</Text>
                                 </View>
-                               
+
                             </View>
                         ))
                     }

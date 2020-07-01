@@ -4,7 +4,7 @@ import { Text, Header, Left, Right, Container, Content, Icon } from 'native-base
 import Heading from '../../components/header.component'
 import styProfile from './profile.style'
 import Loading from '../../components/loading.component'
-import { AsyncStorage, BackHandler, StatusBar, SafeAreaView } from 'react-native'
+import { AsyncStorage, View, SafeAreaView } from 'react-native'
 import APIs from '../../controllers/api.controller'
 
 import GeneralProfile from './_general.profile'
@@ -62,11 +62,18 @@ export default class Profile extends Component {
         APIs.Profile(this.state.url, this.state.auth, this.state.id)
           .then((res) => {
             if (res.status === 'success') {
-              this.setState({
-                data: res.data
-              })
+              if (res.error) {
+                this.props.navigation.navigate('Login')
+              } else {
+                this.setState({
+                  data: res.data
+                })
+              }
             } else {
-              this.props.navigation.navigate('Login')
+              this.setState({
+                data: []
+              })
+              //this.props.navigation.navigate('Login')
             }
           })
           .catch((error) => {
@@ -85,11 +92,17 @@ export default class Profile extends Component {
       APIs.Profile(this.state.url, this.state.auth, this.state.id)
         .then((res) => {
           if (res.status === 'success') {
-            this.setState({
-              data: res.data
-            })
+            if (res.error) {
+              this.props.navigation.navigate('Login')
+            } else {
+              this.setState({
+                data: res.data
+              })
+            }
           } else {
-            this.props.navigation.navigate('Login')
+            this.setState({
+              data: []
+            })
           }
         })
         .catch((error) => {
@@ -106,39 +119,29 @@ export default class Profile extends Component {
     }
 
     return (
-      <SafeAreaView style = {{flex: 1}}>
-      <Container style={styProfile.topContainer}>
-      <Header style={{
-            backgroundColor: color.light,
-            marginTop: Platform.OS === 'ios' ? -40 : 0
-            // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-          }}>
-            <Left style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center'
-            }}>
-              <Icon name='ios-arrow-round-back' style={{
-                fontSize: offset.o4,
-                color: color.primary,
-                marginRight: offset.o2
-              }} onPress={() => { this.props.navigation.navigate('Main') }} />
-              <Text style={{
-                color: color.secondary,
-                fontFamily: 'Nunito'
-              }}>Profile</Text>
-            </Left>
-            <Right></Right>
-          </Header>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Container style={styProfile.topContainer}>
+          <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
+            <Icon name='ios-arrow-round-back' style={{
+              fontSize: offset.o4,
+              color: color.primary,
+              marginRight: offset.o2,
+              marginLeft: 15,
+            }} onPress={() => { this.props.navigation.navigate('Main') }} />
+            <Text style={{
+              color: color.secondary,
+              fontFamily: 'Nunito'
+            }}>Profile</Text>
+          </View>
 
-        <Content>
-          {/* <Heading secondary title="Profile" navigation={this.props.navigation} /> */}
-          
-          <GeneralProfile data={this.state.data['General Information']} dataWork={this.state.data['Work Information']} />
-          <Text style={styProfile.title}>Personal Information</Text>
-          <PersonalProfile data={this.state.data['Personal Information']} />
-        </Content>
-      </Container>
+          <Content>
+            {/* <Heading secondary title="Profile" navigation={this.props.navigation} /> */}
+
+            <GeneralProfile data={this.state.data['General Information']} dataWork={this.state.data['Work Information']} />
+            <Text style={styProfile.title}>Personal Information</Text>
+            <PersonalProfile data={this.state.data['Personal Information']} />
+          </Content>
+        </Container>
       </SafeAreaView>
     )
   }

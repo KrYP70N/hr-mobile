@@ -105,145 +105,150 @@ export default class Cards extends Component {
                 console.log("Dash Data", res.data)
                 let list = [];
                 if (res.status == 'success') {
-                    if (res.data["Dashboard Type"] == "employee") {
-                        list.push(
-                            {
-                                title: 'Today dept Leaves',
-                                noti: res.data["Today Leave Count"][0][0] == "0" ? "0" : res.data["Today Leave Count"][0][0],
-                                icon: require('../../assets/icon/leave.png'),
-                                // page: 'DashboardRequest'
-                                page: 'TodayLeave'
-                            }
-                        )
-                        list.push(
-                            {
-                                title: 'Upcoming Birthday',
-                                noti: res.data["Birthday Count"][0][0] == "0" ? "0" : res.data["Birthday Count"][0][0],
-                                icon: require('../../assets/icon/upcoming_birthday.png'),
-                                // page: 'DashboardRequest'
-                                page: 'UpcomingBirthday'
-                            },
-                        )
-
-                        list.push(
-                            {
-                                title: 'Announcement',
-                                noti: res.data["Announcement Count"] == "0" ? "0" : res.data["Announcement Count"],
-                                icon: require('../../assets/icon/noticebo.png'),
-                                page: 'NoticeBoard'
-                            }
-                        )
-
-                        list.push(
-                            {
-                                title: 'Contract',
-                                noti: res.data["Contract Count"][0][0] == "0" ? "0" : res.data["Contract Count"][0][0],
-                                icon: require('../../assets/icon/user-icn.png'),
-                                page: 'ContractProfile'
-                            }
-                        )
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        if (res.data["Dashboard Type"] == "employee") {
+                            list.push(
+                                {
+                                    title: 'Today dept Leaves',
+                                    noti: res.data["Today Leave Count"][0][0] == "0" ? "0" : res.data["Today Leave Count"][0][0],
+                                    icon: require('../../assets/icon/leave.png'),
+                                    // page: 'DashboardRequest'
+                                    page: 'TodayLeave'
+                                }
+                            )
+                            list.push(
+                                {
+                                    title: 'Upcoming Birthday',
+                                    noti: res.data["Birthday Count"][0][0] == "0" ? "0" : res.data["Birthday Count"][0][0],
+                                    icon: require('../../assets/icon/upcoming_birthday.png'),
+                                    // page: 'DashboardRequest'
+                                    page: 'UpcomingBirthday'
+                                },
+                            )
+    
+                            list.push(
+                                {
+                                    title: 'Announcement',
+                                    noti: res.data["Announcement Count"] == "0" ? "0" : res.data["Announcement Count"],
+                                    icon: require('../../assets/icon/noticebo.png'),
+                                    page: 'NoticeBoard'
+                                }
+                            )
+    
+                            list.push(
+                                {
+                                    title: 'Contract',
+                                    noti: res.data["Contract Count"][0][0] == "0" ? "0" : res.data["Contract Count"][0][0],
+                                    icon: require('../../assets/icon/user-icn.png'),
+                                    page: 'ContractProfile'
+                                }
+                            )
+                        }
+                        else {
+                            console.log("Employee Type", res.data["Dashboard Type"]);
+                            list.push(
+                                {
+                                    title: 'Employees',
+                                    noti: res.data["Active Employee List Count"][0][0] == "0" ? "0" : res.data["Active Employee List Count"][0][0],
+                                    icon: require('../../assets/icon/user.png'),
+                                    page: 'EmployeeList'
+                                }
+                            )
+                            list.push(
+                                {
+                                    title: 'Department',
+                                    noti: res.data["Department Count"][0][0] == "0" ? "0" : res.data["Department Count"][0][0],
+                                    icon: require('../../assets/icon/dept.png'),
+                                    page: 'Department'
+                                }
+                            )
+                            list.push(
+                                {
+                                    title: 'Today Attendance',
+                                    noti: res.data["Attendance Count"][0][0] == "0" ? "0" : res.data["Attendance Count"][0][0],
+                                    icon: require('../../assets/icon/attendance.png'),
+                                    page: 'DashboardAttendance'
+                                }
+                            )
+    
+                            list.push(
+                                {
+                                    title: 'Today Absent',
+                                    noti: res.data["Today Absent Count"][0][0] == "0" ? "0" : res.data["Today Absent Count"][0][0],
+                                    icon: require('../../assets/icon/attendance.png'),
+                                    page: 'AbsentEmployeeList'
+                                }
+                            )
+    
+                            list.push(
+                                {
+                                    title: 'Today on Leaves',
+                                    noti: res.data["Today Leave Count"][0][0] == "0" ? "0" : res.data["Today Leave Count"][0][0],
+                                    icon: require('../../assets/icon/leave.png'),
+                                    page: 'TodayLeave'
+                                }
+                            )
+    
+                            list.push(
+                                {
+                                    title: 'Leave Request Lists',
+                                    noti: res.data["Leave Request Count"][0][0] == "0" ? "0" : res.data["Leave Request Count"][0][0],
+                                    icon: require('../../assets/icon/dashboard-leave.png'),
+                                    page: 'DashboardLeaveRequestList'
+                                }
+                            )
+                            list.push(
+                                {
+                                    title: 'Exit Employee',
+                                    noti: res.data["Exit Employee Count"][0][0] == "0" ? "0" : res.data["Exit Employee Count"][0][0],
+                                    icon: require('../../assets/icon/user.png'),
+                                    page: 'ExitEmployeeList'
+                                }
+                            )
+    
+                            list.push(
+                                {
+                                    title: 'Join Employee',
+                                    noti: res.data["Join Employee Count"][0][0] == "0" ? "0" : res.data["Join Employee Count"][0][0],
+                                    icon: require('../../assets/icon/user.png'),
+                                    page: 'JoinEmployeeList'
+                                }
+                            )
+                            list.push(
+                                {
+                                    title: 'Upcoming Birthday',
+                                    noti: res.data["Birthday Count"][0][0] == "0" ? "0" : res.data["Birthday Count"][0][0],
+                                    icon: require('../../assets/icon/upcoming_birthday.png'),
+                                    page: 'UpcomingBirthday'
+                                },
+                            )
+                           
+    
+                            list.push(
+                                {
+                                    title: 'Announcement',
+                                    noti: res.data["Announcement Count"] == "0" ? "0" : res.data["Announcement Count"],
+                                    icon: require('../../assets/icon/noticebo.png'),
+                                    page: 'NoticeBoard'
+                                }
+                            )
+                           
+                            list.push(
+                                {
+                                    title: 'Contract',
+                                    noti: res.data["Contract Count"][0][0] == "0" ? "0" : res.data["Contract Count"][0][0],
+                                    icon: require('../../assets/icon/user-icn.png'),
+                                    page: 'ContractProfile'
+                                }
+                            )
+                        }
+                        this.setState({
+                            cardList: list
+                        })
                     }
-                    else {
-                        console.log("Employee Type", res.data["Dashboard Type"]);
-                        list.push(
-                            {
-                                title: 'Employees',
-                                noti: res.data["Active Employee List Count"][0][0] == "0" ? "0" : res.data["Active Employee List Count"][0][0],
-                                icon: require('../../assets/icon/user.png'),
-                                page: 'EmployeeList'
-                            }
-                        )
-                        list.push(
-                            {
-                                title: 'Department',
-                                noti: res.data["Department Count"][0][0] == "0" ? "0" : res.data["Department Count"][0][0],
-                                icon: require('../../assets/icon/dept.png'),
-                                page: 'Department'
-                            }
-                        )
-                        list.push(
-                            {
-                                title: 'Today Attendance',
-                                noti: res.data["Attendance Count"][0][0] == "0" ? "0" : res.data["Attendance Count"][0][0],
-                                icon: require('../../assets/icon/attendance.png'),
-                                page: 'DashboardAttendance'
-                            }
-                        )
-
-                        list.push(
-                            {
-                                title: 'Today Absent',
-                                noti: res.data["Today Absent Count"][0][0] == "0" ? "0" : res.data["Today Absent Count"][0][0],
-                                icon: require('../../assets/icon/attendance.png'),
-                                page: 'AbsentEmployeeList'
-                            }
-                        )
-
-                        list.push(
-                            {
-                                title: 'Today on Leaves',
-                                noti: res.data["Today Leave Count"][0][0] == "0" ? "0" : res.data["Today Leave Count"][0][0],
-                                icon: require('../../assets/icon/leave.png'),
-                                page: 'TodayLeave'
-                            }
-                        )
-
-                        list.push(
-                            {
-                                title: 'Leave Request Lists',
-                                noti: res.data["Leave Request Count"][0][0] == "0" ? "0" : res.data["Leave Request Count"][0][0],
-                                icon: require('../../assets/icon/dashboard-leave.png'),
-                                page: 'DashboardLeaveRequestList'
-                            }
-                        )
-                        list.push(
-                            {
-                                title: 'Exit Employee',
-                                noti: res.data["Exit Employee Count"][0][0] == "0" ? "0" : res.data["Exit Employee Count"][0][0],
-                                icon: require('../../assets/icon/user.png'),
-                                page: 'ExitEmployeeList'
-                            }
-                        )
-
-                        list.push(
-                            {
-                                title: 'Join Employee',
-                                noti: res.data["Join Employee Count"][0][0] == "0" ? "0" : res.data["Join Employee Count"][0][0],
-                                icon: require('../../assets/icon/user.png'),
-                                page: 'JoinEmployeeList'
-                            }
-                        )
-                        list.push(
-                            {
-                                title: 'Upcoming Birthday',
-                                noti: res.data["Birthday Count"][0][0] == "0" ? "0" : res.data["Birthday Count"][0][0],
-                                icon: require('../../assets/icon/upcoming_birthday.png'),
-                                page: 'UpcomingBirthday'
-                            },
-                        )
-                       
-
-                        list.push(
-                            {
-                                title: 'Announcement',
-                                noti: res.data["Announcement Count"] == "0" ? "0" : res.data["Announcement Count"],
-                                icon: require('../../assets/icon/noticebo.png'),
-                                page: 'NoticeBoard'
-                            }
-                        )
-                       
-                        list.push(
-                            {
-                                title: 'Contract',
-                                noti: res.data["Contract Count"][0][0] == "0" ? "0" : res.data["Contract Count"][0][0],
-                                icon: require('../../assets/icon/user-icn.png'),
-                                page: 'ContractProfile'
-                            }
-                        )
-                    }
-                    this.setState({
-                        cardList: list
-                    })
+                    
                 }
             })
     }

@@ -73,22 +73,16 @@ export class OvertimePending extends Component {
             .then((res) => {
                 console.log("OT Pending Data", res.data)
                 if (res.status === 'success') {
-                    this.setState({
-                        overtimes: res.data
-                    })
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        this.setState({
+                            overtimes: res.data
+                        })
+                    }
                 } else {
                     this.setState({
                         overtimes: []
-                    })
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
                     })
                 }
             })

@@ -15,12 +15,12 @@ export default function MonthPicker({
     onChangeValue,
     optionList = []
     }) {
-
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
     const [selected, setselected] = useState("all")
 
     // next emitter
     const goNext = () => {
+        setAuth("Change Auth")
         setDate(moment(date).add(1, 'months'))
         onGoNext && onGoNext({
             month: moment(date).add(1, 'months').format('MM'),

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Image} from 'react-native'
+import { Image } from 'react-native'
 import { Text, View } from 'native-base'
 
 import Moment from 'moment'
@@ -19,6 +19,17 @@ export default class Clock extends Component {
         }
     }
 
+
+    setTime = (time) => {
+        let t = new Date(time)
+        setTimeout(() => {
+            this.setState({
+                time: t.setSeconds(t.getSeconds() + 1)
+            })
+        }, 1000)
+
+    }
+
     componentDidMount() {
         AsyncStorage.getItem('@hr:endPoint')
             .then((res) => {
@@ -32,6 +43,7 @@ export default class Clock extends Component {
                         APIs.Time(endPoint, key, id)
                             .then((response) => {
                                 if (response.status === 'success') {
+                                    //this.setTime(Moment(response.data["Current Server Time"]))
                                     this.setState({
                                         time: Moment(response.data["Current Server Time"]),
                                         shiftData: response.data["Today's Shift"],
@@ -46,6 +58,11 @@ export default class Clock extends Component {
             })
     }
 
+
+
+    // UNSAFE_componentWillMount() {
+    //     clearTimeout(this.setTime)
+    // }
     componentDidUpdate() {
         // time request
         if (this.state.time !== null) {
@@ -75,13 +92,13 @@ export default class Clock extends Component {
             } else {
                 if (this.props.checkScreen === "checkinout") {
                     return (
-                       
-                            <View style={{ width: '100%', alignItems: 'center' }}>
-                                <Text style={{ marginTop: 10, fontSize: 30, color: color.primary, fontWeight: 'bold' }}>
-                                    {Time.hour(time)}:{Time.minute(time)}:{Time.second(time)} {Time.part(time)}
-                                </Text>
-                                <Text style={{ marginTop: 10, fontSize: 18, }}>{Time.day(time)}, {Time.date(time)} {Time.month(time)} {Time.year(time)}</Text>
-                                <View style={{
+
+                        <View style={{ width: '100%', alignItems: 'center' }}>
+                            <Text style={{ marginTop: 10, fontSize: 30, color: color.primary, fontWeight: 'bold' }}>
+                                {Time.hour(time)}:{Time.minute(time)}:{Time.second(time)} {Time.part(time)}
+                            </Text>
+                            <Text style={{ marginTop: 10, fontSize: 18, }}>{Time.day(time)}, {Time.date(time)} {Time.month(time)} {Time.year(time)}</Text>
+                            <View style={{
                                 flexDirection: 'row',
                                 width: '100%',
                                 alignItems: 'center',
@@ -91,24 +108,24 @@ export default class Clock extends Component {
                                 backgroundColor: color.lighter,
                                 marginTop: 20,
                             }}>
-                                {this.props.checkIconChange === "checkin" ?  <Image style={{
+                                {this.props.checkIconChange === "checkin" ? <Image style={{
                                     width: 20,
                                     height: 20,
-                                }} 
+                                }}
 
-                                source={require('../assets/icon/checkintime.png')} /> :  <Image style={{
-                                    width: 20,
-                                    height: 20,
-                                }} 
+                                    source={require('../assets/icon/checkintime.png')} /> : <Image style={{
+                                        width: 20,
+                                        height: 20,
+                                    }}
 
-                                source={require('../assets/icon/checkouttime.png')} />}
-                               
+                                        source={require('../assets/icon/checkouttime.png')} />}
+
                                 <Text style={{
                                     marginLeft: 10,
 
                                 }}>{this.state.shiftData}</Text>
                             </View>
-                            </View>
+                        </View>
                     )
                 } else {
                     return (

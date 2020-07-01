@@ -74,12 +74,16 @@ export class JoinEmployeeList extends Component {
         APIs.getJoinEmployeeListData(url, auth, id, year)
             .then((res) => {
                 if (res.status == "success") {
-                    this.setState({
-                        empLists: res.data,
-                        loading: false,
-                        requestData: false,
-                        loadingTxt: ''
-                    })
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        this.setState({
+                            empLists: res.data,
+                            loading: false,
+                            requestData: false,
+                            loadingTxt: ''
+                        })
+                    }               
                 } else {
                     this.setState({ 
                         empLists: [],

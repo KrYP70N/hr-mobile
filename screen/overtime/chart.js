@@ -82,59 +82,58 @@ export class chart extends Component {
         APIs.getOTSummary(url, auth, id, year)
             .then((res) => {
                 if (res.status === 'success') {
-                    console.log("OT Summary Data", res.data)
-                    let data = []
-                    let lData = []
-                    for (let i = 0; i < 4; i++) {
-                        if (i == 0) {
-                            let obj = {
-                                title: lb_color[i].title,
-                                value: res.data.Approved[0][0],
-                                color: lb_color[i].color
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        console.log("OT Summary Data", res.data)
+                        let data = []
+                        let lData = []
+                        for (let i = 0; i < 4; i++) {
+                            if (i == 0) {
+                                let obj = {
+                                    title: lb_color[i].title,
+                                    value: res.data.Approved[0][0],
+                                    color: lb_color[i].color
+                                }
+                                data.push(obj)
+                                lData.push(obj)
                             }
-                            data.push(obj)
-                            lData.push(obj)
-                        }
-                       
-                        if (i == 1) {
-                            let obj = {
-                                title: lb_color[i].title,
-                                value: res.data.Pending[0][0],
-                                color: lb_color[i].color
+                           
+                            if (i == 1) {
+                                let obj = {
+                                    title: lb_color[i].title,
+                                    value: res.data.Pending[0][0],
+                                    color: lb_color[i].color
+                                }
+                                data.push(obj)
+                                lData.push(obj)
                             }
-                            data.push(obj)
-                            lData.push(obj)
-                        }
-                        if (i == 2) {
-                            let obj = {
-                                title: lb_color[i].title,
-                                value: res.data.Rejected[0][0],
-                                color: lb_color[i].color
+                            if (i == 2) {
+                                let obj = {
+                                    title: lb_color[i].title,
+                                    value: res.data.Rejected[0][0],
+                                    color: lb_color[i].color
+                                }
+                                data.push(obj)
+                                lData.push(obj)
                             }
-                            data.push(obj)
-                            lData.push(obj)
                         }
+                        lData.push({
+                            title: "TOTAL",
+                            value: res.data.Total[0][0],
+                            color: '#FFFFFF'
+                        })
+                        this.setState({
+                            summaryData: data,
+                            labelData: lData
+                        })
                     }
-                    lData.push({
-                        title: "TOTAL",
-                        value: res.data.Total[0][0],
-                        color: '#FFFFFF'
-                    })
-                    this.setState({
-                        summaryData: data,
-                        labelData: lData
-                    })
+                   
                 } else {
-                    // Toast.show({
-                    //     text: 'Connection time out. Please check your internet connection!',
-                    //     textStyle: {
-                    //         textAlign: 'center'
-                    //     },
-                    //     style: {
-                    //         backgroundColor: color.primary
-                    //     },
-                    //     duration: 6000
-                    // })
+                   this.setState({
+                       summaryData: [],
+                       labelData: []
+                   })
                 }
             })
     }

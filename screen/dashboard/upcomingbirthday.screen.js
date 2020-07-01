@@ -73,12 +73,16 @@ export class UpcomingBirthday extends Component {
         APIs.getBirthdayListData(url, auth, id, year)
             .then((res) => {
                 if (res.status == "success") {
-                    this.setState({
-                        birthdayLists: res.data,
-                        loading: false,
-                        requestData: false,
-                        loadingTxt: ''
-                    })
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        this.setState({
+                            birthdayLists: res.data,
+                            loading: false,
+                            requestData: false,
+                            loadingTxt: ''
+                        })
+                    }
                 } else {
                     this.setState({
                         birthdayLists: [],

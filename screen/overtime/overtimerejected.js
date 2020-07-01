@@ -58,19 +58,16 @@ export class OvertimeRejected extends Component {
         APIs.getOTRejectedList(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
-                    this.setState({
-                        OTRejectedList: res.data
-                    })
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        this.setState({
+                            OTRejectedList: res.data
+                        })
+                    }
                 } else {
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
+                    this.setState({
+                        OTRejectedList: []
                     })
                 }
             })

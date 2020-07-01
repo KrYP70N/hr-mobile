@@ -59,10 +59,14 @@ export default class OvertimeApprove extends Component {
             .then((res) => {
                 console.log("OT Approved Data", res.data)
                 if (res.status === 'success') {
-                    this.setState({
-                        refresh: !this.state.refresh,
-                        overtimeList: res.data,
-                    })
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        this.setState({
+                            refresh: !this.state.refresh,
+                            overtimeList: res.data,
+                        })
+                    }
                 } else {
                     this.setState({
                         overtimeList: []

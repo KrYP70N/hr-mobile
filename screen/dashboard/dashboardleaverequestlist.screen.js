@@ -52,13 +52,17 @@ export class DashboardLeaveRequestList extends Component {
         APIs.getDashboardLeaveRequestEmpListData(url, auth, id, year)
             .then((res) => {
                 if (res.status == "success") {
-                    this.setState({
-                        //leaveLists: [],
-                        leaveLists: res.data,
-                        loading: false,
-                        requestData: false,
-                        loadingTxt: ''
-                    })
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        this.setState({
+                            //leaveLists: [],
+                            leaveLists: res.data,
+                            loading: false,
+                            requestData: false,
+                            loadingTxt: ''
+                        })
+                    }   
                 } else {
                     this.setState({
                         leaveLists: [],

@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 
 import po from './po'
 import styPayroll from './payroll.style'
-import { Container, Content, Text, Form, Item, Label, Input, Picker, Row, Col, Button, View, CardItem, Body, Card, Icon, Header, Left, Right } from 'native-base'
+import { Container, Content, Text, Form, Item, Label, Input, Picker, Row, Col, Button, Icon, } from 'native-base'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 import PayrollList from './_list.payroll.screen.'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
-import { AsyncStorage, Platform, StatusBar, SafeAreaView } from 'react-native'
+import { AsyncStorage, View, SafeAreaView } from 'react-native'
 
 
 export default class Payroll extends Component {
@@ -47,22 +47,17 @@ export default class Payroll extends Component {
                 this.state.year
             ).then((res) => {
                 if (res.status === 'success') {
-                    this.setState({
-                        payroll: res.data
-                    })
+                    if (res.error) {
+                        this.props.navigation.navigate("Login")
+                    } else {
+                        this.setState({
+                            payroll: res.data
+                        })
+                    }
+
                 } else {
                     this.setState({
                         payroll: []
-                    })
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                          textAlign: 'center'
-                        },
-                        style: {
-                          backgroundColor: color.primary
-                        },
-                        duration: 6000
                     })
                 }
             })
@@ -136,29 +131,21 @@ export default class Payroll extends Component {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={styPayroll.container}>
-                    <Header style={{
-                        backgroundColor: color.light,
-                        marginTop: Platform.OS === 'ios' ? -40 : 0
-                    }}>
-                        <Left style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center'
-                        }}>
-                            <Icon name='ios-arrow-round-back' style={{
-                                fontSize: offset.o4,
-                                color: color.primary,
-                                marginRight: offset.o2
-                            }} onPress={() => { this.props.navigation.navigate('Main') }} />
-                            <Text style={{
-                                color: color.secondary,
-                                fontFamily: 'Nunito'
-                            }}>Payroll</Text>
-                        </Left>
-                        <Right></Right>
-                    </Header>
+                    <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name='ios-arrow-round-back' style={{
+                            fontSize: offset.o4,
+                            color: color.primary,
+                            marginRight: offset.o2,
+                            marginLeft: 15,
+                        }} onPress={() => { this.props.navigation.navigate('Main') }} />
+                        <Text style={{
+                            color: color.secondary,
+                            fontFamily: 'Nunito'
+                        }}>Payroll</Text>
+                    </View>
 
                     <Content>
+                        <View style = {{width: '100%', height: 10, backgroundColor: color.lighter}}></View>
                         <Form style={styPayroll.form}>
                             <Row style={styPayroll.fieldSet}>
                                 <Col style={styPayroll.right}>

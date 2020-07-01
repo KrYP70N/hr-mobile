@@ -56,6 +56,16 @@ export class LeaveRequest extends Component {
             loading: true,
             loadingTxt: 'requesting your leave ...'
         })
+        // console.log("auth::::", auth)
+        // console.log("url", url)
+        // console.log("id:::", id)
+        // console.log("Selected Leave:::", this.state.selectedLeaveType)
+        // console.log("Start Date", this.state.startDate)
+        // console.log("End Date", this.state.endDate)
+        // console.log("Morning Leave", this.state.morning_leave)
+        // console.log("Evening Leave", this.state.evening_leave)
+        // console.log("Description", this.state.description)
+        // console.log("Binary", this.state.binary)
         APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.morning_leave, this.state.evening_leave, this.state.description, this.state.binary)
             .then((res) => {
                 console.log("Res", res)
@@ -135,19 +145,26 @@ export class LeaveRequest extends Component {
         APIs.getLeaveType(auth, url)
             .then((res) => {
                 if (res.status === 'success') {
-                    this.setState({
-                        leaveType: res.data,
-                        startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
-                        startDateMonthLabel: months[d.getMonth()],
-                        startDateDayLabel: d.getDate() < 10 ? '0' + d.getDate() : d.getDate(),
-                        endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
-                        endDateMonthLabel: months[d.getMonth()],
-                        endDateDayLabel: d.getDate() < 10 ? '0' + d.getDate() : d.getDate(),
-                        selectedLeaveType: res.data[0]['leave_type_id'],
-                        //description: null,
-                    })
-                } else {
+                    if (res.error) {
+                        this.props.navigation.navigate('Login')
+                    } else {
+                        this.setState({
+                            leaveType: res.data,
+                            startDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
+                            startDateMonthLabel: months[d.getMonth()],
+                            startDateDayLabel: d.getDate() < 10 ? '0' + d.getDate() : d.getDate(),
+                            endDate: `${d.getFullYear()}-${(d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)}-${d.getDate() < 10 ? '0' + d.getDate() : d.getDate()}`,
+                            endDateMonthLabel: months[d.getMonth()],
+                            endDateDayLabel: d.getDate() < 10 ? '0' + d.getDate() : d.getDate(),
+                            selectedLeaveType: res.data[0]['leave_type_id'],
+                            //description: null,
+                        })
+                    }
 
+                } else {
+                    this.setState({
+                        leaveType: []
+                    })
                 }
             })
     }

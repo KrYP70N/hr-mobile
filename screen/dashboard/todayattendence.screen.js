@@ -52,12 +52,16 @@ export class TodayAttendanceList extends Component {
         APIs.getDashboardAttendanceEmployeeListData(url, auth, id, year)
             .then((res) => {
                 if (res.status == "success") {
-                    this.setState({
-                        loading: false,
-                        loadingTxt: '',
-                        empLists: res.data,
-                        requestData: false,
-                    })
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        this.setState({
+                            loading: false,
+                            loadingTxt: '',
+                            empLists: res.data,
+                            requestData: false,
+                        })
+                    }  
                 } else {
                     this.setState({
                         empLists: [],

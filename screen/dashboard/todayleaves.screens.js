@@ -76,12 +76,16 @@ export class TodayLeaves extends Component {
             .then((res) => {
                 console.log("Today Leave Data", res.data)
                 if (res.status == 'success') {
-                    this.setState({
-                        todayLeaveListData: res.data,
-                        loading: false,
-                        requestData: false,
-                        loadingTxt: ''
-                    })
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        this.setState({
+                            todayLeaveListData: res.data,
+                            loading: false,
+                            requestData: false,
+                            loadingTxt: ''
+                        })
+                    }  
                 } else {
                     this.setState({
                         todayLeaveListData: [],

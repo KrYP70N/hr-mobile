@@ -60,21 +60,17 @@ export class OvertimeHistory extends Component {
         APIs.getOTHistory(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
                         this.setState({
                             OTHistoryLists: status === 'all' ? res.data : res.data.filter(list => list.state.toLowerCase() === status)
                         })
-                  
+                    }
                 } else {
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
+                   this.setState({
+                       OTHistoryLists: []
+                   })
                 }
             })
     }

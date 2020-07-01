@@ -53,12 +53,17 @@ export class ContractProfile extends Component {
         APIs.getDashboardContractData(url, auth, id, year)
             .then((res) => {
                 if (res.status == "success") {
-                    this.setState({
-                        loading: false,
-                        loadingTxt: '',
-                        profileData: res.data[0],
-                        workingSchedule: res.data[1]
-                    })
+                    if(res.error){
+                        this.props.navigatin.navigate('Login')
+                    }else{
+                        this.setState({
+                            loading: false,
+                            loadingTxt: '',
+                            profileData: res.data[0],
+                            workingSchedule: res.data[1]
+                        })
+                    }
+                   
                 } else {
                     this.setState({
                         profileData: null,

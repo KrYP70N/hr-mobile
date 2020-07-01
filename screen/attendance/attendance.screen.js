@@ -27,51 +27,31 @@ export default class Attendance extends Component {
     }
 
     componentDidMount() {
-
-        AsyncStorage.getItem('@hr:endPoint')
-            .then((res) => {
-                this.setState({
-                    url: JSON.parse(res).ApiEndPoint
-                })
-                AsyncStorage.getItem('@hr:token')
-                    .then((res) => {
-                        this.setState({
-                            token: JSON.parse(res).key,
-                            id: JSON.parse(res).id
-                        })
-                    })
-            })
-
         this.props.navigation.addListener('focus', () => {
-            if (
-                this.state.url !== null &&
-                this.state.token !== null &&
-                this.state.id !== null
-            ) {
-                let date = new Date();
-                let year = date.getFullYear();
-                let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
-                APIs.AttendanceSummary(this.state.url, this.state.token, year, month, this.state.id)
-                    .then((res) => {
-                        if (res.status === 'success') {
-                            this.setState({
-                                data: res.data
-                            })
-                        } else {
-                            Toast.show({
-                                text: 'Connection time out. Please check your internet connection!',
-                                textStyle: {
-                                    textAlign: 'center'
-                                },
-                                style: {
-                                    backgroundColor: color.primary
-                                },
-                                duration: 6000
-                            })
-                        }
-
+           
+            AsyncStorage.getItem('@hr:endPoint')
+                .then((res) => {
+                    let date = new Date();
+                    let year = date.getFullYear();
+                    let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
+                    let url = JSON.parse(res).ApiEndPoint;
+                    this.setState({
+                        url: JSON.parse(res).ApiEndPoint,
+                        year: year,
+                        month: month
                     })
-            }
+                    AsyncStorage.getItem('@hr:token')
+                        .then((res) => {
+                            let token = JSON.parse(res).key
+                            let id = JSON.parse(res).id
+                            this.setState({
+                                token: JSON.parse(res).key,
+                                id: JSON.parse(res).id
+                            })
+                            this.getAttendanceSummary(url, token, year, month, id)
+                        })
+                })
+          
         })
     }
 
@@ -85,28 +65,8 @@ export default class Attendance extends Component {
             let date = new Date();
             let year = date.getFullYear();
             let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)
-            APIs.AttendanceSummary(this.state.url, this.state.token, year, month, this.state.id)
-                .then((res) => {
-                    if (res.status === 'success') {
-                        this.setState({
-                            data: res.data
-                        })
-                    } else {
-                        Toast.show({
-                            text: 'Connection time out. Please check your internet connection!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.setState({
-                            data: []
-                        })
-                    }
-                })
+            this.getAttendanceSummary(this.state.url, this.state.token, year, month, this.state.id)
+               
         }
 
         if (this.state.data !== null && this.state.dataTitle === null) {
@@ -135,32 +95,32 @@ export default class Attendance extends Component {
         ) {
             let year = date.year;
             let month = (date.month) < 10 ? '0' + (date.month) : (date.month)
-            APIs.AttendanceSummary(this.state.url, this.state.token, year, month, this.state.id)
-                .then((res) => {
-                    if (res.status === 'success') {
-                        this.setState({
-                            data: res.data
-                        })
-                    } else {
-                        this.props.navigation.navigate('Login')
-                        Toast.show({
-                            text: 'Token Expire!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.setState({
-                            data: []
-                        })
-                    }
-                })
+
+            this.getAttendanceSummary(this.state.url, this.state.token, year, month, this.state.id)
+               
         }
+    }
 
+    getAttendanceSummary(url, token, year, month, id){
+        APIs.AttendanceSummary(url, token, year, month, id)
+        .then((res) => {
+            if (res.status === 'success') {
+                console.log("RES Error", res.error)
+                if (res.error) {
+                    this.props.navigation.navigate('Login')
+                } else {
+                    this.setState({
+                        data: res.data
+                    })
+                }
 
+            } else {
+               this.setState({
+                   data: []
+               })
+            }
+
+        })
     }
 
     render() {
@@ -174,7 +134,7 @@ export default class Attendance extends Component {
             for (let i = 0; i < this.state.data.list_att["Attendance List"].length; i++) {
                 MarkedData.push({
                     "Date": this.state.data.list_att["Attendance List"][i].Date,
-                    "Color": color.attendance
+                    "Color": '#03b1fc'
                 })
             }
         }
@@ -182,7 +142,7 @@ export default class Attendance extends Component {
             for (let i = 0; i < this.state.data.list_att["Holiday List"].length; i++) {
                 MarkedData.push({
                     "Date": this.state.data.list_att["Holiday List"][i],
-                    "Color": color.placeHolder
+                    "Color": '#A5A5A5'
                 })
             }
         }
@@ -191,13 +151,13 @@ export default class Attendance extends Component {
             for (let i = 0; i < this.state.data["Absence list"].length; i++) {
                 MarkedData.push({
                     "Date": this.state.data["Absence list"][i],
-                    "Color": color.danger
+                    "Color": '#FF0000'
                 })
             }
         }
         let Arr = [];
         for (let i = 0; i < MarkedData.length; i++) {
-            Arr.push(`'${MarkedData[i].Date}' : {marked: true, activeOpacity: ${0}, dotColor: '${MarkedData[i].Color}'}`)
+            Arr.push(`'${MarkedData[i].Date}' : {marked: true, dotColor: '${MarkedData[i].Color}'}`) //activeOpacity: ${0},
         }
 
         let markedDateData = {}
@@ -251,7 +211,7 @@ export default class Attendance extends Component {
                     </View>
                     <View style={{ flex: 1 }}>
                         <ScrollView>
-                            <View style={{ flex: 1,}}>
+                            <View style={{ flex: 1, }}>
                                 <View style={styAttend.contentContainer}>
                                     <View style={[styAttend.container, {
                                         marginTop: offset.o1

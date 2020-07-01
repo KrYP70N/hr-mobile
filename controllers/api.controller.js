@@ -14,7 +14,10 @@ export default class APIs {
 
     // auth token
     static Token(url, db, user, password) {
-        //console.log(url)
+        console.log("Url", url)
+        console.log("DB", db)
+        console.log("Login", user)
+        console.log("Password", password)
         return axios.create({
             headers: {
                 db: db,
@@ -23,11 +26,13 @@ export default class APIs {
             }
         }).get(`${url}/api/auth/token`)
             .then(function (res) {
-                //console.log(res.data, "token <<<")
-                return { data: res.data, status: 'success' }
-            })
-            .catch(function (error) {
-                console.log(error)
+                    console.log("Res Data", res.data)
+                    if(res.data.data == undefined){
+                        return { data: res.data, status: 'success' }
+                    }else{
+                        return { geterror: true, status: 'success'}
+                    } 
+            }).catch(function (error) {
                 return { error: error, status: 'fail' }
             })
     }
@@ -55,7 +60,11 @@ export default class APIs {
             }
         }).get(`${url}/employee/level/${id}?employeeID=${id}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if(res.data.data.error){
+                    return { error: true, status: 'success'}
+                }else{
+                    return { data: res.data.data, status: 'success' }
+                }   
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -85,28 +94,33 @@ export default class APIs {
             }
         }).get(`${url}/user/profile/${id}`)
             .then(function (res) {
-                let data = res["request"]["_response"]
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    let data = res["request"]["_response"]
 
-                let dataStr = data.slice(data.indexOf('"data":') + '"data":'.length, data.length - 1)
+                    let dataStr = data.slice(data.indexOf('"data":') + '"data":'.length, data.length - 1)
 
-                dataStr = dataStr.replace(', "Work Information": "",', '}chunkit{')
-                dataStr = dataStr.replace(', "Personal Information": "", ', '}chunkit{')
+                    dataStr = dataStr.replace(', "Work Information": "",', '}chunkit{')
+                    dataStr = dataStr.replace(', "Personal Information": "", ', '}chunkit{')
 
-                let dataArray = dataStr.split('chunkit')
+                    let dataArray = dataStr.split('chunkit')
 
-                // reformat profileImage
-                let profileImage = res.data.data['Profile Picture']
+                    // reformat profileImage
+                    let profileImage = res.data.data['Profile Picture']
 
 
 
-                let infoCollection = {
-                    "Profile Image": profileImage,
-                    "General Information": JSON.parse(dataArray[0]),
-                    "Work Information": JSON.parse(dataArray[1]),
-                    "Personal Information": JSON.parse(dataArray[2])
+                    let infoCollection = {
+                        "Profile Image": profileImage,
+                        "General Information": JSON.parse(dataArray[0]),
+                        "Work Information": JSON.parse(dataArray[1]),
+                        "Personal Information": JSON.parse(dataArray[2])
+                    }
+
+                    return { data: infoCollection, status: 'success' }
                 }
 
-                return { data: infoCollection, status: 'success' }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -125,7 +139,12 @@ export default class APIs {
             }
         }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
-                return { data: res, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res, status: 'success' }
+                }
+
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -141,7 +160,11 @@ export default class APIs {
             }
         }).post(coord === undefined ? `${url}/checkout/${id}` : `${url}/checkout/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
             .then(function (res) {
-                return { data: res, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -156,7 +179,11 @@ export default class APIs {
             }
         }).get(`${url}/checkinout/status/${id}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -171,7 +198,12 @@ export default class APIs {
             }
         }).get(`${url}/attendance/${month}/${id}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
+
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -186,7 +218,11 @@ export default class APIs {
             }
         }).get(`${url}/attendance/summary/${year}/${month}/${id}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -201,7 +237,11 @@ export default class APIs {
             }
         }).post(`${url}/overtime/${id}?request_date_from=${request_date_from}&request_date_to=${request_date_to}&description=${description}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -216,7 +256,11 @@ export default class APIs {
             }
         }).get(`${url}/list/OTRequest/${id}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -246,7 +290,11 @@ export default class APIs {
             }
         }).get(`${url}/list/overtime/${id}/${year}/${month}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -261,7 +309,11 @@ export default class APIs {
             }
         }).get(`${url}/approvelist/overtime/${id}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -276,7 +328,11 @@ export default class APIs {
             }
         }).get(`${url}/leave/types`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -284,10 +340,10 @@ export default class APIs {
     }
 
     // request leave
-    static requestLeave(auth, url, id, leaveType, from, to, mroning_leave,evening_leave, description, file) {
+    static requestLeave(auth, url, id, leaveType, from, to, mroning_leave, evening_leave, description, file) {
         let fd = new FormData()
-        for(let i=0; i<file.length; i++) {
-            if(i === 0) {
+        for (let i = 0; i < file.length; i++) {
+            if (i === 0) {
                 fd.append(
                     'attac', file[i]
                 )
@@ -306,7 +362,11 @@ export default class APIs {
         }
         )
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -321,7 +381,11 @@ export default class APIs {
             }
         }).get(`${url}/list/leaves/${id}/${year}/${month}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -336,7 +400,11 @@ export default class APIs {
             }
         }).get(`${url}/list/leaveRequest/${id}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -351,7 +419,11 @@ export default class APIs {
             }
         }).get(`${url}/payroll/${id}/${year}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -381,7 +453,11 @@ export default class APIs {
             }
         }).get(`${url}/payroll/${slipid}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -396,37 +472,49 @@ export default class APIs {
             }
         }).get(`${url}/download/payroll/${slipid}`)
             .then(function (res) {
-                return { data: res.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
             })
     }
 
-     // get Dashboard summary
-     static getDashboardSummary = (url, auth, id, year) => {
+    // get Dashboard summary
+    static getDashboardSummary = (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).get(`${url}/dashboard/employee/${id}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
             })
     }
 
-     // get Dashboard Today Leave
-     static getTodayLeavesData = (url, auth, id, year) => {
+    // get Dashboard Today Leave
+    static getTodayLeavesData = (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).get(`${url}/todayleave/list/dashboard/${id}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -435,137 +523,174 @@ export default class APIs {
 
     //dashboard all employee list
     static getEmployeeListData = (url, auth, id, year) => {
-       return axios.create({
-           headers: {
-               'Authorization': auth
-           }
-       }).get(`${url}/employeelist/dashboard/${id}`)
-           .then(function (res) {
-               return { data: res.data.data, status: 'success' }
-           })
-           .catch(function (error) {
-               return { error: error, status: 'fail' }
-           })
-   }
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/employeelist/dashboard/${id}`)
+            .then(function (res) {
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
 
-   // Dept Employee List
-   static getDeptEmployeeListData = (url, auth, id, year) => {
-   return axios.create({
-       headers: {
-           'Authorization': auth
-       }
-   }).get(`${url}/deptemployee/list/dashboard/${id}`)
-       .then(function (res) {
-           return { data: res.data.data, status: 'success' }
-       })
-       .catch(function (error) {
-           return { error: error, status: 'fail' }
-       })
-}
+    // Dept Employee List
+    static getDeptEmployeeListData = (url, auth, id, year) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/deptemployee/list/dashboard/${id}`)
+            .then(function (res) {
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
 
-   //get Dashboard Birthday Lists
-   static getBirthdayListData = (url, auth, id, year) => {
-   return axios.create({
-       headers: {
-           'Authorization': auth
-       }
-   }).get(`${url}/birthday/list/dashboard/${id}`)
-       .then(function (res) {
-           return { data: res.data.data, status: 'success' }
-       })
-       .catch(function (error) {
-           return { error: error, status: 'fail' }
-       })
-}
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
 
-//Dashboard Contract Profile
- static getDashboardContractData = (url, auth, id, year) => {
-   return axios.create({
-       headers: {
-           'Authorization': auth
-       }
-   }).get(`${url}/contractlist/dashboard/${id}`)
-       .then(function (res) {
-           return { data: res.data.data, status: 'success' }
-       })
-       .catch(function (error) {
-           return { error: error, status: 'fail' }
-       })
-}
+    //get Dashboard Birthday Lists
+    static getBirthdayListData = (url, auth, id, year) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/birthday/list/dashboard/${id}`)
+            .then(function (res) {
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
 
-//Dashboard Absent Emp List
-static getDashboardTodayAbsentEmpListData = (url, auth, id, year) => {
-   return axios.create({
-       headers: {
-           'Authorization': auth
-       }
-   }).get(`${url}/absent/list/dashboard/${id}`)
-       .then(function (res) {
-           return { data: res.data.data, status: 'success' }
-       })
-       .catch(function (error) {
-           return { error: error, status: 'fail' }
-       })
-}
+    //Dashboard Contract Profile
+    static getDashboardContractData = (url, auth, id, year) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/contractlist/dashboard/${id}`)
+            .then(function (res) {
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
 
-//Dashboard Attendance Emp List
-static getDashboardAttendanceEmployeeListData = (url, auth, id, year) => {
-   return axios.create({
-       headers: {
-           'Authorization': auth
-       }
-   }).get(`${url}/attendance/today/dashboard/${id}`)
-       .then(function (res) {
-           return { data: res.data.data, status: 'success' }
-       })
-       .catch(function (error) {
-           return { error: error, status: 'fail' }
-       })
-}
-//Dashboard Exit Employee Lists
-static getExitEmployeeListData = (url, auth, id, year) => {
-   return axios.create({
-       headers: {
-           'Authorization': auth
-       }
-   }).get(`${url}/exit/list/dashboard/${id}`)
-       .then(function (res) {
-           return { data: res.data.data, status: 'success' }
-       })
-       .catch(function (error) {
-           return { error: error, status: 'fail' }
-       })
-}
+    //Dashboard Absent Emp List
+    static getDashboardTodayAbsentEmpListData = (url, auth, id, year) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/absent/list/dashboard/${id}`)
+            .then(function (res) {
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
 
-//Dashboard Join Employee List
-static getJoinEmployeeListData = (url, auth, id, year) => {
-   return axios.create({
-       headers: {
-           'Authorization': auth
-       }
-   }).get(`${url}/join/list/dashboard/${id}`)
-       .then(function (res) {
-           return { data: res.data.data, status: 'success' }
-       })
-       .catch(function (error) {
-           return { error: error, status: 'fail' }
-       })
-}
+    //Dashboard Attendance Emp List
+    static getDashboardAttendanceEmployeeListData = (url, auth, id, year) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/attendance/today/dashboard/${id}`)
+            .then(function (res) {
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+    //Dashboard Exit Employee Lists
+    static getExitEmployeeListData = (url, auth, id, year) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/exit/list/dashboard/${id}`)
+            .then(function (res) {
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
 
-//Dashboard Leave Request Employee List
-static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
-   return axios.create({
-       headers: {
-           'Authorization': auth
-       }
-   }).get(`${url}/leaveRequest/list/dashboard/${id}`)
-       .then(function (res) {
-           return { data: res.data.data, status: 'success' }
-       })
-       .catch(function (error) {
-           return { error: error, status: 'fail' }
-       })
-}
+    //Dashboard Join Employee List
+    static getJoinEmployeeListData = (url, auth, id, year) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/join/list/dashboard/${id}`)
+            .then(function (res) {
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+    //Dashboard Leave Request Employee List
+    static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/leaveRequest/list/dashboard/${id}`)
+            .then(function (res) {
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
 
 
 
@@ -577,7 +702,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).get(`${url}/list/leaveRequest/${id}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -592,7 +721,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).post(`${url}/list/leaveRequest/${id}/year/month`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -607,7 +740,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).get(`${url}/leave/status`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -622,7 +759,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).get(`${url}/list/leaves/${id}/${year}/${month}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -637,7 +778,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).get(`${url}/list/overtime/${id}/${year}/${month}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -652,7 +797,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).post(`${url}/list/${status}/leaves/${id}/${year}/${month}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -667,7 +816,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).get(`${url}/OT/status`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -682,7 +835,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).get(`${url}/leave/summary/${id}/${year}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -697,7 +854,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).get(`${url}/overtime/summary/${id}/${year}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -706,14 +867,18 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
 
     //list/reject/leaves/empID/year/month
     //leave Rejected lists
-    static getLeaveRejectedList = (url, auth, id, year,month) => {
+    static getLeaveRejectedList = (url, auth, id, year, month) => {
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).get(`${url}/list/reject/leaves/${id}/${year}/${month}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -721,14 +886,18 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
     }
 
     // ot rejected
-    static getOTRejectedList = (url, auth, id, year,month) => {
+    static getOTRejectedList = (url, auth, id, year, month) => {
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).get(`${url}/list/rejected/ot/${id}/${year}/${month}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -736,14 +905,18 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
     }
 
     //get leave approve list (for employee)
-    static getLeaveApprovedList = (url, auth, id, year,month) => {
+    static getLeaveApprovedList = (url, auth, id, year, month) => {
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).get(`${url}/list/approved/leaves/${id}/${year}/${month}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -751,14 +924,18 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
     }
 
     // ot approve
-    static getOTApprovedList = (url, auth, id, year,month) => {
+    static getOTApprovedList = (url, auth, id, year, month) => {
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).get(`${url}/list/approved/ot/${id}/${year}/${month}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -773,7 +950,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).get(`${url}/list/leave/balance/${id}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -788,7 +969,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).post(`${url}/payroll/receive/${payrollID}?status=receive`)
             .then(function (res) {
-                return { data: res.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -803,7 +988,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).get(`${url}/noti/${channel}?from_date=${from}&to_date=${to}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -818,7 +1007,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).get(`${url}/channel/${id}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }
@@ -833,7 +1026,11 @@ static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
             }
         }).get(`${url}/announcement/${id}?date_start=${startDate}&date_stop=${endDate}`)
             .then(function (res) {
-                return { data: res.data.data, status: 'success' }
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
+                    return { data: res.data.data, status: 'success' }
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }

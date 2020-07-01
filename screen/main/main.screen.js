@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { View, Text, Container, Content, Button, Row, Col, Icon, Card, CardItem, Body, Title, Textarea, Header, Left, Right, Toast } from 'native-base'
-import { Image, AsyncStorage, Platform, StatusBar, TouchableOpacity, BackHandler, Modal, SafeAreaView } from 'react-native'
+import { View, Text, Content, Row, Col, Icon, Card, CardItem, Body, Toast } from 'native-base'
+import { Image, AsyncStorage, TouchableOpacity, BackHandler, SafeAreaView } from 'react-native'
 
 import po from './po'
 import color from '../../constant/color'
@@ -12,11 +12,6 @@ import Heading from '../../components/header.component'
 import CheckInOut from '../../components/checkinout.component'
 import Clock from '../../components/time.component'
 import DB from '../../model/db.model'
-import Constants from 'expo-constants'
-import * as Location from 'expo-location'
-import * as Permissions from 'expo-permissions'
-import * as IntentLauncher from 'expo-intent-launcher'
-import * as geolib from 'geolib';
 export default class Main extends Component {
 
   constructor(props) {
@@ -39,30 +34,39 @@ export default class Main extends Component {
       lowestLevel: true
     }
 
-    this.getProfile = () => {
-      console.log(this.state.auth)
-      APIs.Profile(this.state.url, this.state.auth, this.state.id)
+    this.getProfile = (url, auth, id) => {
+      console.log("Auth", auth)
+      APIs.Profile(url, auth, id)
         .then((res) => {
-          if (res.status === 'success') {
-            this.setState({
-              profile: res.data
-            })
+          console.log("Arrive Main")
+          if (res.status == 'success') {
+            console.log("main token expire", res.error)
+            if(res.error){
+              this.props.navigation.navigate("Login")
+              Toast.show({
+                text: 'Please login again. Your token is expried!',
+                textStyle: {
+                  textAlign: 'center'
+                },
+                style: {
+                  backgroundColor: color.primary
+                },
+                duration: 6000
+              })
+              
+            }else{
+              this.setState({
+                profile: res.data
+              })
+            }
+           
             this.setState({
               loading: false
             })
           } else {
             console.log("Arrive Here::::::")
+            //this.props.navigation.navigate('Login')
             //AsyncStorage.setItem('@hr:login', 'false')
-            Toast.show({
-              text: 'Connection time out. Please check your internet connection!',
-              textStyle: {
-                textAlign: 'center'
-              },
-              style: {
-                backgroundColor: color.primary
-              },
-              duration: 6000
-            })
           }
         })
     }
@@ -70,55 +74,40 @@ export default class Main extends Component {
     this.checkToken = () => {
       AsyncStorage.getItem('@hr:token')
         .then((res) => {
-          let current_date = new Date()
-          let data = JSON.parse(res)
-          let exp = data.exp      
+          let auth = DB.getToken(res)
+          let id = DB.getUserId(res)
           this.setState({
             auth: DB.getToken(res),
             id: DB.getUserId(res)
           })
           AsyncStorage.getItem('@hr:endPoint')
             .then((res) => {
+              let url = DB.getEndPoint(res)
               this.setState({
                 url: DB.getEndPoint(res)
               })
+
+              this.getProfile(url, auth, id)
+              this.isLowest(url, auth, id)
             })
         })
     }
 
-    this.isLowest = () => {
-      let auth = "access_token_48d80ebff5feee9af4494194367f43246bde0162345";
-      APIs.Level(this.state.url, auth, this.state.id)
+    this.isLowest = (url, auth, id) => {
+      APIs.Level(url, auth, id)
         .then((res) => {
-
           if (res.status === 'success') {
-            console.log("RES", res.data)
-            if(res.data.error){
-              AsyncStorage.removeItem('@hr:token').then(() => {
-                this.props.navigation.navigate('Login')
-              })
-              AsyncStorage.setItem('@hr:token', "null")
-              .then(() => {
-                  this.props.navigation.navigate('Login')
-              })
+            if(res.error){
+              this.props.navigation.navigate('Login')
             }else{
               this.setState({
                 lowestLevel: res.data.lowest_level
               })
-            }
-            
-            
+            } 
           } else {
-            Toast.show({
-              text: 'Connection time out. Please check your internet connection!',
-              textStyle: {
-                textAlign: 'center'
-              },
-              style: {
-                backgroundColor: color.primary
-              },
-              duration: 6000
-            })
+           this.setState({
+             profile: null
+           })
           }
         })
     }
@@ -148,14 +137,6 @@ export default class Main extends Component {
       })
       this.checkToken()
     })
-  }
-
-  componentDidUpdate() {
-    // profile request
-    if (this.state.profile === null && this.state.url !== null && this.state.id !== null) {
-      this.getProfile()
-      this.isLowest()
-    }
   }
 
   render() {

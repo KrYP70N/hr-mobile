@@ -52,19 +52,16 @@ export class OvertimeApprove extends Component {
         APIs.getOTApprovedList(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
-                    this.setState({
-                        OTApproveList: res.data
-                    })
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        this.setState({
+                            OTApproveList: res.data
+                        })
+                    }  
                 } else {
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
+                    this.setState({
+                        OTApproveList: []
                     })
                 }
             })

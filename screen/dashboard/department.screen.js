@@ -73,13 +73,17 @@ export class DepartmentScreen extends Component {
         APIs.getDeptEmployeeListData(url, auth, id, year)
         .then((res) => {
             if(res.status == "success"){
-                console.log("Dept List", res.data)
-                this.setState({
-                    deptLists: res.data,
-                    loading: false,
-                    loadingTxt: '',
-                    requestData: false,
-                })
+                if(res.error){
+                    this.props.navigation.navigate('Login')
+                }else{
+                    console.log("Dept List", res.data)
+                    this.setState({
+                        deptLists: res.data,
+                        loading: false,
+                        loadingTxt: '',
+                        requestData: false,
+                    })
+                }               
             }else{
                 this.setState({
                     deptLists: [],

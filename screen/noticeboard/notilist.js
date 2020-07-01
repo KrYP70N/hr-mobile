@@ -31,9 +31,13 @@ export default function notilist({ navigation }) {
                 APIs.getAnnouncement(token['key'], endPoint['ApiEndPoint'], token['id'], `${moment().format('YYYY')}-${month}-01`, `${moment().format('YYYY')}-${month}-${last_day}`)
                     .then((res) => {
                         if (res.status === 'success') {
-                            if (res.data !== null) {
-                                console.log("Announcement Data", res.data)
-                                setCollection(res.data)
+                            if (res.error) {
+                                navigation.navigate('Login')
+                            } else {
+                                if (res.data !== null) {
+                                    console.log("Announcement Data", res.data)
+                                    setCollection(res.data)
+                                }
                             }
                         } else {
                             //console.log("Error", res.error)
@@ -96,21 +100,24 @@ export default function notilist({ navigation }) {
             {
                 Collection.map((data, index) => (
                     <TouchableOpacity key={index} onPress={() => { navigation.navigate('NotiboardDetail', { Subject: data.Title, Date: data['Date Start'], Body: data['Body'] }) }}>
-                        <View key={index} style={{ marginTop: 20, borderWidth: 0.5, borderRadius: 5, borderColor: color.placeHolder, backgroundColor: color.light, paddingLeft: 10, flexDirection: 'row', paddingRight: 10, paddingBottom: 15, paddingTop: 15 }}>
+                        <View key={index} style={{ marginTop: 20, borderWidth: 0.5, borderRadius: 5, borderColor: color.placeHolder, backgroundColor: color.light, padding: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={{ width: '15%', alignItems: 'center', justifyContent: 'center', }}>
                                 <View style={{ width: 40, height: 40, borderRadius: 40 / 2, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }}>
                                     <Image style={{ width: 22, height: 22 }} source={require('../../assets/icon/announcement.png')} />
                                 </View>
                             </View>
-                            <View style={{ justifyContent: 'space-between', width: '85%', flexDirection: 'row' }}>
-                                <View style={{ marginLeft: 15 }}>
+                            <View style={{ flex: 1, justifyContent: 'space-between', width: '80%', flexDirection: 'row', padding: 10 }}>
+                                <View style={{ marginLeft: 15, flex: 1 }}>
                                     <Text style={{ fontSize: 18, fontFamily: 'Nunito-Bold' }}>{`${data.Title}`}</Text>
                                     <Text style={{ marginTop: 5, fontSize: 16, fontFamily: 'Nunito', color: "#656565" }}>{`Date - ${data["Date Start"]}`}</Text>
                                 </View>
 
-                                <TouchableOpacity onPress={() => Linking.openURL(data['Url Link'])}>
-                                    <Image style={{ width: 22, height: 22 }} source={require('../../assets/icon/attachment.png')} />
-                                </TouchableOpacity>
+                                {
+                                    data['Url Link'] == null ? <View></View> :
+                                        <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => Linking.openURL(data['Url Link'])}>
+                                            <Image style={{ width: 22, height: 22 }} source={require('../../assets/icon/attachment.png')} />
+                                        </TouchableOpacity>
+                                }
 
                             </View>
                         </View>
@@ -119,7 +126,7 @@ export default function notilist({ navigation }) {
 
             }
             <View style={{
-                marginTop: 20,
+                marginTop: 25,
                 display: Collection.length === 0 ? 'flex' : 'none',
                 alignItems: 'center'
             }}>

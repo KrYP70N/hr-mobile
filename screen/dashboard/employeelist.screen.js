@@ -74,13 +74,18 @@ export class EmployeeListScreen extends Component {
         APIs.getEmployeeListData(url, auth, id, year)
             .then((res) => {
                 if (res.status == "success") {
-                    console.log("Emp List::", res.data)
-                    this.setState({
-                        empLists: res.data,
-                        loading: false,
-                        loadingTxt: '',
-                        requestData: false,
-                    })
+                    if (res.data == true) {
+                        this.props.navigation.navigate('Login')
+                    } else {
+                        console.log("Emp List::", res.data)
+                        this.setState({
+                            empLists: res.data,
+                            loading: false,
+                            loadingTxt: '',
+                            requestData: false,
+                        })
+                    }
+
                 } else {
                     this.setState({
                         empLists: [],

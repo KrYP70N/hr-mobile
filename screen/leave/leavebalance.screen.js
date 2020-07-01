@@ -84,22 +84,25 @@ export class EmployeeLeaveBalance extends Component {
         APIs.getLeaveBalance(url, auth, id, year)
         .then((res) => {
             if(res.status == "success"){
-                console.log("API leave Balance", res.data)
-                console.log("API leave balance length", res.data.length)
-                let data = [];
-                for(let i=0; i<res.data.length; i++){
-                    let obj = {
-                        title: res.data[i]["leave name"],
-                        value: res.data[i]["leave days"],
-                        color: res.data[i]["color code"]
+                if(res.error){
+                    this.props.navigation.navigate('Login')
+                }else{
+                    console.log("API leave Balance", res.data)
+                    console.log("API leave balance length", res.data.length)
+                    let data = [];
+                    for(let i=0; i<res.data.length; i++){
+                        let obj = {
+                            title: res.data[i]["leave name"],
+                            value: res.data[i]["leave days"],
+                            color: res.data[i]["color code"]
+                        }
+                        data.push(obj)
                     }
-                    data.push(obj)
+                    console.log("Res Data", data)
+                    this.setState({
+                        leaveBalanceData: data
+                    })
                 }
-                console.log("Res Data", data)
-                this.setState({
-                    leaveBalanceData: data
-                })
-
             }else{
                 this.setState({leaveBalanceData: []})
             }

@@ -309,13 +309,14 @@ class login extends Component {
                 })
 
             AsyncStorage.getItem('@hr:token')
-                .then((res) => {    
-                    console.log("Login Res is not null",typeof(res))
-                    console.log("Data", res)
+                .then((res) => {
                     if (res !== null) {
                         let data = JSON.parse(res)
-                        let diff = moment(data.exp).diff(moment(new Date()), 'hours')
-                        if (diff < 50 && diff > 0) {
+
+                        let diff = moment(data.exp).diff(moment(new Date()), 'minutes')
+                        // let diff = moment('2020-06-27 04:17:02').diff(moment(new Date()), 'mintues')
+                        console.log("Diff", diff)
+                        if (diff < 5 && diff > 0) {
                             // refresh
                             let token = data.key
                             let id = data.id
@@ -325,13 +326,13 @@ class login extends Component {
                                     let dataEndPoint = JSON.parse(res)
                                     let url = dataEndPoint.ApiEndPoint
 
-                                        APIs.RefreshToken(url, token)
+                                    APIs.RefreshToken(url, token)
                                         .then((res) => {
                                             data.key = `Bearer ${res.data.access_token}`
                                             AsyncStorage.setItem('@hr:token', JSON.stringify(data))
-                                            .then(() => {
-                                                this.props.navigation.navigate('Main')
-                                            })
+                                                .then(() => {
+                                                    this.props.navigation.navigate('Main')
+                                                })
                                         })
                                         .catch(() => {
                                             this.setState({
@@ -343,6 +344,7 @@ class login extends Component {
                             // } else if(diff <= 0) {
                         } else if (diff <= 0) {
                             // expired
+
                             AsyncStorage.removeItem('@hr:token')
                                 .then(() => {
                                     this.setState({
@@ -350,9 +352,7 @@ class login extends Component {
                                     })
                                 })
                         } else {
-                            this.setState({
-                                loading: false
-                            })
+                            // console.log('I m login!')
                             this.props.navigation.navigate('Main')
                         }
                     } else {
@@ -366,18 +366,17 @@ class login extends Component {
     }
 
     login = () => {
-        console.log("Click Login")
-        console.log("Url", this.state.apiUrl)
-        console.log("DB", this.state.db)
+        console.log("Click Login :::")
+        // console.log("URL", this.state.apiUrl)
+        // console.log("DB", this.state.db)
+        // console.log("User", this.state.user)
+        // console.log("Password", this.state.password)
+
         APIs.Token(this.state.apiUrl, this.state.db, this.state.user, this.state.password)
             .then((res) => {
-                console.log("RES", res)
-                if (res.status === "success") {
-                    console.log("Status Success")
-                    console.log("Error message", res.data)
-
-                    if (res.data.data) {
-                        console.log("Here is error true:::")
+                console.log("RES:::", res)
+                if (res.status === 'success') {
+                    if (res.geterror) {
                         Toast.show({
                             text: 'user name or password is not correct!',
                             textStyle: {
@@ -386,10 +385,9 @@ class login extends Component {
                             style: {
                                 backgroundColor: color.primary
                             },
-                            duration: 4000
+                            duration: 3000
                         })
-                    } else {
-                        console.log("Error false is here:::")
+                    }else{
                         let date = new Date()
                         let exp_date = moment(date).add(res.data.expires_in, 'seconds')
                         AsyncStorage.setItem('@hr:token', JSON.stringify({
@@ -408,31 +406,14 @@ class login extends Component {
                                         this.props.navigation.navigate('Main')
                                     })
                             })
-
                     }
+                    
                 } else {
-                    Toast.show({
-                        text: 'user name or password is not correct!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 4000
-                    })
-
+                    console.log("Arrive Here::::")
                 }
             })
-
-
     }
-
-
     render() {
-
-        console.log("User name::", this.state.user)
-        console.log("Password", this.state.password)
         if (this.state.apiUrl === null) {
             return (
                 <Auth navigation={this.props.navigation} />

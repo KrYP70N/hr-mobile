@@ -113,6 +113,7 @@ export default StyleSheet.create({
         height: 50,
         borderRadius: 5,
         justifyContent: 'center',
+        //backgroundColor: '#fff'
         //alignItems: 'center'
         //marginBottom: offset.o2
     }

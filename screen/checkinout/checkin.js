@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, AsyncStorage, StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
-import { Container, Content, Header, Left, Right, Icon } from 'native-base'
+import { Container, Content, Header, Left, Right, Icon, Toast } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import typo from '../../constant/typography'
@@ -70,9 +70,12 @@ class checkin extends Component {
         APIs.Profile(url, auth, id)
             .then((res) => {
                 if (res.status === "success") {
-                    let makerCoordsArr = [];
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        let makerCoordsArr = [];
                     let Cobj = {
-                        title: 'Current Location',
+                        title: 'You Are Here',
                         coordinate: {
                             latitude: location.coords.latitude,
                             longitude: location.coords.longitude
@@ -108,6 +111,8 @@ class checkin extends Component {
                         },
                         markerCoordinates: makerCoordsArr
                     })
+                    }
+                    
                 }
             })
             .catch((error) => {
@@ -149,13 +154,29 @@ class checkin extends Component {
                         lat: location.coords.latitude,
                         long: location.coords.longitude
                     }).then((res) => {
-                        console.log("Check In Screen Data", res)
+                        //console.log("Check In Screen Data", res)
                         if (res.status === 'success') {
-                            this.setState({
-                                checkMessage: 'Check In Successful!',
-                                isModalVisible: true,
+                            console.log("Error Message", res.data.data.data.error)
+                            if (res.error) {
+                                this.props.navigation.navigate('Login')
+                                Toast.show({
+                                    text: 'Please login again. Your token is expried!',
+                                    textStyle: {
+                                        textAlign: 'center'
+                                    },
+                                    style: {
+                                        backgroundColor: color.primary
+                                    },
+                                    duration: 6000
+                                })
+                            } else {
+                                this.setState({
+                                    checkMessage: 'Check In Successful!',
+                                    isModalVisible: true,
 
-                            })
+                                })
+                            }
+
                         } else {
                             console.log("Error message", res)
                             this.setState({
@@ -193,11 +214,26 @@ class checkin extends Component {
                 APIs.Checkin(this.state.url, this.state.auth, this.state.id)
                     .then((res) => {
                         if (res.status === 'success') {
-                            this.setState({
-                                checkMessage: 'Check In Successful!',
-                                isModalVisible: true,
+                            console.log("Error Message", res.data.data.data.error)
+                            if (res.error) {
+                                this.props.navigation.navigate('Login')
+                                Toast.show({
+                                    text: 'Please login again. Your token is expried!',
+                                    textStyle: {
+                                        textAlign: 'center'
+                                    },
+                                    style: {
+                                        backgroundColor: color.primary
+                                    },
+                                    duration: 6000
+                                })
+                            } else {
+                                this.setState({
+                                    checkMessage: 'Check In Successful!',
+                                    isModalVisible: true,
 
-                            })
+                                })
+                            }
                         } else {
                             this.setState({
                                 checkMessage: "You're already check in!",
@@ -219,9 +255,13 @@ class checkin extends Component {
             .then((res) => {
                 console.log("Check In Status", res)
                 if (res.status === 'success') {
-                    this.setState({
-                        status: res.data
-                    })
+                    if (res.error) {
+                        this.props.navigation.navigate('Login')
+                    } else {
+                        this.setState({
+                            status: res.data
+                        })
+                    }
                 } else {
                     this.setState({
                         status: null
@@ -243,18 +283,10 @@ class checkin extends Component {
     }
 
     render() {
-        //   console.log("Data:::", this.state.data)
+        //console.log("Data:::", this.state.data)
         console.log("Geofencing:::", this.state.geofencing)
         console.log("Radius:::", this.state.radius)
-        //  console.log("Office Coord:::", this.state.officeCoord)
-        //  console.log("Marker Coordinates", this.state.markerCoordinates)
-        //  console.log("Map Cood::", this.state.mapCoord)
-        //  console.log("User Name", this.state.userName)
-        //  console.log("Location Latitude", this.state.location)
-        //  console.log("Url::", this.state.url)
-        //  console.log("Auth:::", this.state.auth)
-        //  console.log("id:::", this.state.id)
-        //  console.log("Status:::", this.state.status)
+        console.log("Status:::", this.state.status)
         return (
             <Container style={{ flex: 1 }}>
                 <Header style={{
@@ -283,8 +315,8 @@ class checkin extends Component {
                                             <Marker key={index} coordinate={marker.coordinate} title={marker.title} >
 
                                                 <View>
-                                                    {/* <Text style={{ color: marker.title === "Current Location" ? color.danger : color.primary }}>{marker.title}</Text> */}
-                                                    {marker.title === "Current Location" ? <Image style={{ width: 30, height: 30, }} source={require('../../assets/icon/user_marker.png')} /> : <Image style={{ width: 30, height: 30, }} source={require('../../assets/icon/marker.png')} />}
+                                                    {/* <Text style={{ color: marker.title === "You Are Here" ? color.danger : color.primary }}>{marker.title}</Text> */}
+                                                    {marker.title === "You Are Here" ? <Image style={{ width: 35, height: 35, }} source={require('../../assets/icon/map_person.png')} /> : <Image style={{ width: 35, height: 35, }} source={require('../../assets/icon/marker.png')} />}
                                                 </View>
                                             </Marker>
                                         ))}

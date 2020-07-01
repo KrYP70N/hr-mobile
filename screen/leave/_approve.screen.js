@@ -59,10 +59,15 @@ export default class LeaveApprove extends Component {
             .then((res) => {
                 console.log("Leave Approved Data", res.data)
                 if (res.status === 'success') {
-                    this.setState({
-                        refresh: !this.state.refresh,
-                        leaveLists: res.data,
-                    })
+                    if(res.error){
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        this.setState({
+                            refresh: !this.state.refresh,
+                            leaveLists: res.data,
+                        })
+                    }
+                    
                 } else {
                     this.setState({ leaveLists: [] })
                 }
