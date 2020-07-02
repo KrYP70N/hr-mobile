@@ -82,7 +82,7 @@ export default class Chart extends Component {
         APIs.getDashboardSummary(url, auth, id, year)
             .then((res) => {
                 if (res.status === 'success') {
-                   
+
                     if (res.error) {
                         Toast.show({
                             text: 'Please login again. Your token is expried!',
@@ -221,29 +221,21 @@ export default class Chart extends Component {
                     width: width / 3,
                     height: 160,
                     justifyContent: 'center',
-                    backgroundColor: colors.primary,
+                    backgroundColor: color.primary,
                     marginLeft: 10,
                     marginRight: 10
                 }}>
                     <View style={{ width: width / 3, height: width / 3, marginRight: 20 }}>
-                        <View style={{ width: width / 3, height: width / 3, position: 'absolute', borderRadius: width / 6, backgroundColor: '#fff', top: 0 }}></View>
-                        <PieChart
-                            style={{ width: width/3, height: width / 3, }} data={pieData}
-                            innerRadius="70%"
-                            padAngle={0}
+                        <View style={{ width: (width / 3), height: (width / 3), position: 'absolute', borderRadius: width / 6, backgroundColor: '#fff', top: 0 }}>
+                            <PieChart
+                                style={{ width: width / 3, height: width / 3, }} data={pieData}
+                                innerRadius="70%"
+                                padAngle={0}
+                            >
+                            </PieChart>
+                        </View>
 
-                        >
-                        </PieChart>
                     </View>
-                    {/* <View style={{ width: width / 3, height: width / 3, marginRight: 20 }}>
-                        <View style={{ width: width / 3, height: width / 3, position: 'absolute', borderRadius: width / 6, backgroundColor: colors.light, top: 0 }}></View>
-                        <PieChart
-                            style={{ height: width / 3, }} data={pieData}
-                            innerRadius="70%"
-                            padAngle={0}
-                        >
-                        </PieChart>
-                    </View> */}
                 </View>
                 <View style={styles.pieInfo}>
                     <View><Text style={{ marginBottom: 20, color: color.light, fontFamily: 'Nunito-Bold', fontSize: 14, }}>{this.state.chartLabel}</Text></View>

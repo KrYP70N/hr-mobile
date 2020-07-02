@@ -4,6 +4,7 @@ import color from '../../constant/color'
 import typo from '../../constant/typography'
 import offset from '../../constant/offset'
 import button from '../../constant/button'
+import { Row } from 'native-base'
 
 export default StyleSheet.create({
     container: {
@@ -113,6 +114,14 @@ export default StyleSheet.create({
         ...button.primary,
         flex: 1,
         borderRadius: 0
+    },
+    downloadButton: {
+        ...button.primary,
+        flex: 1,
+        borderRadius: 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     noData: {
         padding: offset.o3,

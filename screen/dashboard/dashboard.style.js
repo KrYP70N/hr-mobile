@@ -43,11 +43,9 @@ export default StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        //justifyContent: 'center',
         padding: offset.o2,
         backgroundColor: color.primary,
-        marginBottom: offset.o2,
-        //borderRadius: offset.o1
+        borderRadius: offset.o1,
     },
     pieBox: {
         width: '50%',

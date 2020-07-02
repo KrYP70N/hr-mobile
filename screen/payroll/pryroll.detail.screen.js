@@ -7,7 +7,7 @@ import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 
 import color from '../../constant/color'
-import { StatusBar, Platform, Linking, SafeAreaView} from 'react-native'
+import { StatusBar, Platform, Linking, SafeAreaView, Image} from 'react-native'
 import offset from '../../constant/offset'
 
 import * as WebBrowser from 'expo-web-browser';
@@ -182,11 +182,12 @@ export default class PayrollDetail extends Component {
 
                 </Content>
                 <View style={styPayroll.floatingButton}>
-                    <Button style={[styPayroll.stickyButton]}
+                    <Button style={[styPayroll.downloadButton]}
                         onPress={
                             this.downloadPaySlip
                         }
                     >
+                        <Image source={require('../../assets/icon/download.png')} style={{width: 25, height: 25}}/>
                         <Text>Download</Text>
                     </Button>
                     <Button style={[styPayroll.stickyButton, {
