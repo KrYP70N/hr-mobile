@@ -7,6 +7,7 @@ import styles from './dashboard.style'
 import colors from "../../constant/color";
 import APIs from '../../controllers/api.controller'
 import color from '../../constant/color'
+import offset from '../../constant/offset'
 const width = Dimensions.get('screen').width;
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const lb_color = [
@@ -216,7 +217,14 @@ export default class Chart extends Component {
             }))
 
         return (
-            <View style={styles.pieRow}>
+            <View style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                padding: offset.o2,
+                backgroundColor: color.primary,
+                //borderRadius: offset.o1,
+            }}>
                 <View style={{
                     width: width / 3,
                     height: 160,
@@ -226,33 +234,80 @@ export default class Chart extends Component {
                     marginRight: 10
                 }}>
                     <View style={{ width: width / 3, height: width / 3, marginRight: 20 }}>
-                        <View style={{ width: (width / 3), height: (width / 3), position: 'absolute', borderRadius: width / 6, backgroundColor: '#fff', top: 0 }}>
-                            <PieChart
-                                style={{ width: width / 3, height: width / 3, }} data={pieData}
-                                innerRadius="70%"
-                                padAngle={0}
-                            >
-                            </PieChart>
-                        </View>
+                        <View style={{ width: width / 3, height: width / 3, position: 'absolute', borderRadius: width / 6, backgroundColor: '#fff', top: 0 }}></View>
+                        <PieChart
+                            style={{ width: width / 3, height: width / 3, }} data={pieData}
+                            innerRadius="70%"
+                            padAngle={0}
 
+                        >
+                        </PieChart>
                     </View>
                 </View>
-                <View style={styles.pieInfo}>
-                    <View><Text style={{ marginBottom: 20, color: color.light, fontFamily: 'Nunito-Bold', fontSize: 14, }}>{this.state.chartLabel}</Text></View>
-                    {
-                        this.state.labelData.map((d, key) => (
-                            <View style={styles.pieTxtContainer} key={key}>
-                                <Icon name="md-square" style={[styles.pieicn, { color: d.color }]} />
-                                <View style={{ width: width / 3, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <Text style={styles.pietxt}>{d.title}</Text>
-                                    <Text style={styles.pietxt}> -  {d.value}</Text>
-                                </View>
+                <View style={{
+                    width: (2 * width) / 3,
+                    marginTop: 5,
+                    marginLeft: 15
+                }}>
+                    {/* <View style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        //justifyContent: 'space-between',
+                        //flexWrap: 'wrap'
+                    }}> */}
+                    <Text style={{ marginBottom: 20, color: color.light, fontFamily: 'Nunito-Bold', fontSize: 14, }}>{this.state.chartLabel}</Text>
+                        {
+                            this.state.labelData.map((d, key) => (
+                                <View style={styles.pieTxtContainer} key={key}>
+                                    <Icon name="md-square" style={[styles.pieicn, { color: d.color }]} />
+                                    <View style={{ width: width / 3, flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <Text style={styles.pietxt}>{d.title}</Text>
+                                        <Text style={styles.pietxt}> -  {d.value}</Text>
+                                    </View>
 
-                            </View>
-                        ))
-                    }
+                                </View>
+                            ))
+                        }
+                    {/* </View> */}
                 </View>
+
             </View>
+            // <View style={styles.pieRow}>
+            //      <View style={{
+            //         width: width / 3,
+            //         height: 160,
+            //         justifyContent: 'center',
+            //         backgroundColor: color.primary,
+            //         marginLeft: 10,
+            //         marginRight: 10,
+            //     }}>
+            //         <View style={{ width: width / 3, height: width / 3, marginRight: 20 }}>
+            //             <View style={{ width: width / 3, height: width / 3, position: 'absolute', borderRadius: width / 6, backgroundColor: '#fff', top: 0 }}></View>
+            //             <PieChart
+            //                 style={{ width: width/3, height: width / 3, }} data={pieData}
+            //                 innerRadius="70%"
+            //                 padAngle={0}
+
+            //             >
+            //             </PieChart>
+            //         </View>
+            //     </View>
+            //     <View style={styles.pieInfo}>
+            //         <View><Text style={{ marginBottom: 20, color: color.light, fontFamily: 'Nunito-Bold', fontSize: 14, }}>{this.state.chartLabel}</Text></View>
+            //         {
+            //             this.state.labelData.map((d, key) => (
+            //                 <View style={styles.pieTxtContainer} key={key}>
+            //                     <Icon name="md-square" style={[styles.pieicn, { color: d.color }]} />
+            //                     <View style={{ width: width / 3, flexDirection: 'row', justifyContent: 'space-between' }}>
+            //                         <Text style={styles.pietxt}>{d.title}</Text>
+            //                         <Text style={styles.pietxt}> -  {d.value}</Text>
+            //                     </View>
+
+            //                 </View>
+            //             ))
+            //         }
+            //     </View>
+            // </View>
         )
     }
 }
