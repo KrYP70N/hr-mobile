@@ -206,14 +206,14 @@ class login extends Component {
                         <Text style={styLogin.buttonText}>{po.label.btn}</Text>
                     </Button>
 
-                    {/* <Button transparent style={styLogin.resetPwd} onPress={() => {
+                    <Button transparent style={styLogin.resetPwd} onPress={() => {
                         AsyncStorage.removeItem('@hr:endPoint')
                             .then(() => {
                                 Updates.reload()
                             })
                     }}>
                         <Text style={styLogin.resetTxt}>Change Access Token?</Text>
-                    </Button> */}
+                    </Button>
                 </Container>
                 <Overlay overlay={this.state.overlay} />
             </KeyboardAvoidingView>

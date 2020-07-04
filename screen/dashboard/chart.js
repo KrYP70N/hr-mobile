@@ -247,7 +247,7 @@ export default class Chart extends Component {
                 <View style={{
                     width: (2 * width) / 3,
                     marginTop: 5,
-                    marginLeft: 15
+                    marginLeft: 10
                 }}>
                     {/* <View style={{
                         display: 'flex',

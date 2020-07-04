@@ -25,7 +25,12 @@
     ],
     "ios": {
       "bundleIdentifier": "com.innovixhr",
-      "buildNumber": "13",
+      "buildNumber": "14",
+      "config": {
+        "googleMaps": {
+          "apiKey" : "AIzaSyDcolzN85DtK3dUsLI2y5ipSVATbxWddTs"
+        }
+      },
       "infoPlist": {
         "NSLocationAlwaysUsageDescription": "In order to use Check In / Check Out and Attendance Functions, you will need to turn on your location service.",
         "NSLocationWhenInUseUsageDescription": "In order to use Check In / Check Out and Attendance Functions, you will need to turn on your location service."
@@ -34,10 +39,10 @@
     },
     "android": {
       "package": "com.innovixhr.hrmobile",
-      "versionCode": 10,
+      "versionCode": 11,
       "config": {
         "googleMaps": {
-          "apiKey" : "AIzaSyC53THKHx9WGSDTpJIc9YpJZZDz8emWeaA"
+          "apiKey" : "AIzaSyBO96bY4WThKFHRcbp-2wyi6Yom9V8zdKY"
         }
       }
     },
