@@ -3,7 +3,7 @@
     "name": "Innovix HR",
     "slug": "innovix-hr",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
+    "sdkVersion": "38.0.0",
     "platforms": [
       "ios",
       "android",
