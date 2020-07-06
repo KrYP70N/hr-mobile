@@ -68,7 +68,7 @@ export default class Dashboard extends Component {
 
                     <Content style={{ backgroundColor: color.lighter }}>
                         <Chart navigation={this.props.navigation} />
-                        <View style={{ backgroundColor: color.lighter, paddingLeft: offset.o1 + offset.oh, paddingRight: offset.o1 + offset.oh }}>
+                        <View style={{ backgroundColor: color.lighter, paddingLeft: offset.o1 + offset.oh, paddingRight: offset.o1 + offset.oh, paddingTop: 15 }}>
                             <Cards navigation={this.props.navigation} />
                         </View>
                     </Content>

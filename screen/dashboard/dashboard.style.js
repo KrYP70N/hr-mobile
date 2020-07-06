@@ -45,7 +45,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         padding: offset.o2,
         backgroundColor: color.primary,
-        borderRadius: offset.o1,
+        //borderRadius: offset.o1,
     },
     pieBox: {
         width: '50%',
