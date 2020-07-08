@@ -101,6 +101,7 @@ export default class Cards extends Component {
     getSummaryData(auth, id, url, year) {
         APIs.getDashboardSummary(url, auth, id, year)
             .then((res) => {
+                console.log("Birthday Count", res.data)
                 let list = [];
                 if (res.status == 'success') {
                     if(res.error){
@@ -116,15 +117,15 @@ export default class Cards extends Component {
                                     page: 'TodayLeave'
                                 }
                             )
-                            list.push(
-                                {
-                                    title: 'Upcoming Birthday',
-                                    noti: res.data["Birthday Count"][0][0] == "0" ? "0" : res.data["Birthday Count"][0][0],
-                                    icon: require('../../assets/icon/upcoming_birthday.png'),
-                                    // page: 'DashboardRequest'
-                                    page: 'UpcomingBirthday'
-                                },
-                            )
+                            // list.push(
+                            //     {
+                            //         title: 'Upcoming Birthday',
+                            //         noti: res.data["Birthday Count"][0][0] == "0" ? "0" : res.data["Birthday Count"][0][0],
+                            //         icon: require('../../assets/icon/upcoming_birthday.png'),
+                            //         // page: 'DashboardRequest'
+                            //         page: 'UpcomingBirthday'
+                            //     },
+                            // )
     
                             list.push(
                                 {
@@ -213,14 +214,14 @@ export default class Cards extends Component {
                                     page: 'JoinEmployeeList'
                                 }
                             )
-                            list.push(
-                                {
-                                    title: 'Upcoming Birthday',
-                                    noti: res.data["Birthday Count"][0][0] == "0" ? "0" : res.data["Birthday Count"][0][0],
-                                    icon: require('../../assets/icon/upcoming_birthday.png'),
-                                    page: 'UpcomingBirthday'
-                                },
-                            )
+                            // list.push(
+                            //     {
+                            //         title: 'Upcoming Birthday',
+                            //         noti: res.data["Birthday Count"][0][0] == "0" ? "0" : res.data["Birthday Count"][0][0],
+                            //         icon: require('../../assets/icon/upcoming_birthday.png'),
+                            //         page: 'UpcomingBirthday'
+                            //     },
+                            // )
                            
     
                             list.push(

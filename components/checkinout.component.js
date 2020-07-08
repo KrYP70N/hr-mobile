@@ -13,6 +13,7 @@ import offset from '../constant/offset'
 // import { TouchableOpacity } from 'react-native-gesture-handler'
 import color from '../constant/color';
 import typography from '../constant/typography';
+import LOC from '../components/Location'
 import APIs from '../controllers/api.controller';
 import Modal from 'react-native-modal';
 const height = Dimensions.get('screen').height;
@@ -58,6 +59,8 @@ export default class CheckInOut extends Component {
 
   async componentDidMount() {
 
+
+
     if (Platform.OS === 'android' && !Constants.isDevice) {
       this.setState({
         locError: true
@@ -69,7 +72,7 @@ export default class CheckInOut extends Component {
           locError: true
         })
       } else {
-        let location = await Location.getCurrentPositionAsync({})
+        let location = await Location.getCurrentPositionAsync({enableHighAccuracy:true})
         this.setState({
           location: location.coords,
           locError: false
@@ -92,9 +95,21 @@ export default class CheckInOut extends Component {
           id: data['id'],
         })
       })
+   
   }
 
   async getLocationService(){
+    // LOC.getAsync().then((result) => {
+    //   if(result.status == 'granted'){
+    //     this.setState({
+    //       locError: false
+    //     })
+    //   }else{
+    //     this.setState({
+    //       locError: true,
+    //     })
+    //   }
+    // })
     if (Platform.OS === 'android' && !Constants.isDevice) {
       this.setState({
         locError: true
@@ -107,7 +122,7 @@ export default class CheckInOut extends Component {
         })
       } else {
         
-        let location = await Location.getCurrentPositionAsync({})
+        let location = await Location.getCurrentPositionAsync({enableHighAccuracy:true})
         this.setState({
           location: location.coords,
           locError: false
@@ -124,7 +139,7 @@ export default class CheckInOut extends Component {
         <View style={styles.errorBox}>
           <TouchableOpacity onPress={() => {
             this.getLocationService()
-           // IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS)
+           //IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS)
           }}>
             <Card style={styles.error}>
               <Image source={require('../assets/icon/location-2.png')} style={styles.errImg} />
@@ -137,6 +152,8 @@ export default class CheckInOut extends Component {
         </View>
       )
     }
+
+    console.log("Geofencing Service", this.state.geofencing)
 
     // checking radius
     // if (this.state.withinRadius === 'wait' && this.state.geofencing === true) {
@@ -193,7 +210,7 @@ export default class CheckInOut extends Component {
               marginTop: 10,
             }}>
               <TouchableOpacity onPress={() => {
-                this.props.navigation.navigate('CheckIn')
+                this.props.navigation.navigate('CheckIn'), {geofencing: this.state.geofencing}
                 //this.CheckInOut()
               }}>
                 <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width/3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>

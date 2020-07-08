@@ -6,6 +6,7 @@ export default class APIs {
     static Auth(key, version) {
         return axios.get(`http://apiendpoint.innovixhr.com/api/build/hr?siteKey=${key}&appVersion=${1}`)
             .then(function (res) {
+                console.log("RES::", res)
                 return { data: res.data.model, status: res.data.success }
             }).catch((e) => {
                 console.log("Error::", e)

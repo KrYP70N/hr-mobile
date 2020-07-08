@@ -4,7 +4,7 @@ import Constants from 'expo-constants'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions';
 
-import { KeyboardAvoidingView, Image, Keyboard, AsyncStorage, BackHandler } from 'react-native'
+import { KeyboardAvoidingView, Image, Keyboard, AsyncStorage, BackHandler, SafeAreaView } from 'react-native'
 import { View, Text, Container, Form, Content, Item, Label, Input, Button, Footer, Icon, Toast } from 'native-base'
 
 import styLogin from './login.style'
@@ -157,7 +157,7 @@ class login extends Component {
                     }
                     
                 } else {
-                    console.log("Arrive Here::::")
+                    console.log("You got 403 from Sever")
                 }
             })
     }
@@ -168,7 +168,8 @@ class login extends Component {
             )
         }
         return (
-            <KeyboardAvoidingView behavior="height" style={styLogin.kbView}>
+            // <KeyboardAvoidingView behavior="height" style={styLogin.kbView}>
+            <SafeAreaView style={styLogin.kbView}>
                 <Container style={styLogin.container}>
                     <Image
                         source={require('../../assets/upload/logo.png')}
@@ -216,7 +217,9 @@ class login extends Component {
                     </Button>
                 </Container>
                 <Overlay overlay={this.state.overlay} />
-            </KeyboardAvoidingView>
+                </SafeAreaView>
+            // </KeyboardAvoidingView>
+
         )
 
     }
