@@ -169,6 +169,8 @@ export default class Profile extends Component {
       )
     }
 
+    console.log("Profile Data", this.state.data)
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Container style={styProfile.topContainer}>

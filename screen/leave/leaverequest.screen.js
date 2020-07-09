@@ -3,7 +3,7 @@ import { Text, View, SafeAreaView, ScrollView, TouchableOpacity, AsyncStorage, K
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import { Picker, Textarea, Row, Col, Button, Toast, Icon, Container, Content, Header } from 'native-base'
-import DateTimePicker from "react-native-modal-datetime-picker";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system';
 import po from './po'
@@ -407,8 +407,7 @@ export class LeaveRequest extends Component {
                                     <View>
                                         <Text style={{ fontSize: 16, color: '#656565', fontFamily: 'Nunito' }}>From</Text>
                                         <TouchableOpacity onPress={() => { this.showDatePicker() }}>
-                                            <DateTimePicker
-                                                style={{ width: 320, backgroundColor: "white" }}
+                                            <DateTimePickerModal
                                                 isVisible={this.state.isStartDateVisible}
                                                 mode="date"
                                                 onConfirm={this.pickDate}
@@ -423,8 +422,7 @@ export class LeaveRequest extends Component {
                                     <View style={{ marginLeft: 20 }}>
                                         <Text style={{ fontSize: 16, color: '#656565', fontFamily: 'Nunito' }}>To</Text>
                                         <TouchableOpacity onPress={() => { this.showEndDatePicker() }}>
-                                            <DateTimePicker
-                                                style={{ width: 320, backgroundColor: "white" }}
+                                            <DateTimePickerModal
                                                 isVisible={this.state.isEndDateVisible}
                                                 mode="date"
                                                 onConfirm={this.pickEndDate}
