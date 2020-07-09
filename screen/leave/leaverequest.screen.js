@@ -52,13 +52,33 @@ export class LeaveRequest extends Component {
     }
 
     submit(auth, id, url) {
+        console.log("Auth", auth)
+        console.log("Id", id)
+        console.log("Url", url)
+        console.log("Start", this.state.startDate)
+        console.log("Selected Leave Type", this.state.leaveType)
         this.setState({
             loading: true,
             loadingTxt: 'requesting your leave ...'
         })
         APIs.requestLeave(auth, url, id, this.state.selectedLeaveType, this.state.startDate, this.state.endDate, this.state.morning_leave, this.state.evening_leave, this.state.description, this.state.binary)
             .then((res) => {
+                console.log("Res Main Data", res)
                 if (res.status == "success") {
+                    if(res.error){
+                        Toast.show({
+                            text: 'Please login again. Your token is expried!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
+                        this.props.navigation.navigate('Login')
+                    }else{
+                        console.log("API Return Data::", res)
                     if (res.data.error == false) {
                         const d = new Date();
                         this.setState({
@@ -81,7 +101,9 @@ export class LeaveRequest extends Component {
                             isModalVisible: true,
                         })
                     }
+                    }
                 } else {
+                    console.log("API Return Error Data", res.data)
                     this.setState({
                         checkMessage: 'Leave Request Failed!',
                         changeIconStatus: 'fail',
@@ -89,6 +111,11 @@ export class LeaveRequest extends Component {
 
                     })
                 }
+                this.setState({
+                    loading: false,
+                    loadingTxt: ''
+                })
+            }).catch((e) => {
                 this.setState({
                     loading: false,
                     loadingTxt: ''
@@ -506,8 +533,8 @@ export class LeaveRequest extends Component {
                                     {/* <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} /> */}
                                     {this.state.changeIconStatus === "success" ? <Image source={require('../../assets/icon/success_icon.png')} style={styles.dialogIcon} /> : <Image source={require('../../assets/icon/fail_icon.png')} style={styles.dialogIcon} />}
                                 </View>
-                                <View style={{ width: '100%', padding: 10, alignItems: 'center', justifyContent: 'center' }}>
-                                    <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
+                                <View style={{width: '100%', padding: 20 }}>
+                                    <Text style={{flex: 1,},styles.lanTitle}>{this.state.checkMessage}</Text>
                                 </View>
                                 <View style={styles.ModalTextContainer}>
                                     <TouchableOpacity style={styles.CancelOpacityContainer}
@@ -533,7 +560,7 @@ export class LeaveRequest extends Component {
 
 const styles = StyleSheet.create({
     ModelViewContainer: {
-        width: width + 30,
+        width: width + 15,
         height: 200,
         backgroundColor: '#f2f2f2',
         alignItems: 'center',
@@ -542,15 +569,15 @@ const styles = StyleSheet.create({
         bottom: Platform.OS === 'ios' ? 15 : -20,
     },
     lanTitle: {
-        fontSize: 20,
+        fontSize: 14,
         fontWeight: 'bold',
-        marginTop: 15,
+        //marginTop: 15,
         textAlign: 'center',
-        marginBottom: 5,
+        //marginBottom: 5,
     },
     lanTitleMM: {
         fontSize: 14,
-        marginTop: 15,
+        //marginTop: 15,
         textAlign: 'center',
         marginBottom: 5,
     },

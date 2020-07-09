@@ -353,11 +353,18 @@ export default class APIs {
         }
         )
             .then(function (res) {
-                if (res.data.data.error) {
+
+                if (res.data.data.code=='token') {
                     return { error: true, status: 'success' }
                 } else {
                     return { data: res.data.data, status: 'success' }
                 }
+                //console.log("API Res", res)
+                // if (res.data.data.error) {
+                //     return { tokenError: true, status: 'success' }
+                // } else {
+                    //return { data: res.data.data, status: 'success' }
+               // }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }

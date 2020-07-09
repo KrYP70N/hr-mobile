@@ -389,7 +389,7 @@ export class OTRequest extends Component {
                                 {/* <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} /> */}
                                 {this.state.changeIconStatus === "success" ?  <Image source={require('../../assets/icon/success_icon.png')} style={styles.dialogIcon} /> :  <Image source={require('../../assets/icon/fail_icon.png')} style={styles.dialogIcon} />}
                             </View>
-                            <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
+                            <Text style={[styles.lanTitle]}>{this.state.checkMessage}</Text>
                             <View style={styles.ModalTextContainer}>
                                 <TouchableOpacity style={styles.CancelOpacityContainer}
                                     onPress={() => this.setState({ isModalVisible: false })} >
@@ -410,7 +410,7 @@ export class OTRequest extends Component {
 
 const styles = StyleSheet.create({
     ModelViewContainer: {
-        width: width + 30,
+        width: width + 15,
         height: 200,
         backgroundColor: '#f2f2f2',
         alignItems: 'center',
@@ -419,7 +419,8 @@ const styles = StyleSheet.create({
         bottom: Platform.OS === 'ios' ? 15 : -20,
     },
     lanTitle: {
-        fontSize: 20,
+        flex: 1, 
+        fontSize: 14,
         fontWeight: 'bold',
         marginTop: 15,
         textAlign: 'center',
