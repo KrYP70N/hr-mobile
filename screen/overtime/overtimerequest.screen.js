@@ -4,7 +4,7 @@ import { Icon, Textarea, Toast } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from "react-native-modal-datetime-picker";
 import APIs from '../../controllers/api.controller'
 import Modal from 'react-native-modal';
 const width = Dimensions.get('screen').width;
@@ -165,7 +165,7 @@ export class OTRequest extends Component {
                 })
             }
         } else {
-          //console.log("")
+            //console.log("")
         }
         this.hideTimePickerto();
     };
@@ -179,10 +179,15 @@ export class OTRequest extends Component {
     submit(auth, id, url) {
         const request_from = this.state.date + " " + this.state.fromTime;
         const request_to = this.state.date + " " + this.state.toTime;
+        console.log(auth)
+        console.log(id)
+        console.log(url)
+        console.log(request_from)
+        console.log(request_to)
         APIs.OTRequest(id, auth, url, request_from, request_to, this.state.description)
             .then((res) => {
                 if (res.status === "success") {
-                    if(res.error){
+                    if (res.error) {
                         Toast.show({
                             text: 'Please login again. Your token is expried!',
                             textStyle: {
@@ -194,50 +199,50 @@ export class OTRequest extends Component {
                             duration: 6000
                         })
                         this.props.navigation.navigate('Login')
-                    }else{
-                    if (res.data.error == false) {
-                        let date = new Date();
-                        //this.pickDate(d);
-                        this.setState({
-                            description: '',
-                            date: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
-                            dateMonthLabel: months[date.getMonth()],
-                            dateYearLabel: date.getFullYear(),
-                            dateDayLabel: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
-                            fromTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
-                            fromTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
-                            fromTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
-                            toTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
-                            toTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
-                            toTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
-                            totalHR: "00:00",
-                            fromTimeHr: date.getHours(),
-                            fromTimeMinus: date.getMinutes(),
-                            checkMessage: 'Overtime Request Successful!',
-                            changeIconStatus: 'success',
-                            isModalVisible: true,
-                        })
                     } else {
-                        this.setState({
-                            description: '',
-                            date: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
-                            dateMonthLabel: months[date.getMonth()],
-                            dateYearLabel: date.getFullYear(),
-                            dateDayLabel: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
-                            fromTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
-                            fromTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
-                            fromTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
-                            toTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
-                            toTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
-                            toTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
-                            totalHR: "00:00",
-                            fromTimeHr: date.getHours(),
-                            fromTimeMinus: date.getMinutes(),
-                            checkMessage: res.data.message,
-                            changeIconStatus: 'fail',
-                            isModalVisible: true,
-                        })
-                    }
+                        if (res.data.error == false) {
+                            let date = new Date();
+                            //this.pickDate(d);
+                            this.setState({
+                                description: '',
+                                date: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
+                                dateMonthLabel: months[date.getMonth()],
+                                dateYearLabel: date.getFullYear(),
+                                dateDayLabel: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
+                                fromTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+                                fromTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
+                                fromTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
+                                toTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+                                toTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
+                                toTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
+                                totalHR: "00:00",
+                                fromTimeHr: date.getHours(),
+                                fromTimeMinus: date.getMinutes(),
+                                checkMessage: 'Overtime Request Successful!',
+                                changeIconStatus: 'success',
+                                isModalVisible: true,
+                            })
+                        } else {
+                            this.setState({
+                                description: '',
+                                date: `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`,
+                                dateMonthLabel: months[date.getMonth()],
+                                dateYearLabel: date.getFullYear(),
+                                dateDayLabel: date.getDate() < 10 ? '0' + date.getDate() : date.getDate(),
+                                fromTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+                                fromTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
+                                fromTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
+                                toTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+                                toTimehrLabel: `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`,
+                                toTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
+                                totalHR: "00:00",
+                                fromTimeHr: date.getHours(),
+                                fromTimeMinus: date.getMinutes(),
+                                checkMessage: res.data.message,
+                                changeIconStatus: 'fail',
+                                isModalVisible: true,
+                            })
+                        }
                     }
                 } else {
                     this.setState({
@@ -274,7 +279,8 @@ export class OTRequest extends Component {
                         <Text style={{ fontFamily: 'Nunito', color: '#656565', fontSize: 16 }}>Overtime Date</Text>
                         <TouchableOpacity onPress={() => { this.showDatePicker() }}>
                             <View style={{ width: '100%', height: 70, alignItems: 'center', justifyContent: 'center', borderColor: color.placeHolder, borderWidth: 0.5, borderRadius: 8, marginTop: 10 }}>
-                                <DateTimePickerModal
+                                <DateTimePicker
+                                    style={{ width: 320, backgroundColor: "white" }}
                                     isVisible={this.state.isDatePickerVisible}
                                     mode="date"
                                     onConfirm={this.pickDate}
@@ -295,7 +301,8 @@ export class OTRequest extends Component {
                                 <Text style={{ fontFamily: 'Nunito', color: '#656565', fontSize: 16 }}>From</Text>
                                 <TouchableOpacity onPress={() => { this.showTimePickerFrom() }}>
                                     <View style={{ marginTop: 10, width: 100, height: 60, borderWidth: 0.5, borderColor: color.placeHolder, borderRadius: 8, justifyContent: 'center', alignItems: 'center' }}>
-                                        <DateTimePickerModal
+                                        <DateTimePicker
+                                            style={{ width: 320, backgroundColor: "white" }}
                                             isVisible={this.state.isTimePickerFromVisible}
                                             mode="time"
                                             display="spinner"
@@ -319,7 +326,8 @@ export class OTRequest extends Component {
                                 <Text style={{ fontFamily: 'Nunito', color: '#656565', fontSize: 16 }}>To</Text>
                                 <TouchableOpacity onPress={() => { this.showTimePickerto() }}>
                                     <View style={{ marginTop: 10, width: 100, height: 60, borderWidth: 0.5, borderColor: color.placeHolder, borderRadius: 8, justifyContent: 'center', alignItems: 'center' }}>
-                                        <DateTimePickerModal
+                                        <DateTimePicker
+                                            style={{ width: 320, backgroundColor: "white" }}
                                             isVisible={this.state.isTimePickerToVisible}
                                             mode="time"
                                             headerTextIOS="Pick a time"
@@ -387,7 +395,7 @@ export class OTRequest extends Component {
                         <View style={styles.ModelViewContainer}>
                             <View style={styles.iconView}>
                                 {/* <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} /> */}
-                                {this.state.changeIconStatus === "success" ?  <Image source={require('../../assets/icon/success_icon.png')} style={styles.dialogIcon} /> :  <Image source={require('../../assets/icon/fail_icon.png')} style={styles.dialogIcon} />}
+                                {this.state.changeIconStatus === "success" ? <Image source={require('../../assets/icon/success_icon.png')} style={styles.dialogIcon} /> : <Image source={require('../../assets/icon/fail_icon.png')} style={styles.dialogIcon} />}
                             </View>
                             <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
                             <View style={styles.ModalTextContainer}>

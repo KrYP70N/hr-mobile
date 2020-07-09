@@ -14,7 +14,7 @@ export default class APIs {
     }
 
     // auth token
-    static Token(url, db, user, password) {
+    static Token(url, db, user, password) { 
         return axios.create({
             headers: {
                 db: db,
@@ -224,7 +224,7 @@ export default class APIs {
     static OTRequest(id, auth, url, request_date_from, request_date_to, description) {
         return axios.create({
             headers: {
-                'Authorization': 'Bearer access_token_857336a23c565908405ee6abaebf939da0914b3c11'
+                'Authorization': auth
             }
         }).post(`${url}/overtime/${id}?request_date_from=${request_date_from}&request_date_to=${request_date_to}&description=${description}`)
             .then(function (res) {
@@ -476,6 +476,7 @@ export default class APIs {
 
     // get Dashboard summary
     static getDashboardSummary = (url, auth, id, year) => {
+        console.log("Auth::", auth)
         return axios.create({
             headers: {
                 'Authorization': auth
