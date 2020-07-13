@@ -353,7 +353,7 @@ export default class APIs {
         }
         )
             .then(function (res) {
-
+                    console.log("Result Data", res)
                 if (res.data.data.code=='token') {
                     return { error: true, status: 'success' }
                 } else {
@@ -367,7 +367,8 @@ export default class APIs {
                // }
             })
             .catch(function (error) {
-                return { error: error, status: 'fail' }
+                console.log("Error Message", error)
+                return { error: error, status: 'fail'}
             })
     }
 

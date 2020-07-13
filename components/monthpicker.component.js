@@ -20,7 +20,6 @@ export default function MonthPicker({
 
     // next emitter
     const goNext = () => {
-        setAuth("Change Auth")
         setDate(moment(date).add(1, 'months'))
         onGoNext && onGoNext({
             month: moment(date).add(1, 'months').format('MM'),
