@@ -1,8 +1,10 @@
-import { StyleSheet, Platform } from 'react-native'
+import { StyleSheet, Platform, Dimensions } from 'react-native'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
 import typo from '../../constant/typography'
 import button from '../../constant/button'
+const width = Dimensions.get("screen").width;
+const height = Dimensions.get("screen").height;
 export default StyleSheet.create({
     overlay: {
         color: color.lighter
@@ -202,5 +204,231 @@ export default StyleSheet.create({
         padding: 10,
         backgroundColor: color.lighter,
         position: 'relative'
-    }
+    },
+
+    //leave Request
+    bgGrayContent: {
+        width: "100%",
+        height: 20,
+        backgroundColor: color.lighter,
+      },
+      leaveTypeContainer: {
+        width: "100%",
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginTop: 10,
+      },
+      divider: {
+        width: "100%",
+        height: 1,
+        backgroundColor: color.placeHolder,
+      },
+      fromDateContainer: {
+        flexDirection: "row",
+        width: "100%",
+        marginTop: offset.o3,
+      },
+      fromLabel: {
+        fontSize: 16,
+        color: "#656565",
+        fontFamily: "Nunito",
+      },
+      startDateContainer: {
+        marginTop: 5,
+        justifyContent: "center",
+        alignItems: "center",
+        borderColor: color.placeHolder,
+        borderRadius: 5,
+        borderWidth: 1,
+        width: 80,
+        height: 80,
+      },
+      startDateMonthText: {
+        color: "#656565",
+        fontSize: 16,
+        fontFamily: "Nunito",
+      },
+      startDateDayText: {
+        marginTop: 5,
+        fontFamily: "Nunito-Bold",
+        fontSize: 18,
+      },
+      toLabel: {
+        fontSize: 16,
+        color: "#656565",
+        fontFamily: "Nunito",
+      },
+      endDateTextContainer: {
+        marginTop: 5,
+        justifyContent: "center",
+        alignItems: "center",
+        borderColor: color.placeHolder,
+        borderRadius: 5,
+        borderWidth: 1,
+        width: 80,
+        height: 80,
+      },
+      endDateMonthText: {
+        color: "#656565",
+        fontSize: 16,
+        fontFamily: "Nunito",
+      },
+      endDateDayText: {
+        marginTop: 5,
+        fontFamily: "Nunito-Bold",
+        fontSize: 18,
+      },
+      totalDayLabel: {
+        fontSize: 16,
+        color: "#656565",
+        fontFamily: "Nunito",
+      },
+      totalDayTextContainer: {
+        marginTop: 5,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 5,
+        backgroundColor: color.primary,
+        width: 80,
+        height: 80,
+      },
+      totalDayText: {
+        marginTop: 5,
+        fontFamily: "Nunito-Bold",
+        fontSize: 18,
+        color: "#fff",
+      },
+      morningEveningContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+      },
+      outerMorningLeaveRadio: {
+        width: 20,
+        height: 20,
+        borderRadius: 20 / 2,
+        borderColor: color.dark,
+        borderWidth: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      innerMorningLeaveRadio: {
+        width: 13,
+        height: 13,
+        borderRadius: 13 / 2,
+      },
+      morningLeaveText: {
+        marginLeft: 5,
+        fontSize: 16,
+        color: "#333333",
+        fontFamily: "Nunito",
+      },
+      eveningLeaveContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginRight: 10,
+      },
+      outerEveningLeaveRadio: {
+        width: 20,
+        height: 20,
+        borderRadius: 20 / 2,
+        borderColor: color.dark,
+        borderWidth: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      innerEveningLeaveRadio: {
+        width: 13,
+        height: 13,
+        borderRadius: 13 / 2,
+      },
+      eveningLeaveText: {
+        marginLeft: 5,
+        fontSize: 16,
+        color: "#333333",
+        fontFamily: "Nunito",
+      },
+      fullDayContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 20,
+      },
+      outerFullDayRadio: {
+        width: 20,
+        height: 20,
+        borderRadius: 20 / 2,
+        borderColor: color.dark,
+        borderWidth: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      innerFullDayRadio: {
+        width: 13,
+        height: 13,
+        borderRadius: 13 / 2,
+      },
+      fullDayText: {
+        marginLeft: 5,
+        fontSize: 16,
+        color: "#333333",
+        fontFamily: "Nunito",
+      },
+      leaveReasonText: {
+        fontSize: 16,
+        marginBottom: 10,
+        fontFamily: "Nunito",
+        color: "#656565",
+      },
+      headerContainer: {
+        height: 60,
+        width: "100%",
+        backgroundColor: color.light,
+        alignItems: "center",
+        flexDirection: "row",
+      },
+      ModelViewContainer: {
+        width: width + 15,
+        height: 200,
+        backgroundColor: "#f2f2f2",
+        alignItems: "center",
+        position: "absolute",
+        marginLeft: -30,
+        bottom: Platform.OS === "ios" ? 15 : -20,
+      },
+      lanTitle: {
+        fontSize: 14,
+        fontWeight: "bold",
+        //marginTop: 15,
+        textAlign: "center",
+        //marginBottom: 5,
+      },
+      lanTitleMM: {
+        fontSize: 14,
+        //marginTop: 15,
+        textAlign: "center",
+        marginBottom: 5,
+      },
+      ModalTextContainer: {
+        width: "100%",
+        flex: 1,
+        position: "absolute",
+        bottom: 0,
+      },
+      CancelOpacityContainer: {
+        width: "100%",
+        height: 50,
+        backgroundColor: color.primary,
+        justifyContent: "center",
+        alignItems: "center",
+      },
+      modalTextStyle: { color: "#fff", textAlign: "center" },
+      iconView: {
+        width: "100%",
+        alignItems: "center",
+      },
+      dialogIcon: {
+        width: 28,
+        height: 28,
+        marginBottom: offset.o1,
+        marginTop: offset.o2,
+      },
 })

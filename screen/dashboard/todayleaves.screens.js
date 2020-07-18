@@ -77,7 +77,7 @@ export class TodayLeaves extends Component {
                 if (res.status == 'success') {
                     if(res.error){
                         Toast.show({
-                            text: 'Please login again. Your token is expried!',
+                            text: 'Please login again. Your token is expired!',
                             textStyle: {
                                 textAlign: 'center'
                             },

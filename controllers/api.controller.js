@@ -692,9 +692,28 @@ export default class APIs {
             })
     }
 
+    //get pending leave lists for employee
+    static getLeavePendingLists = (auth, url, id) => {
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/list/pendingleaves/${id}`)
+            .then(function (res) {
+                console.log("API Res Data", res)
+                // if (res.data.data.error) {
+                //     return { error: true, status: 'success' }
+                // } else {
+                    return { data: res.data.data, status: 'success' }
+                //}
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
 
 
-    // get pending Leave Lists
+    // get approved Leave Lists by HR
     static getLeaveRequest = (auth, url, id) => {
         return axios.create({
             headers: {

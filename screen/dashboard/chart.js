@@ -85,7 +85,7 @@ export default class Chart extends Component {
 
                     if (res.error) {
                         Toast.show({
-                            text: 'Please login again. Your token is expried!',
+                            text: 'Please login again. Your token is expired!',
                             textStyle: {
                                 textAlign: 'center'
                             },

@@ -76,7 +76,7 @@ export class EmployeeListScreen extends Component {
                 if (res.status == "success") {
                     if (res.error == true) {
                         Toast.show({
-                            text: 'Please login again. Your token is expried!',
+                            text: 'Please login again. Your token is expired!',
                             textStyle: {
                                 textAlign: 'center'
                             },

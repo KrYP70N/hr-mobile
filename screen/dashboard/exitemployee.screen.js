@@ -3,6 +3,7 @@ import { Text, View, SafeAreaView, AsyncStorage, Image } from 'react-native'
 import { Container, Content, Icon, Toast } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
+import ErrorMessageText from '../../constant/messagetext'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 
@@ -76,7 +77,7 @@ export class ExitEmployee extends Component {
                 if (res.status == "success") {
                     if(res.error){
                         Toast.show({
-                            text: 'Please login again. Your token is expried!',
+                            text: ErrorMessageText.tokenErrorMessage,
                             textStyle: {
                                 textAlign: 'center'
                             },
@@ -96,7 +97,7 @@ export class ExitEmployee extends Component {
                     }
                 } else {
                     Toast.show({
-                        text: 'Authentication Failed!',
+                        text: ErrorMessageText.apiErrorMessage,
                         textStyle: {
                             textAlign: 'center'
                         },

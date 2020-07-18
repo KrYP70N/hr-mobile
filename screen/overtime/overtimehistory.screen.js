@@ -61,6 +61,16 @@ export class OvertimeHistory extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     if(res.error){
+                        Toast.show({
+                            text: 'Please login again. Your token is expired!',
+                            textStyle: {
+                                textAlign: 'center'
+                            },
+                            style: {
+                                backgroundColor: color.primary
+                            },
+                            duration: 6000
+                        })
                         this.props.navigation.navigate('Login')
                     }else{
                         this.setState({

@@ -67,26 +67,30 @@ export class EmployeeLeavePending extends Component {
 	}
 
 	getApproveData(auth, id, url) {
-		APIs.getLeaveRequest(auth, url, id)
+		console.log("Auth", auth)
+		console.log("Id", id)
+		console.log("Url", url)
+		APIs.getLeavePendingLists(auth, url, id)
 			.then((res) => {
+				console.log("Leave Pending List", res)
 				if (res.status === 'success') {
-					if (res.error) {
-						Toast.show({
-                            text: 'Please login again. Your token is expried!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-						this.props.navigation.navigate('Login')
-					} else {
+					// if (res.error) {
+					// 	Toast.show({
+                    //         text: 'Please login again. Your token is expired!',
+                    //         textStyle: {
+                    //             textAlign: 'center'
+                    //         },
+                    //         style: {
+                    //             backgroundColor: color.primary
+                    //         },
+                    //         duration: 6000
+                    //     })
+					// 	this.props.navigation.navigate('Login')
+					// } else {
 						this.setState({
 							leaves: res.data
 						})
-					}
+					//}
 				} else {
 					Toast.show({
 						text: 'Authentication Failed!',
@@ -115,7 +119,7 @@ export class EmployeeLeavePending extends Component {
 								<Text style={styLeave.cardTitle}>{leave['Leave Type']}</Text>
 							</View>
 							<Text style={styLeave.cardXSText}>{leave['date_from']} to {leave['date_to']}</Text>
-							<Text style={styLeave.cardSText}>Leave left - {leave['number of days']} Days</Text>
+							{/* <Text style={styLeave.cardSText}>Leave - {leave['number of days']} Days</Text> */}
 							<Text style={styLeave.cardWarning}>Your request is pending</Text>
 							<Button
 								style={styLeave.ButtonSecondary}

@@ -73,7 +73,7 @@ class checkout extends Component {
 				if (res.status === "success") {
 					if (res.error) {
 						Toast.show({
-							text: 'Please login again. Your token is expried!',
+							text: 'Please login again. Your token is expired!',
 							textStyle: {
 								textAlign: 'center'
 							},
@@ -254,10 +254,11 @@ class checkout extends Component {
 								lat: result.location.coords.latitude,
 								long: result.location.coords.longitude
 							}).then((res) => {
+								console.log("Check Out Result", res)
 								if (res.status === 'success') {
 									if (res.error) {
 										Toast.show({
-											text: 'Please login again. Your token is expried!',
+											text: 'Please login again. Your token is expired!',
 											textStyle: {
 												textAlign: 'center'
 											},
@@ -289,7 +290,17 @@ class checkout extends Component {
 								this.CheckStatus(this.state.id, this.state.auth, this.state.url)
 							})
 								.catch((error) => {
-									this.props.navigation.navigate('Login')
+									Toast.show({
+										text: 'Authentication Failed!',
+										textStyle: {
+											textAlign: 'center'
+										},
+										style: {
+											backgroundColor: color.primary
+										},
+										duration: 6000
+									})
+									//this.props.navigation.navigate('Login')
 								})
 						}
 		
@@ -319,7 +330,7 @@ class checkout extends Component {
 							if (res.error) {
 								//this.props.navigation.navigate('Login')
 								Toast.show({
-									text: 'Please login again. Your token is expried!',
+									text: 'Please login again. Your token is expired!',
 									textStyle: {
 										textAlign: 'center'
 									},
@@ -366,7 +377,7 @@ class checkout extends Component {
 				if (res.status === 'success') {
 					if (res.error) {
 						Toast.show({
-							text: 'Please login again. Your token is expried!',
+							text: 'Please login again. Your token is expired!',
 							textStyle: {
 								textAlign: 'center'
 							},

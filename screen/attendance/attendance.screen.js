@@ -104,10 +104,11 @@ export default class Attendance extends Component {
     getAttendanceSummary(url, token, year, month, id){
         APIs.AttendanceSummary(url, token, year, month, id)
         .then((res) => {
+            console.log("Res Attendance Data", res)
             if (res.status === 'success') {
                 if (res.error) {
                     Toast.show({
-                        text: 'Please login again. Your token is expried!',
+                        text: 'Please login again. Your token is expired!',
                         textStyle: {
                             textAlign: 'center'
                         },
@@ -143,6 +144,7 @@ export default class Attendance extends Component {
     }
 
     render() {
+        
         if (this.state.data === null || this.state.dataTitle === null) {
             return (
                 <Loading />
@@ -158,10 +160,10 @@ export default class Attendance extends Component {
             }
         }
         if (this.state.data.list_holidays["Holiday List"].length > 0) {
-            for (let i = 0; i < this.state.data.list_att["Holiday List"].length; i++) {
+            for (let i = 0; i < this.state.data.list_holidays["Holiday List"].length; i++) {
                 MarkedData.push({
-                    "Date": this.state.data.list_att["Holiday List"][i],
-                    "Color": '#A5A5A5'
+                    "Date": this.state.data.list_holidays["Holiday List"][i]["Date"],
+                    "Color": '#09d646'
                 })
             }
         }
