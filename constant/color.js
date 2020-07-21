@@ -10,5 +10,6 @@ export default {
     warning     :       '#FFB300',
     danger      :       '#FF0000',
     indicator   :       '#35A9AC',
-    attendance  :       '#03b1fc'
+    attendance  :       '#03b1fc',
+    holiday     :       '#09d646'
 }

@@ -116,7 +116,7 @@ export default StyleSheet.create({
     calendarLabelContainer: { flexDirection: 'row', alignItems: 'center', padding: 20 },
     labelCirclePrimary: { width: 10, height: 10, backgroundColor: color.attendance, borderRadius: 10 / 2 },
     labelCircleRed: { width: 10, height: 10, backgroundColor: color.danger, borderRadius: 10 / 2, marginLeft: 15 },
-        labelCircleGray: { width: 10, height: 10, backgroundColor: "#09d646", borderRadius: 10 / 2, marginLeft: 15 },
+    labelCircleGray: { width: 10, height: 10, backgroundColor: color.holiday, borderRadius: 10 / 2, marginLeft: 15 },
     labelText: { marginLeft: 5 },
      submitButton: {
         height: 50,
