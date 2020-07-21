@@ -134,6 +134,7 @@ export default class LeaveApprove extends Component {
     }
 
     render() {
+        console.log("Leave Lists", this.state.leaveLists)
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ flex: 1, backgroundColor: color.lighter }}>
