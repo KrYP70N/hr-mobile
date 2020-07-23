@@ -344,9 +344,10 @@ export class OTRequest extends Component {
 
   render() {
     return (
+      <SafeAreaView style ={{flex: 1}}>
       <KeyboardAvoidingView
         behavior="padding"
-        style={{ backgroundColor: color.light }}>
+        style={{flex: 1, backgroundColor: color.light }}>
         {/* <SafeAreaView style={{ flex: 1 }}> */}
         <ScrollView>
           <View style={{ flex: 1, backgroundColor: color.light }}>
@@ -511,6 +512,7 @@ export class OTRequest extends Component {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+      </SafeAreaView>
     );
   }
 }

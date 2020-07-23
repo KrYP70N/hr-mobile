@@ -465,7 +465,7 @@ export class LeaveRequest extends Component {
     };
     
     return (
-      //   <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
 
       <KeyboardAvoidingView
         behavior="padding"
@@ -735,6 +735,7 @@ export class LeaveRequest extends Component {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+      </SafeAreaView>
     );
   }
 }
