@@ -293,7 +293,6 @@ class checkin extends Component {
 				}
 			})
 		}
-
 	}
 
 	CheckStatus(id, auth, url) {
