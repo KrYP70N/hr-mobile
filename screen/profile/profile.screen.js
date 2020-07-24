@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { Text, Container, Content, Icon, Toast } from 'native-base'
-
-import Heading from '../../components/header.component'
 import styProfile from './profile.style'
 import Loading from '../../components/loading.component'
 import { AsyncStorage, View, SafeAreaView } from 'react-native'
@@ -9,7 +7,6 @@ import APIs from '../../controllers/api.controller'
 
 import GeneralProfile from './_general.profile'
 import PersonalProfile from './_personal.profile'
-import { BaseRouter } from '@react-navigation/native'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 
@@ -25,7 +22,6 @@ export default class Profile extends Component {
       random: null
     }
   }
-
 
   backAction = () => {
     if (this.props.navigation.params.backScreen == "MainScreen") {
@@ -170,7 +166,6 @@ export default class Profile extends Component {
     }
 
     console.log("Profile Data", this.state.data)
-
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Container style={styProfile.topContainer}>
@@ -188,8 +183,6 @@ export default class Profile extends Component {
           </View>
 
           <Content>
-            {/* <Heading secondary title="Profile" navigation={this.props.navigation} /> */}
-
             <GeneralProfile data={this.state.data['General Information']} dataWork={this.state.data['Work Information']} />
             <Text style={styProfile.title}>Personal Information</Text>
             <PersonalProfile data={this.state.data['Personal Information']} />

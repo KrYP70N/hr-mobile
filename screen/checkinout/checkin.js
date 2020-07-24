@@ -10,12 +10,6 @@ import Clock from '../../components/time.component';
 import Modal from 'react-native-modal';
 import MapView, { Marker, Circle } from 'react-native-maps';
 import LOC from '../../components/Location'
-
-//Location
-import Constants from 'expo-constants'
-import * as Location from 'expo-location'
-import * as Permissions from 'expo-permissions'
-import * as IntentLauncher from 'expo-intent-launcher'
 import * as geolib from 'geolib';
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -27,8 +21,6 @@ class checkin extends Component {
 			url: null,
 			auth: null,
 			id: null,
-			location: null,
-			locError: null,
 			data: null,
 			geofencing: null,
 			officeCoord: null,
@@ -37,8 +29,6 @@ class checkin extends Component {
 			status: null,
 			isModalVisible: false,
 			checkMessage: '',
-			currentLocation: null,
-			isMapShowing: null,
 			mapCoord: null,
 			markerCoordinates: [],
 			userName: null,
@@ -74,205 +64,109 @@ class checkin extends Component {
 			.then((res) => {
 				if (res.status === "success") {
 					if (res.error) {
-						Toast.show({
-							text: 'Please login again. Your token is expired!',
-							textStyle: {
-								textAlign: 'center'
-							},
-							style: {
-								backgroundColor: color.primary
-							},
-							duration: 6000
-						})
-						this.props.navigation.navigate('Login')
+						this.tokenExpiration()
 					} else {
-						console.log("Office Data", res.data)
 						this.setState({
 							data: res.data,
 							userName: res.data['General Information']['Employee Name'],
 							geofencing: res.data['General Information']['Geo Fencing'],
-							//geofencing: false
+							radius: res.data['General Information']['Radius(m)'],
 						})
 						let makerCoordsArr = [];
-						console.log("Geo", res.data['General Information']['Geo Fencing'])
-						if (res.data['General Information']['Geo Fencing']) {
-
-							LOC.getAsync().then((result) => {
-								if (result.status == 'fail') {
-									this.setState({
-										locationError: true
-									})
-								} else {
-									console.log("Location Res", result)
-									this.setState({
-										locationError: false,
-										radius: res.data['General Information']['Radius(m)'],
-										//radius: 100
-										officeCoord: {
-											latitude: res.data['General Information']['Latitude'],
-											longitude: res.data['General Information']['Longtitude']
-										},
-									})
-									let obj = {
-										title: 'Office Location',
-										coordinate: {
-											latitude: res.data['General Information']['Latitude'],
-											longitude: res.data['General Information']['Longtitude']
+						LOC.getAsync().then((result) => {
+							if (result.status == 'fail') {
+								this.setState({
+									locationError: true
+								})
+							} else {
+								LOC.getAsync().then((result) => {
+									if (result.status == 'fail') {
+										this.setState({
+											locationError: true
+										})
+									} else {
+										console.log("Location Res", result)
+										this.setState({
+											locationError: false,
+											radius: res.data['General Information']['Radius(m)'],
+											officeCoord: {
+												latitude: res.data['General Information']['Latitude'],
+												longitude: res.data['General Information']['Longtitude']
+											},
+										})
+										let obj = {
+											title: 'Office Location',
+											coordinate: {
+												latitude: res.data['General Information']['Latitude'],
+												longitude: res.data['General Information']['Longtitude']
+											}
 										}
-									}
-									makerCoordsArr.push(obj);
+										makerCoordsArr.push(obj);
 
-									let Cobj = {
-										title: 'You Are Here',
-										coordinate: {
-											latitude: result.location.coords.latitude,
-											longitude: result.location.coords.longitude
+										let Cobj = {
+											title: 'You Are Here',
+											coordinate: {
+												latitude: result.location.coords.latitude,
+												longitude: result.location.coords.longitude
+											}
 										}
+										makerCoordsArr.push(Cobj);
+										this.setState({
+											location: JSON.stringify(result.location.coords),
+											mapCoord: {
+												latitude: result.location.coords.latitude,
+												longitude: result.location.coords.longitude,
+												latitudeDelta: 0.0019,
+												longitudeDelta: 0.0018
+											},
+											markerCoordinates: makerCoordsArr
+										})
 									}
-									makerCoordsArr.push(Cobj);
-									this.setState({
-										location: JSON.stringify(result.location.coords),
-										mapCoord: {
-											latitude: result.location.coords.latitude,
-											longitude: result.location.coords.longitude,
-											latitudeDelta: 0.0019,
-											longitudeDelta: 0.0018
-										},
-										markerCoordinates: makerCoordsArr
-									})
-								}
-							})
-						} else {
-							let obj = {
-								title: 'Office Location',
-								coordinate: {
-									// latitude: 16.8241212,
-									// longitude: 96.1465942
-									latitude: res.data['General Information']['Latitude'],
-									longitude: res.data['General Information']['Longtitude']
-								}
+								})
 							}
-							makerCoordsArr.push(obj);
-							this.setState({
-								userName: res.data['General Information']['Employee Name'],
-								locationError: false,
-								//data: res.data,
-								geofencing: res.data['General Information']['Geo Fencing'],
-								// geofencing: false,
-								radius: res.data['General Information']['Radius(m)'],
-								//currentLocation: true,
-								isMapShowing: false,
-								mapCoord: {
-									// latitude: 16.8241212,
-									// longitude: 96.1465942,
-									latitude: res.data['General Information']['Latitude'],
-									longitude: res.data['General Information']['Longtitude'],
-									latitudeDelta: 0.0019,
-									longitudeDelta: 0.0018
-								},
-								markerCoordinates: makerCoordsArr
-							})
-						}
+						})
 					}
 
 				} else {
-					Toast.show({
-						text: 'Authentication Failed!',
-						textStyle: {
-							textAlign: 'center'
-						},
-						style: {
-							backgroundColor: color.primary
-						},
-						duration: 6000
-					})
+					this.apiFail()
 				}
 			})
 			.catch((error) => {
+				this.apiFail()
 			})
 	}
 
-	async CheckIn() {
-		if (this.state.geofencing) { //geofencing true
+	tokenExpiration() {
+		this.props.navigation.navigate('Login')
+		Toast.show({
+			text: 'Please login again. Your token is expired!',
+			textStyle: {
+				textAlign: 'center'
+			},
+			style: {
+				backgroundColor: color.primary
+			},
+			duration: 6000
+		})
+	}
 
-			LOC.getAsync().then((result) => {
-				if(result.status == 'fail'){
-					this.setState({
-						locationError: true
-					})
-				}else{
-					if (
-						geolib.isPointWithinRadius(
-							this.state.officeCoord,
-							{
-								latitude: result.location.coords.latitude,
-								longitude: result.location.coords.longitude,
-							},
-							//
-							this.state.radius
-						)
-					) {
-		
-						if (this.state.status.Checkin !== false) {
-							this.setState({
-								checkMessage: "You're already checked in!",
-								isModalVisible: true,
-		
-							})
-						} else {
-							// Within Radius"
-							// geo true
-							APIs.Checkin(this.state.url, this.state.auth, this.state.id, {
-								lat: result.location.coords.latitude,
-								long: result.location.coords.longitude
-							}).then((res) => {
-								if (res.status === 'success') {
-									if (res.error) {
-										this.props.navigation.navigate('Login')
-										Toast.show({
-											text: 'Please login again. Your token is expired!',
-											textStyle: {
-												textAlign: 'center'
-											},
-											style: {
-												backgroundColor: color.primary
-											},
-											duration: 6000
-										})
-									} else {
-										this.setState({
-											checkMessage: 'Check In Successful!',
-											isModalVisible: true,
-		
-										})
-									}
-		
-								} else {
-									this.setState({
-										checkMessage: "Authentication Failed",
-										isModalVisible: true,
-		
-									})
-		
-								}
-								this.CheckStatus(this.state.id, this.state.auth, this.state.url)
-							})
-								.catch((error) => {
-									this.props.navigation.navigate('Login')
-								})
-						}
-		
-					} else {
-						//not within radius
-						this.setState({
-							checkMessage: "You're out of office area!",
-							isModalVisible: true,
-						})
-					}
-				}
-			})
-		} else {
-			// geo false
+	// api data not success situation and show failed toast message
+	apiFail() {
+		Toast.show({
+			text: 'Authentication Failed!',
+			textStyle: {
+				textAlign: 'center'
+			},
+			style: {
+				backgroundColor: color.primary
+			},
+			duration: 6000
+		})
+	}
+
+	async CheckIn() {
+		console.log("Loc Error", this.state.locationError)
+		if (this.state.locationError == true) { // if there is a location error, user click check in without location
 			if (this.state.status.Checkin !== false) {
 				this.setState({
 					checkMessage: "You're already checked in!",
@@ -284,17 +178,7 @@ class checkin extends Component {
 					.then((res) => {
 						if (res.status === 'success') {
 							if (res.error) {
-								this.props.navigation.navigate('Login')
-								Toast.show({
-									text: 'Please login again. Your token is expired!',
-									textStyle: {
-										textAlign: 'center'
-									},
-									style: {
-										backgroundColor: color.primary
-									},
-									duration: 6000
-								})
+								this.tokenExpiration()
 							} else {
 								this.setState({
 									checkMessage: 'Check In Successful!',
@@ -303,19 +187,113 @@ class checkin extends Component {
 								})
 							}
 						} else {
-							this.setState({
-								checkMessage: "You're already check in!",
-								isModalVisible: true,
-
-							})
+							this.apiFail()
 						}
 						this.CheckStatus(this.state.id, this.state.auth, this.state.url)
 					})
 					.catch((error) => {
-						this.props.navigation.navigate('Login')
+						this.apiFail()
 					})
 			}
+
+		} else {
+			LOC.getAsync().then((result) => {
+				if (result.status == 'fail') {
+					this.setState({
+						locationError: true
+					})
+				} else {
+					if (this.state.geofencing) {
+						//geo true
+						if (
+							geolib.isPointWithinRadius(
+								this.state.officeCoord,
+								{
+									latitude: result.location.coords.latitude,
+									longitude: result.location.coords.longitude,
+								},
+								//
+								this.state.radius
+							)
+						) {
+							if (this.state.status.Checkin !== false) {
+								this.setState({
+									checkMessage: "You're already checked in!",
+									isModalVisible: true,
+								})
+							} else {
+								// Within Radius"
+								APIs.Checkin(this.state.url, this.state.auth, this.state.id, {
+									lat: result.location.coords.latitude,
+									long: result.location.coords.longitude
+								}).then((res) => {
+									if (res.status === 'success') {
+										if (res.error) {
+											this.tokenExpiration()
+										} else {
+											this.setState({
+												checkMessage: 'Check In Successful!',
+												isModalVisible: true,
+											})
+										}
+									} else {
+										this.setState({
+											checkMessage: "Authentication Failed",
+											isModalVisible: true,
+										})
+									}
+									this.CheckStatus(this.state.id, this.state.auth, this.state.url)
+								})
+									.catch((error) => {
+										this.apiFail()
+									})
+							}
+
+						} else {
+							//not within radius
+							this.setState({
+								checkMessage: "You're out of office area!",
+								isModalVisible: true,
+							})
+						}
+					} else {
+						//geo false
+						if (this.state.status.Checkin !== false) {
+							this.setState({
+								checkMessage: "You're already checked in!",
+								isModalVisible: true,
+							})
+						} else {
+							APIs.Checkin(this.state.url, this.state.auth, this.state.id, {
+								lat: result.location.coords.latitude,
+								long: result.location.coords.longitude
+							}).then((res) => {
+								if (res.status === 'success') {
+									if (res.error) {
+										this.tokenExpiration()
+									} else {
+										this.setState({
+											checkMessage: 'Check In Successful!',
+											isModalVisible: true,
+										})
+									}
+								} else {
+									this.setState({
+										checkMessage: "Authentication Failed",
+										isModalVisible: true,
+									})
+								}
+								this.CheckStatus(this.state.id, this.state.auth, this.state.url)
+							})
+								.catch((error) => {
+									console.log("Auth Failed")
+								})
+						}
+					}
+				}
+			})
 		}
+
 	}
 
 	CheckStatus(id, auth, url) {
@@ -323,7 +301,7 @@ class checkin extends Component {
 			.then((res) => {
 				if (res.status === 'success') {
 					if (res.error) {
-						this.props.navigation.navigate('Login')
+						this.tokenExpiration()
 					} else {
 						this.setState({
 							status: res.data
@@ -339,7 +317,6 @@ class checkin extends Component {
 
 	render() {
 		console.log("Geofencing", this.state.geofencing)
-		//console.log("Current Location:::", this.state.currentLocation)
 		console.log("Radius", this.state.radius)
 		return (
 			<Container style={{ flex: 1 }}>
@@ -355,13 +332,13 @@ class checkin extends Component {
 				<Content style={{ flex: 1 }}>
 					{
 						this.state.data == null ? <View style={{ flex: 1, alignItems: 'center', paddingTop: 40 }}><Text>Fetching Data....</Text></View> :
-							((this.state.locationError != false) && this.state.geofencing == true) ? <View style={{ flex: 1, paddingTop: 20, paddingLeft: 15, paddingRight: 5}}>
-								<Text style={{ fontSize: 16, color: color.primary }}>Your mobile device is not supported to use google geo location service for this application. Please contact HR manager to disable the geo location function !!</Text>
-							</View> :
-								<View style={styles.container}>
-
-									<View style={{ flex: 1, height: height, backgroundColor: color.light }}>
-										{this.state.geofencing == true ?
+							<View style={styles.container}>
+								{
+									this.state.locationError == true ? <View style={{ flex: 1, height: height, backgroundColor: color.light }}>
+										<Image source={require('../../assets/images/no_location.jpg')} />
+										{/* <Text style={{ fontSize: 16, color: color.primary }}>Your mobile device is not supported to use google geo location service for this application. Please contact HR manager to disable the geo location function !!</Text> */}
+									</View> :
+										<View style={{ flex: 1, height: height, backgroundColor: color.light }}>
 											<MapView
 												region={this.state.mapCoord}
 												style={styles.mapStyle}
@@ -380,62 +357,46 @@ class checkin extends Component {
 													strokeColor={'#1a66ff'}
 													fillColor={'rgba(230,238,255,0.5)'}
 												/>}
-											</MapView> :
-											<MapView
-												//zoomEnabled = {false}
-												region={this.state.mapCoord}
-												style={styles.mapStyle}
-												initialRegion={this.state.mapCoord}>
-												{this.state.markerCoordinates.map((marker, index) => (
-													<Marker key={index} coordinate={marker.coordinate} title={marker.title} >
-														<View>
-															{marker.title === "You Are Here" ? <Image style={{ width: 35, height: 35, }} source={require('../../assets/icon/map_person.png')} /> : <Image style={{ width: 35, height: 35, }} source={require('../../assets/icon/marker.png')} />}
-														</View>
-													</Marker>
-												))}
 											</MapView>
-											//: <View style={{ height: height / 2, backgroundColor: color.lighter, alignItems: 'center', paddingTop: 40 }}><Text>No Geofencing!!</Text></View>
-										}
-									</View>
-
-									<View style={styles.usercontainer}>
-										{this.state.userName === null ? <Text style={{ fontSize: 40 }}>...</Text> :
-											<Text>{`Have a nice day! ${this.state.userName}`}</Text>}
-										<Clock style={styles.time} navigation={this.props.navigation} checkScreen="checkinout" checkIconChange="checkin" />
-										<View style={styles.checkincontainer}>
-
-											<TouchableOpacity onPress={() => {
-												this.CheckIn()
-											}}>
-												<View style={styles.checkbtncontainer}>
-													<Image
-														source={require('../../assets/icon/checkin.png')}
-														style={styles.checkinbtnimg}
-													/>
-													<Text style={styles.checkinbtntTxt}>Check In</Text>
-												</View>
-											</TouchableOpacity>
 										</View>
-
-									</View>
-									<Modal isVisible={this.state.isModalVisible} >
-										<View style={styles.ModelViewContainer}>
-											<View style={styles.iconView}>
-												<Image source={require('../../assets/icon/checkintime.png')} style={styles.dialogIcon} />
+								}
+								<View style={styles.usercontainer}>
+									{this.state.userName === null ? <Text style={{ fontSize: 40 }}>...</Text> :
+										<Text>{`Have a nice day! ${this.state.userName}`}</Text>}
+									<Clock style={styles.time} navigation={this.props.navigation} checkScreen="checkinout" checkIconChange="checkin" />
+									<View style={styles.checkincontainer}>
+										<TouchableOpacity onPress={() => {
+											this.CheckIn()
+										}}>
+											<View style={styles.checkbtncontainer}>
+												<Image
+													source={require('../../assets/icon/checkin.png')}
+													style={styles.checkinbtnimg}
+												/>
+												<Text style={styles.checkinbtntTxt}>Check In</Text>
 											</View>
-											<Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
-											<TouchableOpacity style={[styles.ModalTextContainer]}
-												onPress={() => this.setState({ isModalVisible: false })} >
-												<View style={styles.CancelOpacityContainer}>
-													<Text style={styles.modalTextStyle} >
-														{'Close'}
-													</Text>
-												</View>
-											</TouchableOpacity>
+										</TouchableOpacity>
+									</View>
 
-										</View>
-									</Modal>
 								</View>
+								<Modal isVisible={this.state.isModalVisible} >
+									<View style={styles.ModelViewContainer}>
+										<View style={styles.iconView}>
+											<Image source={require('../../assets/icon/checkintime.png')} style={styles.dialogIcon} />
+										</View>
+										<Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
+										<TouchableOpacity style={[styles.ModalTextContainer]}
+											onPress={() => this.setState({ isModalVisible: false })} >
+											<View style={styles.CancelOpacityContainer}>
+												<Text style={styles.modalTextStyle} >
+													{'Close'}
+												</Text>
+											</View>
+										</TouchableOpacity>
+
+									</View>
+								</Modal>
+							</View>
 					}
 
 				</Content>
@@ -449,6 +410,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
+		//position: 'relative'
 	},
 	headerleft: {
 		display: 'flex',
@@ -478,13 +440,14 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		bottom: height / 4 - 50,
 		padding: 30,
-		alignItems: 'center'
+		alignItems: 'center',
+		//justifyContent: 'center'
 	},
 	checkincontainer: {
 		width: '100%',
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginTop: 40,
+		marginTop: 30,
 	},
 	checkbtncontainer: { borderRadius: 10, width: width / 3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', },
 	checkinbtntTxt: { color: '#fff', marginTop: 5 },
