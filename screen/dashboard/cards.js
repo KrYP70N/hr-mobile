@@ -1,9 +1,8 @@
-import React, { Component, useState } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, AsyncStorage, } from 'react-native'
+import React, { Component } from 'react'
+import { TouchableOpacity, AsyncStorage, } from 'react-native'
 import { Image } from 'react-native'
 import { View, Text } from 'native-base'
 import styles from './dashboard.style'
-import colors from "../../constant/color";
 import APIs from '../../controllers/api.controller'
 const cardList = [
     {
@@ -257,7 +256,6 @@ export default class Cards extends Component {
                 {
                     this.state.cardList.map((card, key) => (
                         <TouchableOpacity style={styles.card} key={key} onPress={() => { 
-                            //card.page == "Announcement" ? this.props.navigation.navigate(card.page, {pageFrom: "Dashboard"}) :this.props.navigation.navigate(card.page) 
                             this.props.navigation.navigate(card.page, {pageFrom: "Dashboard"})
                             }}>
                             <Image source={card.icon} style={styles.notiIcn} />

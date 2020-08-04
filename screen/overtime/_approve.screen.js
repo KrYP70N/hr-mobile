@@ -1,21 +1,13 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, StatusBar, TouchableOpacity, AsyncStorage, SafeAreaView, Image, Dimensions } from 'react-native'
-import { Icon, Header, Left, Right, Toast, Container, Content } from 'native-base'
+import { Text, View, StyleSheet, TouchableOpacity, AsyncStorage, SafeAreaView, Image, Dimensions } from 'react-native'
+import { Icon, Toast, Container, Content } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
-import Loading from '../../components/loading.component'
 import styles from './overtime.style'
 import Modal from 'react-native-modal';
+import BackHeader from '../../components/BackHeader'
 const width = Dimensions.get('screen').width;
-const height = Dimensions.get('screen').height
-const data = [
-    { name: 'Phoe Phoe', email: 'phoephoe@gmail.com' },
-    { name: 'Thet Su', email: 'thetsu@gmail.com' },
-    { name: 'Lwin', email: 'lwin@gmail.com' },
-    { name: 'Ei Zon', email: 'eizon@gmail.com' },
-
-];
 
 export default class OvertimeApprove extends Component {
     constructor(props) {
@@ -58,35 +50,16 @@ export default class OvertimeApprove extends Component {
         APIs.OTApproval(url, auth, id)
             .then((res) => {
                 if (res.status === 'success') {
-                    if(res.error){
-                        Toast.show({
-                            text: 'Please login again. Your token is expired!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.props.navigation.navigate('Login')
-                    }else{
+                    if (res.error) {
+                       this.tokenExpiration()
+                    } else {
                         this.setState({
                             refresh: !this.state.refresh,
                             overtimeList: res.data,
                         })
                     }
                 } else {
-                    Toast.show({
-                        text: 'Authentication Failed!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 3000
-                    })
+                    this.apiFail()
                     this.setState({
                         overtimeList: []
                     })
@@ -124,28 +97,41 @@ export default class OvertimeApprove extends Component {
                     })
                     this.getApproveStatus(this.state.url, this.state.auth, this.state.id)
                 }
-
             })
-
     }
 
+    tokenExpiration(){
+        Toast.show({
+            text: 'Please login again. Your token is expired!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+        this.props.navigation.navigate('Login')
+    }
+
+    apiFail(){
+        Toast.show({
+            text: 'Authentication Failed!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 3000
+        })
+    }
 
     render() {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ flex: 1, backgroundColor: color.lighter }}>
-                    <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
-                        <Icon name='ios-arrow-round-back' style={{
-                            fontSize: offset.o4,
-                            color: color.primary,
-                            marginRight: offset.o2,
-                            marginLeft: 15,
-                        }} onPress={() => { this.props.navigation.navigate('Main') }} />
-                        <Text style={{
-                            color: color.secondary,
-                            fontFamily: 'Nunito'
-                        }}>Approve OT</Text>
-                    </View>
+                    <BackHeader name="Approve OT" navigation={this.props.navigation} parent="Main" />
                     <Content>
 
                         <View style={{

@@ -1,5 +1,4 @@
-import React, { useState, Component } from 'react'
-
+import React, { Component } from 'react'
 import { View, Text, Icon, Toast } from 'native-base'
 import { PieChart } from 'react-native-svg-charts'
 import { AsyncStorage, Dimensions } from 'react-native'
@@ -84,17 +83,7 @@ export default class Chart extends Component {
                 if (res.status === 'success') {
 
                     if (res.error) {
-                        Toast.show({
-                            text: 'Please login again. Your token is expired!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.props.navigation.navigate('Login')
+                        this.tokenExpiration()
                     } else {
                         if (res.data["Dashboard Type"] == "HR") {
                             let data = []
@@ -178,21 +167,38 @@ export default class Chart extends Component {
                     }
                 }
                 else {
-                    Toast.show({
-                        text: 'Authentication Failed!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 3000
-                    })
+                    this.apiFail()
                 }
 
             })
     }
 
+    tokenExpiration() {
+        Toast.show({
+            text: 'Please login again. Your token is expired!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+        this.props.navigation.navigate('Login')
+    }
+
+    apiFail() {
+        Toast.show({
+            text: 'Authentication Failed!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 3000
+        })
+    }
 
     render() {
         if (this.state.summaryData === null) {
@@ -219,22 +225,17 @@ export default class Chart extends Component {
             <View style={styles.pieRow}>
                 <View style={{
                     width: width / 3,
-                    height: 160,
+                    height: width / 3,
                     justifyContent: 'center',
                     backgroundColor: color.primary,
-                    marginLeft: 10,
-                    marginRight: 10
                 }}>
-                    <View style={{ width: width / 3, height: width / 3, marginRight: 20 }}>
-                        <View style={{ width: (width / 3), height: (width / 3), position: 'absolute', borderRadius: width / 6, backgroundColor: '#fff', top: 0 }}>
-                            <PieChart
-                                style={{ width: width / 3, height: width / 3, }} data={pieData}
-                                innerRadius="70%"
-                                padAngle={0}
-                            >
-                            </PieChart>
-                        </View>
-
+                    <View style={{ width: (width / 3), height: (width / 3), position: 'absolute', borderRadius: width / 6, backgroundColor: '#fff', top: 0 }}>
+                        <PieChart
+                            style={{ width: width / 3, height: width / 3 }} data={pieData}
+                            innerRadius="70%"
+                            padAngle={0}
+                        >
+                        </PieChart>
                     </View>
                 </View>
                 <View style={styles.pieInfo}>

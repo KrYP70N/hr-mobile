@@ -90,12 +90,9 @@ export class cards extends Component {
                             height: 40,
                             marginBottom: offset.oh
                         }} />}
-                       
-                        
-                        <Text style={{fontSize: 14, fontFamily: 'Nunito-Bold'}}>{card.title}</Text>
+                        <Text style={{fontSize: 14, fontFamily: 'Nunito'}}>{card.title}</Text>
                     </View>
-                    </TouchableOpacity>
-                    
+                    </TouchableOpacity>  
                 ))
             }
         </View>

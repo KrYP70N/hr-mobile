@@ -609,6 +609,7 @@ export default class APIs {
                 if (res.data.data.error) {
                     return { error: true, status: 'success' }
                 } else {
+                    console.log("Today Absent List", res.data.data)
                     return { data: res.data.data, status: 'success' }
                 }
             })
@@ -628,6 +629,7 @@ export default class APIs {
                 if (res.data.data.error) {
                     return { error: true, status: 'success' }
                 } else {
+                    console.log("Today Attendance List", res.data.data)
                     return { data: res.data.data, status: 'success' }
                 }
             })

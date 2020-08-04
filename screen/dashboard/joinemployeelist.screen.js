@@ -2,29 +2,9 @@ import React, { Component } from 'react'
 import { Text, View, SafeAreaView, AsyncStorage, Image } from 'react-native'
 import { Container, Content, Icon, Toast } from 'native-base'
 import color from '../../constant/color'
-import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
-const empLists = [
-    {
-        "name": "Hla Hla",
-        "position": "Manager",
-        "deptname": "IT",
-        "location": "Yangon"
-    },
-    {
-        "name": "Aung Aung",
-        "position": "Manager",
-        "deptname": "IT",
-        "location": "Yangon"
-    },
-    {
-        "name": "Su Su",
-        "position": "Manager",
-        "deptname": "Marketing",
-        "location": "Mandalay"
-    }
-]
+import BackHeader from '../../components/BackHeader'
 
 export class JoinEmployeeList extends Component {
     constructor(props) {
@@ -74,45 +54,53 @@ export class JoinEmployeeList extends Component {
         APIs.getJoinEmployeeListData(url, auth, id, year)
             .then((res) => {
                 if (res.status == "success") {
-                    if(res.error){
-                        Toast.show({
-                            text: 'Please login again. Your token is expired!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.props.navigation.navigate('Login')
-                    }else{
+                    if (res.error) {
+                       this.tokenExpiration()
+                    } else {
                         this.setState({
                             empLists: res.data,
                             loading: false,
                             requestData: false,
                             loadingTxt: ''
                         })
-                    }               
+                    }
                 } else {
-                    Toast.show({
-                        text: 'Authentication Failed!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
-                    this.setState({ 
+                   this.apiFail()
+                    this.setState({
                         empLists: [],
                         loading: false,
                         requestData: false,
                         loadingTxt: ''
-                     })
+                    })
                 }
             })
+    }
+
+    tokenExpiration(){
+        Toast.show({
+            text: 'Please login again. Your token is expired!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+        this.props.navigation.navigate('Login')
+    }
+
+    apiFail(){
+        Toast.show({
+            text: 'Authentication Failed!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
     }
 
     render() {
@@ -124,21 +112,8 @@ export class JoinEmployeeList extends Component {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ flex: 1, backgroundColor: color.lighter }}>
-                    <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
-                        <Icon name='ios-arrow-round-back' style={{
-                            fontSize: offset.o4,
-                            color: color.primary,
-                            marginRight: offset.o2,
-                            marginLeft: 15,
-                        }} onPress={() => { this.props.navigation.navigate('Dashboard') }} />
-                        <Text style={{
-                            color: color.secondary,
-                            fontFamily: 'Nunito'
-                        }}>Join Employees</Text>
-                    </View>
-
+                    <BackHeader name="Join Employees" navigation={this.props.navigation} parent="Dashboard" />
                     <Content style={{ flex: 1 }}>
-
                         {
                             this.state.empLists.map((emp, index) => {
                                 return (

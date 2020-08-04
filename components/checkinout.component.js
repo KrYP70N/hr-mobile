@@ -1,22 +1,14 @@
 import React, { Component } from 'react'
-
 import Constants from 'expo-constants'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
-import * as IntentLauncher from 'expo-intent-launcher'
-import * as geolib from 'geolib';
-
-
 import { StyleSheet, Image, AsyncStorage, TouchableOpacity, Platform, Dimensions } from 'react-native'
-import { Text, Row, Col, Card, Body, View, Toast } from 'native-base'
+import { Text, Card, View, } from 'native-base'
 import offset from '../constant/offset'
-// import { TouchableOpacity } from 'react-native-gesture-handler'
 import color from '../constant/color';
 import typography from '../constant/typography';
-import LOC from '../components/Location'
 import APIs from '../controllers/api.controller';
 import Modal from 'react-native-modal';
-const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 
@@ -39,7 +31,7 @@ export default class CheckInOut extends Component {
       isModalVisible: false,
       checkMessage: '',
     }
-   
+
     // check status 
     this.CheckStatus = () => {
       APIs.CheckStatus(this.state.id, this.state.auth, this.state.url)
@@ -58,9 +50,6 @@ export default class CheckInOut extends Component {
   }
 
   async componentDidMount() {
-
-
-
     if (Platform.OS === 'android' && !Constants.isDevice) {
       this.setState({
         locError: true
@@ -72,7 +61,7 @@ export default class CheckInOut extends Component {
           locError: true
         })
       } else {
-        let location = await Location.getCurrentPositionAsync({enableHighAccuracy:true})
+        let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true })
         this.setState({
           location: location.coords,
           locError: false
@@ -95,21 +84,10 @@ export default class CheckInOut extends Component {
           id: data['id'],
         })
       })
-   
+
   }
 
-  async getLocationService(){
-    // LOC.getAsync().then((result) => {
-    //   if(result.status == 'granted'){
-    //     this.setState({
-    //       locError: false
-    //     })
-    //   }else{
-    //     this.setState({
-    //       locError: true,
-    //     })
-    //   }
-    // })
+  async getLocationService() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       this.setState({
         locError: true
@@ -121,8 +99,8 @@ export default class CheckInOut extends Component {
           locError: true
         })
       } else {
-        
-        let location = await Location.getCurrentPositionAsync({enableHighAccuracy:true})
+
+        let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true })
         this.setState({
           location: location.coords,
           locError: false
@@ -139,11 +117,10 @@ export default class CheckInOut extends Component {
         <View style={styles.errorBox}>
           <TouchableOpacity onPress={() => {
             this.getLocationService()
-           //IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS)
+            //IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS)
           }}>
             <Card style={styles.error}>
               <Image source={require('../assets/icon/location-2.png')} style={styles.errImg} />
-              {/* <Text style={styles.errorTitle}>Location Error!</Text> */}
               <Text style={[styles.errorTxt, {
                 textAlign: 'center'
               }]}>In order to use Check In / Check Out and Attendance Functions, you will need to turn on your location service.</Text>
@@ -153,50 +130,9 @@ export default class CheckInOut extends Component {
       )
     }
 
-    console.log("Geofencing Service", this.state.geofencing)
-
-    // checking radius
-    // if (this.state.withinRadius === 'wait' && this.state.geofencing === true) {
-    //   return (
-    //     <View style={styles.errorBox}>
-    //       <Card style={styles.error}>
-    //         <Image source={require('../assets/icon/compass.png')} style={styles.errImg} />
-    //         <Text style={styles.errorTitle}>Checking Radius!</Text>
-    //         <Text style={styles.errorTxt}>It may take few seconds.</Text>
-    //       </Card>
-    //     </View>
-    //   )
-    // }
-
-    // checking radius
-    // if (this.state.withinRadius === false && this.state.geofencing === true) {
-    //   return (
-    //     <View style={styles.errorBox}>
-    //       <Card style={styles.error}>
-    //         <Image source={require('../assets/icon/location-3.png')} style={styles.errImg} />
-    //         <Text style={styles.errorTitle}>You are out of office area!</Text>
-    //         <Text style={styles.errorTxt}>Can't check in/out.</Text>
-    //       </Card>
-    //     </View>
-    //   )
-    // }
-
-    // if (this.state.status === null) {
-    //   return (
-    //     <View style={styles.errorBox}>
-    //       <Card style={styles.error}>
-    //         <Image source={require('../assets/icon/location-3.png')} style={styles.errImg} />
-    //         <Text style={styles.errorTitle}>loading data ...</Text>
-    //         <Text style={styles.errorTxt}></Text>
-    //       </Card>
-    //     </View>
-    //   )
-    // }
-
     return (
       <View style={{ flex: 1 }}>
         <Card style={styles.cardHolder}>
-
           <View style={styles.card}>
             <Image
               source={require('../assets/icon/checkintime.png')}
@@ -210,10 +146,9 @@ export default class CheckInOut extends Component {
               marginTop: 10,
             }}>
               <TouchableOpacity onPress={() => {
-                this.props.navigation.navigate('CheckIn'), {geofencing: this.state.geofencing}
-                //this.CheckInOut()
+                this.props.navigation.navigate('CheckIn'), { geofencing: this.state.geofencing }
               }}>
-                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width/3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
+                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width / 3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
                   <Image
                     source={require('../assets/icon/checkin.png')}
                     style={{ width: 30, height: 30 }}
@@ -223,9 +158,8 @@ export default class CheckInOut extends Component {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {
                 this.props.navigation.navigate('CheckOut')
-                //this.CheckInOut()
               }}>
-                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width/3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
+                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width / 3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
                   <Image
                     source={require('../assets/icon/checkout.png')}
                     style={{ width: 30, height: 30, }}

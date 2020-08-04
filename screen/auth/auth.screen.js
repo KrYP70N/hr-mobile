@@ -1,16 +1,11 @@
 import React, { Component } from 'react'
-
-import Constants from 'expo-constants'
-
 import APIs from '../../controllers/api.controller'
 import { Image, AsyncStorage, Keyboard } from 'react-native'
-import { View, Text, Container, Content, Form, Item, Label, Input, Body, Button, Textarea, Toast, Icon } from 'native-base'
-
+import { Text, Container, Content, Form, Item, Label, Input, Button, Toast, Icon } from 'native-base'
 import styAuth from './auth.style'
 import { KeyboardAvoidingView } from 'react-native'
 import Loading from '../../components/loading.component'
 import Overlay from '../../components/overlay.component'
-import { hydrate } from 'react-dom'
 import color from '../../constant/color'
 
 export default class Auth extends Component {

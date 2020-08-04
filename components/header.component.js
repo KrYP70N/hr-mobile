@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
-import { Image, Platform, StatusBar, View } from 'react-native'
-import { Icon, Header, Left, Right, Text } from 'native-base'
+import { Image, View } from 'react-native'
+import { Icon, Text } from 'native-base'
 import styMain from '../screen/main/main.style'
 import color from '../constant/color'
 import offset from '../constant/offset'
 export default class Heading extends Component {
-
   constructor(props) {
     super(props)
   }
-
   render() {
     if (this.props.secondary) {
       return (
@@ -25,29 +23,6 @@ export default class Heading extends Component {
             fontFamily: 'Nunito'
           }}>Attendance</Text>
         </View>
-        // <Header style={{
-        //   backgroundColor: color.light,
-        //   // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
-        // }}>
-        //   <Left style={{
-        //     display: 'flex',
-        //     flexDirection: 'row',
-        //     alignItems: 'center'
-        //   }}>
-        //     <Icon name='ios-arrow-round-back' style={{
-        //       fontSize: offset.o3,
-        //       color: color.primary,
-        //       marginRight: offset.o2
-        //     }} onPress={() => { this.props.navigation.navigate('Main') }} />
-        //     <Text style={{
-        //       color: color.secondary,
-        //       fontSize: offset.o1 + 6
-        //     }}>{this.props.title}</Text>
-        //   </Left>
-        //   <Right>
-
-        //   </Right>
-        // </Header>
       )
     }
 

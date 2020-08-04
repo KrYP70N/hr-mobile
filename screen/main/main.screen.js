@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, Content, Row, Col, Icon, Card, CardItem, Body, Toast } from 'native-base'
 import { Image, AsyncStorage, TouchableOpacity, BackHandler, SafeAreaView } from 'react-native'
-
 import po from './po'
 import color from '../../constant/color'
 import styMain from './main.style'
@@ -34,9 +33,6 @@ export default class Main extends Component {
       modal: false,
       lowestLevel: true
     }
-
-
-
   }
 
   componentDidMount() {

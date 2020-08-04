@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-
-import po from './po'
 import styPayroll from './payroll.style'
 import { Container, Content, Text, Form, Item, Label, Input, Picker, Row, Col, Button, Icon, } from 'native-base'
 import APIs from '../../controllers/api.controller'
@@ -8,6 +6,7 @@ import Loading from '../../components/loading.component'
 import PayrollList from './_list.payroll.screen.'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
+import BackHeader from '../../components/BackHeader'
 import { AsyncStorage, View, SafeAreaView } from 'react-native'
 
 
@@ -130,19 +129,7 @@ export default class Payroll extends Component {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={styPayroll.container}>
-                    <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
-                        <Icon name='ios-arrow-round-back' style={{
-                            fontSize: offset.o4,
-                            color: color.primary,
-                            marginRight: offset.o2,
-                            marginLeft: 15,
-                        }} onPress={() => { this.props.navigation.navigate('Main') }} />
-                        <Text style={{
-                            color: color.secondary,
-                            fontFamily: 'Nunito'
-                        }}>Payroll</Text>
-                    </View>
-
+                <BackHeader name = "Payroll" navigation = {this.props.navigation} parent = "Main" />
                     <Content>
                         <View style = {{width: '100%', height: 10, backgroundColor: color.lighter}}></View>
                         <Form style={styPayroll.form}>

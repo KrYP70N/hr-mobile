@@ -1,17 +1,10 @@
 import React, { Component } from 'react'
 
-import Constants from 'expo-constants'
-import * as Location from 'expo-location'
-import * as Permissions from 'expo-permissions';
-
-import { KeyboardAvoidingView, Image, Keyboard, AsyncStorage, BackHandler, SafeAreaView } from 'react-native'
-import { View, Text, Container, Form, Content, Item, Label, Input, Button, Footer, Icon, Toast } from 'native-base'
-
+import { Image, AsyncStorage, SafeAreaView } from 'react-native'
+import { Text, Container, Item, Input, Button, Icon, Toast } from 'native-base'
 import styLogin from './login.style'
 import po from './po'
-
 import Overlay from '../../components/overlay.component'
-
 import APIs from '../../controllers/api.controller'
 import DB from '../../model/db.model'
 import color from '../../constant/color';

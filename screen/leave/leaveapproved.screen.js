@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image, AsyncStorage } from 'react-native'
+import { Text, View, AsyncStorage } from 'react-native'
 import { Left, Right, Icon, Container, Content, Header, Toast } from 'native-base'
 
 import color from '../../constant/color'
@@ -53,33 +53,14 @@ export class EmployeeLeaveApproved extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     if(res.error){
-                        Toast.show({
-                            text: 'Please login again. Your token is expired!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.props.navigation.navigate('Login')
+                        this.tokenExpiration()
                     }else{
                         this.setState({
                             leaveApproveList: res.data
                         })
                     }
                 } else {
-                    Toast.show({
-                        text: 'Authentication Failed!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
+                    this.apiFail()
                    this.setState({leaveApproveList: []})
                 }
             })
@@ -97,6 +78,33 @@ export class EmployeeLeaveApproved extends Component {
         this.setState({ month, year })
         this.getLeaveApproved(this.state.auth, this.state.id, this.state.url, year, month)
 
+    }
+
+    tokenExpiration(){
+        Toast.show({
+            text: 'Please login again. Your token is expired!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+        this.props.navigation.navigate('Login')
+    }
+
+    apiFail(){
+        Toast.show({
+            text: 'Authentication Failed!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
     }
 
     render() {

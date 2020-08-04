@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Image } from 'react-native'
-import { Content, Container, View, Text, Icon, Spinner } from 'native-base'
+import { View, Text, Spinner } from 'native-base'
 import color from '../constant/color'
 
 export default class Loading extends Component {
@@ -8,7 +7,6 @@ export default class Loading extends Component {
         super(props)
     }
     render () {
-
         return ( 
             <View style={{
                 position: 'absolute',
@@ -23,7 +21,6 @@ export default class Loading extends Component {
                     style={{
                         color: color.placeHolder,
                         textAlign: 'center',
-                        // fontFamily: 'Nunito'
                     }}
                 >{this.props.info}</Text>
             </View>

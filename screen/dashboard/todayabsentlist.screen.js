@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import { Text, View, SafeAreaView, AsyncStorage, Image } from 'react-native'
 import { Container, Content, Icon, Toast } from 'native-base'
 import color from '../../constant/color'
-import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
+import BackHeader from '../../components/BackHeader'
+
 export class TodayAbsentList extends Component {
     constructor(props) {
         super(props)
@@ -52,18 +53,9 @@ export class TodayAbsentList extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     if(res.error){
-                        Toast.show({
-                            text: 'Please login again. Your token is expired!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.props.navigation.navigate('Login')
+                      this.tokenExpiration()
                     }else{
+                        console.log("Today Absence List", res.data)
                         this.setState({
                             loading: false,
                             loadingTxt: '',
@@ -72,16 +64,7 @@ export class TodayAbsentList extends Component {
                         })
                     }   
                 } else {
-                    Toast.show({
-                        text: 'Authentication Failed!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
+                    this.apiFail()
                     this.setState({ 
                         empLists: [],
                         loading: false,
@@ -90,6 +73,33 @@ export class TodayAbsentList extends Component {
                      })
                 }
             })
+    }
+
+    tokenExpiration(){
+        Toast.show({
+            text: 'Please login again. Your token is expired!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+        this.props.navigation.navigate('Login')
+    }
+
+    apiFail(){
+        Toast.show({
+            text: 'Authentication Failed!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
     }
 
     render() {
@@ -101,18 +111,7 @@ export class TodayAbsentList extends Component {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ flex: 1, backgroundColor: color.lighter }}>
-                    <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
-                        <Icon name='ios-arrow-round-back' style={{
-                            fontSize: offset.o4,
-                            color: color.primary,
-                            marginRight: offset.o2,
-                            marginLeft: 15,
-                        }} onPress={() => { this.props.navigation.navigate('Dashboard') }} />
-                        <Text style={{
-                            color: color.secondary,
-                            fontFamily: 'Nunito'
-                        }}>Today Absent</Text>
-                    </View>
+                <BackHeader name = "Today Absent" navigation = {this.props.navigation} parent = "Dashboard" />
                     <Content style={{ flex: 1 }}>
                         {
                             this.state.empLists.map((emp, index) => {

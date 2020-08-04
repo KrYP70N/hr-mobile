@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image, AsyncStorage } from 'react-native'
+import { Text, View, AsyncStorage } from 'react-native'
 import { Left, Right, Icon, Container, Content, Header, Toast } from 'native-base'
 
 import color from '../../constant/color'
@@ -21,8 +21,6 @@ export class OvertimeRejected extends Component {
             auth: null,
             url: null,
             id: null,
-            // year: null,
-            // month: null,
             OTRejectedList: [],
             filter: true,
             year: moment().format('YYYY'),
@@ -83,16 +81,12 @@ export class OvertimeRejected extends Component {
             })
     }
 
-    onChangeDate(clickedDate) {
-    }
-
     // filter next ctrl
     ctrlNext = ({ year, month }) => {
         this.setState({ month, year })
         this.getOTRejectedList(this.state.auth, this.state.id, this.state.url, year, month)
-
     }
-
+    
     // filter prev ctrl
     ctrlPrev = ({ year, month }) => {
         this.setState({ month, year })

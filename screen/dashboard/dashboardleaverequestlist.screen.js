@@ -5,6 +5,7 @@ import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
+import BackHeader from '../../components/BackHeader'
 
 export class DashboardLeaveRequestList extends Component {
     constructor(props) {
@@ -53,17 +54,7 @@ export class DashboardLeaveRequestList extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     if(res.error){
-                        Toast.show({
-                            text: 'Please login again. Your token is expired!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.props.navigation.navigate('Login')
+                       this.tokenExpiration()
                     }else{
                         this.setState({
                             leaveLists: res.data,
@@ -73,16 +64,7 @@ export class DashboardLeaveRequestList extends Component {
                         })
                     }   
                 } else {
-                    Toast.show({
-                        text: 'Authentication Failed!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 3000
-                    })
+                    this.apiFail()
                     this.setState({
                         leaveLists: [],
                         loading: false,
@@ -93,6 +75,32 @@ export class DashboardLeaveRequestList extends Component {
             })
     }
 
+    tokenExpiration(){
+        Toast.show({
+            text: 'Please login again. Your token is expired!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+        this.props.navigation.navigate('Login')
+    }
+
+    apiFail(){
+        Toast.show({
+            text: 'Authentication Failed!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 3000
+        })
+    }
     render() {
         if (this.state.requestData == true) {
             return (
@@ -103,18 +111,7 @@ export class DashboardLeaveRequestList extends Component {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ flex: 1, backgroundColor: color.lighter }}>
-                    <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
-                        <Icon name='ios-arrow-round-back' style={{
-                            fontSize: offset.o4,
-                            color: color.primary,
-                            marginRight: offset.o2,
-                            marginLeft: 15,
-                        }} onPress={() => { this.props.navigation.navigate('Dashboard') }} />
-                        <Text style={{
-                            color: color.secondary,
-                            fontFamily: 'Nunito'
-                        }}>Leave Request</Text>
-                    </View>
+                <BackHeader name = "Leave Request" navigation = {this.props.navigation} parent = "Dashboard"/>
                     <Content style={{ flex: 1, marginBottom: this.state.leaveLists.length === 0 ? 0 : 50 }}>
                         {
                             this.state.leaveLists.map((request, index) => {

@@ -3,12 +3,12 @@ import { Text, View, SafeAreaView, Dimensions, AsyncStorage, StyleSheet, Image, 
 import { Content, Container, Toast, Icon, Card, CardItem, Body, Button, } from 'native-base'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
-import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 import styLeave from './leave.style'
 import Modal from 'react-native-modal';
+import BackHeader from '../../components/BackHeader'
 const width = Dimensions.get('screen').width;
-const height = Dimensions.get('screen').height
+
 export class EmployeeLeavePending extends Component {
 	constructor(props) {
 		super(props)
@@ -74,39 +74,29 @@ export class EmployeeLeavePending extends Component {
 			.then((res) => {
 				console.log("Leave Pending List", res)
 				if (res.status === 'success') {
-					// if (res.error) {
-					// 	Toast.show({
-                    //         text: 'Please login again. Your token is expired!',
-                    //         textStyle: {
-                    //             textAlign: 'center'
-                    //         },
-                    //         style: {
-                    //             backgroundColor: color.primary
-                    //         },
-                    //         duration: 6000
-                    //     })
-					// 	this.props.navigation.navigate('Login')
-					// } else {
-						this.setState({
-							leaves: res.data
-						})
-					//}
-				} else {
-					Toast.show({
-						text: 'Authentication Failed!',
-						textStyle: {
-							textAlign: 'center'
-						},
-						style: {
-							backgroundColor: color.primary
-						},
-						duration: 3000
+					this.setState({
+						leaves: res.data
 					})
+				} else {
+					this.apiFail()
 					this.setState({
 						leaves: []
 					})
 				}
 			})
+	}
+
+	apiFail(){
+		Toast.show({
+			text: 'Authentication Failed!',
+			textStyle: {
+				textAlign: 'center'
+			},
+			style: {
+				backgroundColor: color.primary
+			},
+			duration: 3000
+		})
 	}
 
 	render() {
@@ -137,18 +127,7 @@ export class EmployeeLeavePending extends Component {
 		return (
 			<SafeAreaView style={{ flex: 1 }}>
 				<Container>
-					<View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
-						<Icon name='ios-arrow-round-back' style={{
-							fontSize: offset.o4,
-							color: color.primary,
-							marginRight: offset.o2,
-							marginLeft: 15,
-						}} onPress={() => { this.props.navigation.navigate('Leave') }} />
-						<Text style={{
-							color: color.secondary,
-							fontFamily: 'Nunito'
-						}}>Pending Approval</Text>
-					</View>
+					<BackHeader name="Pending Approval" navigation={this.props.navigation} parent="Leave" />
 					<Content style={{ flex: 1, backgroundColor: color.lighter }}>
 						<View style={{ padding: 16 }}>
 							{GetLeave}

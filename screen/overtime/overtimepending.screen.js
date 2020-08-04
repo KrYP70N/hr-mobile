@@ -3,13 +3,12 @@ import { Text, View, SafeAreaView, Dimensions, AsyncStorage, StyleSheet, Image, 
 import { Content, Container, Toast, Icon, Card, CardItem, Body, Button, } from 'native-base'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
-import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 import styOt from '../overtime/overtime.style'
 import po from './po'
 import Modal from 'react-native-modal';
+import BackHeader from '../../components/BackHeader'
 const width = Dimensions.get('screen').width;
-const height = Dimensions.get('screen').height
 export class OvertimePending extends Component {
     constructor(props) {
         super(props)
@@ -70,41 +69,49 @@ export class OvertimePending extends Component {
     getApproveData(auth, id, url) {
         APIs.OTPending(id, auth, url)
             .then((res) => {
-               
+
                 if (res.status === 'success') {
-                    if(res.error){
-                        Toast.show({
-                            text: 'Please login again. Your token is expired!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.props.navigation.navigate('Login')
-                    }else{
+                    if (res.error) {
+                        this.tokenExpiration()
+                    } else {
                         this.setState({
                             overtimes: res.data
                         })
                     }
                 } else {
-                    Toast.show({
-                        text: 'Authentication Failed!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
+                   this.apiFail()
                     this.setState({
                         overtimes: []
                     })
                 }
             })
+    }
+
+    tokenExpiration(){
+        Toast.show({
+            text: 'Please login again. Your token is expired!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+        this.props.navigation.navigate('Login')
+    }
+
+    apiFail(){
+        Toast.show({
+            text: 'Authentication Failed!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
     }
 
     render() {
@@ -134,18 +141,7 @@ export class OvertimePending extends Component {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container>
-                    <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
-                        <Icon name='ios-arrow-round-back' style={{
-                            fontSize: offset.o4,
-                            color: color.primary,
-                            marginRight: offset.o2,
-                            marginLeft: 15,
-                        }} onPress={() => { this.props.navigation.navigate('Overtime') }} />
-                        <Text style={{
-                            color: color.secondary,
-                            fontFamily: 'Nunito'
-                        }}>Overtime Approval</Text>
-                    </View>
+                    <BackHeader name="Overtime Approval" navigation={this.props.navigation} parent="Overtime" />
                     <Content style={{ flex: 1, backgroundColor: color.lighter }}>
                         <View style={{ padding: 16 }}>
                             {requests}
@@ -166,8 +162,7 @@ export class OvertimePending extends Component {
                         <Modal isVisible={this.state.isModalVisible} >
                             <View style={styles.ModelViewContainer}>
                                 <View style={styles.iconView}>
-                                    {/* <Image source={require('../../assets/icon/checktime.png')} style={styles.dialogIcon} /> */}
-                                   {this.state.changeIconStatus === "success" ?  <Image source={require('../../assets/icon/success_icon.png')} style={styles.dialogIcon} /> :  <Image source={require('../../assets/icon/fail_icon.png')} style={styles.dialogIcon} />}
+                                    {this.state.changeIconStatus === "success" ? <Image source={require('../../assets/icon/success_icon.png')} style={styles.dialogIcon} /> : <Image source={require('../../assets/icon/fail_icon.png')} style={styles.dialogIcon} />}
                                 </View>
                                 <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
                                 <View style={styles.ModalTextContainer}>

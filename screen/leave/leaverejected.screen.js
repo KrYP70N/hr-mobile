@@ -57,33 +57,14 @@ export class EmployeeLeaveRejected extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     if(res.error){
-                        Toast.show({
-                            text: 'Please login again. Your token is expired!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.props.navigation.navigate('Login')
+                        this.tokenExpiration()
                     }else{
                         this.setState({
                             leaveRejectedList: res.data
                         })
                     }  
                 } else {
-                    Toast.show({
-                        text: 'Authentication Failed!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
+                   this.apiFail()
                     this.setState({
                         leaveRejectedList: []
                     })
@@ -110,6 +91,32 @@ export class EmployeeLeaveRejected extends Component {
 
     }
 
+    tokenExpiration(){
+        Toast.show({
+            text: 'Please login again. Your token is expired!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+        this.props.navigation.navigate('Login')
+    }
+
+    apiFail(){
+        Toast.show({
+            text: 'Authentication Failed!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+    }
     render() {
         let statusData = this.state.leaveRejectedList.map((reject, index) => {
             return (

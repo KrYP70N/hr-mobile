@@ -2,14 +2,13 @@
 
 import React, { Component } from 'react'
 import styAttend from './attendance.style'
-import { View, Container, Content, Card, CardItem, Body, Text, Row, Col, Item, Icon, Header, Left, Right, Toast, Button } from 'native-base'
+import { View, Card, Text, Icon, Toast, } from 'native-base'
 import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
-
 import offset from '../../constant/offset'
 import color from '../../constant/color'
-import { AsyncStorage, StatusBar, Platform, BackHandler, SafeAreaView, TouchableOpacity } from 'react-native'
-import { Calendar, CalendarList, Agenda, } from 'react-native-calendars';
+import { AsyncStorage, SafeAreaView, } from 'react-native'
+import { Calendar, } from 'react-native-calendars';
 import { ScrollView } from 'react-native-gesture-handler'
 import BottomTab from '../../components/bottomtab.component'
 
@@ -28,7 +27,6 @@ export default class Attendance extends Component {
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
-           
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
                     let date = new Date();
@@ -107,17 +105,7 @@ export default class Attendance extends Component {
             console.log("Res Attendance Data", res)
             if (res.status === 'success') {
                 if (res.error) {
-                    Toast.show({
-                        text: 'Please login again. Your token is expired!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
-                    this.props.navigation.navigate('Login')
+                    this.tokenExpiration()
                 } else {
                     this.setState({
                         data: res.data
@@ -125,16 +113,7 @@ export default class Attendance extends Component {
                 }
 
             } else {
-                Toast.show({
-                    text: 'Authentication Failed!',
-                    textStyle: {
-                        textAlign: 'center'
-                    },
-                    style: {
-                        backgroundColor: color.primary
-                    },
-                    duration: 6000
-                })
+               this.apiFail()
                this.setState({
                    data: []
                })
@@ -143,6 +122,35 @@ export default class Attendance extends Component {
         })
     }
 
+    //when the token is expired
+    tokenExpiration() {
+		this.props.navigation.navigate('Login')
+		Toast.show({
+			text: 'Please login again. Your token is expired!',
+			textStyle: {
+				textAlign: 'center'
+			},
+			style: {
+				backgroundColor: color.primary
+			},
+			duration: 6000
+		})
+    }
+
+    // api data not success situation and show failed toast message
+	apiFail() {
+		Toast.show({
+			text: 'Authentication Failed!',
+			textStyle: {
+				textAlign: 'center'
+			},
+			style: {
+				backgroundColor: color.primary
+			},
+			duration: 6000
+		})
+	}
+    
     render() {
         
         if (this.state.data === null || this.state.dataTitle === null) {
@@ -257,7 +265,6 @@ export default class Attendance extends Component {
                                             <View style={styAttend.dividerContainer}>
                                                 <View style={styAttend.divider}></View>
                                             </View>
-
                                             <View style={styAttend.calendarLabelContainer}>
                                                 <View style={styAttend.labelCirclePrimary}></View>
                                                 <Text style={styAttend.labelText}>Attendance</Text>
@@ -272,21 +279,11 @@ export default class Attendance extends Component {
                                     <View style={[styAttend.container, {
                                         marginBottom: offset.o3
                                     }]}>
-
                                         {infos}
-
                                     </View>
-
                                 </View>
-
                             </View>
                         </ScrollView>
-                        {/* <TouchableOpacity onPress={() => { this.props.navigation.navigate('LeaveRequest') }}>
-                            <View style={styAttend.submitButton} >
-                                <Text style={styAttend.buttonText}>Apply Leave</Text>
-                            </View>
-                        </TouchableOpacity> */}
-
                     </View>
                     <BottomTab navigation={this.props.navigation} screen='attendance' />
                 </View>

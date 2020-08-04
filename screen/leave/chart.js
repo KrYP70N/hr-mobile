@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, FlatList, Dimensions, AsyncStorage } from 'react-native'
-import { Content, Container, Toast, Icon, Card, CardItem, Body, Button, } from 'native-base'
+import { Text, View, Dimensions, AsyncStorage } from 'react-native'
 import { PieChart } from 'react-native-svg-charts'
 import color from '../../constant/color'
 import offset from '../../constant/color'
@@ -60,7 +59,6 @@ export class chart extends Component {
                                 id: JSON.parse(res).id
                             })
                             this.getSummaryData(auth, id, url, currentYear);
-
                         })
                 })
         })

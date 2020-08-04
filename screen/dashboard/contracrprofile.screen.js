@@ -18,7 +18,7 @@ export class ContractProfile extends Component {
             loadingTxt: 'Loading....',
             profileData: null,
             workingSchedule: [],
-            testSchedules:[],
+            testSchedules: [],
         }
     }
 
@@ -53,19 +53,9 @@ export class ContractProfile extends Component {
         APIs.getDashboardContractData(url, auth, id, year)
             .then((res) => {
                 if (res.status == "success") {
-                    if(res.error){
-                        Toast.show({
-                            text: 'Please login again. Your token is expired!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.props.navigatin.navigate('Login')
-                    }else{
+                    if (res.error) {
+                       this.tokenExpiration()
+                    } else {
                         this.setState({
                             loading: false,
                             loadingTxt: '',
@@ -73,18 +63,9 @@ export class ContractProfile extends Component {
                             workingSchedule: res.data[1]
                         })
                     }
-                   
+
                 } else {
-                    Toast.show({
-                        text: 'Authentication Failed!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 3000
-                    })
+                    this.apiFail()
                     this.setState({
                         profileData: null,
                         loadingTxt: '',
@@ -94,7 +75,33 @@ export class ContractProfile extends Component {
             })
     }
 
+    tokenExpiration() {
+        Toast.show({
+            text: 'Please login again. Your token is expired!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+        this.props.navigatin.navigate('Login')
+        
+    }
 
+    apiFail(){
+        Toast.show({
+            text: 'Authentication Failed!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 3000
+        })
+    }
     render() {
 
         if (this.state.profileData == null) {
@@ -177,7 +184,7 @@ export class ContractProfile extends Component {
                                 {/* <Text style={{ marginTop: 10, fontSize: 16, color: '#333333', fontFamily: 'Nunito' }}>09:00 AM - 06:00 PM</Text> */}
                                 {this.state.workingSchedule.map((schedule, index) => {
                                     return (
-                                        <View key={index} style={{flex: 1, marginTop: 10, flexDirection: 'row', width: '100%', alignItems: 'center' }}>
+                                        <View key={index} style={{ flex: 1, marginTop: 10, flexDirection: 'row', width: '100%', alignItems: 'center' }}>
                                             <Text style={{ width: '50%', fontSize: 16, color: '#333333', fontFamily: 'Nunito' }}>{schedule["working schedule"]["name"]} </Text>
                                             <Text style={{ fontSize: 16, color: '#333333' }}>-</Text>
                                             <Text style={{ marginLeft: 5, width: '50%', fontSize: 16, color: '#333333', fontFamily: 'Nunito' }}> {schedule["working schedule"]["hour from"]} : {schedule["working schedule"]["hour to"]}</Text>

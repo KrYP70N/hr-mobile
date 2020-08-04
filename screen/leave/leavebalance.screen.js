@@ -1,44 +1,12 @@
 import React, { Component } from 'react'
-import { Text, View, SafeAreaView, Dimensions, TouchableOpacity, AsyncStorage } from 'react-native'
+import { Text, View, SafeAreaView, TouchableOpacity, AsyncStorage } from 'react-native'
 import { Container, Content, Icon, Toast} from 'native-base'
 import { PieChart } from 'react-native-svg-charts'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
 import styLeave from './leave.style'
 import APIs from '../../controllers/api.controller'
-const width = Dimensions.get('screen').width;
-const height = Dimensions.get('screen').height
-
-const data = [
-    {
-        title: 'Casual Leave',
-        value: 6,
-        color: '#47E9EE'
-    },
-    {
-        title: 'Marriage Leave',
-        value: 3,
-        color: '#35A9AC'
-    },
-    {
-        title: 'Medical Leave',
-        value: 20,
-        color: '#377375'
-    },
-    {
-        title: 'Annual Leave',
-        value: 7,
-        color: '#FFB300'
-    },
-    {
-        title: 'Examination Leave',
-        value: 6,
-        color: '#9ECE1B'
-    },
-
-]
-
-
+import BackHeader from '../../components/BackHeader'
 
 export class EmployeeLeaveBalance extends Component {
     constructor(props) {
@@ -85,17 +53,7 @@ export class EmployeeLeaveBalance extends Component {
         .then((res) => {
             if(res.status == "success"){
                 if(res.error){
-                    Toast.show({
-                        text: 'Please login again. Your token is expired!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
-                    this.props.navigation.navigate('Login')
+                   this.tokenExpiration()
                 }else{
                     let data = [];
                     for(let i=0; i<res.data.length; i++){
@@ -111,20 +69,40 @@ export class EmployeeLeaveBalance extends Component {
                     })
                 }
             }else{
-                Toast.show({
-                    text: 'Authentication Failed!',
-                    textStyle: {
-                        textAlign: 'center'
-                    },
-                    style: {
-                        backgroundColor: color.primary
-                    },
-                    duration: 6000
-                })
+               this.apiFail()
                 this.setState({leaveBalanceData: []})
             }
         })
     }
+
+    tokenExpiration(){
+        Toast.show({
+            text: 'Please login again. Your token is expired!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+        this.props.navigation.navigate('Login')
+    }
+
+    apiFail(){
+        Toast.show({
+            text: 'Authentication Failed!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+    }
+
+
 
     render() {
         let leaveData = this.state.leaveBalanceData.map((leave, index) => {
@@ -159,18 +137,7 @@ export class EmployeeLeaveBalance extends Component {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container>
-                    <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
-                        <Icon name='ios-arrow-round-back' style={{
-                            fontSize: offset.o4,
-                            color: color.primary,
-                            marginRight: offset.o2,
-                            marginLeft: 15,
-                        }} onPress={() => { this.props.navigation.navigate('Leave') }} />
-                        <Text style={{
-                            color: color.secondary,
-                            fontFamily: 'Nunito'
-                        }}>Leave Balance</Text>
-                    </View>
+                <BackHeader name = "Leave Balance" navigation = {this.props.navigation} parent = "Leave" />
                     <View style={{ width: '100%', height: 20, backgroundColor: color.lighter }}></View>
                     <Content style={{ flex: 1 }}>
                         <View style={{ height: 200, width: '100%', justifyContent: 'center' }}>

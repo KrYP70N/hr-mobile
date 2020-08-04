@@ -1,7 +1,5 @@
 import * as L from 'expo-location'
 import * as Permissions from 'expo-permissions'
-import * as IntentLauncher from 'expo-intent-launcher'
-import * as geolib from 'geolib';
 import Constants from 'expo-constants'
 
 export default class Location {
@@ -9,7 +7,6 @@ export default class Location {
         if (Platform.OS === 'android' && !Constants.isDevice) {
             throw new Exception('Geolocation only in devices not emulators.')
         }
-
         try {
             let location = null
             const { status: granted } = await Permissions.getAsync(Permissions.LOCATION);

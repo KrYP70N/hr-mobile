@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, TouchableOpacity, Image, AsyncStorage } from 'react-native'
 import styNav from './navigation.style'
-import APIs from '../controllers/api.controller'
 
 export class SideMenu extends Component {
   constructor(props) {
@@ -37,18 +36,6 @@ export class SideMenu extends Component {
           <Image source={require('../assets/icon/ot.png')} style={styNav.image2} />
           <Text>Overtime</Text>
         </TouchableOpacity>
-        {/* {
-          this.state.level === true ? <View></View> : <TouchableOpacity style={styNav.item} onPress={() => { this.props.navigation.navigate('AdminLeaveApprove') }}>
-          <Image source={require('../assets/icon/approve-leave.png')} style={styNav.img} />
-          <Text>Approved Leave</Text>
-        </TouchableOpacity>
-        }
-       {
-         this.state.level === true ? <View></View> :  <TouchableOpacity style={ styNav.item} onPress={() => { this.props.navigation.navigate('AdminOvertimeApprove') }}>
-         <Image source={require('../assets/icon/approve-ot.png')} style={styNav.img1} />
-         <Text>Approved Overtime</Text>
-       </TouchableOpacity>
-       } */}
         <TouchableOpacity style={styNav.item} onPress={() => { this.props.navigation.navigate('Payroll') }}>
           <Image source={require('../assets/icon/payroll.png')} style={styNav.image3} />
           <Text>Payroll</Text>
@@ -66,7 +53,6 @@ export class SideMenu extends Component {
           <Image source={require('../assets/icon/lgoout.png')} style={styNav.image2} />
           <Text>Logout</Text>
         </TouchableOpacity>
-
       </View>
     )
   }

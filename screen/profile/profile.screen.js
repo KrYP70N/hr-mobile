@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
-import { Text, Container, Content, Icon, Toast } from 'native-base'
+import { Text, Container, Content, Toast } from 'native-base'
 import styProfile from './profile.style'
 import Loading from '../../components/loading.component'
-import { AsyncStorage, View, SafeAreaView } from 'react-native'
+import { AsyncStorage, SafeAreaView } from 'react-native'
 import APIs from '../../controllers/api.controller'
-
 import GeneralProfile from './_general.profile'
 import PersonalProfile from './_personal.profile'
 import color from '../../constant/color'
-import offset from '../../constant/offset'
+import BackHeader from '../../components/BackHeader'
 
 export default class Profile extends Component {
   constructor(props) {
@@ -111,51 +110,50 @@ export default class Profile extends Component {
         .then((res) => {
           if (res.status === 'success') {
             if (res.error) {
-              Toast.show({
-                text: 'Please login again. Your token is expired!',
-                textStyle: {
-                    textAlign: 'center'
-                },
-                style: {
-                    backgroundColor: color.primary
-                },
-                duration: 6000
-            })
-              this.props.navigation.navigate('Login')
+             this.tokenExpiration()
             } else {
               this.setState({
                 data: res.data
               })
             }
           } else {
-            Toast.show({
-              text: 'Authentication Failed!',
-              textStyle: {
-                  textAlign: 'center'
-              },
-              style: {
-                  backgroundColor: color.primary
-              },
-              duration: 3000
-          })
+           this.apiFail()
             this.setState({
               data: []
             })
           }
         })
         .catch((error) => {
-          Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
+         this.apiFail()
         })
     }
+  }
+
+  tokenExpiration(){
+    Toast.show({
+      text: 'Please login again. Your token is expired!',
+      textStyle: {
+          textAlign: 'center'
+      },
+      style: {
+          backgroundColor: color.primary
+      },
+      duration: 6000
+  })
+    this.props.navigation.navigate('Login')
+  }
+
+  apiFail(){
+    Toast.show({
+      text: 'Authentication Failed!',
+      textStyle: {
+          textAlign: 'center'
+      },
+      style: {
+          backgroundColor: color.primary
+      },
+      duration: 3000
+  })
   }
 
   render() {
@@ -165,23 +163,10 @@ export default class Profile extends Component {
       )
     }
 
-    console.log("Profile Data", this.state.data)
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Container style={styProfile.topContainer}>
-          <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
-            <Icon name='ios-arrow-round-back' style={{
-              fontSize: offset.o4,
-              color: color.primary,
-              marginRight: offset.o2,
-              marginLeft: 15,
-            }} onPress={() => { this.props.navigation.navigate('Main') }} />
-            <Text style={{
-              color: color.secondary,
-              fontFamily: 'Nunito'
-            }}>Profile</Text>
-          </View>
-
+        <BackHeader name = "Profile" navigation = {this.props.navigation} parent = "Main" />
           <Content>
             <GeneralProfile data={this.state.data['General Information']} dataWork={this.state.data['Work Information']} />
             <Text style={styProfile.title}>Personal Information</Text>

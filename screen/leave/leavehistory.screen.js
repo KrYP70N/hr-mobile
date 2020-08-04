@@ -103,8 +103,6 @@ export class EmployeeLeaveHistory extends Component {
             })
     }
 
-    
-
     // change value
     changeValue = (date, status) => {
         this.setState({
@@ -112,6 +110,8 @@ export class EmployeeLeaveHistory extends Component {
         })
         this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, moment(date).format('YYYY'), moment(date).format('MM'), status)
     }
+
+
 
     render() {
         let statusData =  this.state.leaveHistoryLists.map((history, index) => {

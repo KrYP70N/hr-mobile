@@ -315,8 +315,6 @@ class checkin extends Component {
 	}
 
 	render() {
-		console.log("Geofencing", this.state.geofencing)
-		console.log("Radius", this.state.radius)
 		return (
 			<Container style={{ flex: 1 }}>
 				<Header style={{

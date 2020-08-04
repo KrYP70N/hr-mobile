@@ -1,31 +1,12 @@
 import React, { Component } from 'react'
 import { Text, View, Image, SafeAreaView, AsyncStorage } from 'react-native'
-import { Container, Content, Icon, Toast} from 'native-base'
+import { Container, Content, Icon, Toast } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
+import BackHeader from '../../components/BackHeader'
 
-const birthdayLists = [
-    {
-        "name": "Hla Hla",
-        "position": "Manager",
-        "deptname": "IT",
-        "location": "Yangon"
-    },
-    {
-        "name": "Aung Aung",
-        "position": "Manager",
-        "deptname": "IT",
-        "location": "Yangon"
-    },
-    {
-        "name": "Su Su",
-        "position": "Manager",
-        "deptname": "Marketing",
-        "location": "Mandalay"
-    }
-]
 export class UpcomingBirthday extends Component {
     constructor(props) {
         super(props)
@@ -73,19 +54,9 @@ export class UpcomingBirthday extends Component {
         APIs.getBirthdayListData(url, auth, id, year)
             .then((res) => {
                 if (res.status == "success") {
-                    if(res.error){
-                        Toast.show({
-                            text: 'Please login again. Your token is expired!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.props.navigation.navigate('Login')
-                    }else{
+                    if (res.error) {
+                        this.tokenExpiration()
+                    } else {
                         this.setState({
                             birthdayLists: res.data,
                             loading: false,
@@ -94,16 +65,7 @@ export class UpcomingBirthday extends Component {
                         })
                     }
                 } else {
-                    Toast.show({
-                        text: 'Authentication Failed!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
+                    this.apiFail()
                     this.setState({
                         birthdayLists: [],
                         loading: false,
@@ -112,6 +74,33 @@ export class UpcomingBirthday extends Component {
                     })
                 }
             })
+    }
+
+    tokenExpiration() {
+        Toast.show({
+            text: 'Please login again. Your token is expired!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+        this.props.navigation.navigate('Login')
+    }
+
+    apiFail() {
+        Toast.show({
+            text: 'Authentication Failed!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
     }
 
     render() {
@@ -123,18 +112,7 @@ export class UpcomingBirthday extends Component {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ backgroundColor: color.lighter }}>
-                    <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
-                        <Icon name='ios-arrow-round-back' style={{
-                            fontSize: offset.o4,
-                            color: color.primary,
-                            marginRight: offset.o2,
-                            marginLeft: 15,
-                        }} onPress={() => { this.props.navigation.navigate('Dashboard') }} />
-                        <Text style={{
-                            color: color.secondary,
-                            fontFamily: 'Nunito'
-                        }}>Upcoming Birthdays</Text>
-                    </View>
+                    <BackHeader name="Upcoming Birthdays" navigation={this.props.navigation} parent="Dashboard" />
                     <Content style={{ flex: 1 }}>
                         {
                             this.state.birthdayLists.map((birthday, index) => {

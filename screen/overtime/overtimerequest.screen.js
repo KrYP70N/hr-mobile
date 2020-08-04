@@ -11,7 +11,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
-import { Icon, Textarea, Toast, Content } from "native-base";
+import { Textarea, Toast } from "native-base";
 import color from "../../constant/color";
 import offset from "../../constant/offset";
 const months = [
@@ -31,9 +31,8 @@ const months = [
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import APIs from "../../controllers/api.controller";
 import Modal from "react-native-modal";
+import BackHeader from '../../components/BackHeader'
 const width = Dimensions.get("screen").width;
-const height = Dimensions.get("screen").height;
-import moment from "moment";
 export class OTRequest extends Component {
   constructor(props) {
     super(props);
@@ -77,7 +76,7 @@ export class OTRequest extends Component {
           date.getMonth() + 1 < 10
             ? "0" + (date.getMonth() + 1)
             : date.getMonth() + 1
-        }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
+          }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
         dateMonthLabel: months[date.getMonth()],
         dateYearLabel: date.getFullYear(),
         dateDayLabel:
@@ -85,16 +84,16 @@ export class OTRequest extends Component {
         fromTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
         fromTimehrLabel: `${
           date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
-        }:${
+          }:${
           date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
-        }`,
+          }`,
         fromTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
         toTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
         toTimehrLabel: `${
           date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
-        }:${
+          }:${
           date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
-        }`,
+          }`,
         toTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
         totalHR: "00:00",
         fromTimeHr: date.getHours(),
@@ -111,7 +110,6 @@ export class OTRequest extends Component {
             auth: JSON.parse(res).key,
             id: JSON.parse(res).id,
           });
-          //this.getRequestData(auth, url);
         });
       });
     });
@@ -132,7 +130,6 @@ export class OTRequest extends Component {
       dateMonthLabel: months[date.getMonth()],
       dateYearLabel: date.getFullYear(),
       dateDayLabel: date.getDate() < 10 ? "0" + date.getDate() : date.getDate(),
-      //datetextColor: '#000'
     });
     this.hideDatePicker();
   };
@@ -152,22 +149,21 @@ export class OTRequest extends Component {
     this.setState({
       fromTime: `${hours < 10 ? "0" + hours : hours}:${
         minutes < 10 ? "0" + minutes : minutes
-      }:${seconds < 10 ? "0" + seconds : seconds}`,
+        }:${seconds < 10 ? "0" + seconds : seconds}`,
       fromTimehrLabel: `${hours < 10 ? "0" + hours : hours}:${
         minutes < 10 ? "0" + minutes : minutes
-      }`,
+        }`,
       fromTimeAMPM: hours > 11 ? "PM" : "AM",
       toTime: `${hours < 10 ? "0" + hours : hours}:${
         minutes < 10 ? "0" + minutes : minutes
-      }:${seconds < 10 ? "0" + seconds : seconds}`,
+        }:${seconds < 10 ? "0" + seconds : seconds}`,
       toTimehrLabel: `${hours < 10 ? "0" + hours : hours}:${
         minutes < 10 ? "0" + minutes : minutes
-      }`,
+        }`,
       toTimeAMPM: hours > 11 ? "PM" : "AM",
       fromTimeHr: hours,
       fromTimeMinus: minutes,
       totalHR: "00:00",
-      //toTime: `${hours}:${minutes}:${seconds}`, totextColor: '#000'
     });
     this.hideTimePickerFrom();
   };
@@ -194,10 +190,10 @@ export class OTRequest extends Component {
         this.setState({
           toTime: `${hours < 10 ? "0" + hours : hours}:${
             minutes < 10 ? "0" + minutes : minutes
-          }:${seconds < 10 ? "0" + seconds : seconds}`,
+            }:${seconds < 10 ? "0" + seconds : seconds}`,
           toTimehrLabel: `${hours < 10 ? "0" + hours : hours}:${
             minutes < 10 ? "0" + minutes : minutes
-          }`,
+            }`,
           toTimeAMPM: hours > 11 ? "PM" : "AM",
           totalHR: `${hr < 10 ? "0" + hr : hr}:${min < 10 ? "0" + min : min}`,
         });
@@ -207,14 +203,14 @@ export class OTRequest extends Component {
         this.setState({
           toTime: `${hours < 10 ? "0" + hours : hours}:${
             minutes < 10 ? "0" + minutes : minutes
-          }:${seconds < 10 ? "0" + seconds : seconds}`,
+            }:${seconds < 10 ? "0" + seconds : seconds}`,
           toTimehrLabel: `${hours < 10 ? "0" + hours : hours}:${
             minutes < 10 ? "0" + minutes : minutes
-          }`,
+            }`,
           toTimeAMPM: hours > 11 ? "PM" : "AM",
           totalHR: `${dif_hr < 10 ? "0" + dif_hr : dif_hr}:${
             dif_min < 10 ? "0" + dif_min : dif_min
-          }`,
+            }`,
         });
       }
     } else {
@@ -263,7 +259,7 @@ export class OTRequest extends Component {
                 date.getMonth() + 1 < 10
                   ? "0" + (date.getMonth() + 1)
                   : date.getMonth() + 1
-              }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
+                }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
               dateMonthLabel: months[date.getMonth()],
               dateYearLabel: date.getFullYear(),
               dateDayLabel:
@@ -271,20 +267,20 @@ export class OTRequest extends Component {
               fromTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
               fromTimehrLabel: `${
                 date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
-              }:${
+                }:${
                 date.getMinutes() < 10
                   ? "0" + date.getMinutes()
                   : date.getMinutes()
-              }`,
+                }`,
               fromTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
               toTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
               toTimehrLabel: `${
                 date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
-              }:${
+                }:${
                 date.getMinutes() < 10
                   ? "0" + date.getMinutes()
                   : date.getMinutes()
-              }`,
+                }`,
               toTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
               totalHR: "00:00",
               fromTimeHr: date.getHours(),
@@ -300,7 +296,7 @@ export class OTRequest extends Component {
                 date.getMonth() + 1 < 10
                   ? "0" + (date.getMonth() + 1)
                   : date.getMonth() + 1
-              }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
+                }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`,
               dateMonthLabel: months[date.getMonth()],
               dateYearLabel: date.getFullYear(),
               dateDayLabel:
@@ -308,20 +304,20 @@ export class OTRequest extends Component {
               fromTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
               fromTimehrLabel: `${
                 date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
-              }:${
+                }:${
                 date.getMinutes() < 10
                   ? "0" + date.getMinutes()
                   : date.getMinutes()
-              }`,
+                }`,
               fromTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
               toTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
               toTimehrLabel: `${
                 date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
-              }:${
+                }:${
                 date.getMinutes() < 10
                   ? "0" + date.getMinutes()
                   : date.getMinutes()
-              }`,
+                }`,
               toTimeAMPM: date.getHours() > 11 ? "PM" : "AM",
               totalHR: "00:00",
               fromTimeHr: date.getHours(),
@@ -344,174 +340,163 @@ export class OTRequest extends Component {
 
   render() {
     return (
-      <SafeAreaView style ={{flex: 1}}>
-      <KeyboardAvoidingView
-        behavior="padding"
-        style={{flex: 1, backgroundColor: color.light }}>
-        {/* <SafeAreaView style={{ flex: 1 }}> */}
-        <ScrollView>
-          <View style={{ flex: 1, backgroundColor: color.light }}>
-            <View style={styles.otHeader}>
-              <Icon
-                name="ios-arrow-round-back"
-                style={styles.backArrowIcon}
-                onPress={() => {
-                  this.props.navigation.navigate("Overtime");
-                }}
-              />
-              <Text style={styles.headerText}>Overtime Request</Text>
-            </View>
-
-            <View style={styles.grayView}></View>
-            <View style={styles.bodyContent}>
-              <Text style={styles.otDateText}>Overtime Date</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  this.showDatePicker();
-                }}
-              >
-                <View style={styles.datePickerContainer}>
-                  <DateTimePickerModal
-                    isVisible={this.state.isDatePickerVisible}
-                    mode="date"
-                    onConfirm={this.pickDate}
-                    onCancel={this.hideDatePicker}
-                  />
-                  <View style={styles.dateTextContainer}>
-                    <Text style={styles.dateTextBold}>
-                      {this.state.dateDayLabel}
-                    </Text>
-                    <Text style={styles.dateText}>
-                      {this.state.dateMonthLabel} {this.state.dateYearLabel}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-
-              <View style={styles.timeFromContainer}>
-                <View>
-                  <Text style={styles.timeFromLabel}>From</Text>
-                  <TouchableOpacity onPress={() => this.showTimePickerFrom()}>
-                    <View style={styles.timeFromPickContainer}>
-                      <DateTimePickerModal
-                        isVisible={this.state.isTimePickerFromVisible}
-                        mode="time"
-                        display="spinner"
-                        headerTextIOS="Pick a time"
-                        onConfirm={this.pickTimeFrom}
-                        onCancel={this.hideTimePickerFrom}
-                        is24Hour={true} //24 hour fomat in android
-                        locale="en_GB" // 24 hour fomat in ios
-                      />
-                      <View style={{ flexDirection: "row" }}>
-                        <Text style={styles.fromTimeBold}>
-                          {this.state.fromTimehrLabel}
-                        </Text>
-                        <Text style={styles.fromTimeText}>
-                          {this.state.fromTimeAMPM}
-                        </Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-
-                <View style={{ marginLeft: 15 }}>
-                  <Text style={styles.timeFromLabel}>To</Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.showTimePickerto();
-                    }}
-                  >
-                    <View style={styles.timeFromPickContainer}>
-                      <DateTimePickerModal
-                        isVisible={this.state.isTimePickerToVisible}
-                        mode="time"
-                        headerTextIOS="Pick a time"
-                        display="spinner"
-                        onConfirm={this.pickTimeTo}
-                        onCancel={this.hideTimePickerto}
-                        is24Hour={true} //24 hour format in android
-                        locale="en_GB" // 24 hour format in ios
-                      />
-                      <View style={{ flexDirection: "row" }}>
-                        <Text style={styles.fromTimeBold}>
-                          {this.state.toTimehrLabel}
-                        </Text>
-                        <Text style={styles.fromTimeText}>
-                          {this.state.toTimeAMPM}
-                        </Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-
-                <View style={{ marginLeft: 15 }}>
-                  <Text style={styles.timeFromLabel}>Duration</Text>
-                  <View style={styles.durationContainer}>
-                    <Text style={styles.durationText}>
-                      {this.state.totalHR}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={{ marginTop: 30 }}>
-                <Text style={styles.reasonText}>Reason</Text>
-                <Textarea
-                  placeholderTextColor={color.placeHolder}
-                  rowSpan={4}
-                  bordered
-                  borderRadius={5}
-                  style={{ backgroundColor: color.lighter }}
-                  onChangeText={(data) => {
-                    this.setState({
-                      description: data,
-                    });
+      <SafeAreaView style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+          behavior="padding"
+          style={{ flex: 1, backgroundColor: color.light }}>
+          <ScrollView>
+            <View style={{ flex: 1, backgroundColor: color.light }}>
+              <BackHeader name="Overtime Request" navigation={this.props.navigation} parent="Overtime" />
+              <View style={styles.grayView}></View>
+              <View style={styles.bodyContent}>
+                <Text style={styles.otDateText}>Overtime Date</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.showDatePicker();
                   }}
-                  value={this.state.description}
-                />
-              </View>
+                >
+                  <View style={styles.datePickerContainer}>
+                    <DateTimePickerModal
+                      isVisible={this.state.isDatePickerVisible}
+                      mode="date"
+                      onConfirm={this.pickDate}
+                      onCancel={this.hideDatePicker}
+                    />
+                    <View style={styles.dateTextContainer}>
+                      <Text style={styles.dateTextBold}>
+                        {this.state.dateDayLabel}
+                      </Text>
+                      <Text style={styles.dateText}>
+                        {this.state.dateMonthLabel} {this.state.dateYearLabel}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                style={{ marginTop: 40 }}
-                onPress={() => {
-                  this.submit(this.state.auth, this.state.id, this.state.url);
-                }}
-              >
-                <View style={styles.otRequestBtnContainer}>
-                  <Text style={styles.submitText}>Submit</Text>
+                <View style={styles.timeFromContainer}>
+                  <View>
+                    <Text style={styles.timeFromLabel}>From</Text>
+                    <TouchableOpacity onPress={() => this.showTimePickerFrom()}>
+                      <View style={styles.timeFromPickContainer}>
+                        <DateTimePickerModal
+                          isVisible={this.state.isTimePickerFromVisible}
+                          mode="time"
+                          display="spinner"
+                          headerTextIOS="Pick a time"
+                          onConfirm={this.pickTimeFrom}
+                          onCancel={this.hideTimePickerFrom}
+                          is24Hour={true} //24 hour fomat in android
+                          locale="en_GB" // 24 hour fomat in ios
+                        />
+                        <View style={{ flexDirection: "row" }}>
+                          <Text style={styles.fromTimeBold}>
+                            {this.state.fromTimehrLabel}
+                          </Text>
+                          <Text style={styles.fromTimeText}>
+                            {this.state.fromTimeAMPM}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={{ marginLeft: 15 }}>
+                    <Text style={styles.timeFromLabel}>To</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.showTimePickerto();
+                      }}
+                    >
+                      <View style={styles.timeFromPickContainer}>
+                        <DateTimePickerModal
+                          isVisible={this.state.isTimePickerToVisible}
+                          mode="time"
+                          headerTextIOS="Pick a time"
+                          display="spinner"
+                          onConfirm={this.pickTimeTo}
+                          onCancel={this.hideTimePickerto}
+                          is24Hour={true} //24 hour format in android
+                          locale="en_GB" // 24 hour format in ios
+                        />
+                        <View style={{ flexDirection: "row" }}>
+                          <Text style={styles.fromTimeBold}>
+                            {this.state.toTimehrLabel}
+                          </Text>
+                          <Text style={styles.fromTimeText}>
+                            {this.state.toTimeAMPM}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={{ marginLeft: 15 }}>
+                    <Text style={styles.timeFromLabel}>Duration</Text>
+                    <View style={styles.durationContainer}>
+                      <Text style={styles.durationText}>
+                        {this.state.totalHR}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
-              </TouchableOpacity>
-            </View>
-            <Modal isVisible={this.state.isModalVisible}>
-              <View style={styles.ModelViewContainer}>
-                <View style={styles.iconView}>
-                  {this.state.changeIconStatus === "success" ? (
-                    <Image
-                      source={require("../../assets/icon/success_icon.png")}
-                      style={styles.dialogIcon}
-                    />
-                  ) : (
-                    <Image
-                      source={require("../../assets/icon/fail_icon.png")}
-                      style={styles.dialogIcon}
-                    />
-                  )}
+
+                <View style={{ marginTop: 30 }}>
+                  <Text style={styles.reasonText}>Reason</Text>
+                  <Textarea
+                    placeholderTextColor={color.placeHolder}
+                    rowSpan={4}
+                    bordered
+                    borderRadius={5}
+                    style={{ backgroundColor: color.lighter }}
+                    onChangeText={(data) => {
+                      this.setState({
+                        description: data,
+                      });
+                    }}
+                    value={this.state.description}
+                  />
                 </View>
-                <Text style={[styles.lanTitle]}>{this.state.checkMessage}</Text>
-                <View style={styles.ModalTextContainer}>
-                  <TouchableOpacity
-                    style={styles.CancelOpacityContainer}
-                    onPress={() => this.setState({ isModalVisible: false })}
-                  >
-                    <Text style={styles.modalTextStyle}>{"Close"}</Text>
-                  </TouchableOpacity>
-                </View>
+
+                <TouchableOpacity
+                  style={{ marginTop: 40 }}
+                  onPress={() => {
+                    this.submit(this.state.auth, this.state.id, this.state.url);
+                  }}
+                >
+                  <View style={styles.otRequestBtnContainer}>
+                    <Text style={styles.submitText}>Submit</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
-            </Modal>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+              <Modal isVisible={this.state.isModalVisible}>
+                <View style={styles.ModelViewContainer}>
+                  <View style={styles.iconView}>
+                    {this.state.changeIconStatus === "success" ? (
+                      <Image
+                        source={require("../../assets/icon/success_icon.png")}
+                        style={styles.dialogIcon}
+                      />
+                    ) : (
+                        <Image
+                          source={require("../../assets/icon/fail_icon.png")}
+                          style={styles.dialogIcon}
+                        />
+                      )}
+                  </View>
+                  <Text style={[styles.lanTitle]}>{this.state.checkMessage}</Text>
+                  <View style={styles.ModalTextContainer}>
+                    <TouchableOpacity
+                      style={styles.CancelOpacityContainer}
+                      onPress={() => this.setState({ isModalVisible: false })}
+                    >
+                      <Text style={styles.modalTextStyle}>{"Close"}</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }
@@ -540,7 +525,7 @@ const styles = StyleSheet.create({
     height: 20,
     backgroundColor: color.lighter,
   },
-  bodyContent: {width: "100%", padding: 15 },
+  bodyContent: { width: "100%", padding: 15 },
   otDateText: {
     fontFamily: "Nunito",
     color: "#656565",

@@ -57,12 +57,7 @@ export default class Clock extends Component {
                     })
             })
     }
-
-
-
-    // UNSAFE_componentWillMount() {
-    //     clearTimeout(this.setTime)
-    // }
+    
     componentDidUpdate() {
         // time request
         if (this.state.time !== null) {

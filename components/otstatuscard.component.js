@@ -1,16 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
-import { View, Text, Row, Col } from 'native-base'
+import { View, Text, } from 'native-base'
 import colors from '../constant/color'
 import color from '../constant/color'
 
 // registered leave type color
-const leavesColor = {
-    "Casual Leave": '#47E9EE',
-    "Medical Leave": '#377375',
-    "Annual Leave": '#FFB300'
-}
+// const leavesColor = {
+//     "Casual Leave": '#47E9EE',
+//     "Medical Leave": '#377375',
+//     "Annual Leave": '#FFB300'
+// }
 
 // registered status type color
 const statusColor = {

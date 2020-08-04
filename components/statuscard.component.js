@@ -67,12 +67,8 @@ export default function StatusCard({key, leaveType, date, status, auth, url}) {
                                     // <Text style={{ ...styles.statusCircle, backgroundColor: leave["color_code"] }}></Text>
                                 )
                             }
-                        })
-                       
+                        })                      
                     }
-                        {/* <Text style={[styles.statusTxt, {
-                            color: statusColor[status]
-                        }]}>{status}</Text> */}
                     </View>
                 </View>
             </View>

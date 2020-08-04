@@ -1,9 +1,6 @@
-import {Text, View , Image, FlatList, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
-import { Card} from 'native-base'
+import { Text, View, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
-
-import styles from '../dashboard/dashboard.style'
 const height = Dimensions.get('screen').height;
 import React, { Component } from 'react'
 const cardList = [
@@ -39,67 +36,69 @@ const cardList = [
     },
 ]
 export class cards extends Component {
-      constructor(props){
-          super(props)
+    constructor(props) {
+        super(props)
+    }
+    render() {
+        return (
+            <View style={styles.cardContainer}>
+                {
+                    cardList.map((card, key) => (
+                        <TouchableOpacity
+                            style={styles.innerCardContainer} key={key}
+                            onPress={() => { this.props.navigation.navigate(card.page) }}>
+                            <View style={{
+                                width: '100%',
+                                paddingLeft: offset.o1,
+                                justifyContent: 'center',
+                                // height: height/6,
+                            }} key={key}>
+                                {(card.title === 'Rejected') ? <Image source={card.icon} style={{
+                                    width: 45,
+                                    height: 43,
+                                    marginBottom: offset.oh
+                                }} /> : (card.title === 'Approved') ? <Image source={card.icon} style={{
+                                    width: 48,
+                                    height: 42,
+                                    marginBottom: offset.oh
+                                }} /> : <Image source={card.icon} style={{
+                                    width: 35,
+                                    height: 40,
+                                    marginBottom: offset.oh
+                                }} />}
+                                <Text style={{ fontSize: 14, fontFamily: 'Nunito' }}>{card.title}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    ))
+                }
+            </View>
+        )
+    }
+}
 
-      } 
-  render(){
-    return (
-        <View style={{display: 'flex',
+const styles = StyleSheet.create({
+    cardContainer: {
+        display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginLeft: 15,
         marginRight: 15,
         marginBottom: 15,
-        flexWrap: 'wrap'}}>
-            {
-                cardList.map((card, key) => (
-                   <TouchableOpacity 
-                   
+        flexWrap: 'wrap'
+    },
+    innerCardContainer: {
+        width: '48%',
+        padding: offset.o1 + offset.oh,
+        backgroundColor: color.light,
+        marginTop: offset.o2,
+        borderRadius: offset.oh,
+        borderColor: color.placeHolder,
+        borderWidth: 0.5,
+        justifyContent: 'center',
+        height: height / 6,
+    },
 
-                   style={{
-                    width: '48%',
-                    padding: offset.o1 + offset.oh,
-                    backgroundColor: color.light,
-                    marginTop: offset.o2,
-                    borderRadius: offset.oh,
-                    borderColor: color.placeHolder,
-                    borderWidth: 0.5,
-                    justifyContent: 'center',
-                    height: height / 6,
-                }} key={key} 
-                onPress = {() => {this.props.navigation.navigate(card.page)}}>
-                    <View style={{
-                        width: '100%',
-                         paddingLeft: offset.o1,
-                         justifyContent: 'center',
-                        // height: height/6,
-                    }} key={key}>
-                        {(card.title === 'Rejected')  ?  <Image source={card.icon} style={{
-                            width: 45,
-                            height: 43,
-                            marginBottom: offset.oh
-                        }} /> : (card.title === 'Approved') ?<Image source={card.icon} style={{
-                            width: 48,
-                            height: 42,
-                            marginBottom: offset.oh
-                        }} /> : <Image source={card.icon} style={{
-                            width: 35,
-                            height: 40,
-                            marginBottom: offset.oh
-                        }} />}
-                       
-                        
-                        <Text style={{fontSize: 14, fontFamily: 'Nunito-Bold'}}>{card.title}</Text>
-                    </View>
-                    </TouchableOpacity>
-                    
-                ))
-            }
-        </View>
-    )
-}
-}
+})
 
 
 export default cards
