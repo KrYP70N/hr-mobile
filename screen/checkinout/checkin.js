@@ -33,12 +33,13 @@ class checkin extends Component {
 			markerCoordinates: [],
 			userName: null,
 			refresh: false,
-			locationError: null,
+			locationError: true,
 		};
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		this.props.navigation.addListener('focus', () => {
+			
 			AsyncStorage.getItem('@hr:endPoint')
 				.then((res) => {
 					const url = JSON.parse(res).ApiEndPoint
@@ -59,9 +60,11 @@ class checkin extends Component {
 		})
 	}
 
-	getProfileData(auth, id, url) {
+	async getProfileData(auth, id, url) {
+		console.log("Reach Component")
 		APIs.Profile(url, auth, id)
 			.then((res) => {
+				console.log("Profile Res", res.data)
 				if (res.status === "success") {
 					if (res.error) {
 						this.tokenExpiration()
@@ -74,6 +77,7 @@ class checkin extends Component {
 						})
 						let makerCoordsArr = [];
 						LOC.getAsync().then((result) => {
+							console.log("Profile Location", result)
 							if (result.status == 'fail') {
 								this.setState({
 									locationError: true
@@ -124,7 +128,9 @@ class checkin extends Component {
 									}
 								})
 							}
-						})
+						}).catch((e) => console.log("Error"))
+
+						console.log("After Get Current Location")
 					}
 
 				} else {
@@ -164,7 +170,7 @@ class checkin extends Component {
 		})
 	}
 
-	async CheckIn() {
+	CheckIn() {
 		console.log("Loc Error", this.state.locationError)
 		if (this.state.locationError == true) { // if there is a location error, user click check in without location
 			if (this.state.status.Checkin !== false) {
@@ -315,6 +321,7 @@ class checkin extends Component {
 	}
 
 	render() {
+		console.log("Reach Check In")
 		return (
 			<Container style={{ flex: 1 }}>
 				<Header style={{

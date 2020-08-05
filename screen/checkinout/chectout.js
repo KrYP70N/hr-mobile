@@ -21,7 +21,6 @@ class checkout extends Component {
 			url: null,
 			auth: null,
 			id: null,
-			locError: null,
 			data: null,
 			geofencing: null,
 			officeCoord: null,
@@ -34,6 +33,7 @@ class checkout extends Component {
 			markerCoordinates: [],
 			userName: null,
 			refresh: false,
+			locationError: true,
 		};
 	}
 
