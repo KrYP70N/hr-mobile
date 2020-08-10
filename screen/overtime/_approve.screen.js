@@ -128,6 +128,7 @@ export default class OvertimeApprove extends Component {
     }
 
     render() {
+        console.log("OT List", this.state.overtimeList)
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ flex: 1, backgroundColor: color.lighter }}>
@@ -151,16 +152,16 @@ export default class OvertimeApprove extends Component {
                                 return (
                                     <View key={index} style={styles.leaveApproveCard}>
                                         <Text style={styles.name}>{item.employee_name}</Text>
-                                        <Text style={styles.position}>{`${item["Job Position"]}`}</Text>
+                                        <Text style={styles.position}>{`(${item["Job Position"]})`}</Text>
                                         <Text style={styles.date}>{`From - ${item.overtime_date_from}`}</Text>
                                         <Text style={styles.toDate}>{`To     - ${item.overtime_date_to}`}</Text>
                                         <Text style={styles.otHour}>{`OT Hours - ${item.overtime_hours}:${item.overtime_minute}`}</Text>
+                                        <Text style={{fontFamily: 'Nunito', fontSize: 16, color: color.tertiary, marginTop: 10}}>Reason : {item["OT reason"]}</Text>
 
                                         <View style={styles.leaveApproveBtn}>
                                             <TouchableOpacity
                                                 onPress={() => { this.sendApproveRejectOT(item.Overtime_id, this.state.auth, this.state.url, 'reject') }}
-                                                style={{ width: '48%' }}
-                                            >
+                                                style={{ width: '48%' }}>
                                                 <View style={{ backgroundColor: color.placeHolder, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
                                                     <Text>Reject</Text>
                                                 </View>

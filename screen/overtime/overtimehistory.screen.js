@@ -56,11 +56,11 @@ export class OvertimeHistory extends Component {
         })
     }
 
-    getOTHistory(auth, id, url, year, month, status='all') {
+    getOTHistory(auth, id, url, year, month, status = 'all') {
         APIs.getOTHistory(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
-                    if(res.error){
+                    if (res.error) {
                         Toast.show({
                             text: 'Please login again. Your token is expired!',
                             textStyle: {
@@ -72,15 +72,15 @@ export class OvertimeHistory extends Component {
                             duration: 6000
                         })
                         this.props.navigation.navigate('Login')
-                    }else{
+                    } else {
                         this.setState({
                             OTHistoryLists: status === 'all' ? res.data : res.data.filter(list => list.state.toLowerCase() === status)
                         })
                     }
                 } else {
-                   this.setState({
-                       OTHistoryLists: []
-                   })
+                    this.setState({
+                        OTHistoryLists: []
+                    })
                 }
             })
     }
@@ -101,7 +101,7 @@ export class OvertimeHistory extends Component {
                     hour={`${history['hour']}:${history['minute']}`}
                     date_from={history['date_from']}
                     date_to={history['date_to']}
-                    description = {history['name']=== null ? '': history['name']}
+                    description={history['name'] === null ? '' : history['name']}
                     status={history.state}
                 />
             )
@@ -123,12 +123,14 @@ export class OvertimeHistory extends Component {
                             marginRight: offset.o2
                         }} onPress={() => { this.props.navigation.navigate('Overtime') }} />
                         <Text style={{
+                            fontSize: 16,
                             color: color.secondary,
                             fontFamily: 'Nunito'
                         }}>History</Text>
                     </Left>
                     <Right>
                         <Icon
+                            style={{ color: color.tertiary }}
                             name="ios-options"
                             onPress={() => {
                                 this.setState({
@@ -149,17 +151,17 @@ export class OvertimeHistory extends Component {
                     />
                     {statusData}
                     <View style={{
-                            display: this.state.OTHistoryLists.length === 0 ? 'flex' : 'none',
-                            alignItems: 'center'
-                        }}>
-                            <Icon name='ios-information-circle-outline' style={{
-                                color: color.placeHolder,
-                                fontSize: 40
-                            }} />
-                            <Text style={{
-                                color: color.placeHolder
-                            }}>There is no overtime history for {this.state.status.charAt(0).toUpperCase() + this.state.status.substr(1).toLowerCase()}!</Text>
-                        </View>
+                        display: this.state.OTHistoryLists.length === 0 ? 'flex' : 'none',
+                        alignItems: 'center'
+                    }}>
+                        <Icon name='ios-information-circle-outline' style={{
+                            color: color.placeHolder,
+                            fontSize: 40
+                        }} />
+                        <Text style={{
+                            color: color.placeHolder
+                        }}>There is no overtime history for {this.state.status.charAt(0).toUpperCase() + this.state.status.substr(1).toLowerCase()}!</Text>
+                    </View>
                 </Content>
             </Container>
         )

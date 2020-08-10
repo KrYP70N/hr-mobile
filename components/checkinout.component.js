@@ -138,7 +138,7 @@ export default class CheckInOut extends Component {
               source={require('../assets/icon/checkintime.png')}
               style={[styles.icon]}
             />
-            <Text style={{ color: color.primary, fontSize: 18 }}>Get your Attendance!</Text>
+            <Text style={{fontFamily: 'Nunito', color: color.primary, fontSize: 18 }}>Get your Attendance!</Text>
             <View style={{
               flexDirection: 'row',
               justifyContent: "space-between",
@@ -153,7 +153,7 @@ export default class CheckInOut extends Component {
                     source={require('../assets/icon/checkin.png')}
                     style={{ width: 30, height: 30 }}
                   />
-                  <Text style={{ color: '#fff', marginTop: 5 }}>Check In</Text>
+                  <Text style={{fontFamily: 'Nunito', color: '#fff', marginTop: 5 }}>Check In</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {
@@ -164,7 +164,7 @@ export default class CheckInOut extends Component {
                     source={require('../assets/icon/checkout.png')}
                     style={{ width: 30, height: 30, }}
                   />
-                  <Text style={{ color: '#fff', marginTop: 5 }}>Check Out</Text>
+                  <Text style={{fontFamily: 'Nunito', color: '#fff', marginTop: 5 }}>Check Out</Text>
                 </View>
               </TouchableOpacity>
             </View>

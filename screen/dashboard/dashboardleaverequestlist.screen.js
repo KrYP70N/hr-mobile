@@ -116,9 +116,9 @@ export class DashboardLeaveRequestList extends Component {
                         {
                             this.state.leaveLists.map((request, index) => {
                                 return (
-                                    <View key={index} style={{ marginLeft: 15, marginRight: 15, marginTop: 10, marginBottom: 5, borderRadius: 8, backgroundColor: color.light, padding: 10, alignItems: 'center', flexDirection: 'row', borderWidth: 0.3, borderColor: color.placeHolder }}>
-                                        <Image style={{ width: 60, height: 60, borderRadius: 60 / 2 }} source={require('../../assets/icon/user.png')}></Image>
-                                        <View style={{ marginLeft: 10 }}>
+                                    <View key={index} style={{ marginLeft: 15, marginRight: 15, marginTop: 10, marginBottom: 5, borderRadius: 8, backgroundColor: color.light, padding: 10, alignItems: 'center', flexDirection: 'row', borderWidth: 0.3, borderColor: color.cardBorder }}>
+                                        <Image style={{ width: 40, height: 40, borderRadius: 40 / 2 }} source={require('../../assets/icon/user.png')}></Image>
+                                        <View style={{flex: 1, marginLeft: 10 }}>
                                             <Text style={{ fontSize: 14, fontFamily: 'Nunito-Bold' }}>{request["emp_name"]}</Text>
                                             <Text style={{ marginTop: 5, fontSize: 13, fontFamily: 'Nunito', color: '#656565' }}>{request["leave_name"]}</Text>
                                             <Text style={{ marginTop: 8, fontSize: 14, fontFamily: 'Nunito', color: '#A5A5A5' }}>{request["date_from"]} to {request["date_to"]}</Text>

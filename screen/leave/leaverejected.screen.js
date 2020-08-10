@@ -56,15 +56,15 @@ export class EmployeeLeaveRejected extends Component {
         APIs.getLeaveRejectedList(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
-                    if(res.error){
+                    if (res.error) {
                         this.tokenExpiration()
-                    }else{
+                    } else {
                         this.setState({
                             leaveRejectedList: res.data
                         })
-                    }  
+                    }
                 } else {
-                   this.apiFail()
+                    this.apiFail()
                     this.setState({
                         leaveRejectedList: []
                     })
@@ -75,7 +75,7 @@ export class EmployeeLeaveRejected extends Component {
     onChangeDate(clickedDate) {
     }
 
-    
+
 
     // filter next ctrl
     ctrlNext = ({ year, month }) => {
@@ -91,7 +91,7 @@ export class EmployeeLeaveRejected extends Component {
 
     }
 
-    tokenExpiration(){
+    tokenExpiration() {
         Toast.show({
             text: 'Please login again. Your token is expired!',
             textStyle: {
@@ -105,7 +105,7 @@ export class EmployeeLeaveRejected extends Component {
         this.props.navigation.navigate('Login')
     }
 
-    apiFail(){
+    apiFail() {
         Toast.show({
             text: 'Authentication Failed!',
             textStyle: {
@@ -131,8 +131,8 @@ export class EmployeeLeaveRejected extends Component {
             )
         })
 
-    
-    return(
+
+        return (
             <Container>
                 <Header style={{
                     backgroundColor: color.light,
@@ -148,12 +148,14 @@ export class EmployeeLeaveRejected extends Component {
                             marginRight: offset.o2
                         }} onPress={() => { this.props.navigation.navigate('Leave') }} />
                         <Text style={{
+                            fontSize: 16,
                             color: color.secondary,
                             fontFamily: 'Nunito'
                         }}>Rejected</Text>
                     </Left>
                     <Right>
                         <Icon
+                            style={{ color: color.tertiary }}
                             name="ios-options"
                             onPress={() => {
                                 this.setState({
@@ -176,17 +178,17 @@ export class EmployeeLeaveRejected extends Component {
 
                     <View style={{
                         marginTop: 20,
-                            display: this.state.leaveRejectedList.length === 0 ? 'flex' : 'none',
-                            alignItems: 'center'
-                        }}>
-                            <Icon name='ios-information-circle-outline' style={{
-                                color: color.placeHolder,
-                                fontSize: 40
-                            }} />
-                            <Text style={{
-                                color: color.placeHolder
-                            }}>There is no leave rejected data!</Text>
-                        </View>
+                        display: this.state.leaveRejectedList.length === 0 ? 'flex' : 'none',
+                        alignItems: 'center'
+                    }}>
+                        <Icon name='ios-information-circle-outline' style={{
+                            color: color.placeHolder,
+                            fontSize: 40
+                        }} />
+                        <Text style={{
+                            color: color.placeHolder
+                        }}>There is no leave rejected data!</Text>
+                    </View>
                 </Content>
             </Container >
         )

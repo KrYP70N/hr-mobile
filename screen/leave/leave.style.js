@@ -10,8 +10,8 @@ export default StyleSheet.create({
         color: color.lighter
     },
     container: {
-        paddingLeft: offset.o2,
-        paddingRight: offset.o2,
+        //paddingLeft: offset.o2,
+        //paddingRight: offset.o2,
     },
     left: {
         paddingRight: offset.o1
@@ -113,6 +113,7 @@ export default StyleSheet.create({
     },
     cardSText: {
         ...typo.parabraph,
+        fontFamily: 'Nunito',
         color: color.placeHolder,
         marginTop: offset.o1,
         marginBottom: offset.o2
@@ -120,6 +121,7 @@ export default StyleSheet.create({
     cardWarning: {
         ...typo.parabraph,
         color: color.warning,
+        fontFamily: 'Nunito',
         marginBottom: offset.o2,
         fontSize: 16
     },
@@ -168,10 +170,8 @@ export default StyleSheet.create({
     leaveApproveCard: {
         backgroundColor: 'white',
         borderRadius: 5,
-        shadowColor: '#000',
-        shadowRadius: 3,
-        elevation: 5,
-        shadowOpacity: 0.62,
+        borderWidth: 0.3,
+        borderColor: color.cardBorder,
         padding: 20,
         marginTop: 10,
         marginLeft: 10,
@@ -186,6 +186,7 @@ export default StyleSheet.create({
         marginTop: 10,
     },
     date:{
+        fontFamily: 'Nunito',
         fontSize: 14,
         marginTop: 10,
         color: '#656565'
@@ -193,6 +194,7 @@ export default StyleSheet.create({
     leaveText:{
         ...typo.paragraph,
         marginTop: 5,
+        color: color.danger
     },
     pickerIcn: {
         position: 'absolute',

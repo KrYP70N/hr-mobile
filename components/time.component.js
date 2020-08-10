@@ -31,6 +31,7 @@ export default class Clock extends Component {
     }
 
     componentDidMount() {
+        //this.props.navigation.addListener('focus', () => {
         AsyncStorage.getItem('@hr:endPoint')
             .then((res) => {
                 let endPoint = DB.getEndPoint(res)
@@ -56,6 +57,7 @@ export default class Clock extends Component {
                             })
                     })
             })
+        //})
     }
     
     componentDidUpdate() {

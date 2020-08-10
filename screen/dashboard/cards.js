@@ -120,7 +120,7 @@ export default class Cards extends Component {
                                 {
                                     title: 'Upcoming Birthday',
                                     noti: res.data["Birthday Count"][0][0] == "0" ? "0" : res.data["Birthday Count"][0][0],
-                                    icon: require('../../assets/icon/upcoming_birthday.png'),
+                                    icon: require('../../assets/icon/upcoming-birthday.png'),
                                     // page: 'DashboardRequest'
                                     page: 'UpcomingBirthday'
                                 },
@@ -139,7 +139,7 @@ export default class Cards extends Component {
                                 {
                                     title: 'Contract',
                                     noti: res.data["Contract Count"][0][0] == "0" ? "0" : res.data["Contract Count"][0][0],
-                                    icon: require('../../assets/icon/user-icn.png'),
+                                    icon: require('../../assets/icon/profile.png'),
                                     page: 'ContractProfile'
                                 }
                             )
@@ -149,7 +149,7 @@ export default class Cards extends Component {
                                 {
                                     title: 'Employees',
                                     noti: res.data["Active Employee List Count"][0][0] == "0" ? "0" : res.data["Active Employee List Count"][0][0],
-                                    icon: require('../../assets/icon/user.png'),
+                                    icon: require('../../assets/icon/employee.png'),
                                     page: 'EmployeeList'
                                 }
                             )
@@ -157,7 +157,7 @@ export default class Cards extends Component {
                                 {
                                     title: 'Department',
                                     noti: res.data["Department Count"][0][0] == "0" ? "0" : res.data["Department Count"][0][0],
-                                    icon: require('../../assets/icon/dept.png'),
+                                    icon: require('../../assets/icon/department.png'),
                                     page: 'Department'
                                 }
                             )
@@ -174,7 +174,7 @@ export default class Cards extends Component {
                                 {
                                     title: 'Today Absent',
                                     noti: res.data["Today Absent Count"][0][0] == "0" ? "0" : res.data["Today Absent Count"][0][0],
-                                    icon: require('../../assets/icon/attendance.png'),
+                                    icon: require('../../assets/icon/absence.png'),
                                     page: 'AbsentEmployeeList'
                                 }
                             )
@@ -192,7 +192,7 @@ export default class Cards extends Component {
                                 {
                                     title: 'Leave Request Lists',
                                     noti: res.data["Leave Request Count"][0][0] == "0" ? "0" : res.data["Leave Request Count"][0][0],
-                                    icon: require('../../assets/icon/dashboard-leave.png'),
+                                    icon: require('../../assets/icon/leave-request-list.png'),
                                     page: 'DashboardLeaveRequestList'
                                 }
                             )
@@ -200,7 +200,7 @@ export default class Cards extends Component {
                                 {
                                     title: 'Exit Employee',
                                     noti: res.data["Exit Employee Count"][0][0] == "0" ? "0" : res.data["Exit Employee Count"][0][0],
-                                    icon: require('../../assets/icon/user.png'),
+                                    icon: require('../../assets/icon/exit-employee.png'),
                                     page: 'ExitEmployeeList'
                                 }
                             )
@@ -209,7 +209,7 @@ export default class Cards extends Component {
                                 {
                                     title: 'Join Employee',
                                     noti: res.data["Join Employee Count"][0][0] == "0" ? "0" : res.data["Join Employee Count"][0][0],
-                                    icon: require('../../assets/icon/user.png'),
+                                    icon: require('../../assets/icon/join-employee.png'),
                                     page: 'JoinEmployeeList'
                                 }
                             )
@@ -217,7 +217,7 @@ export default class Cards extends Component {
                                 {
                                     title: 'Upcoming Birthday',
                                     noti: res.data["Birthday Count"][0][0] == "0" ? "0" : res.data["Birthday Count"][0][0],
-                                    icon: require('../../assets/icon/upcoming_birthday.png'),
+                                    icon: require('../../assets/icon/upcoming-birthday.png'),
                                     page: 'UpcomingBirthday'
                                 },
                             )
@@ -236,7 +236,7 @@ export default class Cards extends Component {
                                 {
                                     title: 'Contract',
                                     noti: res.data["Contract Count"][0][0] == "0" ? "0" : res.data["Contract Count"][0][0],
-                                    icon: require('../../assets/icon/user-icn.png'),
+                                    icon: require('../../assets/icon/profile.png'),
                                     page: 'ContractProfile'
                                 }
                             )

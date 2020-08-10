@@ -7,6 +7,7 @@ export default {
     semiLigher  :       '#f7f7f7',
     dark        :       '#2A484E',
     placeHolder :       '#A5A5A5',
+    cardBorder  :       '#dddddd',
     warning     :       '#FFB300',
     danger      :       '#FF0000',
     indicator   :       '#35A9AC',

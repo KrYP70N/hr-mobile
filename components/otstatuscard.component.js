@@ -30,9 +30,9 @@ export default function StatusCard({ hour, date_from, date_to, description, stat
     return (
         <View style={styles.container}>
             <View style={styles.mainRow}>
-                <View style={styles.status}>
+                {/* <View style={styles.status}>
                     <Text style={{ ...styles.statusCircle, backgroundColor: statusColor[status.toLowerCase()] }}></Text>
-                </View>
+                </View> */}
                 <View style={styles.content}>
                     <View style={styles.left}>
                         <Text style={styles.date}>From - {date_from}</Text>
@@ -42,8 +42,8 @@ export default function StatusCard({ hour, date_from, date_to, description, stat
                     </View>
                     <View style={styles.right}>
                         <Text style={[styles.statusTxt, {
-                            color: statusColor[status.toLowerCase()]
-                           // color: statusColor[status]
+                            //color: statusColor[status.toLowerCase()]
+                            color: color.tertiary
                         }]}>{status}</Text>
                     </View>
                 </View>
@@ -57,15 +57,16 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: colors.light,
         borderRadius: 5,
-        borderWidth: 0.5,
-        borderColor: colors.semiLigher,
+        borderWidth: 0.3,
+        borderColor: colors.cardBorder,
         marginBottom: 10,
         borderWidth: 0.3,
-        borderColor: colors.placeHolder
+        //borderColor: colors.placeHolder
     },
     mainRow: {
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center'
     },
     status: {
@@ -77,15 +78,17 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     content: {
-        width: '90%',
+        width: '100%',
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        padding: 10,
+        justifyContent: 'space-between'
     },
     left: {
-        width: '70%'
+        //width: '70%'
     },
     right: {
-        width: '30%'
+        //width: '30%'
     },
     statusTxt: {
         textAlign: 'right',

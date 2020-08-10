@@ -49,11 +49,17 @@ export class cards extends Component {
                             onPress={() => { this.props.navigation.navigate(card.page) }}>
                             <View style={{
                                 width: '100%',
-                                paddingLeft: offset.o1,
+                                //paddingLeft: offset.o1,
                                 justifyContent: 'center',
+                                alignItems: 'center'
                                 // height: height/6,
                             }} key={key}>
-                                {(card.title === 'Rejected') ? <Image source={card.icon} style={{
+                            <Image source={card.icon} style={{
+                                    width: 35,
+                                    height: 35,
+                                    marginBottom: offset.o1 + offset.oh
+                                }} />
+                                {/* {(card.title === 'Rejected') ? <Image source={card.icon} style={{
                                     width: 45,
                                     height: 43,
                                     marginBottom: offset.oh
@@ -65,7 +71,7 @@ export class cards extends Component {
                                     width: 35,
                                     height: 40,
                                     marginBottom: offset.oh
-                                }} />}
+                                }} />} */}
                                 <Text style={{ fontSize: 14, fontFamily: 'Nunito' }}>{card.title}</Text>
                             </View>
                         </TouchableOpacity>
@@ -88,14 +94,15 @@ const styles = StyleSheet.create({
     },
     innerCardContainer: {
         width: '48%',
-        padding: offset.o1 + offset.oh,
+        padding: offset.o2,
         backgroundColor: color.light,
-        marginTop: offset.o2,
-        borderRadius: offset.oh,
-        borderColor: color.placeHolder,
+        marginTop: offset.o1 + offset.oh,
+        borderRadius: offset.o1,
+        borderColor: color.cardBorder,
         borderWidth: 0.5,
         justifyContent: 'center',
-        height: height / 6,
+        alignItems: 'center',
+        height: 110,
     },
 
 })

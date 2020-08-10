@@ -86,7 +86,7 @@ export class EmployeeLeavePending extends Component {
 			})
 	}
 
-	apiFail(){
+	apiFail() {
 		Toast.show({
 			text: 'Authentication Failed!',
 			textStyle: {
@@ -100,28 +100,35 @@ export class EmployeeLeavePending extends Component {
 	}
 
 	render() {
-		let GetLeave = this.state.leaves.map((leave) => {
+		let GetLeave = this.state.leaves.map((leave, key) => {
 			return (
-				<Card key={leave['Obj id']} style={{ marginBottom: 16, padding: 10 }}>
-					<CardItem>
-						<Body>
-							<View style={styLeave.cardTitleContainer}>
-								<Text style={styLeave.cardTitle}>{leave['Leave Type']}</Text>
-							</View>
-							<Text style={styLeave.cardXSText}>{leave['date_from']} to {leave['date_to']}</Text>
-							{/* <Text style={styLeave.cardSText}>Leave - {leave['number of days']} Days</Text> */}
-							<Text style={styLeave.cardWarning}>Your request is pending</Text>
-							<Button
-								style={styLeave.ButtonSecondary}
-								onPress={() => {
-									this.cancelOT(leave['Obj id'])
-								}}
-							>
-								<Text>Cancel Request</Text>
-							</Button>
-						</Body>
-					</CardItem>
-				</Card>
+					<View key = {key} style={{
+						backgroundColor: 'white',
+						borderRadius: 5,
+						borderWidth: 0.3,
+						borderColor: color.cardBorder,
+						padding: 20,
+						marginTop: 10,
+						marginLeft: 10,
+						marginRight: 10,
+						marginBottom: 5
+					}}>
+					<View style={styLeave.cardTitleContainer}>
+						<Text style={styLeave.cardTitle}>{leave['Leave Type']}</Text>
+					</View>
+					<Text style={styLeave.cardXSText}>{leave['date_from']} to {leave['date_to']}</Text>
+					<Text style={styLeave.cardSText}>Reason : {leave['Reason']}</Text>
+					<Text style={styLeave.cardWarning}>Your request is pending</Text>
+					<Button
+						style={styLeave.ButtonSecondary}
+						onPress={() => {
+							this.cancelOT(leave['Obj id'])
+						}}
+					>
+						<Text style={{ fontFamily: 'Nunito', fontSize: 14 }}>Cancel Request</Text>
+					</Button>
+					</View>
+				
 			)
 		})
 		return (
@@ -129,7 +136,7 @@ export class EmployeeLeavePending extends Component {
 				<Container>
 					<BackHeader name="Pending Approval" navigation={this.props.navigation} parent="Leave" />
 					<Content style={{ flex: 1, backgroundColor: color.lighter }}>
-						<View style={{ padding: 16 }}>
+						<View style={{ padding: 5 }}>
 							{GetLeave}
 						</View>
 
@@ -142,6 +149,7 @@ export class EmployeeLeavePending extends Component {
 								fontSize: 40
 							}} />
 							<Text style={{
+								fontFamily: 'Nunito',
 								color: color.placeHolder
 							}}>There is no pending leave request!</Text>
 						</View>
@@ -182,6 +190,7 @@ const styles = StyleSheet.create({
 		bottom: Platform.OS === 'ios' ? 15 : -20,
 	},
 	lanTitle: {
+		fontFamily: 'Nunito',
 		fontSize: 20,
 		fontWeight: 'bold',
 		marginTop: 15,

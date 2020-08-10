@@ -52,16 +52,16 @@ export class EmployeeLeaveApproved extends Component {
         APIs.getLeaveApprovedList(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
-                    if(res.error){
+                    if (res.error) {
                         this.tokenExpiration()
-                    }else{
+                    } else {
                         this.setState({
                             leaveApproveList: res.data
                         })
                     }
                 } else {
                     this.apiFail()
-                   this.setState({leaveApproveList: []})
+                    this.setState({ leaveApproveList: [] })
                 }
             })
     }
@@ -80,7 +80,7 @@ export class EmployeeLeaveApproved extends Component {
 
     }
 
-    tokenExpiration(){
+    tokenExpiration() {
         Toast.show({
             text: 'Please login again. Your token is expired!',
             textStyle: {
@@ -94,7 +94,7 @@ export class EmployeeLeaveApproved extends Component {
         this.props.navigation.navigate('Login')
     }
 
-    apiFail(){
+    apiFail() {
         Toast.show({
             text: 'Authentication Failed!',
             textStyle: {
@@ -137,12 +137,14 @@ export class EmployeeLeaveApproved extends Component {
                             marginRight: offset.o2
                         }} onPress={() => { this.props.navigation.navigate('Leave') }} />
                         <Text style={{
+                            fontSize: 16,
                             color: color.secondary,
                             fontFamily: 'Nunito'
                         }}>Approved</Text>
                     </Left>
                     <Right>
                         <Icon
+                            style={{ color: color.tertiary }}
                             name="ios-options"
                             onPress={() => {
                                 this.setState({
@@ -164,18 +166,18 @@ export class EmployeeLeaveApproved extends Component {
                     {statusData}
                     <View style={{
                         marginTop: 20,
-                            display: this.state.leaveApproveList.length === 0 ? 'flex' : 'none',
-                            alignItems: 'center'
-                        }}>
-                            <Icon name='ios-information-circle-outline' style={{
-                                color: color.placeHolder,
-                                fontSize: 40
-                            }} />
-                            <Text style={{
-                                color: color.placeHolder
-                            }}>There is no leave approved data!</Text>
-                        </View>
-                   
+                        display: this.state.leaveApproveList.length === 0 ? 'flex' : 'none',
+                        alignItems: 'center'
+                    }}>
+                        <Icon name='ios-information-circle-outline' style={{
+                            color: color.placeHolder,
+                            fontSize: 40
+                        }} />
+                        <Text style={{
+                            color: color.placeHolder
+                        }}>There is no leave approved data!</Text>
+                    </View>
+
                 </Content>
             </Container>
         )

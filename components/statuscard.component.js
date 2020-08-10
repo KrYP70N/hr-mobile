@@ -40,10 +40,10 @@ export default function StatusCard({key, leaveType, date, status, auth, url}) {
                 <View style={styles.status}>
 
                     {
-                         leaveTypes.map((leave) =>{
+                         leaveTypes.map((leave, index) =>{
                             if(leave.name === leaveType){
                                 return(
-                                    <Text style={{ ...styles.statusCircle, backgroundColor: leave["color_code"] }}></Text>
+                                    <Text key = {key} style={{ ...styles.statusCircle, backgroundColor: leave["color_code"] }}></Text>
                                 )
                             }
                         })
@@ -54,16 +54,18 @@ export default function StatusCard({key, leaveType, date, status, auth, url}) {
                 <View style={styles.content}>
                     <View style={styles.left}>
                         <Text style={styles.date}>{date}</Text>
-                        <Text>{leaveType}</Text>
+                        <Text style = {{fontFamily: 'Nunito'}}>{leaveType}</Text>
                     </View>
                     <View style={styles.right}>
                     {
                          leaveTypes.map((leave) =>{
                             if(leave.name === leaveType){
                                 return(
-                                    <Text style={[styles.statusTxt, {
-                                        color: leave['color_code']
-                                    }]}>{status}</Text>
+                                    <Text style={ {
+                                        fontFamily: 'Nunito',
+                                        color: colors.tertiary
+                                        //color: leave['color_code']
+                                    }}>{status}</Text>
                                     // <Text style={{ ...styles.statusCircle, backgroundColor: leave["color_code"] }}></Text>
                                 )
                             }
@@ -101,20 +103,21 @@ const styles = StyleSheet.create({
     content: {
         width: '90%',
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     left: {
-        width: '70%'
+        //width: '70%'
     },
     right: {
-        width: '30%'
+        //width: '30%'
     },
     statusTxt: {
         textAlign: 'right',
         fontFamily: 'Nunito',
         fontSize: 14,
         fontWeight: 'bold',
-        color: colors.primary
+        //color: colors.primary
     },
     date: {
         fontFamily: 'Nunito',

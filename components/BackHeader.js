@@ -21,6 +21,7 @@ class BackHeader extends Component {
             marginLeft: 15,
         }} onPress={() => { this.props.navigation.navigate(this.props.parent) }} />
         <Text style={{
+            fontSize: 16,
             color: color.secondary,
             fontFamily: 'Nunito'
         }}>{this.props.name}</Text>

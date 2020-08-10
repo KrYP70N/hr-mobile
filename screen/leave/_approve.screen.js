@@ -60,6 +60,7 @@ export default class LeaveApprove extends Component {
                     }
 
                 } else {
+                    console.log("API Fail")
                    this.apiFail()
                     this.setState({ leaveLists: [] })
                 }
@@ -129,18 +130,19 @@ export default class LeaveApprove extends Component {
     }
 
     render() {
+        console.log("Reach Approve Leave", this.state.leaveLists)
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ flex: 1, backgroundColor: color.lighter }}>
                     <BackHeader name="Approve Leave" navigation={this.props.navigation} parent="Main" />
                     <Content>
                         <View style={{
-                            display: this.state.leaveLists.length === 0 ? 'flex' : 'none',
+                            display: this.state.leaveLists.length == 0 ? 'flex' : 'none',
                             alignItems: "center",
                             position: "absolute",
                             marginTop: 20,
                             width: '100%',
-                            opacity: this.state.leaveLists.length === 0 ? 1 : 0
+                            opacity: this.state.leaveLists.length == 0 ? 1 : 0
                         }}>
                             <Icon name='ios-information-circle-outline' style={{
                                 color: color.placeHolder,
@@ -158,6 +160,7 @@ export default class LeaveApprove extends Component {
                                         <Text style={styles.position}>{`(${item["Job Position"]})`}</Text>
                                         <Text style={styles.date}>{`From ${item.date_from} To ${item.date_to}`}</Text>
                                         <Text style={styles.leaveText}>{item["Leave Type"]}</Text>
+                                        <Text style={{fontFamily: 'Nunito', color: color.tertiary, fontSize: 16}} >Reason : {item["Reason"]}</Text>
                                         <View style={styles.leaveApproveBtn}>
                                             <TouchableOpacity
                                                 style={{ width: '48%' }}

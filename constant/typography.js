@@ -15,7 +15,7 @@ export default {
         fontFamily: 'Nunito'
     },
     cardTitle: {
-        fontSize: size.s3,
+        fontSize: size.s2,
         fontFamily: 'Nunito-Bold',
         color: color.secondary
     },

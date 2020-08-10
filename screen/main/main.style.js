@@ -121,8 +121,8 @@ export default StyleSheet.create({
         color: color.primary
     },
     imgIcn: {
-        width: 40,
-        height: 38,
+        width: 35,
+        height: 35,
         marginBottom: offset.o2
     },
     menuTxt: {

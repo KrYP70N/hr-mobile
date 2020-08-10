@@ -134,6 +134,20 @@ export default StyleSheet.create({
         marginBottom: offset.o2
     },
     nodataText: {
+        fontFamily: 'Nunito',
         color: color.placeHolder
-    }
+    },
+    payrollBtnContainer: {
+        height: 50,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: color.primary,
+        width: "100%",
+        //marginTop: 30,
+        borderRadius: 5,
+    },
+    submitText: {
+        color: color.light,
+        fontFamily: "Nunito",
+      },
 })

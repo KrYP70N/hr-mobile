@@ -340,14 +340,16 @@ export class OTRequest extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <KeyboardAvoidingView
+      <SafeAreaView style={{ flex: 1, backgroundColor: color.light}}>
+        {/* <KeyboardAvoidingView
           behavior="padding"
-          style={{ flex: 1, backgroundColor: color.light }}>
+          style={{ flex: 1, backgroundColor: color.light }}> */}
+          <BackHeader name="Overtime Request" navigation={this.props.navigation} parent="Overtime" />
           <ScrollView>
+          
             <View style={{ flex: 1, backgroundColor: color.light }}>
-              <BackHeader name="Overtime Request" navigation={this.props.navigation} parent="Overtime" />
-              <View style={styles.grayView}></View>
+            <View style={styles.grayView}></View>
+             
               <View style={styles.bodyContent}>
                 <Text style={styles.otDateText}>Overtime Date</Text>
                 <TouchableOpacity
@@ -496,7 +498,7 @@ export class OTRequest extends Component {
               </Modal>
             </View>
           </ScrollView>
-        </KeyboardAvoidingView>
+        {/* </KeyboardAvoidingView> */}
       </SafeAreaView>
     );
   }

@@ -56,7 +56,7 @@ export class OvertimeRejected extends Component {
         APIs.getOTRejectedList(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
-                    if(res.error){
+                    if (res.error) {
                         Toast.show({
                             text: 'Please login again. Your token is expired!',
                             textStyle: {
@@ -68,7 +68,7 @@ export class OvertimeRejected extends Component {
                             duration: 6000
                         })
                         this.props.navigation.navigate('Login')
-                    }else{
+                    } else {
                         this.setState({
                             OTRejectedList: res.data
                         })
@@ -86,7 +86,7 @@ export class OvertimeRejected extends Component {
         this.setState({ month, year })
         this.getOTRejectedList(this.state.auth, this.state.id, this.state.url, year, month)
     }
-    
+
     // filter prev ctrl
     ctrlPrev = ({ year, month }) => {
         this.setState({ month, year })
@@ -98,13 +98,13 @@ export class OvertimeRejected extends Component {
         let statusData = this.state.OTRejectedList.map((reject, index) => {
             return (
                 <StatusCard
-                key={index}
-                hour={`${reject['hour']}:${reject['minute']}`}
-                date_from={reject['date_from']}
-                date_to={reject['date_to']}
-                description = {reject['name']}
-                status={reject.state}
-            />
+                    key={index}
+                    hour={`${reject['hour']}:${reject['minute']}`}
+                    date_from={reject['date_from']}
+                    date_to={reject['date_to']}
+                    description={reject['name']}
+                    status={reject.state}
+                />
             )
         })
 
@@ -125,12 +125,14 @@ export class OvertimeRejected extends Component {
                             marginRight: offset.o2
                         }} onPress={() => { this.props.navigation.navigate('Overtime') }} />
                         <Text style={{
+                            fontSize: 16,
                             color: color.secondary,
                             fontFamily: 'Nunito'
                         }}>Rejected</Text>
                     </Left>
                     <Right>
                         <Icon
+                            style={{ color: color.tertiary }}
                             name="ios-options"
                             onPress={() => {
                                 this.setState({
@@ -152,19 +154,19 @@ export class OvertimeRejected extends Component {
                     {statusData}
                     <View style={{
                         marginTop: 20,
-                            display: this.state.OTRejectedList.length === 0 ? 'flex' : 'none',
-                            alignItems: 'center'
-                        }}>
-                            <Icon name='ios-information-circle-outline' style={{
-                                color: color.placeHolder,
-                                fontSize: 40
-                            }} />
-                            <Text style={{
-                                color: color.placeHolder
-                            }}>There is no overtime rejected data!</Text>
-                        </View>
+                        display: this.state.OTRejectedList.length === 0 ? 'flex' : 'none',
+                        alignItems: 'center'
+                    }}>
+                        <Icon name='ios-information-circle-outline' style={{
+                            color: color.placeHolder,
+                            fontSize: 40
+                        }} />
+                        <Text style={{
+                            color: color.placeHolder
+                        }}>There is no overtime rejected data!</Text>
+                    </View>
                 </Content>
-            </Container >
+            </Container>
         )
     }
 }

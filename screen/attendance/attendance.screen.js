@@ -10,6 +10,7 @@ import color from '../../constant/color'
 import { AsyncStorage, SafeAreaView, } from 'react-native'
 import { Calendar, } from 'react-native-calendars';
 import { ScrollView } from 'react-native-gesture-handler'
+import BackHeader from '../../components/BackHeader'
 import BottomTab from '../../components/bottomtab.component'
 
 export default class Attendance extends Component {
@@ -49,7 +50,7 @@ export default class Attendance extends Component {
                             this.getAttendanceSummary(url, token, year, month, id)
                         })
                 })
-          
+
         })
     }
 
@@ -64,7 +65,7 @@ export default class Attendance extends Component {
             let year = date.getFullYear();
             let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)
             this.getAttendanceSummary(this.state.url, this.state.token, year, month, this.state.id)
-               
+
         }
 
         if (this.state.data !== null && this.state.dataTitle === null) {
@@ -95,64 +96,64 @@ export default class Attendance extends Component {
             let month = (date.month) < 10 ? '0' + (date.month) : (date.month)
 
             this.getAttendanceSummary(this.state.url, this.state.token, year, month, this.state.id)
-               
+
         }
     }
 
-    getAttendanceSummary(url, token, year, month, id){
+    getAttendanceSummary(url, token, year, month, id) {
         APIs.AttendanceSummary(url, token, year, month, id)
-        .then((res) => {
-            console.log("Res Attendance Data", res)
-            if (res.status === 'success') {
-                if (res.error) {
-                    this.tokenExpiration()
+            .then((res) => {
+                console.log("Res Attendance Data", res)
+                if (res.status === 'success') {
+                    if (res.error) {
+                        this.tokenExpiration()
+                    } else {
+                        this.setState({
+                            data: res.data
+                        })
+                    }
+
                 } else {
+                    this.apiFail()
                     this.setState({
-                        data: res.data
+                        data: []
                     })
                 }
 
-            } else {
-               this.apiFail()
-               this.setState({
-                   data: []
-               })
-            }
-
-        })
+            })
     }
 
     //when the token is expired
     tokenExpiration() {
-		this.props.navigation.navigate('Login')
-		Toast.show({
-			text: 'Please login again. Your token is expired!',
-			textStyle: {
-				textAlign: 'center'
-			},
-			style: {
-				backgroundColor: color.primary
-			},
-			duration: 6000
-		})
+        this.props.navigation.navigate('Login')
+        Toast.show({
+            text: 'Please login again. Your token is expired!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
     }
 
     // api data not success situation and show failed toast message
-	apiFail() {
-		Toast.show({
-			text: 'Authentication Failed!',
-			textStyle: {
-				textAlign: 'center'
-			},
-			style: {
-				backgroundColor: color.primary
-			},
-			duration: 6000
-		})
-	}
-    
+    apiFail() {
+        Toast.show({
+            text: 'Authentication Failed!',
+            textStyle: {
+                textAlign: 'center'
+            },
+            style: {
+                backgroundColor: color.primary
+            },
+            duration: 6000
+        })
+    }
+
     render() {
-        
+
         if (this.state.data === null || this.state.dataTitle === null) {
             return (
                 <Loading />
@@ -226,18 +227,7 @@ export default class Attendance extends Component {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={{ flex: 1, backgroundColor: color.lighter, }}>
-                    <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
-                        <Icon name='ios-arrow-round-back' style={{
-                            fontSize: offset.o4,
-                            color: color.primary,
-                            marginRight: offset.o2,
-                            marginLeft: 15,
-                        }} onPress={() => { this.props.navigation.navigate('Main') }} />
-                        <Text style={{
-                            color: color.secondary,
-                            fontFamily: 'Nunito'
-                        }}>Attendance</Text>
-                    </View>
+                    <BackHeader name="Attendance" navigation={this.props.navigation} parent="Main" />
                     <View style={{ flex: 1 }}>
                         <ScrollView>
                             <View style={{ flex: 1, }}>

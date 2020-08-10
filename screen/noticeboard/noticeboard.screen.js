@@ -24,7 +24,7 @@ export default class NoticeBoard extends Component {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container>
-                <BackHeader main = "Notice Board" navigation = {this.props.navigation} parent = "Main" />
+                <BackHeader name = "Notice Board" navigation = {this.props.navigation} parent = "Main" />
                     <Content style={styles.container}>
                         <NotiList navigation={this.props.navigation} />
                     </Content>

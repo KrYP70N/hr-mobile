@@ -19,8 +19,8 @@ export default StyleSheet.create({
         marginRight: offset.o2
     },
     image: {
-        width: 25,
-        height: 25,
+        width: 28,
+        height: 28,
         marginRight: offset.o2
     },
     image2: {

@@ -113,12 +113,12 @@ export class UpcomingBirthday extends Component {
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ backgroundColor: color.lighter }}>
                     <BackHeader name="Upcoming Birthdays" navigation={this.props.navigation} parent="Dashboard" />
-                    <Content style={{ flex: 1 }}>
+                    <Content style={{ flex: 1, marginBottom: 15 }}>
                         {
                             this.state.birthdayLists.map((birthday, index) => {
                                 return (
-                                    <View key={index} style={{ marginLeft: 15, marginRight: 15, marginTop: 15, borderRadius: 8, backgroundColor: color.light, padding: 10, alignItems: 'center', flexDirection: 'row', borderWidth: 0.3, borderColor: color.placeHolder }}>
-                                        <Image style={{ width: 60, height: 60, borderRadius: 60 / 2 }} source={require('../../assets/icon/user.png')}></Image>
+                                    <View key={index} style={{ marginLeft: 15, marginRight: 15, marginTop: 15, borderRadius: 8, backgroundColor: color.light, padding: 10, alignItems: 'center', flexDirection: 'row', borderWidth: 0.3, borderColor: color.cardBorder }}>
+                                        <Image style={{ width: 40, height: 40, borderRadius: 40 / 2 }} source={require('../../assets/icon/user.png')}></Image>
                                         <View style={{ marginLeft: 10 }}>
                                             <Text style={{ fontSize: 14, fontFamily: 'Nunito-Bold' }}>{birthday["name"]}</Text>
                                             <Text style={{ marginTop: 5, fontSize: 13, fontFamily: 'Nunito', color: '#656565' }}>Date - {birthday["birthday"]}</Text>

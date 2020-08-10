@@ -113,11 +113,11 @@ export default StyleSheet.create({
     },
     dividerContainer: { width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 15 },
     divider: { width: '95%', height: 1, backgroundColor: color.placeHolder },
-    calendarLabelContainer: { flexDirection: 'row', alignItems: 'center', padding: 20 },
-    labelCirclePrimary: { width: 10, height: 10, backgroundColor: color.attendance, borderRadius: 10 / 2 },
-    labelCircleRed: { width: 10, height: 10, backgroundColor: color.danger, borderRadius: 10 / 2, marginLeft: 15 },
-    labelCircleGray: { width: 10, height: 10, backgroundColor: color.holiday, borderRadius: 10 / 2, marginLeft: 15 },
-    labelText: { marginLeft: 5 },
+    calendarLabelContainer: {flex: 1, flexDirection: 'row', alignItems: 'center', padding: 20 },
+    labelCirclePrimary: {fontFamily: 'Nunito', width: 10, height: 10, backgroundColor: color.attendance, borderRadius: 10 / 2 },
+    labelCircleRed: {fontFamily: 'Nunito', width: 10, height: 10, backgroundColor: color.danger, borderRadius: 10 / 2, marginLeft: 15 },
+    labelCircleGray: {fontFamily: 'Nunito', width: 10, height: 10, backgroundColor: color.holiday, borderRadius: 10 / 2, marginLeft: 15 },
+    labelText: {fontFamily: 'Nunito', marginLeft: 5 },
      submitButton: {
         height: 50,
         justifyContent: 'center',
@@ -129,6 +129,7 @@ export default StyleSheet.create({
         bottom: 0
     },
     buttonText: {
+        fontFamily: 'Nunito',
         color: '#fff',
     }
 })

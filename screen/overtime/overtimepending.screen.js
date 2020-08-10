@@ -115,11 +115,19 @@ export class OvertimePending extends Component {
     }
 
     render() {
-        let requests = this.state.overtimes.map((req) => {
+        let requests = this.state.overtimes.map((req, key) => {
             return (
-                <Card key={req['Obj Id']} >
-                    <CardItem>
-                        <Body>
+                <View key = {key} style={{
+                    backgroundColor: 'white',
+                    borderRadius: 5,
+                    borderWidth: 0.3,
+                    borderColor: color.cardBorder,
+                    padding: 20,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginRight: 10,
+                    marginBottom: 5
+                }}>
                             <View style={styOt.cardTitleContainer}>
                                 <Text style={styOt.cardTitle}>{po.approve.staff.cardTitle}</Text>
                             </View>
@@ -131,11 +139,9 @@ export class OvertimePending extends Component {
                                 style={styOt.ButtonSecondary}
                                 onPress={() => { this.cancelOT(req['Obj Id']) }}
                             >
-                                <Text>{po.approve.staff.button}</Text>
+                                <Text style = {{fontFamily: 'Nunito', fontSize: 14}}>{po.approve.staff.button}</Text>
                             </Button>
-                        </Body>
-                    </CardItem>
-                </Card>
+                      </View>
             )
         })
         return (
@@ -143,7 +149,7 @@ export class OvertimePending extends Component {
                 <Container>
                     <BackHeader name="Overtime Approval" navigation={this.props.navigation} parent="Overtime" />
                     <Content style={{ flex: 1, backgroundColor: color.lighter }}>
-                        <View style={{ padding: 16 }}>
+                        <View style={{ padding: 5}}>
                             {requests}
                         </View>
 
@@ -156,7 +162,8 @@ export class OvertimePending extends Component {
                                 fontSize: 40
                             }} />
                             <Text style={{
-                                color: color.placeHolder
+                                color: color.placeHolder,
+                                fontFamily: 'Nunito'
                             }}>There is no pending OT request!</Text>
                         </View>
                         <Modal isVisible={this.state.isModalVisible} >
@@ -195,6 +202,7 @@ const styles = StyleSheet.create({
         bottom: Platform.OS === 'ios' ? 15 : -20,
     },
     lanTitle: {
+        fontFamily: 'Nunito',
         fontSize: 20,
         fontWeight: 'bold',
         marginTop: 15,
@@ -215,7 +223,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    modalTextStyle: { color: '#fff', textAlign: 'center', },
+    modalTextStyle: {fontFamily: 'Nunito', color: '#fff', textAlign: 'center', },
     iconView: {
         width: '100%',
         alignItems: 'center',

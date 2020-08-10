@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     fitText: {
+        fontFamily: 'Nunito',
         textAlign: 'center',
         padding: 10
     },

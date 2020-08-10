@@ -144,12 +144,14 @@ export class EmployeeLeaveHistory extends Component {
                             marginRight: offset.o2
                         }} onPress={() => { this.props.navigation.navigate('Leave') }} />
                         <Text style={{
+                            fontSize: 16,
                             color: color.secondary,
                             fontFamily: 'Nunito'
                         }}>History</Text>
                     </Left>
                     <Right>
                         <Icon
+                            style = {{color: color.tertiary}}
                             name="ios-options"
                             onPress={() => {
                                 this.setState({
@@ -180,7 +182,8 @@ export class EmployeeLeaveHistory extends Component {
                                 fontSize: 40
                             }} />
                             <Text style={{
-                                color: color.placeHolder
+                                color: color.placeHolder,
+                                fontFamily: 'Nunito'
                             }}>There is no leave history for {this.state.status.charAt(0).toUpperCase() + this.state.status.substr(1).toLowerCase()}!</Text>
                         </View>
                 </Content>

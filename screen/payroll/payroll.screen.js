@@ -7,7 +7,7 @@ import PayrollList from './_list.payroll.screen.'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
 import BackHeader from '../../components/BackHeader'
-import { AsyncStorage, View, SafeAreaView } from 'react-native'
+import { AsyncStorage, View, SafeAreaView, TouchableOpacity } from 'react-native'
 
 
 export default class Payroll extends Component {
@@ -129,9 +129,9 @@ export default class Payroll extends Component {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={styPayroll.container}>
-                <BackHeader name = "Payroll" navigation = {this.props.navigation} parent = "Main" />
+                    <BackHeader name="Payroll" navigation={this.props.navigation} parent="Main" />
                     <Content>
-                        <View style = {{width: '100%', height: 10, backgroundColor: color.lighter}}></View>
+                        <View style={{ width: '100%', height: 10, backgroundColor: color.lighter }}></View>
                         <Form style={styPayroll.form}>
                             <Row style={styPayroll.fieldSet}>
                                 <Col style={styPayroll.right}>
@@ -155,9 +155,19 @@ export default class Payroll extends Component {
                                     </Item>
                                 </Col>
                             </Row>
-                            <Button style={styPayroll.buttonLg} onPress={this.searchPayroll}>
-                                <Text>Search</Text>
-                            </Button>
+
+                            <TouchableOpacity
+                                //style={{ marginTop: 40 }}
+                                onPress={() => {
+                                    this.submit(this.state.auth, this.state.id, this.state.url);
+                                }}>
+                                <View style={styPayroll.payrollBtnContainer}>
+                                    <Text style={styPayroll.submitText}>Search</Text>
+                                </View>
+                            </TouchableOpacity>
+                            {/* <Button style={styPayroll.buttonLg} onPress={this.searchPayroll}>
+                                <Text style = {{fontFamily: 'Nunito', }}>Search</Text>
+                            </Button> */}
                         </Form>
                         <PayrollList
                             data={this.state.payroll}

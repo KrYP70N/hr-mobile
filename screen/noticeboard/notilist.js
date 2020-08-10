@@ -118,24 +118,35 @@ export default function notilist({ navigation }) {
             {
                 Collection.map((data, index) => (
                     <TouchableOpacity key={index} onPress={() => { navigation.navigate('NotiboardDetail', { Subject: data.Title, Date: data['Date Start'], Body: data['Body'] }) }}>
-                        <View key={index} style={{ marginTop: 20, borderWidth: 0.5, borderRadius: 5, borderColor: color.placeHolder, backgroundColor: color.light, padding: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <View style={{ width: '15%', alignItems: 'center', justifyContent: 'center', }}>
-                                <View style={{ width: 40, height: 40, borderRadius: 40 / 2, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }}>
-                                    <Image style={{ width: 22, height: 22 }} source={require('../../assets/icon/announcement.png')} />
+                        <View key={index} style={{ marginTop: 20, borderWidth: 0.3, borderRadius: 5, borderColor: color.cardBorder, backgroundColor: color.light, padding: 10, flexDirection: 'row', }}>
+                            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                <View style={{ width: 40, height: 40, borderRadius: 40 / 2, justifyContent: 'center', alignItems: 'center', backgroundColor: color.lighter }}>
+                                    <Image style={{ width: 22, height: 22, tintColor: color.primary }} source={require('../../assets/icon/noticebo.png')} />
                                 </View>
                             </View>
-                            <View style={{ flex: 1, justifyContent: 'space-between', width: '80%', flexDirection: 'row', padding: 10 }}>
-                                <View style={{ marginLeft: 15, flex: 1 }}>
-                                    <Text style={{ fontSize: 18, fontFamily: 'Nunito-Bold' }}>{`${data.Title}`}</Text>
-                                    <Text style={{ marginTop: 5, fontSize: 16, fontFamily: 'Nunito', color: "#656565" }}>{`Date - ${data["Date Start"]}`}</Text>
+                            <View style={{ flex: 1, marginLeft: 10 }}>
+                                <Text style={{ fontSize: 16, fontFamily: 'Nunito-Bold' }}>{`${data.Title}`}</Text>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
+                                    <Text style={{ marginTop: 5, fontSize: 14, fontFamily: 'Nunito', color: "#656565" }}>{`Date - ${data["Date Start"]}`}</Text>
+                                    {
+                                        data['Url Link'] == null ? <View></View> :
+                                            <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => Linking.openURL(data['Url Link'])}>
+                                                <Image style={{ width: 22, height: 22 }} source={require('../../assets/icon/attachment.png')} />
+                                            </TouchableOpacity>
+                                    }
+                                </View>
+
+                                {/* <View style={{  flex: 1 }}>
+                                    <Text style={{ fontSize: 16, fontFamily: 'Nunito-Bold' }}>{`${data.Title}`}</Text>
+                                    <Text style={{ marginTop: 5, fontSize: 14, fontFamily: 'Nunito', color: "#656565" }}>{`Date - ${data["Date Start"]}`}</Text>
                                 </View>
 
                                 {
                                     data['Url Link'] == null ? <View></View> :
                                         <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => Linking.openURL(data['Url Link'])}>
-                                            <Image style={{ width: 22, height: 22 }} source={require('../../assets/icon/attachment.png')} />
+                                            <Image style={{ width: 30, height: 30 }} source={require('../../assets/icon/attachment.png')} />
                                         </TouchableOpacity>
-                                }
+                                } */}
 
                             </View>
                         </View>
@@ -153,6 +164,7 @@ export default function notilist({ navigation }) {
                     fontSize: 40
                 }} />
                 <Text style={{
+                    fontFamily: 'Nunito',
                     color: color.placeHolder
                 }}>There is no announcement!</Text>
             </View>

@@ -21,7 +21,7 @@ export default StyleSheet.create({
         marginBottom: offset.o2,
         borderRadius: offset.o1,
         borderWidth: 0.5,
-        borderColor: color.placeHolder,
+        borderColor: color.cardBorder,
 
     },
     notiIcn: {
@@ -37,7 +37,7 @@ export default StyleSheet.create({
     },
     notinfo: {
         ...typography.textSmall,
-        color: color.primary
+        //color: color.primary
     },
     pieRow: {
         display: 'flex',

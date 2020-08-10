@@ -447,17 +447,17 @@ export class LeaveRequest extends Component {
     };
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <KeyboardAvoidingView
+      <SafeAreaView style={{ flex: 1, backgroundColor: color.light }}>
+        {/* <KeyboardAvoidingView
           behavior="padding"
           style={{ flex: 1, backgroundColor: color.light }}
-        >
+        > */}
+        <BackHeader name="Apply Leave" navigation={this.props.navigation} parent="Leave" />
           <ScrollView>
-            <View style={{ flex: 1, backgroundColor: color.light }}>
-              <BackHeader name="Apply Leave" navigation={this.props.navigation} parent="Leave" />
-              <View style={styLeave.bgGrayContent}></View>
-
-              <View style={styLeave.leaveTypeContainer}>
+          <View style={styLeave.bgGrayContent}></View>
+            <View style={{ flex: 1, backgroundColor: color.light, padding: 20 }}>
+              {/* <View style={styLeave.leaveTypeContainer}> */}
+              <View style = {{ justifyContent: 'center',height: 40, borderRadius: 5, borderWidth: 0.5, borderColor: color.placeHolder}}>
                 <Picker
                   textStyle={{
                     fontFamily: "Nunito",
@@ -480,8 +480,8 @@ export class LeaveRequest extends Component {
                 </Picker>
               </View>
 
-              <View style={styLeave.container}>
-                <View style={styLeave.divider} />
+              {/* <View style={styLeave.container}> */}
+                {/* <View style={styLeave.divider} /> */}
 
                 <View style={styLeave.fromDateContainer}>
                   <View>
@@ -634,7 +634,8 @@ export class LeaveRequest extends Component {
                   <Text style={styLeave.leaveReasonText}>Reason For Leave</Text>
                   <Textarea
                     placeholderTextColor={color.placeHolder}
-                    rowSpan={3}
+                    rowSpan={4}
+                    borderRadius={5}
                     bordered
                     style={{ backgroundColor: color.lighter }}
                     onChangeText={(data) => {
@@ -656,7 +657,7 @@ export class LeaveRequest extends Component {
                     <Text style={styLeave.buttonText}>Submit</Text>
                   </View>
                 </TouchableOpacity>
-              </View>
+              {/* </View> */}
 
               <Modal isVisible={this.state.isModalVisible}>
                 <View style={styLeave.ModelViewContainer}>
@@ -690,7 +691,7 @@ export class LeaveRequest extends Component {
               </Modal>
             </View>
           </ScrollView>
-        </KeyboardAvoidingView>
+        {/* </KeyboardAvoidingView> */}
       </SafeAreaView>
     );
   }

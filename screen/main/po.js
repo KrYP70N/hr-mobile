@@ -18,56 +18,52 @@ export default {
     menu: [
         //0
         {
-            icon: 'ios-speedometer',
+            icon: require('../../assets/icon/dashboard.png'),
             name: 'Dashboard',
             navigate: 'Dashboard'
         },
         //1
         {
-            icon: 'ios-calendar',
+            icon: require('../../assets/icon/attendance.png'),
             name: 'Attendance',
             navigate: 'Attendance'
         },
         //2
         {
-            icon: 'ios-walk',
+            icon: require('../../assets/icon/leave.png'),
             name: 'Leave',
             navigate: 'Leave'
         },
         //3
         {
-            icon: 'ios-stopwatch',
+            icon: require('../../assets/icon/ot.png'),
             name: 'Overtime',
             navigate: 'Overtime'
         },
         //4
         {
-            icon: 'ios-calendar',
-            name: 'Approve Leave ',
+            icon: require('../../assets/icon/approve-leave.png'),
+            name: 'Approve Leave',
             navigate: 'AdminLeaveApprove'
         },
        //5
         {
-            icon: 'ios-walk',
+            icon: require('../../assets/icon/approve-ot.png'),
             name: 'Approve OT',
             navigate: 'AdminOvertimeApprove'
         },
         //6
         {
-            icon: 'md-bookmarks',
+            icon: require('../../assets/icon/payroll.png'),
             name: 'Payroll',
             navigate :'Payroll'
         },
         //7
         {
-            icon: 'ios-walk',
+            icon: require('../../assets/icon/noticebo.png'),
             name: 'Announcement',
             navigate: 'NoticeBoard'
         },
-         //8
-        {
-            icon: 'md-cash',
-            name: 'Loan'
-        },
+        
     ]
 }

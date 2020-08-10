@@ -52,7 +52,7 @@ export class OvertimeApprove extends Component {
         APIs.getOTApprovedList(url, auth, id, year, month)
             .then((res) => {
                 if (res.status === 'success') {
-                    if(res.error){
+                    if (res.error) {
                         Toast.show({
                             text: 'Please login again. Your token is expired!',
                             textStyle: {
@@ -64,11 +64,11 @@ export class OvertimeApprove extends Component {
                             duration: 6000
                         })
                         this.props.navigation.navigate('Login')
-                    }else{
+                    } else {
                         this.setState({
                             OTApproveList: res.data
                         })
-                    }  
+                    }
                 } else {
                     this.setState({
                         OTApproveList: []
@@ -95,13 +95,13 @@ export class OvertimeApprove extends Component {
         let statusData = this.state.OTApproveList.map((approved, index) => {
             return (
                 <StatusCard
-                key={index}
-                hour={`${approved['hour']}:${approved['minute']}`}
-                date_from={approved['date_from']}
-                date_to={approved['date_to']}
-                description = {approved['name']}
-                status={approved.state}
-            />
+                    key={index}
+                    hour={`${approved['hour']}:${approved['minute']}`}
+                    date_from={approved['date_from']}
+                    date_to={approved['date_to']}
+                    description={approved['name']}
+                    status={approved.state}
+                />
             )
         })
 
@@ -121,12 +121,14 @@ export class OvertimeApprove extends Component {
                             marginRight: offset.o2
                         }} onPress={() => { this.props.navigation.navigate('Overtime') }} />
                         <Text style={{
+                            fontSize: 16,
                             color: color.secondary,
                             fontFamily: 'Nunito'
                         }}>Approved</Text>
                     </Left>
                     <Right>
                         <Icon
+                            style={{ color: color.tertiary }}
                             name="ios-options"
                             onPress={() => {
                                 this.setState({
@@ -149,17 +151,17 @@ export class OvertimeApprove extends Component {
 
                     <View style={{
                         marginTop: 20,
-                            display: this.state.OTApproveList.length === 0 ? 'flex' : 'none',
-                            alignItems: 'center'
-                        }}>
-                            <Icon name='ios-information-circle-outline' style={{
-                                color: color.placeHolder,
-                                fontSize: 40
-                            }} />
-                            <Text style={{
-                                color: color.placeHolder
-                            }}>There is no overtime approved data!</Text>
-                        </View>
+                        display: this.state.OTApproveList.length === 0 ? 'flex' : 'none',
+                        alignItems: 'center'
+                    }}>
+                        <Icon name='ios-information-circle-outline' style={{
+                            color: color.placeHolder,
+                            fontSize: 40
+                        }} />
+                        <Text style={{
+                            color: color.placeHolder
+                        }}>There is no overtime approved data!</Text>
+                    </View>
                 </Content>
             </Container>
         )
