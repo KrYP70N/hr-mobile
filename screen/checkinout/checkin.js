@@ -39,7 +39,6 @@ class checkin extends Component {
 
 	componentDidMount() {
 		this.props.navigation.addListener('focus', () => {
-			
 			AsyncStorage.getItem('@hr:endPoint')
 				.then((res) => {
 					const url = JSON.parse(res).ApiEndPoint

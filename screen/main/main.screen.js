@@ -10,6 +10,7 @@ import APIs from '../../controllers/api.controller'
 import BottomTab from '../../components/bottomtab.component'
 import Heading from '../../components/header.component'
 import CheckInOut from '../../components/checkinout.component'
+import Time from '../../controllers/time.controller'
 import Clock from '../../components/time.component'
 import DB from '../../model/db.model'
 
@@ -32,7 +33,8 @@ export default class Main extends Component {
       },
       loading: true,
       modal: false,
-      lowestLevel: true
+      lowestLevel: true,
+      time: null
     }
   }
 
@@ -57,11 +59,28 @@ export default class Main extends Component {
               })
               this.getProfile(url, auth, id)
               this.isLowest(url, auth, id)
+             // this.getServerTime(url, auth, id)
             })
         })
     })
   }
-
+  // getServerTime(url, auth, id) {
+  //   APIs.Time(url, auth, id)
+  //     .then((response) => {
+  //       if (response.status === 'success') {
+  //         let t = new Date(Moment(response.data["Current Server Time"]))
+  //         setTimeout(() => {
+  //           this.setState({
+  //             time: t.setSeconds(t.getSeconds() + 1)
+  //           })
+  //         }, 1000)
+  //       } else {
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       //this.props.navigation.navigate('Login')
+  //     })
+  // }
   getProfile(url, auth, id) {
     APIs.Profile(url, auth, id)
       .then((res) => {
@@ -70,15 +89,15 @@ export default class Main extends Component {
             Toast.show({
               text: 'Please login again. Your token is expired!',
               textStyle: {
-                  textAlign: 'center'
+                textAlign: 'center'
               },
               style: {
-                  backgroundColor: color.primary
+                backgroundColor: color.primary
               },
               duration: 6000
-          })
+            })
             this.props.navigation.navigate('Login')
-            
+
           } else {
             this.setState({
               profile: res.data,
@@ -182,45 +201,45 @@ export default class Main extends Component {
 
           {/* main menu */}
           <View style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginLeft: 15,
-                marginRight: 15,
-                marginBottom: 15,
-                flexWrap: 'wrap'
-            }}>
-          {po.menu.map((card, key) => (
-            <TouchableOpacity
-                            style={{
-                                display: (this.state.lowestLevel === true && (card.name == 'Approve Leave' || card.name == 'Approve OT')) ? 'none' : 'flex',
-                                width: '48%',
-                                padding: offset.o2,
-                                backgroundColor: color.light,
-                                marginTop: offset.o1 + offset.oh,
-                                borderRadius: offset.o1,
-                                borderColor: color.cardBorder,
-                                borderWidth: 0.5,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                height: 110,
-                            }} key={key}
-                            onPress={() => { this.props.navigation.navigate(card.navigate) }}
-                            >
-                            <View style={{
-                                width: '100%',
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }} key={key}>
-                                <Image source={card.icon} style={{
-                                    width: 35,
-                                    height: 35,
-                                    marginBottom: offset.o1 + offset.oh
-                                }} />
-                                <Text style={{ fontSize: 14, fontFamily: 'Nunito' }}>{card.name}</Text>
-                            </View>
-                        </TouchableOpacity>
-          ))}
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginLeft: 15,
+            marginRight: 15,
+            marginBottom: 15,
+            flexWrap: 'wrap'
+          }}>
+            {po.menu.map((card, key) => (
+              <TouchableOpacity
+                style={{
+                  display: (this.state.lowestLevel === true && (card.name == 'Approve Leave' || card.name == 'Approve OT')) ? 'none' : 'flex',
+                  width: '48%',
+                  padding: offset.o2,
+                  backgroundColor: color.light,
+                  marginTop: offset.o1 + offset.oh,
+                  borderRadius: offset.o1,
+                  borderColor: color.cardBorder,
+                  borderWidth: 0.5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: 110,
+                }} key={key}
+                onPress={() => { this.props.navigation.navigate(card.navigate) }}
+              >
+                <View style={{
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }} key={key}>
+                  <Image source={card.icon} style={{
+                    width: 35,
+                    height: 35,
+                    marginBottom: offset.o1 + offset.oh
+                  }} />
+                  <Text style={{ fontSize: 14, fontFamily: 'Nunito' }}>{card.name}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
 
           </View>
         </Content>
