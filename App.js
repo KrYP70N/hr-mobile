@@ -1,6 +1,6 @@
 import React from 'react';
 import { Root } from 'native-base';
-import {View, Text} from 'react-native'
+import { View, Text } from 'react-native'
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import NetInfo from '@react-native-community/netinfo';
@@ -30,10 +30,10 @@ export default class App extends React.Component {
     NetInfo.addEventListener(state => {
       console.log("Connection type", state.type);
       console.log("Is connected?", state.isConnected);
-      if(state.isConnected){
-        this.setState({connectedState: true})
-      }else{
-        this.setState({connectedState: false});
+      if (state.isConnected) {
+        this.setState({ connectedState: true })
+      } else {
+        this.setState({ connectedState: false });
       }
     });
 
@@ -54,21 +54,23 @@ export default class App extends React.Component {
 
 
   render() {
-    if(!this.state.connectedState){
-      return (
-          <FailNetwork />
-      )
-    }
-      if (!this.state.isReady) {
-        return (
-          <Loading />
-        )
-      }
-  
+    if (!this.state.connectedState) {
       return (
         <Root>
-          <Navigation />
+          <FailNetwork />
         </Root>
-      );
+      )
+    }
+    if (!this.state.isReady) {
+      return (
+        <Loading />
+      )
+    }
+
+    return (
+      <Root>
+        <Navigation />
+      </Root>
+    );
   }
 }
