@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Text, View, Dimensions, StyleSheet, TouchableOpacity, AsyncStorage, SafeAreaView, Image } from 'react-native'
-import { Icon, Toast, Container, Content } from 'native-base'
+import { Icon, Container, Content } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
+import ErrorMessage from '../../constant/messagetext'
 import APIs from '../../controllers/api.controller'
 import styles from './leave.style';
 import Modal from 'react-native-modal';
@@ -51,7 +52,7 @@ export default class LeaveApprove extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     if (res.error) {
-                       this.tokenExpiration()
+                        ErrorMessage('token', this.props.navigation)
                     } else {
                         this.setState({
                             refresh: !this.state.refresh,
@@ -60,8 +61,6 @@ export default class LeaveApprove extends Component {
                     }
 
                 } else {
-                    console.log("API Fail")
-                   this.apiFail()
                     this.setState({ leaveLists: [] })
                 }
             })
@@ -81,7 +80,7 @@ export default class LeaveApprove extends Component {
                         this.getApproveStatus(this.state.url, this.state.auth, this.state.id)
                     } else {
                         if (res.data.code == 'token') {
-                            this.tokenExpiration()
+                            ErrorMessage('token', this.props.navigation)
                         } else {
                             this.setState({
                                 refresh: !this.state.refresh,
@@ -101,32 +100,6 @@ export default class LeaveApprove extends Component {
                     this.getApproveStatus(this.state.url, this.state.auth, this.state.id)
                 }
             })
-    }
-
-    tokenExpiration(){
-        Toast.show({
-            text: 'Please login again. Your token is expired!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-        this.props.navigation.navigate('Login')
-    }
-    apiFail(){
-        Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 3000
-        })
     }
 
     render() {

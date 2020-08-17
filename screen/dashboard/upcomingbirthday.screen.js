@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, Image, SafeAreaView, AsyncStorage } from 'react-native'
 import { Container, Content, Icon, Toast } from 'native-base'
 import color from '../../constant/color'
-import offset from '../../constant/offset'
+import ErrorMessage from '../../constant/messagetext'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 import BackHeader from '../../components/BackHeader'
@@ -55,7 +55,7 @@ export class UpcomingBirthday extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     if (res.error) {
-                        this.tokenExpiration()
+                        ErrorMessage('token', this.props.navigation)
                     } else {
                         this.setState({
                             birthdayLists: res.data,
@@ -65,7 +65,6 @@ export class UpcomingBirthday extends Component {
                         })
                     }
                 } else {
-                    this.apiFail()
                     this.setState({
                         birthdayLists: [],
                         loading: false,
@@ -74,33 +73,6 @@ export class UpcomingBirthday extends Component {
                     })
                 }
             })
-    }
-
-    tokenExpiration() {
-        Toast.show({
-            text: 'Please login again. Your token is expired!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-        this.props.navigation.navigate('Login')
-    }
-
-    apiFail() {
-        Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
     }
 
     render() {

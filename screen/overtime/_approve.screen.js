@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity, AsyncStorage, SafeAreaView, I
 import { Icon, Toast, Container, Content } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
+import ErrorMessage from '../../constant/messagetext'
 import APIs from '../../controllers/api.controller'
 import styles from './overtime.style'
 import Modal from 'react-native-modal';
@@ -51,7 +52,7 @@ export default class OvertimeApprove extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     if (res.error) {
-                       this.tokenExpiration()
+                        ErrorMessage('token', this.props.navigation)
                     } else {
                         this.setState({
                             refresh: !this.state.refresh,
@@ -59,7 +60,7 @@ export default class OvertimeApprove extends Component {
                         })
                     }
                 } else {
-                    this.apiFail()
+                    //ErrorMessage('serverError', this.props.navigation)
                     this.setState({
                         overtimeList: []
                     })
@@ -100,41 +101,12 @@ export default class OvertimeApprove extends Component {
             })
     }
 
-    tokenExpiration(){
-        Toast.show({
-            text: 'Please login again. Your token is expired!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-        this.props.navigation.navigate('Login')
-    }
-
-    apiFail(){
-        Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 3000
-        })
-    }
-
     render() {
-        console.log("OT List", this.state.overtimeList)
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ flex: 1, backgroundColor: color.lighter }}>
                     <BackHeader name="Approve OT" navigation={this.props.navigation} parent="Main" />
                     <Content>
-
                         <View style={{
                             display: this.state.overtimeList.length === 0 ? 'flex' : 'none',
                             alignItems: 'center'

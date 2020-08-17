@@ -5,6 +5,7 @@ import { Left, Right, Icon, Container, Content, Header, Toast } from 'native-bas
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import styles from './leave.style'
+import ErrorMessage from '../../constant/messagetext'
 
 // components
 import MonthPicker from '../../components/monthpicker.component'
@@ -68,17 +69,7 @@ export class EmployeeLeaveHistory extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     if(res.error){
-                        Toast.show({
-                            text: 'Please login again. Your token is expired!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.props.navigation.navigate('Login')
+                       ErrorMessage('token', this.props.navigation)
                     }else{
                         this.setState({
                             leaveHistoryLists: status === 'all' ? res.data : res.data.filter(list => list.state.toLowerCase() === status)
@@ -86,16 +77,7 @@ export class EmployeeLeaveHistory extends Component {
                     }
                    
                 } else {
-                    Toast.show({
-                        text: 'Authentication Failed!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
+                    //ErrorMessage('serverError', this.props.navigation)
                     this.setState({
                         leaveHistoryLists: []
                     })
@@ -110,9 +92,7 @@ export class EmployeeLeaveHistory extends Component {
         })
         this.getLeaveHistory(this.state.auth, this.state.id, this.state.url, moment(date).format('YYYY'), moment(date).format('MM'), status)
     }
-
-
-
+    
     render() {
         let statusData =  this.state.leaveHistoryLists.map((history, index) => {
             return(
@@ -141,7 +121,8 @@ export class EmployeeLeaveHistory extends Component {
                         <Icon name='ios-arrow-round-back' style={{
                             fontSize: offset.o4,
                             color: color.primary,
-                            marginRight: offset.o2
+                            marginRight: offset.o2,
+                            marginLeft: offset.o1
                         }} onPress={() => { this.props.navigation.navigate('Leave') }} />
                         <Text style={{
                             fontSize: 16,

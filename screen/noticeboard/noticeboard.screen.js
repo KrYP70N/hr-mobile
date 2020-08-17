@@ -16,10 +16,7 @@ export default class NoticeBoard extends Component {
             endDate: ''
         }
     }
-    componentDidMount() {
-
-    }
-
+    
     render() {
         return (
             <SafeAreaView style={{ flex: 1 }}>

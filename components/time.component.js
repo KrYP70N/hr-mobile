@@ -73,9 +73,8 @@ export default class Clock extends Component {
     }
 
     render() {
-        console.log("Reach Time Component")
+        //console.log("Reach Time Component")
         let time = this.state.time
-
         if (this.state.time !== null) {
                 if (this.props.checkScreen === "checkinout") {
                     return (

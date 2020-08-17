@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
 import { Text, View, AsyncStorage } from 'react-native'
 import { Left, Right, Icon, Container, Content, Header, Toast } from 'native-base'
-
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import styles from './leave.style'
-
+import ErrorMessage from '../../constant/messagetext'
 // components
 import MonthPicker from '../../components/monthpicker.component'
 import StatusCard from '../../components/statuscard.component'
-
 import APIs from '../../controllers/api.controller'
 import moment from 'moment'
 
@@ -53,14 +51,14 @@ export class EmployeeLeaveApproved extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     if (res.error) {
-                        this.tokenExpiration()
+                        ErrorMessage('token', this.props.navigation)
                     } else {
                         this.setState({
                             leaveApproveList: res.data
                         })
                     }
                 } else {
-                    this.apiFail()
+                    //ErrorMessage('serverError', this.props.navigation)
                     this.setState({ leaveApproveList: [] })
                 }
             })
@@ -78,33 +76,6 @@ export class EmployeeLeaveApproved extends Component {
         this.setState({ month, year })
         this.getLeaveApproved(this.state.auth, this.state.id, this.state.url, year, month)
 
-    }
-
-    tokenExpiration() {
-        Toast.show({
-            text: 'Please login again. Your token is expired!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-        this.props.navigation.navigate('Login')
-    }
-
-    apiFail() {
-        Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
     }
 
     render() {
@@ -134,7 +105,8 @@ export class EmployeeLeaveApproved extends Component {
                         <Icon name='ios-arrow-round-back' style={{
                             fontSize: offset.o4,
                             color: color.primary,
-                            marginRight: offset.o2
+                            marginRight: offset.o2,
+                            marginLeft: offset.o1
                         }} onPress={() => { this.props.navigation.navigate('Leave') }} />
                         <Text style={{
                             fontSize: 16,

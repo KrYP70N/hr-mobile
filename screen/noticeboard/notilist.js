@@ -5,16 +5,12 @@ import { AsyncStorage, Image } from 'react-native'
 import styles from './noticeboard.style'
 import APIs from '../../controllers/api.controller'
 import moment from 'moment'
-import offset from '../../constant/offset'
+import ErrorMessage from '../../constant/messagetext'
 import color from '../../constant/color'
-import Loading from '../../components/loading.component'
-
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 export default function notilist({ navigation }) {
-
     const [Collection, setCollection] = useState([])
-
     const [month, setmonth] = useState(moment().format('MM'))
     const loader = (month) => {
         let token = AsyncStorage.getItem('@hr:token')
@@ -32,33 +28,14 @@ export default function notilist({ navigation }) {
                     .then((res) => {
                         if (res.status === 'success') {
                             if (res.error) {
-                                Toast.show({
-                                    text: 'Please login again. Your token is expired!',
-                                    textStyle: {
-                                        textAlign: 'center'
-                                    },
-                                    style: {
-                                        backgroundColor: color.primary
-                                    },
-                                    duration: 6000
-                                })
-                                navigation.navigate('Login')
+                               ErrorMessage('token', navigation)
                             } else {
                                 if (res.data !== null) {
                                     setCollection(res.data)
                                 }
                             }
                         } else {
-                            Toast.show({
-                                text: 'Authentication Failed!',
-                                textStyle: {
-                                    textAlign: 'center'
-                                },
-                                style: {
-                                    backgroundColor: color.primary
-                                },
-                                duration: 6000
-                            })
+                           // ErrorMessage('serverError', navigation)
                         }
 
                     })
@@ -135,19 +112,6 @@ export default function notilist({ navigation }) {
                                             </TouchableOpacity>
                                     }
                                 </View>
-
-                                {/* <View style={{  flex: 1 }}>
-                                    <Text style={{ fontSize: 16, fontFamily: 'Nunito-Bold' }}>{`${data.Title}`}</Text>
-                                    <Text style={{ marginTop: 5, fontSize: 14, fontFamily: 'Nunito', color: "#656565" }}>{`Date - ${data["Date Start"]}`}</Text>
-                                </View>
-
-                                {
-                                    data['Url Link'] == null ? <View></View> :
-                                        <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => Linking.openURL(data['Url Link'])}>
-                                            <Image style={{ width: 30, height: 30 }} source={require('../../assets/icon/attachment.png')} />
-                                        </TouchableOpacity>
-                                } */}
-
                             </View>
                         </View>
                     </TouchableOpacity>

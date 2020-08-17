@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Text, View, SafeAreaView, TouchableOpacity, AsyncStorage } from 'react-native'
 import { Container, Content, Icon, Toast} from 'native-base'
 import { PieChart } from 'react-native-svg-charts'
-import offset from '../../constant/offset'
 import color from '../../constant/color'
+import ErrorMessage from '../../constant/messagetext'
 import styLeave from './leave.style'
 import APIs from '../../controllers/api.controller'
 import BackHeader from '../../components/BackHeader'
@@ -53,7 +53,7 @@ export class EmployeeLeaveBalance extends Component {
         .then((res) => {
             if(res.status == "success"){
                 if(res.error){
-                   this.tokenExpiration()
+                   ErrorMessage('token', this.props.navigation)
                 }else{
                     let data = [];
                     for(let i=0; i<res.data.length; i++){
@@ -68,41 +68,13 @@ export class EmployeeLeaveBalance extends Component {
                         leaveBalanceData: data
                     })
                 }
-            }else{
-               this.apiFail()
+            }
+            else{
+                //ErrorMessage('serverError', this.props.navigation)
                 this.setState({leaveBalanceData: []})
             }
         })
     }
-
-    tokenExpiration(){
-        Toast.show({
-            text: 'Please login again. Your token is expired!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-        this.props.navigation.navigate('Login')
-    }
-
-    apiFail(){
-        Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-    }
-
-
 
     render() {
         let leaveData = this.state.leaveBalanceData.map((leave, index) => {

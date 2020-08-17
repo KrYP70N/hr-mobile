@@ -4,11 +4,10 @@ import { Container, Content, Text, Form, Item, Label, Input, Picker, Row, Col, B
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 import PayrollList from './_list.payroll.screen.'
-import offset from '../../constant/offset'
+import ErrorMessage from '../../constant/messagetext'
 import color from '../../constant/color'
 import BackHeader from '../../components/BackHeader'
 import { AsyncStorage, View, SafeAreaView, TouchableOpacity } from 'react-native'
-
 
 export default class Payroll extends Component {
 
@@ -47,13 +46,12 @@ export default class Payroll extends Component {
             ).then((res) => {
                 if (res.status === 'success') {
                     if (res.error) {
-                        this.props.navigation.navigate("Login")
+                        ErrorMessage('token', this.props.navigation)
                     } else {
                         this.setState({
                             payroll: res.data
                         })
                     }
-
                 } else {
                     this.setState({
                         payroll: []

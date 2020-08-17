@@ -3,6 +3,7 @@ import { Text, View, SafeAreaView, Dimensions, AsyncStorage, StyleSheet, Image, 
 import { Content, Container, Toast, Icon, Card, CardItem, Body, Button, } from 'native-base'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
+import ErrorMessage from '../../constant/messagetext'
 import APIs from '../../controllers/api.controller'
 import styLeave from './leave.style'
 import Modal from 'react-native-modal';
@@ -74,29 +75,21 @@ export class EmployeeLeavePending extends Component {
 			.then((res) => {
 				console.log("Leave Pending List", res)
 				if (res.status === 'success') {
-					this.setState({
-						leaves: res.data
-					})
+					if(res.error){
+						ErrorMessage('token', this.props.navigation)
+					}else{
+						this.setState({
+							leaves: res.data
+						})
+					}
+					
 				} else {
-					this.apiFail()
+					//ErrorMessage('serverError', this.props.navigation)
 					this.setState({
 						leaves: []
 					})
 				}
 			})
-	}
-
-	apiFail() {
-		Toast.show({
-			text: 'Authentication Failed!',
-			textStyle: {
-				textAlign: 'center'
-			},
-			style: {
-				backgroundColor: color.primary
-			},
-			duration: 3000
-		})
 	}
 
 	render() {

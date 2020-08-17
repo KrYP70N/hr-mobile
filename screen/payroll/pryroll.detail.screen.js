@@ -1,16 +1,12 @@
 import React, { Component } from 'react'
-
-import po from './po'
 import styPayroll from './payroll.style'
-import { View, Container, Content, Text, Card, CardItem, Icon, Right, Body, List, ListItem, Left, Button, Toast, Header } from 'native-base'
+import { View, Container, Content, Text, Card, Icon, Right, List, ListItem, Left, Button, Toast, Header } from 'native-base'
 import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
-
 import color from '../../constant/color'
-import { StatusBar, Platform, Linking, SafeAreaView, Image} from 'react-native'
+import { Platform, Linking, SafeAreaView, Image} from 'react-native'
 import offset from '../../constant/offset'
-
-import * as WebBrowser from 'expo-web-browser';
+import ErrorMessage from '../../constant/messagetext'
 
 export default class PayrollDetail extends Component {
 
@@ -45,15 +41,7 @@ export default class PayrollDetail extends Component {
                                 }
                             })
                         } else {
-                            Toast.show({
-                                text: 'Invalid request, Please try again in later!',
-                                textStyle: {
-                                    textAlign: 'center'
-                                },
-                                style: {
-                                    backgroundColor: color.primary
-                                }
-                            })
+                            ErrorMessage('serverError', this.props.navigation)
                         }
 
                     })  
@@ -68,23 +56,13 @@ export default class PayrollDetail extends Component {
                 if(res.status === 'success') {
                     Linking.openURL(res.data.data['Payslip PDF'][0])
                 } else {
-                    Toast.show({
-                        text: 'Connection time out. Please check your internet connection!',
-                        textStyle: {
-                          textAlign: 'center'
-                        },
-                        style: {
-                          backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
+                    
                 }
             })
         }
     }
 
     componentDidMount () {
-        
         this.props.navigation.addListener('focus', () => {
             this.setState({
                 data: null
@@ -97,23 +75,11 @@ export default class PayrollDetail extends Component {
                         receive: res.data[0]['state']
                     })
                 } else {
-                    Toast.show({
-                        text: 'Authentication Failed!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        }
-                    })
+                   ErrorMessage('serverError', this.props.navigation)
                 }
-
             })    
         })
-
     }
-
-    
 
     render() {
         if (this.state.data === null) {

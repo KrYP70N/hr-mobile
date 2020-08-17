@@ -6,10 +6,10 @@ import {
   ScrollView,
   TouchableOpacity,
   AsyncStorage,
-  KeyboardAvoidingView,
   Image,
 } from "react-native";
 import color from "../../constant/color";
+import ErrorMessage from '../../constant/messagetext'
 import {
   Picker,
   Textarea,
@@ -99,7 +99,7 @@ export class LeaveRequest extends Component {
       .then((res) => {
         if (res.status == "success") {
           if (res.error) {
-            this.tokenExpiration()
+            ErrorMessage('token', this.props.navigation)
           } else {
             if (res.data.error == false) {
               const d = new Date();
@@ -207,7 +207,7 @@ export class LeaveRequest extends Component {
     APIs.getLeaveType(auth, url).then((res) => {
       if (res.status === "success") {
         if (res.error) {
-          this.tokenExpiration()
+          ErrorMessage('token', this.props.navigation)
         } else {
           this.setState({
             leaveType: res.data,
@@ -230,7 +230,7 @@ export class LeaveRequest extends Component {
           });
         }
       } else {
-        this.apiFail()
+        //ErrorMessage('serverError', this.props.navigation)
         this.setState({
           leaveType: [],
         });
@@ -341,32 +341,7 @@ export class LeaveRequest extends Component {
     });
   }
 
-  tokenExpiration() {
-    Toast.show({
-      text: "Please login again. Your token is expired!",
-      textStyle: {
-        textAlign: "center",
-      },
-      style: {
-        backgroundColor: color.primary,
-      },
-      duration: 6000,
-    });
-    this.props.navigation.navigate("Login");
-  }
-
-  apiFail() {
-    Toast.show({
-      text: "Authentication Failed!",
-      textStyle: {
-        textAlign: "center",
-      },
-      style: {
-        backgroundColor: color.primary,
-      },
-      duration: 3000,
-    });
-  }
+  
 
   render() {
     if (

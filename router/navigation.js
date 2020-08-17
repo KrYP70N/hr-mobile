@@ -1,23 +1,9 @@
 import * as React from 'react'
-
-import { NavigationContainer, useNavigation, useFocusEffect } from '@react-navigation/native';
-
+import { NavigationContainer} from '@react-navigation/native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem
 } from '@react-navigation/drawer'
-
-// import {
-//   createBottomTabNavigator
-// } from '@react-navigation/bottom-tabs'
-
-import { Image, TouchableOpacity } from 'react-native'
-import { View, Text, Button, Icon, Form } from 'native-base';
-import { TouchableNativeFeedback } from 'react-native-gesture-handler';
-import { NavigationActions } from 'react-navigation';
-
 import Login from '../screen/login/login.screen'
 import Dashboard from '../screen/dashboard/dashboard.screen'
 import EmployeeList from '../screen/dashboard/employeelist.screen'
@@ -55,8 +41,6 @@ import NotiboardDetail from '../screen/noticeboard/detail.screen';
 import SideMenu from '../router/SideMenu';
 import CheckIn from '../screen/checkinout/checkin';
 import CheckOut from  '../screen/checkinout/chectout';
-
-import styNav from './navigation.style'
 
 function CustomdrawerContent(props) {
   return (

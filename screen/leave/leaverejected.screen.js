@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
-import { Text, View, Image, AsyncStorage } from 'react-native'
-import { Left, Right, Icon, Container, Content, Header, Toast } from 'native-base'
-
+import { Text, View, AsyncStorage } from 'react-native'
+import { Left, Right, Icon, Container, Content, Header } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import styles from './leave.style'
-
+import ErrorMessage from '../../constant/messagetext'
 // components
 import MonthPicker from '../../components/monthpicker.component'
 import StatusCard from '../../components/statuscard.component'
 import moment from 'moment'
-
 import APIs from '../../controllers/api.controller'
 
 export class EmployeeLeaveRejected extends Component {
@@ -57,25 +55,20 @@ export class EmployeeLeaveRejected extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     if (res.error) {
-                        this.tokenExpiration()
+                        ErrorMessage('token', this.props.navigation)
                     } else {
                         this.setState({
                             leaveRejectedList: res.data
                         })
                     }
                 } else {
-                    this.apiFail()
+                    //ErrorMessage('serverError', this.props.navigation)
                     this.setState({
                         leaveRejectedList: []
                     })
                 }
             })
     }
-
-    onChangeDate(clickedDate) {
-    }
-
-
 
     // filter next ctrl
     ctrlNext = ({ year, month }) => {
@@ -91,32 +84,6 @@ export class EmployeeLeaveRejected extends Component {
 
     }
 
-    tokenExpiration() {
-        Toast.show({
-            text: 'Please login again. Your token is expired!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-        this.props.navigation.navigate('Login')
-    }
-
-    apiFail() {
-        Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-    }
     render() {
         let statusData = this.state.leaveRejectedList.map((reject, index) => {
             return (
@@ -145,7 +112,8 @@ export class EmployeeLeaveRejected extends Component {
                         <Icon name='ios-arrow-round-back' style={{
                             fontSize: offset.o4,
                             color: color.primary,
-                            marginRight: offset.o2
+                            marginRight: offset.o2,
+                            marginLeft: offset.o1
                         }} onPress={() => { this.props.navigation.navigate('Leave') }} />
                         <Text style={{
                             fontSize: 16,

@@ -7,6 +7,7 @@ import APIs from '../../controllers/api.controller'
 import GeneralProfile from './_general.profile'
 import PersonalProfile from './_personal.profile'
 import color from '../../constant/color'
+import ErrorMessage from '../../constant/messagetext'
 import BackHeader from '../../components/BackHeader'
 
 export default class Profile extends Component {
@@ -55,49 +56,17 @@ export default class Profile extends Component {
           .then((res) => {
             if (res.status === 'success') {
               if (res.error) {
-                Toast.show({
-                  text: 'Please login again. Your token is expired!',
-                  textStyle: {
-                    textAlign: 'center'
-                  },
-                  style: {
-                    backgroundColor: color.primary
-                  },
-                  duration: 6000
-                })
-                this.props.navigation.navigate('Login')
+                ErrorMessage('token', this.props.navigation)
               } else {
                 this.setState({
                   data: res.data
                 })
               }
             } else {
-              Toast.show({
-                text: 'Authentication Failed!',
-                textStyle: {
-                  textAlign: 'center'
-                },
-                style: {
-                  backgroundColor: color.primary
-                },
-                duration: 3000
-              })
               this.setState({
                 data: []
               })
             }
-          })
-          .catch((error) => {
-            Toast.show({
-              text: 'Authentication Failed!',
-              textStyle: {
-                textAlign: 'center'
-              },
-              style: {
-                backgroundColor: color.primary
-              },
-              duration: 3000
-            })
           })
       }
     });

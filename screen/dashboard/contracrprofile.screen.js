@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, SafeAreaView, Image, AsyncStorage } from 'react-native'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
+import ErrorMessage from '../../constant/messagetext'
 import { Container, Content, Icon, Toast } from 'native-base'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
@@ -54,7 +55,7 @@ export class ContractProfile extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     if (res.error) {
-                       this.tokenExpiration()
+                      ErrorMessage('token', this.props.navigation)
                     } else {
                         this.setState({
                             loading: false,
@@ -65,7 +66,6 @@ export class ContractProfile extends Component {
                     }
 
                 } else {
-                    this.apiFail()
                     this.setState({
                         profileData: null,
                         loadingTxt: '',
@@ -75,33 +75,6 @@ export class ContractProfile extends Component {
             })
     }
 
-    tokenExpiration() {
-        Toast.show({
-            text: 'Please login again. Your token is expired!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-        this.props.navigatin.navigate('Login')
-        
-    }
-
-    apiFail(){
-        Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 3000
-        })
-    }
     render() {
 
         if (this.state.profileData == null) {

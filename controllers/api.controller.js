@@ -84,15 +84,18 @@ export default class APIs {
 
     // user controller
     static Profile(url, auth, id) {
+        //console.log("get Profile Data", url, id, auth)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
         }).get(`${url}/user/profile/${id}`)
             .then(function (res) {
+                console.log("User Profile Data", res)
                 if (res.data.data.error) {
                     return { error: true, status: 'success' }
                 } else {
+                    console.log("User Profile Data", res.data)
                     let data = res["request"]["_response"]
 
                     let dataStr = data.slice(data.indexOf('"data":') + '"data":'.length, data.length - 1)
@@ -119,6 +122,7 @@ export default class APIs {
 
             })
             .catch(function (error) {
+                console.log('Error', error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -171,9 +175,9 @@ export default class APIs {
         }).get(`${url}/checkinout/status/${id}`)
             .then(function (res) {
                 if (res.data.data.error) {
-                    return { error: true, status: 'success' }
+                    return { error: true, status: 'success'}
                 } else {
-                    return { data: res.data.data, status: 'success' }
+                    return { data: res.data.data, status: 'success'}
                 }
             })
             .catch(function (error) {
@@ -703,11 +707,11 @@ export default class APIs {
         }).get(`${url}/list/pendingleaves/${id}`)
             .then(function (res) {
                 console.log("API Res Data", res)
-                // if (res.data.data.error) {
-                //     return { error: true, status: 'success' }
-                // } else {
+                if (res.data.data.error) {
+                    return { error: true, status: 'success' }
+                } else {
                     return { data: res.data.data, status: 'success' }
-                //}
+                }
             })
             .catch(function (error) {
                 return { error: error, status: 'fail' }

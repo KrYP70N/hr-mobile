@@ -3,6 +3,7 @@ import { Text, View, SafeAreaView, Dimensions, AsyncStorage, StyleSheet, Image, 
 import { Content, Container, Toast, Icon, Card, CardItem, Body, Button, } from 'native-base'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
+import ErrorMessage from '../../constant/messagetext'
 import APIs from '../../controllers/api.controller'
 import styOt from '../overtime/overtime.style'
 import po from './po'
@@ -72,46 +73,19 @@ export class OvertimePending extends Component {
 
                 if (res.status === 'success') {
                     if (res.error) {
-                        this.tokenExpiration()
+                        ErrorMessage('token', this.props.navigation)
                     } else {
                         this.setState({
                             overtimes: res.data
                         })
                     }
                 } else {
-                   this.apiFail()
+                    //ErrorMessage('serverError', this.props.navigation)
                     this.setState({
                         overtimes: []
                     })
                 }
             })
-    }
-
-    tokenExpiration(){
-        Toast.show({
-            text: 'Please login again. Your token is expired!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-        this.props.navigation.navigate('Login')
-    }
-
-    apiFail(){
-        Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
     }
 
     render() {

@@ -1,12 +1,11 @@
-
-
 import React, { Component } from 'react'
 import styAttend from './attendance.style'
-import { View, Card, Text, Icon, Toast, } from 'native-base'
+import { View, Card, Text,} from 'native-base'
 import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
+import ErrorMessage from '../../constant/messagetext'
 import { AsyncStorage, SafeAreaView, } from 'react-native'
 import { Calendar, } from 'react-native-calendars';
 import { ScrollView } from 'react-native-gesture-handler'
@@ -50,7 +49,6 @@ export default class Attendance extends Component {
                             this.getAttendanceSummary(url, token, year, month, id)
                         })
                 })
-
         })
     }
 
@@ -65,7 +63,6 @@ export default class Attendance extends Component {
             let year = date.getFullYear();
             let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)
             this.getAttendanceSummary(this.state.url, this.state.token, year, month, this.state.id)
-
         }
 
         if (this.state.data !== null && this.state.dataTitle === null) {
@@ -94,66 +91,31 @@ export default class Attendance extends Component {
         ) {
             let year = date.year;
             let month = (date.month) < 10 ? '0' + (date.month) : (date.month)
-
             this.getAttendanceSummary(this.state.url, this.state.token, year, month, this.state.id)
-
         }
     }
 
     getAttendanceSummary(url, token, year, month, id) {
         APIs.AttendanceSummary(url, token, year, month, id)
             .then((res) => {
-                console.log("Res Attendance Data", res)
                 if (res.status === 'success') {
                     if (res.error) {
-                        this.tokenExpiration()
+                       ErrorMessage('token', this.props.navigation)
                     } else {
                         this.setState({
                             data: res.data
                         })
                     }
-
                 } else {
-                    this.apiFail()
+                    //ErrorMessage('serverError', this.props.navigation)
                     this.setState({
                         data: []
                     })
                 }
-
             })
     }
 
-    //when the token is expired
-    tokenExpiration() {
-        this.props.navigation.navigate('Login')
-        Toast.show({
-            text: 'Please login again. Your token is expired!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-    }
-
-    // api data not success situation and show failed toast message
-    apiFail() {
-        Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-    }
-
     render() {
-
         if (this.state.data === null || this.state.dataTitle === null) {
             return (
                 <Loading />

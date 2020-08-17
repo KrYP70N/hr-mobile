@@ -14,6 +14,7 @@ import {
 import { Textarea, Toast } from "native-base";
 import color from "../../constant/color";
 import offset from "../../constant/offset";
+import ErrorMessage from '../../constant/messagetext'
 const months = [
   "Jan",
   "Feb",
@@ -238,17 +239,7 @@ export class OTRequest extends Component {
     ).then((res) => {
       if (res.status === "success") {
         if (res.error) {
-          Toast.show({
-            text: "Please login again. Your token is expired!",
-            textStyle: {
-              textAlign: "center",
-            },
-            style: {
-              backgroundColor: color.primary,
-            },
-            duration: 6000,
-          });
-          this.props.navigation.navigate("Login");
+         ErrorMessage('token', this.props.navigation)
         } else {
           if (res.data.error == false) {
             let date = new Date();
@@ -341,9 +332,6 @@ export class OTRequest extends Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: color.light}}>
-        {/* <KeyboardAvoidingView
-          behavior="padding"
-          style={{ flex: 1, backgroundColor: color.light }}> */}
           <BackHeader name="Overtime Request" navigation={this.props.navigation} parent="Overtime" />
           <ScrollView>
           
@@ -498,7 +486,6 @@ export class OTRequest extends Component {
               </Modal>
             </View>
           </ScrollView>
-        {/* </KeyboardAvoidingView> */}
       </SafeAreaView>
     );
   }

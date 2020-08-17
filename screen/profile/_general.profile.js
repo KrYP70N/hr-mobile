@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { Image } from 'react-native'
-import { Container, Text, View } from 'native-base'
-
+import { Text, View } from 'native-base'
 import styProfile from './profile.style'
-import ProfileModel from '../../model/profile.model'
 import Loading from '../../components/loading.component'
 import offset from '../../constant/offset'
 
@@ -15,6 +13,7 @@ export default class GeneralProfile extends Component {
         }
     }
 
+    
     componentDidMount () {
         let workArray = []
         for (const key in this.props.dataWork) {

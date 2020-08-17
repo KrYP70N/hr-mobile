@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, SafeAreaView, AsyncStorage, Image } from 'react-native'
 import { Container, Content, Icon, Toast } from 'native-base'
 import color from '../../constant/color'
+import ErrorMessage from '../../constant/messagetext'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 import BackHeader from '../../components/BackHeader'
@@ -53,7 +54,7 @@ export class TodayAttendanceList extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     if(res.error){
-                        this.tokenExpiration()
+                        ErrorMessage('token', this.props.navigation)
                     }else{
                         this.setState({
                             loading: false,
@@ -63,7 +64,6 @@ export class TodayAttendanceList extends Component {
                         })
                     }  
                 } else {
-                    this.apiFail()
                     this.setState({
                         empLists: [],
                         loading: false,
@@ -72,33 +72,6 @@ export class TodayAttendanceList extends Component {
                     })
                 }
             })
-    }
-
-    tokenExpiration(){
-        Toast.show({
-            text: 'Please login again. Your token is expired!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-        this.props.navigation.navigate('Login')
-    }
-
-    apiFail(){
-        Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
     }
 
     render() {

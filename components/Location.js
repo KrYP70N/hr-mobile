@@ -24,6 +24,6 @@ export default class Location {
             //alert(e)
             return { status: 'fail' }
         }
-        return undefined
+        return {status: 'fail'}
     }
 }

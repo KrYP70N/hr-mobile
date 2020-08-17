@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-
 import { Image, AsyncStorage, SafeAreaView } from 'react-native'
 import { Text, Container, Item, Input, Button, Icon, Toast } from 'native-base'
 import styLogin from './login.style'
@@ -10,7 +9,6 @@ import DB from '../../model/db.model'
 import color from '../../constant/color';
 import Auth from './_auth.login'
 import { Updates } from 'expo';
-import Loading from '../../components/loading.component';
 import moment from 'moment';
 
 class login extends Component {
@@ -25,7 +23,6 @@ class login extends Component {
             loading: false,
             auth: null
         };
-
 
         // handle user field
         this.user = (key) => {
@@ -161,7 +158,6 @@ class login extends Component {
             )
         }
         return (
-            // <KeyboardAvoidingView behavior="height" style={styLogin.kbView}>
             <SafeAreaView style={styLogin.kbView}>
                 <Container style={styLogin.container}>
                     <Image
@@ -211,7 +207,6 @@ class login extends Component {
                 </Container>
                 <Overlay overlay={this.state.overlay} />
                 </SafeAreaView>
-            // </KeyboardAvoidingView>
 
         )
 

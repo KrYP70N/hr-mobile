@@ -1,20 +1,16 @@
 import React, { Component }  from 'react'
 import { Text, View } from 'native-base'
-
 import styProfile from './profile.style'
 
 export default class PersonalProfile extends Component {
-
     render () {
-
         let array = []
-        
         for (const key in this.props.data) {
             if (this.props.data.hasOwnProperty(key)) {
                 array.push(key)
             }
         }
-
+        
         let dataList = array.map(list => {
             if(list === this.props.data[0]) {
                 return (

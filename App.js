@@ -1,13 +1,12 @@
 import React from 'react';
-import { AppLoading } from 'expo';
-import { Container, Spinner, View, Root, Alert } from 'native-base';
+import { Root } from 'native-base';
+import {View, Text} from 'react-native'
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
-
+import NetInfo from '@react-native-community/netinfo';
 import Navigation from './router/navigation'
-
 import Loading from './components/loading.component'
-import { BackHandler } from 'react-native';
+import FailNetwork from './constant/FailNetwork';
 
 export default class App extends React.Component {
 
@@ -15,6 +14,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       isReady: false,
+      isConnected: null,
     };
   }
 
@@ -26,18 +26,29 @@ export default class App extends React.Component {
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
       ...Ionicons.font,
     })
-    
+
+    NetInfo.fetch().then(state => {
+      console.log('Connection type', state.type);
+      console.log('Is connected?', state.isConnected);
+      this.setState({
+        isConnected: state.isConnected
+      })
+    });
+
     setTimeout(() => {
       this.setState({ isReady: true });
     }, 4000)
   }
 
+
   render() {
 
-    BackHandler.addEventListener('hardwareBackPress', function() {
+    if (!this.state.isConnected) {
+      return (
+          <FailNetwork />
+      )
+    }
     
-    })
-
     if (!this.state.isReady) {
       return (
         <Loading />

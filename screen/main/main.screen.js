@@ -4,13 +4,13 @@ import { Image, AsyncStorage, TouchableOpacity, BackHandler, SafeAreaView } from
 import po from './po'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
+import ErrorMessage from '../../constant/messagetext'
 import styMain from './main.style'
 import Loading from '../../components/loading.component'
 import APIs from '../../controllers/api.controller'
 import BottomTab from '../../components/bottomtab.component'
 import Heading from '../../components/header.component'
 import CheckInOut from '../../components/checkinout.component'
-import Time from '../../controllers/time.controller'
 import Clock from '../../components/time.component'
 import DB from '../../model/db.model'
 
@@ -64,40 +64,13 @@ export default class Main extends Component {
         })
     })
   }
-  // getServerTime(url, auth, id) {
-  //   APIs.Time(url, auth, id)
-  //     .then((response) => {
-  //       if (response.status === 'success') {
-  //         let t = new Date(Moment(response.data["Current Server Time"]))
-  //         setTimeout(() => {
-  //           this.setState({
-  //             time: t.setSeconds(t.getSeconds() + 1)
-  //           })
-  //         }, 1000)
-  //       } else {
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       //this.props.navigation.navigate('Login')
-  //     })
-  // }
+  
   getProfile(url, auth, id) {
     APIs.Profile(url, auth, id)
       .then((res) => {
         if (res.status === 'success') {
           if (res.error) {
-            Toast.show({
-              text: 'Please login again. Your token is expired!',
-              textStyle: {
-                textAlign: 'center'
-              },
-              style: {
-                backgroundColor: color.primary
-              },
-              duration: 6000
-            })
-            this.props.navigation.navigate('Login')
-
+            ErrorMessage('token', this.props.navigation)
           } else {
             this.setState({
               profile: res.data,
@@ -105,16 +78,7 @@ export default class Main extends Component {
             })
           }
         } else {
-          Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-              textAlign: 'center'
-            },
-            style: {
-              backgroundColor: color.primary
-            },
-            duration: 6000
-          })
+          //ErrorMessage('serverError', this.props.navigation)
         }
       })
   }
@@ -124,23 +88,14 @@ export default class Main extends Component {
       .then((res) => {
         if (res.status == 'success') {
           if (res.error) {
-            this.props.navigation.navigate('Login')
+            ErrorMessage('token', this.props.navigation)
           } else {
             this.setState({
               lowestLevel: res.data.lowest_level
             })
           }
         } else {
-          Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-              textAlign: 'center'
-            },
-            style: {
-              backgroundColor: color.primary
-            },
-            duration: 6000
-          })
+          //ErrorMessage('serverError', this.props.navigation)
         }
       })
   }

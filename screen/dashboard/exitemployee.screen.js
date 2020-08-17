@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, SafeAreaView, AsyncStorage, Image } from 'react-native'
 import { Container, Content, Icon, Toast } from 'native-base'
 import color from '../../constant/color'
-import ErrorMessageText from '../../constant/messagetext'
+import ErrorMessage from '../../constant/messagetext'
 import APIs from '../../controllers/api.controller'
 import Loading from '../../components/loading.component'
 import BackHeader from '../../components/BackHeader'
@@ -55,7 +55,7 @@ export class ExitEmployee extends Component {
             .then((res) => {
                 if (res.status == "success") {
                     if(res.error){
-                       this.tokenExpiration()
+                       ErrorMessage('token', this.props.navigation)
                     }else{
                         this.setState({
                             empLists: res.data,
@@ -65,7 +65,6 @@ export class ExitEmployee extends Component {
                         })
                     }
                 } else {
-                   this.apiFail()
                     this.setState({ 
                         empLists: [],
                         loading: false,
@@ -74,33 +73,6 @@ export class ExitEmployee extends Component {
                      })
                 }
             })
-    }
-
-    tokenExpiration(){
-        Toast.show({
-            text: ErrorMessageText.tokenErrorMessage,
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-        this.props.navigation.navigate('Login')
-    }
-
-    apiFail(){
-        Toast.show({
-            text: ErrorMessageText.apiErrorMessage,
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
     }
 
     render() {
