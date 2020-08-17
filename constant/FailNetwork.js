@@ -10,8 +10,9 @@ class FailNetwork extends Component {
 
   render() {
     return (
-      <View style = {{flex: 1}}>
-       <Image style = {{width: '100%', height: '100%'}} source={require('../assets/icon/no_internet.png')} />
+      <View style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+       <Image source={require('../assets/icon/off.png')} />
+       <Text style = {{ padding: 20, fontSize: 22, textAlign: 'center'}}>Mobile Network is not available!. Please open your network!.</Text>
       </View>
     );
   }
