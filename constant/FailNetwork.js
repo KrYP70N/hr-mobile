@@ -12,7 +12,7 @@ class FailNetwork extends Component {
     return (
       <View style = {{flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20}}>
        <Image style = {{width: 100, height: 100}} source = {require('../assets/icon/off.png')} />
-       <Text style = {{marginTop: 30, fontSize: 20, fontFamily: 'Nunito', textAlign: 'center'}}>Mobile network is not available!. Please open your network!.</Text>
+       <Text style = {{marginTop: 30, fontSize: 20, textAlign: 'center'}}>Mobile network is not available!. Please open your network!.</Text>
       </View>
     );
   }

@@ -134,10 +134,12 @@ class CheckInScreen extends Component {
         console.log("Click Check In", this.state.id, this.state.auth, this.state.url, this.state.currentLocation)
         APIs.CheckStatus(this.state.id, this.state.auth, this.state.url)
             .then((res) => {
+                console.log("Check Res", res)
                 if (res.status === 'success') {
                     if (res.error) {
                         ErrorMessage('token', this.props.navigation)
                     } else {
+                        console.log("Check Status", res.data.Checkin)
                         if (res.data.Checkin) {
                             this.setState({
                                 checkMessage: "You're already checked in!",
@@ -224,7 +226,7 @@ class CheckInScreen extends Component {
                 }}>
                     {
                         this.state.locationError == true ?
-                            <Image source={require('../../assets/images/no_location.jpg')} />
+                            <Image style = {{width: '100%', height: '70%'}} source={require('../../assets/images/no_location.jpg')} />
                             : <MapView
                                 region={this.state.mapCoord}
                                 style={styles.mapStyle}

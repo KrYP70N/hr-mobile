@@ -14,7 +14,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       isReady: false,
-      isConnected: null,
+      connectedState: null,
     };
   }
 
@@ -27,12 +27,14 @@ export default class App extends React.Component {
       ...Ionicons.font,
     })
 
-    NetInfo.fetch().then(state => {
-      console.log('Connection type', state.type);
-      console.log('Is connected?', state.isConnected);
-      this.setState({
-        isConnected: state.isConnected
-      })
+    NetInfo.addEventListener(state => {
+      console.log("Connection type", state.type);
+      console.log("Is connected?", state.isConnected);
+      if(state.isConnected){
+        this.setState({connectedState: true})
+      }else{
+        this.setState({connectedState: false});
+      }
     });
 
     setTimeout(() => {
@@ -40,25 +42,33 @@ export default class App extends React.Component {
     }, 4000)
   }
 
+  _handleConnectivityChange = (isConnected) => {
+    console.log("isConnected Status::", isConnected);
+    if (isConnected == true) {
+      this.setState({ connection_Status: "Online" })
+    }
+    else {
+      this.setState({ connection_Status: "Offline" })
+    }
+  };
+
 
   render() {
-
-    if (!this.state.isConnected) {
+    if(!this.state.connectedState){
       return (
           <FailNetwork />
       )
     }
-    
-    if (!this.state.isReady) {
+      if (!this.state.isReady) {
+        return (
+          <Loading />
+        )
+      }
+  
       return (
-        <Loading />
-      )
-    }
-
-    return (
-      <Root>
-        <Navigation />
-      </Root>
-    );
+        <Root>
+          <Navigation />
+        </Root>
+      );
   }
 }

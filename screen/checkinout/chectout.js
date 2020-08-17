@@ -133,11 +133,11 @@ class CheckOutScreen extends Component {
         console.log("Click Check Out", this.state.id, this.state.auth, this.state.url, this.state.currentLocation)
         APIs.CheckStatus(this.state.id, this.state.auth, this.state.url)
             .then((res) => {
-                console.log("Check Status Data", res.data.Checkout)
                 if (res.status === 'success') {
                     if (res.error) {
                         ErrorMessage('token', this.props.navigation)
                     } else {
+                        console.log("Check Status Data", res.data.Checkout)
                         if (res.data.Checkout) {
                             this.setState({
                                 checkMessage: "You're already checked out!",
