@@ -34,42 +34,50 @@ export default class Profile extends Component {
 
 
   componentDidMount() {
+    this.props.navigation.addListener('focus', () => {
     AsyncStorage.getItem('@hr:endPoint')
       .then((res) => {
+        let mainUrl = JSON.parse(res)['ApiEndPoint'];
         this.setState({
           url: JSON.parse(res)['ApiEndPoint']
         })
-      })
-    // request auth & id
-    AsyncStorage.getItem('@hr:token')
+        AsyncStorage.getItem('@hr:token')
       .then((res) => {
         let data = JSON.parse(res)
+        let user_auth = data['key']
+        let user_id = data['id']
         this.setState({
           auth: data['key'],
           id: data['id']
         })
-      })
-
-    this.props.navigation.addListener('focus', () => {
-      if (this.state.url !== null && this.state.auth !== null && this.state.id !== null) {
-        APIs.Profile(this.state.url, this.state.auth, this.state.id)
-          .then((res) => {
-            if (res.status === 'success') {
-              if (res.error) {
-                ErrorMessage('token', this.props.navigation)
-              } else {
-                this.setState({
-                  data: res.data
-                })
-              }
+        APIs.Profile(mainUrl, user_auth, user_id)
+        .then((res) => {
+          if (res.status === 'success') {
+            if (res.error) {
+              ErrorMessage('token', this.props.navigation)
             } else {
               this.setState({
-                data: []
+                data: res.data
               })
             }
-          })
-      }
-    });
+          } else {
+            this.setState({
+              data: []
+            })
+          }
+        })
+
+      })
+      })
+    // request auth & id
+    
+
+    //this.props.navigation.addListener('focus', () => {
+     // if (this.state.url !== null && this.state.auth !== null && this.state.id !== null) {
+        
+     // }
+    
+  })
 
   }
 

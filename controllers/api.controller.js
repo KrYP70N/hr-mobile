@@ -24,8 +24,10 @@ export default class APIs {
         }).get(`${url}/api/auth/token`)
             .then(function (res) {
                     if(res.data.data == undefined){
+                        console.log("Res", res.data.data)
                         return { data: res.data, status: 'success' }
                     }else{
+                        console.log("Error", res)
                         return { geterror: true, status: 'success'}
                     } 
             }).catch(function (error) {

@@ -109,7 +109,7 @@ class login extends Component {
     }
 
     login = () => {
-        console.log("Click Login :::")
+        console.log("Click Login :::", this.state.apiUrl, this.state.db, this.state.user, this.state.password)
         APIs.Token(this.state.apiUrl, this.state.db, this.state.user, this.state.password)
             .then((res) => {
                 console.log("Login RES:::", res)
