@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, Icon, Toast } from 'native-base'
+import {Icon} from 'native-base'
 import { PieChart } from 'react-native-svg-charts'
-import { AsyncStorage, Dimensions } from 'react-native'
+import { View, Text, AsyncStorage, Dimensions } from 'react-native'
 import styles from './dashboard.style'
 import colors from "../../constant/color";
+import offset from '../../constant/offset'
+import ErrorMessage from '../../constant/messagetext'
 import APIs from '../../controllers/api.controller'
 import color from '../../constant/color'
 const width = Dimensions.get('screen').width;
@@ -83,7 +85,7 @@ export default class Chart extends Component {
                 if (res.status === 'success') {
 
                     if (res.error) {
-                        this.tokenExpiration()
+                        ErrorMessage('token', this.props.navigation)
                     } else {
                         if (res.data["Dashboard Type"] == "HR") {
                             let data = []
@@ -166,38 +168,7 @@ export default class Chart extends Component {
                         }
                     }
                 }
-                else {
-                    this.apiFail()
-                }
-
             })
-    }
-
-    tokenExpiration() {
-        Toast.show({
-            text: 'Please login again. Your token is expired!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 6000
-        })
-        this.props.navigation.navigate('Login')
-    }
-
-    apiFail() {
-        Toast.show({
-            text: 'Authentication Failed!',
-            textStyle: {
-                textAlign: 'center'
-            },
-            style: {
-                backgroundColor: color.primary
-            },
-            duration: 3000
-        })
     }
 
     render() {
@@ -222,20 +193,29 @@ export default class Chart extends Component {
             }))
 
         return (
-            <View style={styles.pieRow}>
+
+            <View style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                padding: offset.o1,
+                backgroundColor: color.primary,
+            }}>
                 <View style={{
                     width: width / 3,
-                    height: width / 3,
+                    height: 130,
                     justifyContent: 'center',
                     backgroundColor: color.primary,
+                    marginRight: 10,
                 }}>
-                    <View style={{ width: (width / 3), height: (width / 3), position: 'absolute', borderRadius: width / 6, backgroundColor: '#fff', top: 0 }}>
+                    <View style={{ width: 130, height: 130, marginRight: 20 }}>
+                        <View style={{ width: 130, height: 130, position: 'absolute', borderRadius: 160 / 2, backgroundColor: '#fff', top: 0 }}></View>
                         <PieChart
-                            style={{ width: width / 3, height: width / 3 }} data={pieData}
+                            style={{ height: 130, }}
+                            data={pieData}
                             innerRadius="70%"
                             padAngle={0}
-                        >
-                        </PieChart>
+                        />
                     </View>
                 </View>
                 <View style={styles.pieInfo}>
@@ -248,7 +228,6 @@ export default class Chart extends Component {
                                     <Text style={styles.pietxt}>{d.title}</Text>
                                     <Text style={styles.pietxt}> -  {d.value}</Text>
                                 </View>
-
                             </View>
                         ))
                     }

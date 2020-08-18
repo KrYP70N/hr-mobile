@@ -79,9 +79,10 @@ export default StyleSheet.create({
         color: color.primary,
         marginBottom: offset.o2
     },
+
     detailBody: {
         ...typography.paragraph,
-        marginBottom: offset.o2
+        flex: 1,
     },
     detailSender: {
         ...typography.paragraph,

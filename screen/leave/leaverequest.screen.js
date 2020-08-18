@@ -21,6 +21,7 @@ import {
 
 } from "native-base";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Appearance } from 'react-native-appearance'
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import APIs from "../../controllers/api.controller";
@@ -341,9 +342,14 @@ export class LeaveRequest extends Component {
     });
   }
 
-  
+
 
   render() {
+    // to show date picker mode on ios
+    const colorScheme = Appearance.getColorScheme()
+    const isDarkModeEnabled = colorScheme === 'dark'
+
+    console.log("BG color", colorScheme)
     if (
       this.state.startDate === null ||
       this.state.endDate === null ||
@@ -423,249 +429,248 @@ export class LeaveRequest extends Component {
 
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: color.light }}>
-        {/* <KeyboardAvoidingView
-          behavior="padding"
-          style={{ flex: 1, backgroundColor: color.light }}
-        > */}
         <BackHeader name="Apply Leave" navigation={this.props.navigation} parent="Leave" />
-          <ScrollView>
+        <ScrollView>
           <View style={styLeave.bgGrayContent}></View>
-            <View style={{ flex: 1, backgroundColor: color.light, padding: 20 }}>
-              {/* <View style={styLeave.leaveTypeContainer}> */}
-              <View style = {{ justifyContent: 'center',height: 40, borderRadius: 5, borderWidth: 0.5, borderColor: color.placeHolder}}>
-                <Picker
-                  textStyle={{
-                    fontFamily: "Nunito",
-                  }}
-                  iosIcon={<Icon name="arrow-down" />}
-                  selectedValue={this.state.selectedLeaveType}
-                  onValueChange={(value, index) => {
-                    this.changeLeaveType(value, index);
-                  }}
-                >
-                  {this.state.leaveType.map((type) => {
-                    return (
-                      <Picker.Item
-                        label={type["name"]}
-                        value={type["leave_type_id"]}
-                        key={type["leave_type_id"]}
-                      />
-                    );
-                  })}
-                </Picker>
-              </View>
+          <View style={{ flex: 1, backgroundColor: color.light, padding: 20 }}>
+            {/* <View style={styLeave.leaveTypeContainer}> */}
+            <View style={{ justifyContent: 'center', height: 40, borderRadius: 5, borderWidth: 0.5, borderColor: color.placeHolder }}>
+              <Picker
+                textStyle={{
+                  fontFamily: "Nunito",
+                }}
+                iosIcon={<Icon name="arrow-down" />}
+                selectedValue={this.state.selectedLeaveType}
+                onValueChange={(value, index) => {
+                  this.changeLeaveType(value, index);
+                }}
+              >
+                {this.state.leaveType.map((type) => {
+                  return (
+                    <Picker.Item
+                      label={type["name"]}
+                      value={type["leave_type_id"]}
+                      key={type["leave_type_id"]}
+                    />
+                  );
+                })}
+              </Picker>
+            </View>
 
-              {/* <View style={styLeave.container}> */}
-                {/* <View style={styLeave.divider} /> */}
+            {/* <View style={styLeave.container}> */}
+            {/* <View style={styLeave.divider} /> */}
 
-                <View style={styLeave.fromDateContainer}>
-                  <View>
-                    <Text style={styLeave.fromLabel}>From</Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.showDatePicker();
-                      }}
-                    >
-                      <DateTimePickerModal
-                        isVisible={this.state.isStartDateVisible}
-                        mode="date"
-                        onConfirm={this.pickDate}
-                        onCancel={this.hideDatePicker}
-                      />
-                      <View style={styLeave.startDateContainer}>
-                        <Text style={styLeave.startDateMonthText}>
-                          {this.state.startDateMonthLabel}
-                        </Text>
-                        <Text style={styLeave.startDateDayText}>
-                          {this.state.startDateDayLabel}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={{ marginLeft: 20 }}>
-                    <Text style={styLeave.toLabel}>To</Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.showEndDatePicker();
-                      }}
-                    >
-                      <DateTimePickerModal
-                        isVisible={this.state.isEndDateVisible}
-                        mode="date"
-                        onConfirm={this.pickEndDate}
-                        onCancel={this.hideEndDatePicker}
-                      />
-                      <View style={styLeave.endDateTextContainer}>
-                        <Text style={styLeave.endDateMonthText}>
-                          {this.state.endDateMonthLabel}
-                        </Text>
-                        <Text style={styLeave.endDateDayText}>
-                          {this.state.endDateDayLabel}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={{ marginLeft: 20 }}>
-                    <Text style={styLeave.totalDayLabel}>Total Day</Text>
-                    <View style={styLeave.totalDayTextContainer}>
-                      <Text style={styLeave.totalDayText}>
-                        {this.state.totalDay}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-
-                <View style={{ width: "100%", marginTop: 30 }}>
-                  <View style={styLeave.morningEveningContainer}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.setState({
-                          checked: "mhalf",
-                          morning_leave: true,
-                          evening_leave: false,
-                        });
-                      }}
-                    >
-                      <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
-                      >
-                        <View style={styLeave.outerMorningLeaveRadio}>
-                          <View
-                            style={[
-                              styLeave.innerMorningLeaveRadio,
-                              {
-                                backgroundColor:
-                                  this.state.checked === "mhalf"
-                                    ? color.primary
-                                    : color.light,
-                              },
-                            ]}
-                          ></View>
-                        </View>
-                        <Text style={styLeave.morningLeaveText}>
-                          Morning Leave
-                      </Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.setState({
-                          checked: "ehalf",
-                          evening_leave: true,
-                          morning_leave: false,
-                        });
-                      }}
-                    >
-                      <View style={styLeave.eveningLeaveContainer}>
-                        <View style={styLeave.outerEveningLeaveRadio}>
-                          <View
-                            style={[
-                              styLeave.innerEveningLeaveRadio,
-                              {
-                                backgroundColor:
-                                  this.state.checked === "ehalf"
-                                    ? color.primary
-                                    : color.light,
-                              },
-                            ]}
-                          ></View>
-                        </View>
-                        <Text style={styLeave.eveningLeaveText}>
-                          Evening Leave
-                      </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.setState({
-                        checked: "full",
-                        morning_leave: false,
-                        evening_leave: false,
-                      });
-                    }}
-                  >
-                    <View style={styLeave.fullDayContainer}>
-                      <View style={styLeave.outerFullDayRadio}>
-                        <View
-                          style={[
-                            styLeave.innerFullDayRadio,
-                            {
-                              backgroundColor:
-                                this.state.checked === "full"
-                                  ? color.primary
-                                  : color.light,
-                            },
-                          ]}
-                        ></View>
-                      </View>
-                      <Text style={styLeave.fullDayText}>Full Day Leave</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-
-                <View style={{ marginTop: 30 }}>
-                  <Text style={styLeave.leaveReasonText}>Reason For Leave</Text>
-                  <Textarea
-                    placeholderTextColor={color.placeHolder}
-                    rowSpan={4}
-                    borderRadius={5}
-                    bordered
-                    style={{ backgroundColor: color.lighter }}
-                    onChangeText={(data) => {
-                      this.setState({
-                        description: data,
-                      });
-                    }}
-                    value={this.state.description}
-                  />
-                </View>
-
-                <AttachButton />
+            <View style={styLeave.fromDateContainer}>
+              <View>
+                <Text style={styLeave.fromLabel}>From</Text>
                 <TouchableOpacity
                   onPress={() => {
-                    this.submit(this.state.auth, this.state.id, this.state.url);
+                    this.showDatePicker();
                   }}
                 >
-                  <View style={styLeave.submitButton}>
-                    <Text style={styLeave.buttonText}>Submit</Text>
-                  </View>
-                </TouchableOpacity>
-              {/* </View> */}
 
-              <Modal isVisible={this.state.isModalVisible}>
-                <View style={styLeave.ModelViewContainer}>
-                  <View style={styLeave.iconView}>
-                    {this.state.changeIconStatus === "success" ? (
-                      <Image
-                        source={require("../../assets/icon/success_icon.png")}
-                        style={styLeave.dialogIcon}
-                      />
-                    ) : (
-                        <Image
-                          source={require("../../assets/icon/fail_icon.png")}
-                          style={styLeave.dialogIcon}
-                        />
-                      )}
-                  </View>
-                  <View style={{ width: "100%", padding: 20 }}>
-                    <Text style={({ flex: 1 }, styLeave.lanTitle)}>
-                      {this.state.checkMessage}
+                  <DateTimePickerModal
+                    isDarkModeEnabled = {isDarkModeEnabled}
+                    isVisible={this.state.isStartDateVisible}
+                    mode="date"
+                    onConfirm={this.pickDate}
+                    onCancel={this.hideDatePicker}
+                  />
+                  <View style={styLeave.startDateContainer}>
+                    <Text style={styLeave.startDateMonthText}>
+                      {this.state.startDateMonthLabel}
+                    </Text>
+                    <Text style={styLeave.startDateDayText}>
+                      {this.state.startDateDayLabel}
                     </Text>
                   </View>
-                  <View style={styLeave.ModalTextContainer}>
-                    <TouchableOpacity
-                      style={styLeave.CancelOpacityContainer}
-                      onPress={() => this.setState({ isModalVisible: false })}
-                    >
-                      <Text style={styLeave.modalTextStyle}>{"Close"}</Text>
-                    </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
+              <View style={{ marginLeft: 20 }}>
+                <Text style={styLeave.toLabel}>To</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.showEndDatePicker();
+                  }}
+                >
+                  <DateTimePickerModal
+                    isDarkModeEnabled = {isDarkModeEnabled}
+                    isVisible={this.state.isEndDateVisible}
+                    mode="date"
+                    onConfirm={this.pickEndDate}
+                    onCancel={this.hideEndDatePicker}
+                  />
+                  <View style={styLeave.endDateTextContainer}>
+                    <Text style={styLeave.endDateMonthText}>
+                      {this.state.endDateMonthLabel}
+                    </Text>
+                    <Text style={styLeave.endDateDayText}>
+                      {this.state.endDateDayLabel}
+                    </Text>
                   </View>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginLeft: 20 }}>
+                <Text style={styLeave.totalDayLabel}>Total Day</Text>
+                <View style={styLeave.totalDayTextContainer}>
+                  <Text style={styLeave.totalDayText}>
+                    {this.state.totalDay}
+                  </Text>
                 </View>
-              </Modal>
+              </View>
             </View>
-          </ScrollView>
+
+            <View style={{ width: "100%", marginTop: 30 }}>
+              <View style={styLeave.morningEveningContainer}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({
+                      checked: "mhalf",
+                      morning_leave: true,
+                      evening_leave: false,
+                    });
+                  }}
+                >
+                  <View
+                    style={{ flexDirection: "row", alignItems: "center" }}
+                  >
+                    <View style={styLeave.outerMorningLeaveRadio}>
+                      <View
+                        style={[
+                          styLeave.innerMorningLeaveRadio,
+                          {
+                            backgroundColor:
+                              this.state.checked === "mhalf"
+                                ? color.primary
+                                : color.light,
+                          },
+                        ]}
+                      ></View>
+                    </View>
+                    <Text style={styLeave.morningLeaveText}>
+                      Morning Leave
+                      </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({
+                      checked: "ehalf",
+                      evening_leave: true,
+                      morning_leave: false,
+                    });
+                  }}
+                >
+                  <View style={styLeave.eveningLeaveContainer}>
+                    <View style={styLeave.outerEveningLeaveRadio}>
+                      <View
+                        style={[
+                          styLeave.innerEveningLeaveRadio,
+                          {
+                            backgroundColor:
+                              this.state.checked === "ehalf"
+                                ? color.primary
+                                : color.light,
+                          },
+                        ]}
+                      ></View>
+                    </View>
+                    <Text style={styLeave.eveningLeaveText}>
+                      Evening Leave
+                      </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({
+                    checked: "full",
+                    morning_leave: false,
+                    evening_leave: false,
+                  });
+                }}
+              >
+                <View style={styLeave.fullDayContainer}>
+                  <View style={styLeave.outerFullDayRadio}>
+                    <View
+                      style={[
+                        styLeave.innerFullDayRadio,
+                        {
+                          backgroundColor:
+                            this.state.checked === "full"
+                              ? color.primary
+                              : color.light,
+                        },
+                      ]}
+                    ></View>
+                  </View>
+                  <Text style={styLeave.fullDayText}>Full Day Leave</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{ marginTop: 30 }}>
+              <Text style={styLeave.leaveReasonText}>Reason For Leave</Text>
+              <Textarea
+                placeholderTextColor={color.placeHolder}
+                rowSpan={4}
+                borderRadius={5}
+                bordered
+                style={{ backgroundColor: color.lighter }}
+                onChangeText={(data) => {
+                  this.setState({
+                    description: data,
+                  });
+                }}
+                value={this.state.description}
+              />
+            </View>
+
+            <AttachButton />
+            <TouchableOpacity
+              onPress={() => {
+                this.submit(this.state.auth, this.state.id, this.state.url);
+              }}
+            >
+              <View style={styLeave.submitButton}>
+                <Text style={styLeave.buttonText}>Submit</Text>
+              </View>
+            </TouchableOpacity>
+            {/* </View> */}
+
+            <Modal isVisible={this.state.isModalVisible}>
+              <View style={styLeave.ModelViewContainer}>
+                <View style={styLeave.iconView}>
+                  {this.state.changeIconStatus === "success" ? (
+                    <Image
+                      source={require("../../assets/icon/success_icon.png")}
+                      style={styLeave.dialogIcon}
+                    />
+                  ) : (
+                      <Image
+                        source={require("../../assets/icon/fail_icon.png")}
+                        style={styLeave.dialogIcon}
+                      />
+                    )}
+                </View>
+                <View style={{ width: "100%", padding: 20 }}>
+                  <Text style={({ flex: 1 }, styLeave.lanTitle)}>
+                    {this.state.checkMessage}
+                  </Text>
+                </View>
+                <View style={styLeave.ModalTextContainer}>
+                  <TouchableOpacity
+                    style={styLeave.CancelOpacityContainer}
+                    onPress={() => this.setState({ isModalVisible: false })}
+                  >
+                    <Text style={styLeave.modalTextStyle}>{"Close"}</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          </View>
+        </ScrollView>
         {/* </KeyboardAvoidingView> */}
       </SafeAreaView>
     );

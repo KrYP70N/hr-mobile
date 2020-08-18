@@ -3,6 +3,7 @@ import { Text, View, Dimensions, AsyncStorage } from 'react-native'
 import { PieChart } from 'react-native-svg-charts'
 import color from '../../constant/color'
 import offset from '../../constant/color'
+import ErrorMessage from '../../constant/messagetext'
 import APIs from '../../controllers/api.controller'
 const width = Dimensions.get('screen').width;
 
@@ -82,7 +83,7 @@ export class chart extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     if(res.error){
-                        this.props.navigation.navigate('Login')
+                       ErrorMessage('token', this.props.navigation)
                     }else{
                         let data = []
                         let lData = []

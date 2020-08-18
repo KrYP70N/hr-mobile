@@ -101,7 +101,6 @@ export class EmployeeLeaveHistory extends Component {
                 leaveType={history.Leave_Type}
                 date={`${history.date_from} to ${history.date_to}`}
                 status={history.state}
-                //leaveTypes = {this.state.leaveTypeList}
                 auth={this.state.auth}
                 url= {this.state.url}
             />

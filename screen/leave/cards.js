@@ -1,5 +1,4 @@
-import { Text, View, Image, FlatList, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
-import { Card } from 'native-base'
+import { Text, View, Image, TouchableOpacity, Dimensions } from 'react-native'
 import offset from '../../constant/offset'
 import color from '../../constant/color'
 const height = Dimensions.get('screen').height;

@@ -1,62 +1,63 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet,} from 'react-native'
+import { StyleSheet, } from 'react-native'
 import { View, Text, Row, Col } from 'native-base'
 import colors from '../constant/color'
 import APIs from '../controllers/api.controller'
 
 // registered leave type color
-const leavesColor = {
-    "Casual Leave": '#47E9EE',
-    "Medical Leave": '#377375',
-    "Annual Leave": '#FFB300'
-}
+// const leavesColor = {
+//     "Casual Leave": '#47E9EE',
+//     "Medical Leave": '#377375',
+//     "Annual Leave": '#FFB300'
+// }
 
 // registered status type color
-const statusColor = {
-    "approved": colors.primary,
-    "rejected": '#FF0000',
-    "cancellation": '#656565',
-    "cancel": '#656565',
-    "pending": colors.warning,
-    "draft": '#33ccaa',
-    "approved1": colors.indicator,
-    "approved2": colors.secondary,
-    "refused": colors.placeHolder,
-    "refuse": colors.placeHolder,
-}
+// const statusColor = {
+//     "approved": colors.primary,
+//     "rejected": '#FF0000',
+//     "cancellation": '#656565',
+//     "cancel": '#656565',
+//     "pending": colors.warning,
+//     "draft": '#33ccaa',
+//     "approved1": colors.indicator,
+//     "approved2": colors.secondary,
+//     "refused": colors.placeHolder,
+//     "refuse": colors.placeHolder,
+// }
 
-export default function StatusCard({key, leaveType, date, status, auth, url}) {
+export default function StatusCard({ key, leaveType, date, status, auth, url }) {
     const [leaveTypes, setLeaveTypes] = useState([])
     APIs.getLeaveType(auth, url)
         .then((res) => {
             setLeaveTypes(res.data)
         })
-   
+
 
     return (
         <View key={key} style={styles.container}>
             <View style={styles.mainRow}>
-                <View style={styles.status}>
+                <View style={styles.statusColor}>
 
                     {
-                         leaveTypes.map((leave, index) =>{
-                            if(leave.name === leaveType){
-                                return(
-                                    <Text key = {key} style={{ ...styles.statusCircle, backgroundColor: leave["color_code"] }}></Text>
+                        leaveTypes.map((leave, index) => {
+                            if (leave.name === leaveType) {
+                                return (
+                                    <Text key={key} style={{ ...styles.statusCircle, backgroundColor: leave["color_code"] }}></Text>
                                 )
                             }
                         })
-                       
+
                     }
 
                 </View>
                 <View style={styles.content}>
                     <View style={styles.left}>
                         <Text style={styles.date}>{date}</Text>
-                        <Text style = {{fontFamily: 'Nunito'}}>{leaveType}</Text>
+                        <Text style={{ fontFamily: 'Nunito' }}>{leaveType}</Text>
                     </View>
-                    <View style={styles.right}>
+                    <Text style={styles.status}>{status}</Text>
+                    {/* <View style={styles.right}>
                     {
                          leaveTypes.map((leave) =>{
                             if(leave.name === leaveType){
@@ -71,7 +72,7 @@ export default function StatusCard({key, leaveType, date, status, auth, url}) {
                             }
                         })                      
                     }
-                    </View>
+                    </View> */}
                 </View>
             </View>
         </View>
@@ -92,8 +93,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
+    statusColor: {
+        width: '5%'
+    },
     status: {
-        width: '10%'
+        fontFamily: 'Nunito',
+        color: colors.tertiary
     },
     statusCircle: {
         width: 20,
@@ -101,13 +106,13 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     content: {
-        width: '90%',
+        width: '95%',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     left: {
-        //width: '70%'
+       marginLeft: 10
     },
     right: {
         //width: '30%'

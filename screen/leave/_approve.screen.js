@@ -48,6 +48,7 @@ export default class LeaveApprove extends Component {
     }
 
     getApproveStatus(url, auth, id) {
+        console.log("Data", url, auth, id)
         APIs.leaveApproval(url, auth, id)
             .then((res) => {
                 if (res.status === 'success') {

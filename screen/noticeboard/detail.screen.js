@@ -1,18 +1,13 @@
-import React, { Component, useState } from 'react'
-import { Container, Header, Left, Icon, Text, Right, Content, View } from 'native-base'
-
-// variable
+import React, { Component } from 'react'
+import { Container, Header, Left, Icon, Text, Content, View } from 'native-base'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import styles from './noticeboard.style'
-// import { Image } from 'react-native'
-
-// components
 
 export default class NoticBoardDetail extends Component {
     render() {
         const { params } = this.props.route
-        
+        console.log("Body Message", params['Body'])
         return (
             <Container>
                 <Header style={{
@@ -27,6 +22,7 @@ export default class NoticBoardDetail extends Component {
                         <Icon name='ios-arrow-round-back' style={{
                             fontSize: offset.o4,
                             color: color.primary,
+                            marginLeft: offset.o1,
                             marginRight: offset.o2
                         }} onPress={() => { this.props.navigation.navigate('NoticeBoard') }} />
                         <Text style={{
@@ -34,12 +30,6 @@ export default class NoticBoardDetail extends Component {
                             fontFamily: 'Nunito'
                         }}>{params['Subject'].slice(0, 8)} {params['Subject'].length > 8 && '...'}</Text>
                     </Left>
-                    <Right>
-                        {/* <Image source={require('../../assets/icon/delete-button.png')} style={{
-                            width: 20,
-                            height: 25
-                        }}/> */}
-                    </Right>
                 </Header>
                 
                 <Content style={{
@@ -53,15 +43,7 @@ export default class NoticBoardDetail extends Component {
                     {/* body */}
                     <View style={styles.container}>
                         <Text style={styles.detailDate}>{params['Date']}</Text>
-                        {/* <Text style={styles.detailTitle}>{
-                            params['Channel']
-                        }</Text> */}
-                        <Text style={styles.detailBody}>{
-                            params['Body']
-                            .replace(/<\/?[^>]+(>|$)/g, "")
-                            .replace(/\s+/g,' ').trim()
-                        }</Text>
-                        {/* <Text style={styles.detailSender}>- {params['Author']}</Text> */}
+                        <Text style = {styles.detailBody}>{params['Body']}</Text>
                     </View>
                 </Content>
             </Container>

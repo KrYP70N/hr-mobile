@@ -106,7 +106,8 @@ export class OvertimeApprove extends Component {
                         <Icon name='ios-arrow-round-back' style={{
                             fontSize: offset.o4,
                             color: color.primary,
-                            marginRight: offset.o2
+                            marginRight: offset.o2,
+                            marginLeft: offset.o1
                         }} onPress={() => { this.props.navigation.navigate('Overtime') }} />
                         <Text style={{
                             fontSize: 16,

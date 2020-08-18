@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { TouchableOpacity, AsyncStorage, } from 'react-native'
-import { Image } from 'react-native'
-import { View, Text } from 'native-base'
+import {View, Text, Image } from 'react-native'
 import styles from './dashboard.style'
 import APIs from '../../controllers/api.controller'
+import ErrorMessage from '../../constant/messagetext'
 const cardList = [
     {
         title: 'Employees',
@@ -100,11 +100,10 @@ export default class Cards extends Component {
     getSummaryData(auth, id, url, year) {
         APIs.getDashboardSummary(url, auth, id, year)
             .then((res) => {
-                console.log("Birthday Count", res.data)
                 let list = [];
                 if (res.status == 'success') {
                     if(res.error){
-                        this.props.navigation.navigate('Login')
+                       ErrorMessage('token', this.props.navigation)
                     }else{
                         if (res.data["Dashboard Type"] == "employee") {
                             list.push(

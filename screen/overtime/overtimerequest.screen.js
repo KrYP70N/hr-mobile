@@ -9,9 +9,8 @@ import {
   Image,
   Dimensions,
   ScrollView,
-  KeyboardAvoidingView,
 } from "react-native";
-import { Textarea, Toast } from "native-base";
+import { Textarea} from "native-base";
 import color from "../../constant/color";
 import offset from "../../constant/offset";
 import ErrorMessage from '../../constant/messagetext'
@@ -30,6 +29,7 @@ const months = [
   "Dec",
 ];
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Appearance } from 'react-native-appearance'
 import APIs from "../../controllers/api.controller";
 import Modal from "react-native-modal";
 import BackHeader from '../../components/BackHeader'
@@ -330,6 +330,9 @@ export class OTRequest extends Component {
   }
 
   render() {
+    const colorScheme = Appearance.getColorScheme()
+    const isDarkModeEnabled = colorScheme === 'dark'
+
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: color.light}}>
           <BackHeader name="Overtime Request" navigation={this.props.navigation} parent="Overtime" />
@@ -347,6 +350,7 @@ export class OTRequest extends Component {
                 >
                   <View style={styles.datePickerContainer}>
                     <DateTimePickerModal
+                      isDarkModeEnabled = {isDarkModeEnabled}
                       isVisible={this.state.isDatePickerVisible}
                       mode="date"
                       onConfirm={this.pickDate}
@@ -369,6 +373,7 @@ export class OTRequest extends Component {
                     <TouchableOpacity onPress={() => this.showTimePickerFrom()}>
                       <View style={styles.timeFromPickContainer}>
                         <DateTimePickerModal
+                          isDarkModeEnabled = {isDarkModeEnabled}
                           isVisible={this.state.isTimePickerFromVisible}
                           mode="time"
                           display="spinner"
@@ -399,6 +404,7 @@ export class OTRequest extends Component {
                     >
                       <View style={styles.timeFromPickContainer}>
                         <DateTimePickerModal
+                          isDarkModeEnabled = {isDarkModeEnabled}
                           isVisible={this.state.isTimePickerToVisible}
                           mode="time"
                           headerTextIOS="Pick a time"

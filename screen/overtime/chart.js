@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Text, View, FlatList, Dimensions, AsyncStorage } from 'react-native'
-import { Content, Container, Toast, Icon, Card, CardItem, Body, Button, } from 'native-base'
+import { Text, View, Dimensions, AsyncStorage } from 'react-native'
 import { PieChart } from 'react-native-svg-charts'
 import color from '../../constant/color'
-import offset from '../../constant/color'
+import offset from '../../constant/offset'
+import ErrorMessage from '../../constant/messagetext'
 import APIs from '../../controllers/api.controller'
 const width = Dimensions.get('screen').width;
 
@@ -83,17 +83,7 @@ export class chart extends Component {
             .then((res) => {
                 if (res.status === 'success') {
                     if(res.error){
-                        Toast.show({
-                            text: 'Please login again. Your token is expired!',
-                            textStyle: {
-                                textAlign: 'center'
-                            },
-                            style: {
-                                backgroundColor: color.primary
-                            },
-                            duration: 6000
-                        })
-                        this.props.navigation.navigate('Login')
+                        ErrorMessage('token', this.props.navigation)
                     }else{
                         let data = []
                         let lData = []
@@ -139,16 +129,6 @@ export class chart extends Component {
                     }
                    
                 } else {
-                    Toast.show({
-                        text: 'Authentication Failed!',
-                        textStyle: {
-                            textAlign: 'center'
-                        },
-                        style: {
-                            backgroundColor: color.primary
-                        },
-                        duration: 6000
-                    })
                    this.setState({
                        summaryData: [],
                        labelData: []
@@ -172,7 +152,6 @@ export class chart extends Component {
                 svg: {
                     fill: d.color,
                     onPress: () => console.log('press', index),
-
                 },
                 key: `pie-${index}`,
             }))
@@ -183,7 +162,7 @@ export class chart extends Component {
                 alignItems: 'center',
                 padding: offset.o2,
                 backgroundColor: color.primary,
-                borderRadius: offset.o1,
+                //borderRadius: offset.o1,
             }}>
                 <View style={{
                     width: width / 3,
@@ -199,9 +178,8 @@ export class chart extends Component {
                             style={{ height: width / 3, }} data={pieData}
                             innerRadius="70%"
                             padAngle={0}
-
-                        >
-                        </PieChart>
+                        />
+                       
                     </View>
                 </View>
                 <View style={{
