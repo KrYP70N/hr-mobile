@@ -160,7 +160,7 @@ export class chart extends Component {
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
-                padding: offset.o2,
+                padding: offset.o1,
                 backgroundColor: color.primary,
                 //borderRadius: offset.o1,
             }}>
@@ -169,7 +169,6 @@ export class chart extends Component {
                     height: 160,
                     justifyContent: 'center',
                     backgroundColor: color.primary,
-                    marginLeft: 10,
                     marginRight: 10
                 }}>
                     <View style={{ width: width / 3, height: width / 3, marginRight: 20 }}>
@@ -190,7 +189,9 @@ export class chart extends Component {
                         display: 'flex',
                         flexDirection: 'row',
                         justifyContent: 'space-between',
-                        flexWrap: 'wrap'
+                        flexWrap: 'wrap',
+                       
+                        
                     }}>
                         {this.state.labelData.map((lb, index) => {
                             return(
