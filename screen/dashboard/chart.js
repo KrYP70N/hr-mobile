@@ -88,6 +88,7 @@ export default class Chart extends Component {
                         ErrorMessage('token', this.props.navigation)
                     } else {
                         if (res.data["Dashboard Type"] == "HR") {
+                            console.log("HR Dashboard Data", res.data)
                             let data = []
                             let lData = [];
                             let total = 0;
@@ -127,10 +128,12 @@ export default class Chart extends Component {
                                 chartLabel: `Today's Presents & Absents`
                             })
                         } else {
+                            console.log("EMP Dashboard Data", res.data)
+
                             let data = []
                             let lData = []
                             let total = 0;
-                            total = res.data["Attendance Count"][0][0] + res.data["Today Absent Count"];
+                            total = res.data["Attendance Count"][0][0] + res.data["Today Absent Count"][0][0];
                             for (let i = 0; i < 3; i++) {
                                 if (i == 0) {
                                     let obj = {
@@ -144,7 +147,7 @@ export default class Chart extends Component {
                                 if (i == 1) {
                                     let obj = {
                                         title: lb_color[i].title,
-                                        value: res.data["Today Absent Count"],
+                                        value: res.data["Today Absent Count"][0][0],
                                         color: lb_color[i].color
                                     }
                                     data.push(obj)

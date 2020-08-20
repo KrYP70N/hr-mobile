@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, AsyncStorage, SafeAreaView } from 'react-native'
+import { Image, AsyncStorage, SafeAreaView, TextInput } from 'react-native'
 import { Text, Container, Item, Input, Button, Icon, Toast } from 'native-base'
 import styLogin from './login.style'
 import po from './po'
@@ -10,6 +10,7 @@ import color from '../../constant/color';
 import Auth from './_auth.login'
 import { Updates } from 'expo';
 import moment from 'moment';
+import * as Device from 'expo-device';
 
 class login extends Component {
     constructor(props) {
@@ -24,14 +25,14 @@ class login extends Component {
             auth: null
         };
 
-        // handle user field
+        //handle user field
         this.user = (key) => {
             this.setState({
                 user: key
             })
         }
 
-        // handle password field
+        //handle password field
         this.password = (key) => {
             this.setState({
                 password: key
@@ -125,7 +126,7 @@ class login extends Component {
                             },
                             duration: 3000
                         })
-                    }else{
+                    } else {
                         let date = new Date()
                         let exp_date = moment(date).add(res.data.expires_in, 'seconds')
                         AsyncStorage.setItem('@hr:token', JSON.stringify({
@@ -145,13 +146,15 @@ class login extends Component {
                                     })
                             })
                     }
-                    
+
                 } else {
                     console.log("You got 403 from Sever")
                 }
             })
     }
     render() {
+        console.log("Device Info", Device.deviceName)
+        const dev_name = Device.deviceName;
         if (this.state.apiUrl === null) {
             return (
                 <Auth navigation={this.props.navigation} />
@@ -172,6 +175,8 @@ class login extends Component {
                             style={styLogin.input}
                             onChangeText={(key) => this.user(key)}
                             placeholder='User Name'
+                            caretHidden = {dev_name == ('Mi 9T Pro' || 'Mi 9 SE') ? true : false}
+                            //multiline = {true}
                             placeholderTextColor={color.placeHolder} />
                     </Item>
 
@@ -181,6 +186,7 @@ class login extends Component {
                             value={this.state.password}
                             onChangeText={(key) => { this.password(key) }}
                             placeholder='Password'
+                            caretHidden = {dev_name == ('Mi 9T Pro' || 'Mi 9 SE') ? true : false}
                             placeholderTextColor={color.placeHolder}
                         />
                         <Icon active name={
@@ -206,7 +212,7 @@ class login extends Component {
                     </Button>
                 </Container>
                 <Overlay overlay={this.state.overlay} />
-                </SafeAreaView>
+            </SafeAreaView>
 
         )
 
