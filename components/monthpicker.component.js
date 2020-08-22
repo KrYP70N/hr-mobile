@@ -46,6 +46,7 @@ export default function MonthPicker({
         onChangeValue(date, data)
     }
 
+    console.log("Option Lists", optionList)
     // selector
     const getList = optionList.map((list, key) => (
         <Picker.Item label={list.charAt(0).toUpperCase() + list.substr(1).toLowerCase()} value={list} key={key} />
