@@ -89,7 +89,7 @@ export default StyleSheet.create({
         borderRadius: 5
     },
     infoCardTitle: {
-        ...typo.parabraph
+        ...typo.paragraph
     },
     infoCardLabelSuccess: {
         ...typo.textSmall,
