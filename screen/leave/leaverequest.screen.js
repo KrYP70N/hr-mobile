@@ -73,7 +73,7 @@ export class LeaveRequest extends Component {
       startDateDayLabel: "",
       endDateMonthLabel: "",
       endDateDayLabel: "",
-      totalDay: 1,
+      totalDay: '',
       isModalVisible: false,
       checkMessage: "",
       changeIconStatus: "",
@@ -185,7 +185,11 @@ export class LeaveRequest extends Component {
           date.getDate() < 10 ? "0" + date.getDate() : date.getDate(),
         endDateDayLabel:
           date.getDate() < 10 ? "0" + date.getDate() : date.getDate(),
+          morning_leave: false,
+          evening_leave: false,
+          checked: 'full',
         totalDay: 1,
+        diffDay: 1,
       });
 
       AsyncStorage.getItem("@hr:endPoint").then((res) => {
@@ -229,6 +233,11 @@ export class LeaveRequest extends Component {
             endDateMonthLabel: months[d.getMonth()],
             endDateDayLabel: d.getDate() < 10 ? "0" + d.getDate() : d.getDate(),
             selectedLeaveType: res.data[0]["leave_type_id"],
+            morning_leave: false,
+            evening_leave: false,
+            checked: 'full',
+            totalDay: 1,
+            diffDay: 1,
           });
         }
       } else {
