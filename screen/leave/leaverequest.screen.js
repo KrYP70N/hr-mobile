@@ -77,6 +77,7 @@ export class LeaveRequest extends Component {
       isModalVisible: false,
       checkMessage: "",
       changeIconStatus: "",
+      diffDay: 1,
     };
   }
 
@@ -257,6 +258,17 @@ export class LeaveRequest extends Component {
 
   pickDate = (data) => {
     let date = new Date(data);
+    if(this.state.morning_leave == false && this.state.evening_leave == false){
+      this.setState({
+        totalDay: 1,
+        diffDay: 1
+      })
+    }else{
+      this.setState({
+        totalDay: 0.5,
+        diffDay: 1
+      })
+    }
     this.setState({
       startDate: `${date.getFullYear()}-${
         date.getMonth() + 1 < 10
@@ -274,7 +286,7 @@ export class LeaveRequest extends Component {
       endDateMonthLabel: months[date.getMonth()],
       endDateDayLabel:
         date.getDate() < 10 ? "0" + date.getDate() : date.getDate(),
-      totalDay: 1,
+      //totalDay: 1,
     });
     this.hideDatePicker();
   };
@@ -301,6 +313,19 @@ export class LeaveRequest extends Component {
     if (sDate <= eDate) {
       let diffTime = eDate - sDate;
       let diffDay = diffTime / (1000 * 3600 * 24) + 1;
+
+      if(this.state.morning_leave == false && this.state.evening_leave == false){
+        this.setState({
+          totalDay: diffDay,
+          diffDay: diffDay
+        })
+      }else{
+        this.setState({
+          totalDay: diffDay - 0.5,
+          diffDay: diffDay
+        })
+      }
+
       this.setState({
         endDate: `${date.getFullYear()}-${
           date.getMonth() + 1 < 10
@@ -310,14 +335,14 @@ export class LeaveRequest extends Component {
         endDateMonthLabel: months[date.getMonth()],
         endDateDayLabel:
           date.getDate() < 10 ? "0" + date.getDate() : date.getDate(),
-        totalDay: diffDay,
+        //totalDay: diffDay,
       });
     } else {
       this.setState({
         endDate: this.state.endDate,
         endDateMonthLabel: this.state.endDateMonthLabel,
         endDateDayLabel: this.state.endDateDayLabel,
-        totalDay: this.state.totalDay,
+        //totalDay: this.state.totalDay,
       });
     }
     this.hideEndDatePicker();
@@ -345,6 +370,7 @@ export class LeaveRequest extends Component {
 
 
   render() {
+    console.log("Leave Total Day",this.state.totalDay)
     // to show date picker mode on ios
     const colorScheme = Appearance.getColorScheme()
     const isDarkModeEnabled = colorScheme === 'dark'
@@ -522,6 +548,7 @@ export class LeaveRequest extends Component {
             </View>
 
             <View style={{ width: "100%", marginTop: 30 }}>
+            {/* {this.state.totalDay > 1 ? <View></View> : */}
               <View style={styLeave.morningEveningContainer}>
                 <TouchableOpacity
                   onPress={() => {
@@ -529,6 +556,7 @@ export class LeaveRequest extends Component {
                       checked: "mhalf",
                       morning_leave: true,
                       evening_leave: false,
+                      totalDay: this.state.diffDay - 0.5
                     });
                   }}
                 >
@@ -559,6 +587,7 @@ export class LeaveRequest extends Component {
                       checked: "ehalf",
                       evening_leave: true,
                       morning_leave: false,
+                      totalDay: this.state.diffDay - 0.5
                     });
                   }}
                 >
@@ -582,12 +611,14 @@ export class LeaveRequest extends Component {
                   </View>
                 </TouchableOpacity>
               </View>
+            
               <TouchableOpacity
                 onPress={() => {
                   this.setState({
                     checked: "full",
                     morning_leave: false,
                     evening_leave: false,
+                    totalDay: this.state.diffDay
                   });
                 }}
               >
