@@ -122,7 +122,9 @@ class CheckInScreen extends Component {
                                     markerCoordinates: makerCoordsArr
                                 })
                             }
-                        }).catch((e) => console.log("Error"))
+                        }).catch((e) => this.setState({
+                            locationError: true
+                        }))
                     }
                 } else {
                     ErrorMessage('serverError', this.props.navigation)
@@ -131,7 +133,8 @@ class CheckInScreen extends Component {
     }
 
     CheckIn = () => {
-        console.log("Click Check In", this.state.id, this.state.auth, this.state.url, this.state.currentLocation)
+        console.log("Location Error:::", this.state.locationError)
+        console.log("Click Check In", this.state.currentLocation)
         APIs.CheckStatus(this.state.id, this.state.auth, this.state.url)
             .then((res) => {
                 console.log("Check Res", res)
@@ -163,7 +166,7 @@ class CheckInScreen extends Component {
                                         }
                                     })
                             } else {
-                                if (this.state.geofencing && this.state.currentLocation != undefined) {
+                                if (this.state.geofencing) {
                                     //geo true
                                     if (
                                         geolib.isPointWithinRadius(
@@ -193,7 +196,7 @@ class CheckInScreen extends Component {
                                         })
                                     }
                                 } else {
-                                    APIs.Checkin(this.state.url, this.state.auth, this.state.id)// this.state.currentLocation
+                                    APIs.Checkin(this.state.url, this.state.auth, this.state.id, this.state.currentLocation)// this.state.currentLocation
                                     .then((res) => {
                                         if (res.status === 'success') {
                                             if (res.error) {

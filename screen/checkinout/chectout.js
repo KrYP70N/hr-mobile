@@ -161,7 +161,7 @@ class CheckOutScreen extends Component {
                                         } 
                                     })
                             } else {
-                                if (this.state.geofencing && this.state.currentLocation != undefined) {
+                                if (this.state.geofencing){
                                     //geo true
                                     if (
                                         geolib.isPointWithinRadius(
@@ -192,7 +192,7 @@ class CheckOutScreen extends Component {
                                         })
                                     }
                                 } else {
-                                    APIs.Checkout(this.state.url, this.state.auth, this.state.id)// this.state.currentLocation
+                                    APIs.Checkout(this.state.url, this.state.auth, this.state.id, this.state.currentLocation)// this.state.currentLocation
                                     .then((res) => {
                                         if (res.status === 'success') {
                                             if (res.error) {

@@ -131,11 +131,12 @@ export default class APIs {
 
     // checkin controller
     static Checkin(url, auth, id, coord) {
+        console.log("Click Check In", url, auth, id, coord)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
-        }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
+        }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.latitude}&longitude=${coord.longitude}`)
             .then(function (res) {
                 if (res.data.data.error) {
                     return { error: true, status: 'success' }
@@ -155,7 +156,7 @@ export default class APIs {
             headers: {
                 'Authorization': auth
             }
-        }).post(coord === undefined ? `${url}/checkout/${id}` : `${url}/checkout/${id}?latitude=${coord.lat}&longitude=${coord.long}`)
+        }).post(coord === undefined ? `${url}/checkout/${id}` : `${url}/checkout/${id}?latitude=${coord.latitude}&longitude=${coord.longitude}`)
             .then(function (res) {
                 if (res.data.data.error) {
                     return { error: true, status: 'success' }
