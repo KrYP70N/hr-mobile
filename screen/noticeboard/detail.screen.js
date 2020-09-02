@@ -15,8 +15,9 @@ export default class NoticBoardDetail extends Component {
                     // marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
                 }}>
                     <Left style={{
-                        display: 'flex',
+                        //display: 'flex',
                         flexDirection: 'row',
+                        //justifyContent: 'center'
                         alignItems: 'center'
                     }}>
                         <Icon name='ios-arrow-round-back' style={{
