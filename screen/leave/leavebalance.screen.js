@@ -111,7 +111,7 @@ export class EmployeeLeaveBalance extends Component {
                 <Container>
                 <BackHeader name = "Leave Balance" navigation = {this.props.navigation} parent = "Leave" />
                     <View style={{ width: '100%', height: 20, backgroundColor: color.lighter }}></View>
-                    <Content style={{ flex: 1 }}>
+                    {/* <Content style={{ flex: 1 }}> */}
                         <View style={{ height: 200, width: '100%', justifyContent: 'center' }}>
                             <PieChart
                                 style={{ height: 150, }} data={pieData}
@@ -125,7 +125,7 @@ export class EmployeeLeaveBalance extends Component {
                             {leaveData}
                         </View>
                        
-                    </Content>
+                    {/* </Content> */}
                     <TouchableOpacity
                     style={{ position: 'absolute', bottom: 0, width: '100%', height: 55, justifyContent: 'center', alignItems: 'center', backgroundColor: color.primary }}
                      onPress={() => { 

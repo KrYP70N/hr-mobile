@@ -6,6 +6,7 @@ import offset from '../../constant/offset'
 import Cards from './cards'
 import Chart from './chart'
 import BottomTab from '../../components/bottomtab.component'
+import BackHeader from '../../components/BackHeader'
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -15,8 +16,8 @@ export default class Dashboard extends Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <Container style={{ flex: 1 }}>
-                    <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
+              <BackHeader navigation={this.props.navigation} name="Dashboard" parent="Main" />
+                    {/* <View style={{ height: 60, width: '100%', backgroundColor: color.light, alignItems: 'center', flexDirection: 'row' }}>
                         <Icon name='ios-arrow-round-back' style={{
                             fontSize: offset.o4,
                             color: color.primary,
@@ -27,15 +28,15 @@ export default class Dashboard extends Component {
                             color: color.secondary,
                             fontFamily: 'Nunito'
                         }}>Dashboard</Text>
-                    </View>
-                    <Content style={{ backgroundColor: color.lighter }}>
+                    </View> */}
+                    <View style={{flex: 1, backgroundColor: color.lighter }}>
                         <Chart navigation={this.props.navigation} />
                         <View style={{ backgroundColor: color.lighter, paddingLeft: offset.o1 + offset.oh, paddingRight: offset.o1 + offset.oh, paddingTop: 15 }}>
                             <Cards navigation={this.props.navigation} />
                         </View>
-                    </Content>
+                    </View>
                     <BottomTab navigation={this.props.navigation} screen='dashboard' />
-                </Container>
+              
             </SafeAreaView>
         )
     }

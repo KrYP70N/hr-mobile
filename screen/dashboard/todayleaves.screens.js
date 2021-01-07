@@ -85,7 +85,7 @@ export class TodayLeaves extends Component {
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ backgroundColor: color.lighter }}>
                 <BackHeader name = "Today Leaves" navigation = {this.props.navigation} parent = "Dashboard" />
-                    <Content style={{ flex: 1, marginBottom: 15 }}>
+                    {/* <Content style={{ flex: 1, marginBottom: 15 }}> */}
                         {
                             this.state.todayLeaveListData.map((leave, index) => {
                                 return (
@@ -114,7 +114,7 @@ export class TodayLeaves extends Component {
                                 color: color.placeHolder
                             }}>There is no Absent Employee!</Text>
                         </View>
-                    </Content>
+                    {/* </Content> */}
                 </Container>
 
             </SafeAreaView>

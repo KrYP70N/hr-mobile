@@ -1,6 +1,6 @@
 import React, { Component} from 'react'
 import { Container, Content} from 'native-base'
-import {SafeAreaView } from 'react-native'
+import {SafeAreaView, View} from 'react-native'
 import styles from './noticeboard.style'
 import NotiList from './notilist'
 import BackHeader from '../../components/BackHeader'
@@ -22,9 +22,9 @@ export default class NoticeBoard extends Component {
             <SafeAreaView style={{ flex: 1 }}>
                 <Container>
                 <BackHeader name = "Notice Board" navigation = {this.props.navigation} parent = "Main" />
-                    <Content style={styles.container}>
+                    <View style={styles.container}>
                         <NotiList navigation={this.props.navigation} />
-                    </Content>
+                    </View>
                 </Container>
             </SafeAreaView>
         )

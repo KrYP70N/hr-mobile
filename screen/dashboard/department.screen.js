@@ -83,7 +83,7 @@ export class DepartmentScreen extends Component {
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ backgroundColor: color.lighter }}>
                     <BackHeader name="Department" navigation={this.props.navigation} parent="Dashboard" />
-                    <Content style={{ flex: 1, marginBottom: 15}}>
+                    {/* <Content style={{ flex: 1, marginBottom: 15}}> */}
                         {
                             this.state.deptLists.map((dept, index) => {
                                 return (
@@ -98,7 +98,7 @@ export class DepartmentScreen extends Component {
                                 )
                             })
                         }
-                    </Content>
+                    {/* </Content> */}
                 </Container>
             </SafeAreaView>
         )

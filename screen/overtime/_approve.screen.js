@@ -106,7 +106,7 @@ export default class OvertimeApprove extends Component {
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ flex: 1, backgroundColor: color.lighter }}>
                     <BackHeader name="Approve OT" navigation={this.props.navigation} parent="Main" />
-                    <Content>
+                    <View style={{flex: 1}}>
                         <View style={{
                             display: this.state.overtimeList.length === 0 ? 'flex' : 'none',
                             alignItems: 'center'
@@ -169,7 +169,7 @@ export default class OvertimeApprove extends Component {
 
                             </View>
                         </Modal>
-                    </Content>
+                    </View>
                 </Container>
             </SafeAreaView>
         )

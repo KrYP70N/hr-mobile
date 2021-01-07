@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, Text, SafeAreaView, AsyncStorage, Dimensions } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Text, SafeAreaView, AsyncStorage, Dimensions, ActivityIndicator, ImageBackground } from 'react-native';
 import color from '../../constant/color'
 import offset from '../../constant/offset'
 import ErrorMessage from '../../constant/messagetext'
@@ -10,6 +10,8 @@ import Clock from '../../components/time.component';
 import Modal from 'react-native-modal';
 import MapView, { Marker, Circle } from 'react-native-maps';
 import * as geolib from 'geolib';
+import { Camera } from 'expo-camera';
+import * as FileSystem from "expo-file-system";
 import LOC from '../../components/Location'
 import BackHeader from '../../components/BackHeader'
 const width = Dimensions.get('screen').width;
@@ -22,7 +24,7 @@ class CheckInScreen extends Component {
             auth: null,
             id: null,
             data: null,
-            locationError: true,
+            locationError: null,
             currentLocation: undefined,
             geofencing: null,
             officeCoord: null,
@@ -35,14 +37,54 @@ class CheckInScreen extends Component {
             markerCoordinates: [],
             userName: null,
             refresh: false,
+            loading: true,
+            //taking photo
+            showCameraIcon: true,
+            showCameraView: false,
+            permission: null,
+            type: Camera.Constants.Type.front,
+            user_image: null,
+            showPreviewImage: false,
+            user_preview_img: null,
 
         };
     }
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
+            this.setState({
+                url: null,
+                auth: null,
+                id: null,
+                data: null,
+                locationError: null,
+                currentLocation: undefined,
+                geofencing: null,
+                officeCoord: null,
+                radius: null,
+                withinRadius: 'wait',
+                status: null,
+                isModalVisible: false,
+                checkMessage: '',
+                mapCoord: null,
+                markerCoordinates: [],
+                userName: null,
+                refresh: false,
+                loading: true,
+                //taking Photo
+                showCameraIcon: true,
+                showCameraView: false,
+                permission: null,
+                type: Camera.Constants.Type.front,
+                user_image: null,
+                showPreviewImage: false,
+                user_preview_img: null,
+            })
+
+            console.log("Re Run the Check In Page")
             AsyncStorage.getItem('@hr:endPoint')
                 .then((res) => {
+
                     const url = JSON.parse(res).ApiEndPoint
                     this.setState({ url: JSON.parse(res).ApiEndPoint })
                     AsyncStorage.getItem('@hr:token')
@@ -60,8 +102,42 @@ class CheckInScreen extends Component {
         })
     }
 
+    componentWillUnmount() {
+        this.state = {
+            url: null,
+            auth: null,
+            id: null,
+            data: null,
+            locationError: null,
+            currentLocation: undefined,
+            geofencing: null,
+            officeCoord: null,
+            radius: null,
+            withinRadius: 'wait',
+            status: null,
+            isModalVisible: false,
+            checkMessage: '',
+            mapCoord: null,
+            markerCoordinates: [],
+            userName: null,
+            refresh: false,
+            loading: true,
+            //taking photo
+            showCameraIcon: true,
+            showCameraView: false,
+            permission: null,
+            type: Camera.Constants.Type.front,
+            user_image: null,
+            showPreviewImage: false,
+            user_preview_img: null,
+        };
+
+    }
+
+
+
     getProfileData = async (auth, id, url) => {
-        console.log("Get Profile")
+        // console.log("Get Profile")
         APIs.Profile(url, auth, id)
             .then((res) => {
                 if (res.status === 'success') {
@@ -79,12 +155,14 @@ class CheckInScreen extends Component {
                             if (result.status == 'fail') {
                                 this.setState({
                                     locationError: true,
+                                    loading: false,
                                     currentLocation: undefined
                                 })
                             } else {
-                                console.log("get Location Success")
+                                // console.log("get Location Success")
                                 this.setState({
                                     locationError: false,
+                                    loading: false,
                                     currentLocation: {
                                         latitude: result.location.coords.latitude,
                                         longitude: result.location.coords.longitude
@@ -123,7 +201,8 @@ class CheckInScreen extends Component {
                                 })
                             }
                         }).catch((e) => this.setState({
-                            locationError: true
+                            locationError: true,
+                            loading: false
                         }))
                     }
                 } else {
@@ -132,26 +211,59 @@ class CheckInScreen extends Component {
             })
     }
 
-    CheckIn = () => {
-        console.log("Location Error:::", this.state.locationError)
-        console.log("Click Check In", this.state.currentLocation)
+
+    clickCamera = async () => {
+        console.log("Click Camera")
+        const { status } = await Camera.requestPermissionsAsync();
+        console.log("Status", status);
+        this.setState({
+            showCameraView: true,
+            showCameraIcon: false,
+        })
+
+    }
+    // const encodedBase64 = 'R0lGODlhAQABAIAAAAAA...7';
+    // <Image source={{uri: `data:image/gif;base64,${encodedBase64}`}} />
+
+    snap = async () => {
+        if (this.camera) {
+            let photo = await this.camera.takePictureAsync({
+                base64: true
+            });
+          //  console.log("Photo Uri", photo)
+           // console.log("Photo Base 64", photo.base64)
+
+            this.setState({
+                showPreviewImage: true,
+                showCameraIcon: false,
+                user_preview_img: photo
+            })
+        }
+
+    }
+
+    CheckIn = async () => {
+      //console.log("User Image", this.state.user_image)
+      console.log("User Image", this.state.id, this.state.auth, this.state.url, this.state.currentLocation)
+     
         APIs.CheckStatus(this.state.id, this.state.auth, this.state.url)
             .then((res) => {
-                console.log("Check Res", res)
+                //  console.log("Check Res", res)
                 if (res.status === 'success') {
                     if (res.error) {
                         ErrorMessage('token', this.props.navigation)
                     } else {
-                        console.log("Check Status", res.data.Checkin)
+                        //  console.log("Check Status", res.data.Checkin)
                         if (res.data.Checkin) {
                             this.setState({
+                                user_image: null,
                                 checkMessage: "You're already checked in!",
                                 isModalVisible: true,
 
                             })
                         } else {
                             if (this.state.locationError == true) {
-                                APIs.Checkin(this.state.url, this.state.auth, this.state.id)
+                                APIs.Checkin(this.state.url, this.state.auth, this.state.id, this.state.user_image.base64)
                                     .then((res) => {
                                         if (res.status === 'success') {
                                             if (res.error) {
@@ -175,7 +287,7 @@ class CheckInScreen extends Component {
                                             this.state.radius
                                         )
                                     ) { // Within Radius"
-                                        APIs.Checkin(this.state.url, this.state.auth, this.state.id, this.state.currentLocation)//this.state.currentLocation
+                                        APIs.Checkin(this.state.url, this.state.auth, this.state.id, this.state.currentLocation, this.state.user_image.base64)//this.state.currentLocation
                                             .then((res) => {
                                                 if (res.status === 'success') {
                                                     if (res.error) {
@@ -196,19 +308,19 @@ class CheckInScreen extends Component {
                                         })
                                     }
                                 } else {
-                                    APIs.Checkin(this.state.url, this.state.auth, this.state.id, this.state.currentLocation)// this.state.currentLocation
-                                    .then((res) => {
-                                        if (res.status === 'success') {
-                                            if (res.error) {
-                                               ErrorMessage('token', this.props.navigation)
-                                            } else {
-                                                this.setState({
-                                                    checkMessage: 'Check In Successful!',
-                                                    isModalVisible: true,
-                                                })
+                                    APIs.Checkin(this.state.url, this.state.auth, this.state.id, this.state.currentLocation, this.state.user_image.base64)// this.state.currentLocation
+                                        .then((res) => {
+                                            if (res.status === 'success') {
+                                                if (res.error) {
+                                                    ErrorMessage('token', this.props.navigation)
+                                                } else {
+                                                    this.setState({
+                                                        checkMessage: 'Check In Successful!',
+                                                        isModalVisible: true,
+                                                    })
+                                                }
                                             }
-                                        }
-                                    })
+                                        })
                                 }
                             }
                         }
@@ -218,57 +330,131 @@ class CheckInScreen extends Component {
     }
 
     render() {
-       // console.log("Current", this.state.currentLocation)
+        // console.log("Current", this.state.currentLocation)
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <BackHeader name="Check In" navigation={this.props.navigation} parent="Main" />
-                <View style={{
-                    flex: 1,
-                    height: height,
-                    backgroundColor: color.light
-                }}>
-                    {
-                        this.state.locationError == true ?
-                            <Image style = {{width: '100%', height: '70%'}} source={require('../../assets/images/no_location.jpg')} />
-                            : <MapView
-                                region={this.state.mapCoord}
-                                style={styles.mapStyle}
-                                initialRegion={this.state.mapCoord}>
-                                {this.state.markerCoordinates.map((marker, index) => (
-                                    <Marker key={index} coordinate={marker.coordinate} title={marker.title} >
-                                        <View>
-                                            {marker.title === "You Are Here" ? <Image style={{ width: 35, height: 35, }} source={require('../../assets/icon/map_person.png')} /> : <Image style={{ width: 35, height: 35, }} source={require('../../assets/icon/marker.png')} />}
-                                        </View>
-                                    </Marker>
-                                ))}
-                                {this.state.officeCoord === null ? <View></View> : <Circle
-                                    center={this.state.officeCoord}
-                                    radius={this.state.radius}
-                                    strokeWidth={1}
-                                    strokeColor={'#1a66ff'}
-                                    fillColor={'rgba(230,238,255,0.5)'}
-                                />}
-                            </MapView>
-                    }
+                {
+                    (this.state.showPreviewImage) ? <View style={{ flex: 1, width: '100%', height: '100%', backgroundColor: color.indicator }}>
+                        <ImageBackground resizeMode='cover' style={{ width: '100%', height: '100%' }} source={{ uri: this.state.user_preview_img.uri }}>  
+                        {/* `data:image/jpg;base64,${this.state.user_preview_img}` */}
+                            <View style={{ width: '100%', position: 'absolute', bottom: width / 14, justifyContent: 'space-between', flexDirection: 'row', padding: 20 }}>
 
-                    <View style={styles.usercontainer}>
-                        <Text style={{ fontFamily: 'Nunito', marginTop: 20 }}>{`Have a nice day! ${this.state.userName}`}</Text>
-                        <Clock style={styles.time} navigation={this.props.navigation} checkScreen="checkinout" checkIconChange="checkin" />
-                        <View style={styles.checkincontainer}>
-                            <TouchableOpacity onPress={() => {
-                                this.CheckIn()
-                            }}>
-                                <View style={styles.checkbtncontainer}>
-                                    <Image
-                                        source={require('../../assets/icon/checkin.png')}
-                                        style={styles.checkinbtnimg}
-                                    />
-                                    <Text style={styles.checkinbtntTxt}>Check In</Text>
+                                <TouchableOpacity onPress={() => {
+                                    this.setState({
+                                        showPreviewImage: false,
+                                        showCameraView: true
+                                    })
+                                }}>
+                                    <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: color.light, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Image style={{ tintColor: color.primary, width: 20, height: 20, }} source={require('../../assets/icon/delete.png')} />
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity onPress={() => {
+                                    this.setState({
+                                        showPreviewImage: false,
+                                        showCameraView: false,
+                                        showCameraIcon: true,
+                                        user_image: this.state.user_preview_img
+                                    })
+                                }}>
+                                    <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: color.light, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Image style={{ tintColor: color.primary, width: 20, height: 20, }} source={require('../../assets/icon/correct.png')} />
+                                    </View>
+                                </TouchableOpacity>
+
+                            </View>
+                        </ImageBackground>
+                        {/* <Image style={{flex: 1, width: width, height: height-60 }} source={{ uri: this.state.user_preview_img }} /> */}
+                    </View> :
+                        // camera view
+                        (this.state.showCameraView) ? <View style={{ flex: 1, width: width, height: height }}>
+                            <Camera
+                                ref={ref => {
+                                    this.camera = ref;
+                                }}
+                                style={{ flex: 1, width: width, height: height }}
+                                type={this.state.type}>
+                                <View
+                                    style={{
+                                        flex: 1,
+                                        backgroundColor: 'transparent',
+                                        alignItems: 'center'
+                                    }}>
+                                    <TouchableOpacity
+                                        style={{ position: 'absolute', bottom: 0, marginBottom: 10, flexDirection: 'row' }}
+                                        onPress={() => {
+                                            this.snap()
+                                        }}>
+                                        <View style={{ width: 60, height: 60, borderRadius: 60 / 2, backgroundColor: '#fff' }}></View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={{ width: 30, height: 30, position: 'absolute', right: 0, bottom: 0, marginBottom: 25, marginRight: 50 }} onPress={() => {
+                                        this.setState({
+                                            type: this.state.type === Camera.Constants.Type.front ? Camera.Constants.Type.back : Camera.Constants.Type.front
+                                        })
+                                    }}>
+                                        <Image style={{ tintColor: color.light, width: 30, height: 30 }} source={require('../../assets/icon/back_camera.png')} />
+                                    </TouchableOpacity>
                                 </View>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
+                            </Camera>
+                        </View> :
+                            <View style={{
+                                flex: 1,
+                                height: height,
+                                backgroundColor: color.light
+                            }}>
+                                {
+                                    this.state.locationError == null ?
+                                        <View style={{ backgroundColor: color.tertiary, width: '100%', height: width / 2 + 50, justifyContent: 'center', alignItems: 'center' }}>
+                                            <ActivityIndicator animating={this.state.loading} color={color.light} size="large" />
+                                            <Text style={{ color: color.light, fontSize: 16, fontWeight: 'bold' }}>Getting Your Current Location...</Text>
+                                        </View> :
+                                        this.state.locationError == true ?
+                                            <Image resizeMode='cover' style={{width: width}}  source={require('../../assets/images/no_location.jpg')} />
+                                            : <MapView
+                                                region={this.state.mapCoord}
+                                                style={styles.mapStyle}
+                                                initialRegion={this.state.mapCoord}>
+                                                {this.state.markerCoordinates.map((marker, index) => (
+                                                    <Marker key={index} coordinate={marker.coordinate} title={marker.title} >
+                                                        <View>
+                                                            {marker.title === "You Are Here" ? <Image style={{ width: 35, height: 35, }} source={require('../../assets/icon/map_person.png')} /> : <Image style={{ width: 35, height: 35, }} source={require('../../assets/icon/marker.png')} />}
+                                                        </View>
+                                                    </Marker>
+                                                ))}
+                                                {this.state.officeCoord === null ? <View></View> : <Circle
+                                                    center={this.state.officeCoord}
+                                                    radius={this.state.radius}
+                                                    strokeWidth={1}
+                                                    strokeColor={'#1a66ff'}
+                                                    fillColor={'rgba(230,238,255,0.5)'}
+                                                />}
+                                            </MapView>
+                                }
+
+                                <View style={styles.usercontainer}>
+                                    {this.state.user_image != null && <View style={{ shadowColor: color.primary, shadowRadius: 20, elevation: 10, width: 105, height: 105, borderRadius: 105 / 2, backgroundColor: color.light, position: 'absolute', top: -55, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Image style={{ width: 100, height: 100, borderRadius: 50 }}  source={{uri: this.state.user_image.uri}} />
+                                    </View>}
+                                    <Text style={{ fontFamily: 'Nunito', marginTop: this.state.user_image != null ? 35 : 20 }}>{`Have a nice day! ${this.state.userName}`}</Text>
+                                    <Clock style={styles.time} navigation={this.props.navigation} checkScreen="checkinout" checkIconChange="checkin" />
+                                    {!this.state.loading && <View style={styles.checkincontainer}>
+                                        <TouchableOpacity onPress={() => {
+                                            this.CheckIn()
+                                        }}>
+                                            <View style={styles.checkbtncontainer}>
+                                                <Image
+                                                    source={require('../../assets/icon/checkin.png')}
+                                                    style={styles.checkinbtnimg}
+                                                />
+                                                <Text style={styles.checkinbtntTxt}>Check In</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>}
+                                </View>
+                            </View>
+                }
 
                 <Modal isVisible={this.state.isModalVisible} >
                     <View style={styles.ModelViewContainer}>
@@ -287,6 +473,23 @@ class CheckInScreen extends Component {
 
                     </View>
                 </Modal>
+
+                {(!this.state.loading && !this.state.showCameraView) && <TouchableOpacity style={{
+                    position: 'absolute', bottom: 0, marginBottom: 10, right: 0, marginRight: 15, width: 60, height: 60, borderRadius: 60 / 2, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', marginBottom: 10,
+                    // shadowColor: color.placeHolder, shadowRadius: 5, shadowOpacity: 0.5, elevation: 3
+                    shadowColor: color.placeHolder,
+                    shadowOffset: {
+                        width: 0,
+                        height: 12,
+                    },
+                    shadowOpacity: 0.58,
+                    shadowRadius: 16.00,
+                    elevation: 24,
+                }} onPress={() => { this.clickCamera() }}>
+
+                    <Image style={{ tintColor: color.light, width: 30, height: 30 }} source={require('../../assets/icon/camera.png')} />
+
+                </TouchableOpacity>}
             </SafeAreaView>
         );
     }

@@ -3,7 +3,6 @@
     "name": "Innovix HR",
     "slug": "innovix-hr",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
@@ -37,7 +36,7 @@
       "versionCode": 13,
       "config": {
         "googleMaps": {
-          "apiKey" : "AIzaSyBO96bY4WThKFHRcbp-2wyi6Yom9V8zdKY"
+          "apiKey": "AIzaSyBO96bY4WThKFHRcbp-2wyi6Yom9V8zdKY"
         }
       }
     },

@@ -85,7 +85,7 @@ export class UpcomingBirthday extends Component {
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ backgroundColor: color.lighter }}>
                     <BackHeader name="Upcoming Birthdays" navigation={this.props.navigation} parent="Dashboard" />
-                    <Content style={{ flex: 1, marginBottom: 15 }}>
+                    {/* <Content style={{ flex: 1, marginBottom: 15 }}> */}
                         {
                             this.state.birthdayLists.map((birthday, index) => {
                                 return (
@@ -101,7 +101,7 @@ export class UpcomingBirthday extends Component {
                                 )
                             })
                         }
-                    </Content>
+                    {/* </Content> */}
                 </Container>
 
             </SafeAreaView>

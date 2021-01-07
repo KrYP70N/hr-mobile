@@ -109,7 +109,7 @@ export default class LeaveApprove extends Component {
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ flex: 1, backgroundColor: color.lighter }}>
                     <BackHeader name="Approve Leave" navigation={this.props.navigation} parent="Main" />
-                    <Content>
+                    {/* <Content> */}
                         <View style={{
                             display: this.state.leaveLists.length == 0 ? 'flex' : 'none',
                             alignItems: "center",
@@ -171,7 +171,7 @@ export default class LeaveApprove extends Component {
                                 </View>
                             </View>
                         </Modal>
-                    </Content>
+                    {/* </Content> */}
                 </Container>
             </SafeAreaView>
         )

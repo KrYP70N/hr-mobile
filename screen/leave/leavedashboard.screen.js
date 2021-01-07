@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { SafeAreaView } from 'react-native'
+import { SafeAreaView, View } from 'react-native'
 import { Container, Content } from 'native-base'
 import color from '../../constant/color'
 import Cards from '../leave/cards'
@@ -18,10 +18,10 @@ export class Leave extends Component {
                 <Container style = {{flex: 1, backgroundColor: color.lighter}}>
                 <BackHeader name = "Leave" navigation = {this.props.navigation} parent = "Main" />
 
-                    <Content style={{ flex: 1 }}>
+                    <View style={{ flex: 1 }}>
                         <Chart navigation={this.props.navigation}/>
                         <Cards navigation={this.props.navigation} />
-                    </Content>
+                    </View>
                     <BottomTab navigation={this.props.navigation} screen='leave' />
                 </Container>
             </SafeAreaView>

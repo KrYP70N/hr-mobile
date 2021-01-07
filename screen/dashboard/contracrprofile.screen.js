@@ -97,7 +97,7 @@ export class ContractProfile extends Component {
                             fontFamily: 'Nunito'
                         }}>Contract Profile</Text>
                     </View>
-                    <Content>
+                    {/* <Content> */}
                         <View style={{ marginTop: offset.o5, backgroundColor: color.lighter, borderRadius: 8, margin: 10, borderColor: color.placeHolder, borderWidth: 0.3, }}>
                             <View style={{ backgroundColor: color.light, display: 'flex', alignItems: 'center', padding: offset.o2, borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
                                 <Image source={
@@ -179,7 +179,7 @@ export class ContractProfile extends Component {
                             </View>
                         </View>
 
-                    </Content>
+                    {/* </Content> */}
                 </Container>
             </SafeAreaView>
         )

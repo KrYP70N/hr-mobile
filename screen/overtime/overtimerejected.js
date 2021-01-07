@@ -132,7 +132,7 @@ export class OvertimeRejected extends Component {
                         />
                     </Right>
                 </Header>
-                <Content style={styles.pdContainer}>
+                <View style={styles.pdContainer}>
                     <MonthPicker
                         show={this.state.filter}
                         onClosePress={() => this.setState({
@@ -155,7 +155,7 @@ export class OvertimeRejected extends Component {
                             color: color.placeHolder
                         }}>There is no overtime rejected data!</Text>
                     </View>
-                </Content>
+                </View>
             </Container>
         )
     }

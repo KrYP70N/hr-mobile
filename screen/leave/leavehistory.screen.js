@@ -141,7 +141,7 @@ export class EmployeeLeaveHistory extends Component {
                         />
                     </Right>
                 </Header>
-                <Content style={styles.pdContainer}>
+                <View style={styles.pdContainer}>
                     <MonthPicker
                         show={this.state.filter}
                         onClosePress={() => this.setState({
@@ -166,7 +166,7 @@ export class EmployeeLeaveHistory extends Component {
                                 fontFamily: 'Nunito'
                             }}>There is no leave history for {this.state.status.charAt(0).toUpperCase() + this.state.status.substr(1).toLowerCase()}!</Text>
                         </View>
-                </Content>
+                </View>
             </Container>
         )
     }

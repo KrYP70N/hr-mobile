@@ -43,15 +43,15 @@ export default class App extends React.Component {
     }, 4000)
   }
 
-  _handleConnectivityChange = (isConnected) => {
-    console.log("isConnected Status::", isConnected);
-    if (isConnected == true) {
-      this.setState({ connection_Status: "Online" })
-    }
-    else {
-      this.setState({ connection_Status: "Offline" })
-    }
-  };
+  // _handleConnectivityChange = (isConnected) => {
+  //   console.log("isConnected Status::", isConnected);
+  //   if (isConnected == true) {
+  //     this.setState({ connection_Status: "Online" })
+  //   }
+  //   else {
+  //     this.setState({ connection_Status: "Offline" })
+  //   }
+  // };
 
   async _cacheResourcesAsync() {
   let img =  Asset.loadAsync([

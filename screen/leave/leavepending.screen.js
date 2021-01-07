@@ -128,7 +128,7 @@ export class EmployeeLeavePending extends Component {
 			<SafeAreaView style={{ flex: 1 }}>
 				<Container>
 					<BackHeader name="Pending Approval" navigation={this.props.navigation} parent="Leave" />
-					<Content style={{ flex: 1, backgroundColor: color.lighter }}>
+					<View style={{ flex: 1, backgroundColor: color.lighter }}>
 						<View style={{ padding: 5 }}>
 							{GetLeave}
 						</View>
@@ -165,7 +165,7 @@ export class EmployeeLeavePending extends Component {
 
 							</View>
 						</Modal>
-					</Content>
+					</View>
 				</Container>
 			</SafeAreaView>
 		)

@@ -95,7 +95,7 @@ export default class Auth extends Component {
 
         return (
             <Container>
-                <Content contentContainerStyle={styAuth.content}>
+                {/* <Content contentContainerStyle={styAuth.content}> */}
                     <KeyboardAvoidingView behavior='position'>
                         <Form style={styAuth.form}>
                             <Image source={require('../../assets/upload/logo.png')} styl/>
@@ -122,7 +122,7 @@ export default class Auth extends Component {
                             </Button>
                         </Form>
                     </KeyboardAvoidingView>
-                </Content>
+                {/* </Content> */}
                 <Overlay overlay={this.state.overlay}/>
             </Container>
         )

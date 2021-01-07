@@ -8,7 +8,7 @@ import { KeyboardAvoidingView } from 'react-native'
 import Loading from '../../components/loading.component'
 import Overlay from '../../components/overlay.component'
 import color from '../../constant/color'
-import { Updates } from 'expo'
+import * as Updates from 'expo-updates'
 
 export default class Auth extends Component {
 
@@ -45,7 +45,7 @@ export default class Auth extends Component {
                                 loading: false,
                                 error: false
                             })
-                            Updates.reload()
+                            Updates.reloadAsync()
                         })
                     } else {
                         this.setState({
@@ -87,7 +87,7 @@ export default class Auth extends Component {
         
         return (
             <Container>
-                <Content contentContainerStyle={styAuth.content}>
+                <View style={styAuth.content}>
                     <KeyboardAvoidingView behavior='position'>
                         <Form style={styAuth.form}>
                             <Image source={require('../../assets/upload/logo.png')} styl/>
@@ -122,7 +122,7 @@ export default class Auth extends Component {
                             </Button>
                         </Form>
                     </KeyboardAvoidingView>
-                </Content>
+                </View>
                 <Overlay overlay={this.state.overlay}/>
             </Container>
         )

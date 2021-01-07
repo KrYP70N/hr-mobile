@@ -86,7 +86,7 @@ export class EmployeeListScreen extends Component {
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ backgroundColor: color.lighter }}>
                 <BackHeader name="Employees" navigation = {this.props.navigation} parent = "Dashboard"/>
-                    <Content style={{ flex: 1, marginBottom: 15}}>
+                    {/* <Content style={{ flex: 1, marginBottom: 15}}> */}
                         {
                             this.state.empLists.map((emp, index) => {
                                 return (
@@ -116,7 +116,7 @@ export class EmployeeListScreen extends Component {
                             }}>There is no Employee List!</Text>
                         </View>
 
-                    </Content>
+                    {/* </Content> */}
                 </Container>
 
             </SafeAreaView>

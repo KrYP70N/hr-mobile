@@ -4,49 +4,49 @@ import {View, Text, Image } from 'react-native'
 import styles from './dashboard.style'
 import APIs from '../../controllers/api.controller'
 import ErrorMessage from '../../constant/messagetext'
-const cardList = [
-    {
-        title: 'Employees',
-        noti: 2,
-        icon: require('../../assets/icon/dashboard-leave.png'),
-        // page: 'DashboardLeaveRequest'
-        page: 'EmployeeList'
-    },
-    {
-        title: 'Today Leaves',
-        noti: 3,
-        icon: require('../../assets/icon/dashboard-request.png'),
-        // page: 'DashboardRequest'
-        page: 'TodayLeave'
-    },
-    {
-        title: 'Upcoming Birthday',
-        noti: 4,
-        icon: require('../../assets/icon/dashboard-pending.png'),
-        //page: 'Pending'
-        page: 'UpcomingBirthday'
-    },
-    {
-        title: 'Department',
-        noti: 0,
-        icon: require('../../assets/icon/dashboard-payroll.png'),
-        page: 'Department'
-    },
-    {
-        title: 'Leave Request',
-        noti: 0,
-        icon: require('../../assets/icon/dashboard-leave.png'),
-        //page: 'AttendanceRecord'
-        page: 'DashboardLeaveRequestList'
-    },
-    {
-        title: 'Announcement',
-        noti: 9,
-        icon: require('../../assets/icon/dashboard-notification.png'),
-        page: 'NoticeBoard'
-    },
+// const cardList = [
+//     {
+//         title: 'Employees',
+//         noti: 2,
+//         icon: require('../../assets/icon/dashboard-leave.png'),
+//         // page: 'DashboardLeaveRequest'
+//         page: 'EmployeeList'
+//     },
+//     {
+//         title: 'Today Leaves',
+//         noti: 3,
+//         icon: require('../../assets/icon/dashboard-request.png'),
+//         // page: 'DashboardRequest'
+//         page: 'TodayLeave'
+//     },
+//     {
+//         title: 'Upcoming Birthday',
+//         noti: 4,
+//         icon: require('../../assets/icon/dashboard-pending.png'),
+//         //page: 'Pending'
+//         page: 'UpcomingBirthday'
+//     },
+//     {
+//         title: 'Department',
+//         noti: 0,
+//         icon: require('../../assets/icon/dashboard-payroll.png'),
+//         page: 'Department'
+//     },
+//     {
+//         title: 'Leave Request',
+//         noti: 0,
+//         icon: require('../../assets/icon/dashboard-leave.png'),
+//         //page: 'AttendanceRecord'
+//         page: 'DashboardLeaveRequestList'
+//     },
+//     {
+//         title: 'Announcement',
+//         noti: 9,
+//         icon: require('../../assets/icon/dashboard-notification.png'),
+//         page: 'NoticeBoard'
+//     },
    
-]
+// ]
 
 export default class Cards extends Component {
     constructor(props) {
@@ -247,6 +247,13 @@ export default class Cards extends Component {
                     
                 }
             })
+    }
+
+    componentWillUnmount(){
+        this.setState({
+            cardList: [],
+            activeEmployeeList: []
+        })
     }
 
     render() {

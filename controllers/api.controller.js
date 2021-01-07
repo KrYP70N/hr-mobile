@@ -93,11 +93,11 @@ export default class APIs {
             }
         }).get(`${url}/user/profile/${id}`)
             .then(function (res) {
-                console.log("User Profile Data", res)
+               // console.log("User Profile Data", res)
                 if (res.data.data.error) {
                     return { error: true, status: 'success' }
                 } else {
-                    console.log("User Profile Data", res.data)
+                   // console.log("User Profile Data", res.data)
                     let data = res["request"]["_response"]
 
                     let dataStr = data.slice(data.indexOf('"data":') + '"data":'.length, data.length - 1)
@@ -130,13 +130,14 @@ export default class APIs {
     }
 
     // checkin controller
-    static Checkin(url, auth, id, coord) {
-        console.log("Click Check In", url, auth, id, coord)
+    static Checkin(url, auth, id, coord, user_image) {
+        console.log("URL::", url, auth, id, coord)
+      //  console.log("Click Check In", url, auth, id, coord)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
-        }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.latitude}&longitude=${coord.longitude}`)
+        }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.latitude}&longitude=${coord.longitude}&check_in_selfie=${user_image}`)
             .then(function (res) {
                 if (res.data.data.error) {
                     return { error: true, status: 'success' }
@@ -151,12 +152,12 @@ export default class APIs {
     }
 
     // cehckout controller
-    static Checkout(url, auth, id, coord) {
+    static Checkout(url, auth, id, coord, user_image) {
         return axios.create({
             headers: {
                 'Authorization': auth
             }
-        }).post(coord === undefined ? `${url}/checkout/${id}` : `${url}/checkout/${id}?latitude=${coord.latitude}&longitude=${coord.longitude}`)
+        }).post(coord === undefined ? `${url}/checkout/${id}` : `${url}/checkout/${id}?latitude=${coord.latitude}&longitude=${coord.longitude}&check_out_selfie=${user_image}`)
             .then(function (res) {
                 if (res.data.data.error) {
                     return { error: true, status: 'success' }

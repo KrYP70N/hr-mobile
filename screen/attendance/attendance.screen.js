@@ -77,6 +77,8 @@ export default class Attendance extends Component {
                     }
                 }
             }
+
+            console.log("Titles",titles)
             this.setState({
                 dataTitle: titles,
             })

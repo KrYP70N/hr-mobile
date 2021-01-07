@@ -61,6 +61,7 @@ export default StyleSheet.create({
         textAlign: 'right'
     },
     checkinout: {
+        flex: 1,
         marginTop: -offset.o4,
         marginLeft: 15,
         marginRight: 15,

@@ -148,7 +148,7 @@ export default class CheckInOut extends Component {
               <TouchableOpacity onPress={() => {
                 this.props.navigation.navigate('CheckIn'), { geofencing: this.state.geofencing }
               }}>
-                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width / 3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
+                <View style={{ borderRadius: 10, width: width / 3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center',}}>
                   <Image
                     source={require('../assets/icon/checkin.png')}
                     style={{ width: 30, height: 30 }}
@@ -159,7 +159,7 @@ export default class CheckInOut extends Component {
               <TouchableOpacity onPress={() => {
                 this.props.navigation.navigate('CheckOut')
               }}>
-                <View style={{ borderRadius: 10, shadowColor: color.placeHolder, width: width / 3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center', shadowRadius: 10, shadowOpacity: 0.6, elevation: 3 }}>
+                <View style={{ borderRadius: 10, width: width / 3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center',}}>
                   <Image
                     source={require('../assets/icon/checkout.png')}
                     style={{ width: 30, height: 30, }}

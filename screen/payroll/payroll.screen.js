@@ -128,7 +128,7 @@ export default class Payroll extends Component {
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={styPayroll.container}>
                     <BackHeader name="Payroll" navigation={this.props.navigation} parent="Main" />
-                    <Content>
+                    <View style={{flex: 1}}>
                         <View style={{ width: '100%', height: 10, backgroundColor: color.lighter }}></View>
                         <Form style={styPayroll.form}>
                             <Row style={styPayroll.fieldSet}>
@@ -176,7 +176,7 @@ export default class Payroll extends Component {
                                 url: this.state.url
                             }}
                         />
-                    </Content>
+                    </View>
                 </Container>
             </SafeAreaView>
         )

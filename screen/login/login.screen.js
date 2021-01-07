@@ -8,7 +8,7 @@ import APIs from '../../controllers/api.controller'
 import DB from '../../model/db.model'
 import color from '../../constant/color';
 import Auth from './_auth.login'
-import { Updates } from 'expo';
+import * as Updates  from 'expo-updates';
 import moment from 'moment';
 import * as Device from 'expo-device';
 
@@ -146,7 +146,6 @@ class login extends Component {
                                     })
                             })
                     }
-
                 } else {
                     console.log("You got 403 from Sever")
                 }
@@ -175,7 +174,7 @@ class login extends Component {
                             style={styLogin.input}
                             onChangeText={(key) => this.user(key)}
                             placeholder='User Name'
-                            caretHidden = {dev_name == ('Mi 9T Pro' || 'Mi 9 SE') ? true : false}
+                            caretHidden={dev_name == ('Mi 9T Pro' || 'Mi 9 SE') ? true : false}
                             //multiline = {true}
                             placeholderTextColor={color.placeHolder} />
                     </Item>
@@ -186,7 +185,7 @@ class login extends Component {
                             value={this.state.password}
                             onChangeText={(key) => { this.password(key) }}
                             placeholder='Password'
-                            caretHidden = {dev_name == ('Mi 9T Pro' || 'Mi 9 SE') ? true : false}
+                            caretHidden={dev_name == ('Mi 9T Pro' || 'Mi 9 SE') ? true : false}
                             placeholderTextColor={color.placeHolder}
                         />
                         <Icon active name={
@@ -205,7 +204,7 @@ class login extends Component {
                     <Button transparent style={styLogin.resetPwd} onPress={() => {
                         AsyncStorage.removeItem('@hr:endPoint')
                             .then(() => {
-                                Updates.reload()
+                                Updates.reloadAsync()
                             })
                     }}>
                         <Text style={styLogin.resetTxt}>Change Access Token?</Text>
@@ -213,9 +212,7 @@ class login extends Component {
                 </Container>
                 <Overlay overlay={this.state.overlay} />
             </SafeAreaView>
-
         )
-
     }
 }
 

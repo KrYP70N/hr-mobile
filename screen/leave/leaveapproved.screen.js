@@ -126,7 +126,7 @@ export class EmployeeLeaveApproved extends Component {
                         />
                     </Right>
                 </Header>
-                <Content style={styles.pdContainer}>
+                {/* <Content style={styles.pdContainer}> */}
                     <MonthPicker
                         show={this.state.filter}
                         onClosePress={() => this.setState({
@@ -150,7 +150,7 @@ export class EmployeeLeaveApproved extends Component {
                         }}>There is no leave approved data!</Text>
                     </View>
 
-                </Content>
+                {/* </Content> */}
             </Container>
         )
     }

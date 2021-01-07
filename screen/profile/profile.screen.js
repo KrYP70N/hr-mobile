@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, Container, Content, Toast } from 'native-base'
 import styProfile from './profile.style'
 import Loading from '../../components/loading.component'
-import { AsyncStorage, SafeAreaView } from 'react-native'
+import { AsyncStorage, SafeAreaView, ScrollView, View } from 'react-native'
 import APIs from '../../controllers/api.controller'
 import GeneralProfile from './_general.profile'
 import PersonalProfile from './_personal.profile'
@@ -103,14 +103,15 @@ export default class Profile extends Component {
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <Container style={styProfile.topContainer}>
-          <BackHeader name="Profile" navigation={this.props.navigation} parent="Main" />
-          <Content>
+        <BackHeader name="Profile" navigation={this.props.navigation} parent="Main" />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{ flex: 1 }}>
             <GeneralProfile data={this.state.data['General Information']} dataWork={this.state.data['Work Information']} />
             <Text style={styProfile.title}>Personal Information</Text>
             <PersonalProfile data={this.state.data['Personal Information']} />
-          </Content>
-        </Container>
+          </View>
+        </ScrollView>
+
       </SafeAreaView>
     )
   }

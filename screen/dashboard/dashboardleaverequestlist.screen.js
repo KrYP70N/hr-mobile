@@ -85,7 +85,7 @@ export class DashboardLeaveRequestList extends Component {
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ flex: 1, backgroundColor: color.lighter }}>
                 <BackHeader name = "Leave Request" navigation = {this.props.navigation} parent = "Dashboard"/>
-                    <Content style={{ flex: 1, marginBottom: this.state.leaveLists.length === 0 ? 0 : 50 }}>
+                    {/* <Content style={{ flex: 1, marginBottom: this.state.leaveLists.length === 0 ? 0 : 50 }}> */}
                         {
                             this.state.leaveLists.map((request, index) => {
                                 return (
@@ -114,7 +114,7 @@ export class DashboardLeaveRequestList extends Component {
                             }}>There is no Leave Request List!</Text>
                         </View>
                        
-                    </Content>
+                    {/* </Content> */}
                     <TouchableOpacity style={{ display: this.state.leaveLists.length === 0 ? 'none' : 'flex', position: 'absolute', bottom: 0, width: '100%', height: 50, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center' }} onPress={() => { this.props.navigation.navigate('AdminLeaveApprove') }}>
                             <View><Text style={{ fontFamily: 'Nunito', fontSize: 14, color: color.light }}>Approve Leave</Text></View>
                         </TouchableOpacity>

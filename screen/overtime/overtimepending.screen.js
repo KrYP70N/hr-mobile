@@ -122,7 +122,7 @@ export class OvertimePending extends Component {
             <SafeAreaView style={{ flex: 1 }}>
                 <Container>
                     <BackHeader name="Overtime Approval" navigation={this.props.navigation} parent="Overtime" />
-                    <Content style={{ flex: 1, backgroundColor: color.lighter }}>
+                    <View style={{ flex: 1, backgroundColor: color.lighter }}>
                         <View style={{ padding: 5}}>
                             {requests}
                         </View>
@@ -158,7 +158,7 @@ export class OvertimePending extends Component {
 
                             </View>
                         </Modal>
-                    </Content>
+                    </View>
                 </Container>
             </SafeAreaView>
         )

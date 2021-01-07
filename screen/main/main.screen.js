@@ -59,12 +59,12 @@ export default class Main extends Component {
               })
               this.getProfile(url, auth, id)
               this.isLowest(url, auth, id)
-             // this.getServerTime(url, auth, id)
+              // this.getServerTime(url, auth, id)
             })
         })
     })
   }
-  
+
   getProfile(url, auth, id) {
     APIs.Profile(url, auth, id)
       .then((res) => {
@@ -110,16 +110,15 @@ export default class Main extends Component {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Heading navigation={this.props.navigation} />
-        <Content>
+        <View style={{ flex: 1 }}>
           <TouchableOpacity style={styMain.banner}
             onPress={() => {
               this.props.navigation.navigate('Profile')
             }
             }>
             <Clock style={styMain.time} navigation={this.props.navigation} />
-
-            <Row>
-              <Col style={styMain.userInfo}>
+            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View style={styMain.userInfo}>
                 <Image source={
                   this.state.profile['Profile Image'][0] === false ?
                     require('../../assets/icon/user.png') :
@@ -142,19 +141,15 @@ export default class Main extends Component {
                   }
                 </View>
 
-              </Col>
-              <Col>
-                <Icon name="ios-arrow-round-forward" style={styMain.profileDetail}></Icon>
-              </Col>
-            </Row>
+              </View>
+              <View>
+                <Image style={{ width: 30, height: 30, alignItems: 'flex-end' }} source={require('../../assets/icon/right_arrow.png')} />
+              </View>
+            </View>
           </TouchableOpacity>
-
-          {/* check in/out */}
-          <View style={styMain.checkinout}>
+          <View style={styMain.checkinout} >
             <CheckInOut navigation={this.props.navigation} />
           </View>
-
-          {/* main menu */}
           <View style={{
             display: 'flex',
             flexDirection: 'row',
@@ -197,9 +192,8 @@ export default class Main extends Component {
             ))}
 
           </View>
-        </Content>
+        </View>
         <BottomTab navigation={this.props.navigation} screen='main' />
-
       </SafeAreaView>
     )
   }

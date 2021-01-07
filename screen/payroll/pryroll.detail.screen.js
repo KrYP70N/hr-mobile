@@ -127,7 +127,7 @@ export default class PayrollDetail extends Component {
                         <Right></Right>
                     </Header>
 
-                <Content>
+                <View style={{flex: 1}}>
                     
                     {/* banner */}
                     <View style={styPayroll.detailBanner}>
@@ -149,7 +149,7 @@ export default class PayrollDetail extends Component {
                     </View>
 
 
-                </Content>
+                </View>
                 <View style={styPayroll.floatingButton}>
                     <Button style={[styPayroll.downloadButton]}
                         onPress={

@@ -165,22 +165,22 @@ export class chart extends Component {
             }))
         return (
             <View style={{
-                display: 'flex',
+                //display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
-                padding: offset.o2,
+                justifyContent: 'center',
                 backgroundColor: color.primary,
-                borderRadius: offset.o1,
+                height: width / 3,
+                width: '100%'
+
             }}>
                 <View style={{
                     width: width / 3,
-                    height: 160,
+                    height: width / 3,
                     justifyContent: 'center',
                     backgroundColor: color.primary,
-                    marginLeft: 10,
-                    marginRight: 10
                 }}>
-                    <View style={{ width: width / 3, height: width / 3, marginRight: 20 }}>
+                    <View style={{ width: width / 3, height: width/3, marginRight: 20 }}>
                         <View style={{ width: width / 3, height: width / 3, position: 'absolute', borderRadius: width / 6, backgroundColor: '#fff', top: 0 }}></View>
                         <PieChart
                             style={{ width: width/3, height: width / 3, }} data={pieData}

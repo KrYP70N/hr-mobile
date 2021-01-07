@@ -33,7 +33,8 @@ export default class NoticBoardDetail extends Component {
                     </Left>
                 </Header>
                 
-                <Content style={{
+                <View style={{
+                    flex: 1,
                     backgroundColor: color.lighter
                 }}>
                     {/* banner */}
@@ -46,7 +47,7 @@ export default class NoticBoardDetail extends Component {
                         <Text style={styles.detailDate}>{params['Date']}</Text>
                         <Text style = {styles.detailBody}>{params['Body']}</Text>
                     </View>
-                </Content>
+                </View>
             </Container>
         )
     }
