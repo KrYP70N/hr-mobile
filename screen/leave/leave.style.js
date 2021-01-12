@@ -165,14 +165,18 @@ export default StyleSheet.create({
     },
     position:{
         ...typo.textSmall,
-        color: color.tertiary
+        color: color.tertiary,
+        marginTop: 5
     },
     leaveApproveCard: {
+      flex: 1,
         backgroundColor: 'white',
         borderRadius: 5,
         borderWidth: 0.3,
         borderColor: color.cardBorder,
-        padding: 20,
+        paddingHorizontal: 20,
+        paddingBottom: 20,
+        paddingTop: 10,
         marginTop: 10,
         marginLeft: 10,
         marginRight: 10,
@@ -183,7 +187,7 @@ export default StyleSheet.create({
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: 15,
     },
     date:{
         fontFamily: 'Nunito',
@@ -193,7 +197,6 @@ export default StyleSheet.create({
     },
     leaveText:{
         ...typo.paragraph,
-        marginTop: 5,
         color: color.danger
     },
     pickerIcn: {

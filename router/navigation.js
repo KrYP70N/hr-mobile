@@ -41,6 +41,8 @@ import NotiboardDetail from '../screen/noticeboard/detail.screen';
 import SideMenu from '../router/SideMenu';
 import CheckIn from '../screen/checkinout/checkin';
 import CheckOut from  '../screen/checkinout/chectout';
+import FeedBack from '../screen/contactus/feedback.screen'
+import Hotline from '../screen/contactus/hotline.screen'
 
 function CustomdrawerContent(props) {
   return (
@@ -98,6 +100,8 @@ function Navigation() {
         <Drawer.Screen name='NotiboardDetail' component={NotiboardDetail}/>
         <Drawer.Screen name='CheckIn' component={CheckIn}/>
         <Drawer.Screen name='CheckOut' component={CheckOut}/>
+        <Drawer.Screen name='FeedBack' component={FeedBack}/>
+        <Drawer.Screen name='Hotline' component={Hotline}/>
       </Drawer.Navigator>
     </NavigationContainer>
   )

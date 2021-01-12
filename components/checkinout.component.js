@@ -10,8 +10,6 @@ import typography from '../constant/typography';
 import APIs from '../controllers/api.controller';
 import Modal from 'react-native-modal';
 const width = Dimensions.get('screen').width;
-
-
 export default class CheckInOut extends Component {
 
   constructor(props) {
@@ -30,6 +28,7 @@ export default class CheckInOut extends Component {
       status: null,
       isModalVisible: false,
       checkMessage: '',
+      attOrBreak: 'attendance'
     }
 
     // check status 
@@ -131,27 +130,46 @@ export default class CheckInOut extends Component {
     }
 
     return (
-      <View style={{ flex: 1 }}>
-        <Card style={styles.cardHolder}>
-          <View style={styles.card}>
-            <Image
-              source={require('../assets/icon/checkintime.png')}
-              style={[styles.icon]}
-            />
-            <Text style={{fontFamily: 'Nunito', color: color.primary, fontSize: 18 }}>Get your Attendance!</Text>
-            <View style={{
+      <View style={{padding: 15 }}>
+     
+        <View style={styles.cardHolder}>
+        <View style={{flexDirection: 'row', borderTopLeftRadius: 5, borderTopRightRadius: 5}}>
+            <TouchableOpacity onPress={() => {
+              this.setState({
+                attOrBreak: 'attendance'
+              })
+            }} style={{width: '50%', justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: color.light, borderTopLeftRadius: 5}}>
+              <Text style={{color: color.primary, fontSize: 16, fontFamily: 'Nunito'}}>Attendance</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+              this.setState({
+                attOrBreak: 'breakInOut'
+              })
+            }} style={{width: '50%', justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: color.breakinout, borderTopRightRadius: 5}}>
+              <Text style={{color: color.light}}>Break In</Text>
+            </TouchableOpacity>
+        </View>
+          {/* <Image
+            source={require('../assets/icon/checkintime.png')}
+            style={[styles.icon]}
+          />
+           <Text style={{fontFamily: 'Nunito', color: color.primary, fontSize: 18 }}>Get your Attendance!</Text> */}
+          <View style={{width: '100%', padding: 10, alignItems: 'center', backgroundColor: this.state.attOrBreak == 'attendance' ? color.light : color.breakinout, borderBottomLeftRadius: 5, borderBottomRightRadius: 5,}}>
+           {
+             this.state.attOrBreak == "attendance" ?
+             <View style={{
               flexDirection: 'row',
               justifyContent: "space-between",
-              width: '100%',
+              width: '95%',
               marginTop: 10,
             }}>
               <TouchableOpacity onPress={() => {
                 this.props.navigation.navigate('CheckIn'), { geofencing: this.state.geofencing }
               }}>
-                <View style={{ borderRadius: 10, width: width / 3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center',}}>
+                <View style={{width: width/2 - 40,  borderRadius: 10, paddingHorizontal: 30, paddingVertical: 10, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center',}}>
                   <Image
                     source={require('../assets/icon/checkin.png')}
-                    style={{ width: 30, height: 30 }}
+                    style={{ width: 30, height: 30, tintColor: color.light }}
                   />
                   <Text style={{fontFamily: 'Nunito', color: '#fff', marginTop: 5 }}>Check In</Text>
                 </View>
@@ -159,37 +177,112 @@ export default class CheckInOut extends Component {
               <TouchableOpacity onPress={() => {
                 this.props.navigation.navigate('CheckOut')
               }}>
-                <View style={{ borderRadius: 10, width: width / 3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center',}}>
+                <View style={{width: width/2 - 40, borderRadius: 10,paddingHorizontal: 30, paddingVertical: 10, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center',}}>
                   <Image
                     source={require('../assets/icon/checkout.png')}
-                    style={{ width: 30, height: 30, }}
+                    style={{ width: 30, height: 30, tintColor: color.light }}
                   />
                   <Text style={{fontFamily: 'Nunito', color: '#fff', marginTop: 5 }}>Check Out</Text>
                 </View>
               </TouchableOpacity>
             </View>
-          </View>
-
-        </Card>
-        <Modal isVisible={this.state.isModalVisible} >
-          <View style={styles.ModelViewContainer}>
-            <View style={styles.iconView}>
-              <Image source={require('../assets/icon/checktime.png')} style={styles.dialogIcon} />
-            </View>
-            <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
-            <View style={styles.ModalTextContainer}>
-              <TouchableOpacity style={styles.CancelOpacityContainer}
-                onPress={() => this.setState({ isModalVisible: false })} >
-                <Text style={styles.modalTextStyle} >
-                  {'Close'}
-                </Text>
+            :
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: "space-between",
+              width: '95%',
+              marginTop: 10,
+            }}>
+             <TouchableOpacity onPress={() => {
+                this.props.navigation.navigate('CheckOut')
+              }}>
+                <View style={{width: width/2 - 40, borderRadius: 10,paddingHorizontal: 30, paddingVertical: 10, height: 70, borderColor: color.primary, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: color.light}}>
+                  <Image
+                    source={require('../assets/icon/checkout.png')}
+                    style={{ width: 30, height: 30, tintColor: color.primary }}
+                  />
+                  <Text style={{fontFamily: 'Nunito', color: color.primary, marginTop: 5 }}>Break Out</Text>
+                </View>
               </TouchableOpacity>
-
+              <TouchableOpacity onPress={() => {
+                this.props.navigation.navigate('CheckIn'), { geofencing: this.state.geofencing }
+              }}>
+                <View style={{width: width/2 - 40,  borderRadius: 10, paddingHorizontal: 30, paddingVertical: 10, height: 70,borderColor: color.primary, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: color.light}}>
+                  <Image
+                    source={require('../assets/icon/checkin.png')}
+                    style={{ width: 30, height: 30, tintColor: color.primary}}
+                  />
+                  <Text style={{fontFamily: 'Nunito', color: color.primary, marginTop: 5 }}>Break In</Text>
+                </View>
+              </TouchableOpacity>
+             
             </View>
+           }
 
-          </View>
-        </Modal>
+            {/* Break In Out View */}
+            </View>
+        </View>
+
       </View>
+      // <View>
+      //   <Card style={styles.cardHolder}>
+      //     <View style={{}}>
+      // <Image
+      //   source={require('../assets/icon/checkintime.png')}
+      //   style={[styles.icon]}
+      // />
+      //       <Text style={{fontFamily: 'Nunito', color: color.primary, fontSize: 18 }}>Get your Attendance!</Text>
+            // <View style={{
+            //   flexDirection: 'row',
+            //   justifyContent: "space-between",
+            //   width: '100%',
+            //   marginTop: 10,
+            // }}>
+            //   <TouchableOpacity onPress={() => {
+            //     this.props.navigation.navigate('CheckIn'), { geofencing: this.state.geofencing }
+            //   }}>
+            //     <View style={{ borderRadius: 10, width: width / 3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center',}}>
+            //       <Image
+            //         source={require('../assets/icon/checkin.png')}
+            //         style={{ width: 30, height: 30 }}
+            //       />
+            //       <Text style={{fontFamily: 'Nunito', color: '#fff', marginTop: 5 }}>Check In</Text>
+            //     </View>
+            //   </TouchableOpacity>
+            //   <TouchableOpacity onPress={() => {
+            //     this.props.navigation.navigate('CheckOut')
+            //   }}>
+            //     <View style={{ borderRadius: 10, width: width / 3, height: 70, backgroundColor: color.primary, justifyContent: 'center', alignItems: 'center',}}>
+            //       <Image
+            //         source={require('../assets/icon/checkout.png')}
+            //         style={{ width: 30, height: 30, }}
+            //       />
+            //       <Text style={{fontFamily: 'Nunito', color: '#fff', marginTop: 5 }}>Check Out</Text>
+            //     </View>
+            //   </TouchableOpacity>
+            // </View>
+      //     </View>
+
+      //   </Card>
+      //   <Modal isVisible={this.state.isModalVisible} >
+      //     <View style={styles.ModelViewContainer}>
+      //       <View style={styles.iconView}>
+      //         <Image source={require('../assets/icon/checktime.png')} style={styles.dialogIcon} />
+      //       </View>
+      //       <Text style={[styles.lanTitle, styles.lanTitleMM]}>{this.state.checkMessage}</Text>
+      //       <View style={styles.ModalTextContainer}>
+      //         <TouchableOpacity style={styles.CancelOpacityContainer}
+      //           onPress={() => this.setState({ isModalVisible: false })} >
+      //           <Text style={styles.modalTextStyle} >
+      //             {'Close'}
+      //           </Text>
+      //         </TouchableOpacity>
+
+      //       </View>
+
+      //     </View>
+      //   </Modal>
+      // </View>
     )
   }
 }
@@ -207,15 +300,18 @@ let styles = StyleSheet.create({
     paddingRight: 15
   },
   cardHolder: {
-    borderRadius: 5,
-    overflow: 'hidden'
-  },
-  card: {
-    minHeight: 150,
-    padding: offset.o2,
+    backgroundColor: color.light,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    borderRadius: 5,
+  },
+  card: {
+    //minHeight: 150,
+    padding: 15,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // height: width / 2 - 50
   },
   icon: {
     width: 28,
@@ -223,11 +319,11 @@ let styles = StyleSheet.create({
     marginBottom: offset.o1
   },
   errorBox: {
-    padding: 15
+    padding: 10
   },
   error: {
     backgroundColor: color.light,
-    padding: offset.o3,
+    padding: 14.3,
     display: 'flex',
     alignItems: 'center'
   },

@@ -12,5 +12,7 @@ export default {
     danger      :       '#FF0000',
     indicator   :       '#35A9AC',
     attendance  :       '#03b1fc',
-    holiday     :       '#09d646'
+    reject      :       '#B54F4F',
+    //breakinout  :       '#35A9AC'
+    breakinout  :       '#E8E8E8'
 }

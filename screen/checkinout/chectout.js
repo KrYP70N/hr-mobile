@@ -279,6 +279,7 @@ class CheckOutScreen extends Component {
                                                 this.setState({
                                                     checkMessage: 'Check In Successful!',
                                                     isModalVisible: true,
+                                                    user_image: null
 
                                                 })
                                             }
@@ -303,6 +304,7 @@ class CheckOutScreen extends Component {
                                                         this.setState({
                                                             checkMessage: 'Check Out Successful!',
                                                             isModalVisible: true,
+                                                            user_image: null
                                                         })
                                                     }
                                                 }
@@ -312,6 +314,7 @@ class CheckOutScreen extends Component {
                                         this.setState({
                                             checkMessage: "You're out of office area!",
                                             isModalVisible: true,
+                                            user_image: null
                                         })
                                     }
                                 } else {
@@ -324,6 +327,7 @@ class CheckOutScreen extends Component {
                                                     this.setState({
                                                         checkMessage: 'Check Out Successful!',
                                                         isModalVisible: true,
+                                                        user_image: null
                                                     })
                                                 }
                                             }
@@ -340,7 +344,7 @@ class CheckOutScreen extends Component {
         // console.log("Current", this.state.currentLocation)
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <BackHeader name="Check In" navigation={this.props.navigation} parent="Main" />
+                <BackHeader name="Check Out" navigation={this.props.navigation} parent="Main" />
                 {
                     (this.state.showPreviewImage) ? <View style={{ flex: 1, width: '100%', height: '100%', backgroundColor: color.indicator }}>
                         <ImageBackground resizeMode='cover' style={{ width: '100%', height: '100%' }} source={{ uri: this.state.user_preview_img.uri }}>  

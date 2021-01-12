@@ -263,7 +263,7 @@ class CheckInScreen extends Component {
                             })
                         } else {
                             if (this.state.locationError == true) {
-                                APIs.Checkin(this.state.url, this.state.auth, this.state.id, this.state.user_image.base64)
+                                APIs.Checkin(this.state.url, this.state.auth, this.state.id, this.state.user_image)
                                     .then((res) => {
                                         if (res.status === 'success') {
                                             if (res.error) {
@@ -272,7 +272,7 @@ class CheckInScreen extends Component {
                                                 this.setState({
                                                     checkMessage: 'Check In Successful!',
                                                     isModalVisible: true,
-
+                                                    user_image: null
                                                 })
                                             }
                                         }
@@ -287,7 +287,7 @@ class CheckInScreen extends Component {
                                             this.state.radius
                                         )
                                     ) { // Within Radius"
-                                        APIs.Checkin(this.state.url, this.state.auth, this.state.id, this.state.currentLocation, this.state.user_image.base64)//this.state.currentLocation
+                                        APIs.Checkin(this.state.url, this.state.auth, this.state.id, this.state.currentLocation, this.state.user_image)//this.state.currentLocation
                                             .then((res) => {
                                                 if (res.status === 'success') {
                                                     if (res.error) {
@@ -296,6 +296,7 @@ class CheckInScreen extends Component {
                                                         this.setState({
                                                             checkMessage: 'Check In Successful!',
                                                             isModalVisible: true,
+                                                            user_image: null
                                                         })
                                                     }
                                                 }
@@ -305,10 +306,11 @@ class CheckInScreen extends Component {
                                         this.setState({
                                             checkMessage: "You're out of office area!",
                                             isModalVisible: true,
+                                            user_image: null
                                         })
                                     }
                                 } else {
-                                    APIs.Checkin(this.state.url, this.state.auth, this.state.id, this.state.currentLocation, this.state.user_image.base64)// this.state.currentLocation
+                                    APIs.Checkin(this.state.url, this.state.auth, this.state.id, this.state.currentLocation, this.state.user_image)// this.state.currentLocation
                                         .then((res) => {
                                             if (res.status === 'success') {
                                                 if (res.error) {
@@ -317,6 +319,7 @@ class CheckInScreen extends Component {
                                                     this.setState({
                                                         checkMessage: 'Check In Successful!',
                                                         isModalVisible: true,
+                                                        user_image: null
                                                     })
                                                 }
                                             }

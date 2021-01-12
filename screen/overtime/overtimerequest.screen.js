@@ -70,6 +70,7 @@ export class OTRequest extends Component {
 
   componentDidMount() {
     this.props.navigation.addListener("focus", () => {
+
       let date = new Date();
       this.setState({
         refresh: !this.state.refresh,
@@ -103,10 +104,12 @@ export class OTRequest extends Component {
 
       AsyncStorage.getItem("@hr:endPoint").then((res) => {
         const url = JSON.parse(res).ApiEndPoint;
+       
         this.setState({ url: JSON.parse(res).ApiEndPoint });
         AsyncStorage.getItem("@hr:token").then((res) => {
           const auth = JSON.parse(res).key;
           const id = JSON.parse(res).id;
+          this.getOTTypes(url, auth)
           this.setState({
             auth: JSON.parse(res).key,
             id: JSON.parse(res).id,
@@ -114,6 +117,13 @@ export class OTRequest extends Component {
         });
       });
     });
+  }
+
+  getOTTypes = (url, auth) => {
+    console.log("I'm in get Ot types", url)
+    APIs.getOTTypes(url, auth).then(res => {
+
+    })
   }
 
   showDatePicker = () => {

@@ -3,7 +3,7 @@ import offset from '../constant/offset'
 
 export default StyleSheet.create({
     item: {
-        padding: offset.o2,
+        padding: 15,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center'

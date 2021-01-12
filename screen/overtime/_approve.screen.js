@@ -101,7 +101,10 @@ export default class OvertimeApprove extends Component {
             })
     }
 
+    
+
     render() {
+        console.log("OT List", this.state.overtimeList)
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Container style={{ flex: 1, backgroundColor: color.lighter }}>
@@ -134,8 +137,8 @@ export default class OvertimeApprove extends Component {
                                             <TouchableOpacity
                                                 onPress={() => { this.sendApproveRejectOT(item.Overtime_id, this.state.auth, this.state.url, 'reject') }}
                                                 style={{ width: '48%' }}>
-                                                <View style={{ backgroundColor: color.placeHolder, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
-                                                    <Text>Reject</Text>
+                                                <View style={{ backgroundColor: color.reject, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
+                                                    <Text style={{color: color.light}}>Reject</Text>
                                                 </View>
                                             </TouchableOpacity>
                                             <TouchableOpacity

@@ -36,10 +36,10 @@ const months = [
   "Mar",
   "Apr",
   "May",
-  "Jun",
-  "Jul",
+  "June",
+  "July",
   "Aug",
-  "Sep",
+  "Sept",
   "Oct",
   "Nov",
   "Dec",
@@ -82,6 +82,7 @@ export class LeaveRequest extends Component {
   }
 
   submit(auth, id, url) {
+   // console.log("Binary Array", this.state.binary)
     this.setState({
       loading: true,
       loadingTxt: "requesting your leave ...",
@@ -100,9 +101,6 @@ export class LeaveRequest extends Component {
     )
       .then((res) => {
         if (res.status == "success") {
-          if (res.error) {
-            ErrorMessage('token', this.props.navigation)
-          } else {
             if (res.data.error == false) {
               const d = new Date();
               this.setState({
@@ -139,7 +137,6 @@ export class LeaveRequest extends Component {
                 evening_leave: false,
               });
             }
-          }
         } else {
           this.setState({
             checkMessage: "Leave Request Failed!",
@@ -380,6 +377,7 @@ export class LeaveRequest extends Component {
 
   render() {
     console.log("Leave Total Day",this.state.totalDay)
+   // console.log("leave type", this.state.leaveType)
     // to show date picker mode on ios
     const colorScheme = Appearance.getColorScheme()
     const isDarkModeEnabled = colorScheme === 'dark'
@@ -432,19 +430,23 @@ export class LeaveRequest extends Component {
                 style={styLeave.attachButton}
                 onPress={() => {
                   DocumentPicker.getDocumentAsync().then((res) => {
+                    console.log("Choosing File", res)
                     if (res.type === "success") {
                       let getFile = this.state.file;
+                      console.log("File", getFile)
 
                       getFile[id] = res;
+
+                      console.log("Get File", getFile)
 
                       this.setState({
                         file: getFile,
                       });
                       FileSystem.readAsStringAsync(res.uri, {
                         encoding: FileSystem.EncodingType.Base64,
-                      }).then((res) => {
+                      }).then((res_base64) => {
                         let getBinary = this.state.binary;
-                        getBinary[id] = res;
+                        getBinary[id] = res_base64;
                         this.setState({
                           binary: getBinary,
                         });
@@ -491,9 +493,6 @@ export class LeaveRequest extends Component {
                 })}
               </Picker>
             </View>
-
-            {/* <View style={styLeave.container}> */}
-            {/* <View style={styLeave.divider} /> */}
 
             <View style={styLeave.fromDateContainer}>
               <View>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, Content, Row, Col, Icon, Toast } from 'native-base'
-import { Image, AsyncStorage, TouchableOpacity, BackHandler, SafeAreaView } from 'react-native'
+import { Image, AsyncStorage, TouchableOpacity, BackHandler, SafeAreaView, ScrollView, FlatList, Dimensions } from 'react-native'
 import po from './po'
 import color from '../../constant/color'
 import offset from '../../constant/offset'
@@ -13,6 +13,7 @@ import Heading from '../../components/header.component'
 import CheckInOut from '../../components/checkinout.component'
 import Clock from '../../components/time.component'
 import DB from '../../model/db.model'
+const width = Dimensions.get('screen').width
 
 export default class Main extends Component {
 
@@ -111,87 +112,90 @@ export default class Main extends Component {
       <SafeAreaView style={{ flex: 1 }}>
         <Heading navigation={this.props.navigation} />
         <View style={{ flex: 1 }}>
-          <TouchableOpacity style={styMain.banner}
-            onPress={() => {
-              this.props.navigation.navigate('Profile')
-            }
-            }>
-            <Clock style={styMain.time} navigation={this.props.navigation} />
-            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <View style={styMain.userInfo}>
-                <Image source={
-                  this.state.profile['Profile Image'][0] === false ?
-                    require('../../assets/icon/user.png') :
+          <View style={{ position: 'relative', width: '100%', height: width / 2 + 90, }}>
+            <View style={{ width: '100%', paddingBottom: 30, backgroundColor: color.primary, 
+            height: width / 2 - 40, 
+            paddingHorizontal: 15, paddingTop: 10,
+            alignItems: 'center' }}>
+              <Clock style={styMain.time} navigation={this.props.navigation} />
+              <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={styMain.userInfo}>
+                  <Image source={
+                    this.state.profile['Profile Image'][0] === false ?
+                      require('../../assets/icon/user.png') :
+                      {
+                        uri: `data:${this.state.profile['Profile Image'][1]};base64,${this.state.profile['Profile Image'][0]}`
+                      }
+                  } style={styMain.profilePic} />
+                  <View style={{ marginLeft: 15 }}>
                     {
-                      uri: `data:${this.state.profile['Profile Image'][1]};base64,${this.state.profile['Profile Image'][0]}`
+                      this.state.profile['General Information']['Employee Name'] ?
+                        <Text style={styMain.name}>
+                          {this.state.profile['General Information']['Employee Name']} </Text> :
+                        <Text style={styMain.name}>Unknown User</Text>
+
                     }
-                } style={styMain.profilePic} />
-                <View style={{ marginLeft: 15 }}>
-                  {
-                    this.state.profile['General Information']['Employee Name'] ?
-                      <Text style={styMain.name}>
-                        {this.state.profile['General Information']['Employee Name']} </Text> :
-                      <Text style={styMain.name}>Unknown User</Text>
+                    {
+                      this.state.profile['General Information']['Job Position'] ?
+                        <Text style={[styMain.pos]}>{this.state.profile['General Information']['Job Position']} </Text> :
+                        <Text style={[styMain.pos]}>Untitled Position</Text>
+                    }
+                  </View>
 
-                  }
-                  {
-                    this.state.profile['General Information']['Job Position'] ?
-                      <Text style={[styMain.pos]}>{this.state.profile['General Information']['Job Position']} </Text> :
-                      <Text style={[styMain.pos]}>Untitled Position</Text>
-                  }
                 </View>
-
-              </View>
-              <View>
-                <Image style={{ width: 30, height: 30, alignItems: 'flex-end' }} source={require('../../assets/icon/right_arrow.png')} />
+                <View>
+                  <Image style={{ width: 30, height: 30, alignItems: 'flex-end' }} source={require('../../assets/icon/right_arrow.png')} />
+                </View>
               </View>
             </View>
-          </TouchableOpacity>
-          <View style={styMain.checkinout} >
-            <CheckInOut navigation={this.props.navigation} />
+            <View style={{height: (width/2 + 130) - (width/2 - 50), width: '100%', position: 'absolute', top: (width/2 - 100), marginVertical: 20 }}>
+              <CheckInOut navigation={this.props.navigation} />
+            </View>
+            {/* <View style={{ width: '100%', position: 'absolute', bottom:- 10, marginVertical: 20 }}>
+              <CheckInOut navigation={this.props.navigation} />
+            </View> */}
           </View>
-          <View style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginLeft: 15,
-            marginRight: 15,
-            marginBottom: 15,
-            flexWrap: 'wrap'
-          }}>
-            {po.menu.map((card, key) => (
-              <TouchableOpacity
-                style={{
-                  display: (this.state.lowestLevel === true && (card.name == 'Approve Leave' || card.name == 'Approve OT')) ? 'none' : 'flex',
-                  width: '48%',
-                  padding: offset.o2,
-                  backgroundColor: color.light,
-                  marginTop: offset.o1 + offset.oh,
-                  borderRadius: offset.o1,
-                  borderColor: color.cardBorder,
-                  borderWidth: 0.5,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: 110,
-                }} key={key}
-                onPress={() => { this.props.navigation.navigate(card.navigate) }}
-              >
-                <View style={{
-                  width: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }} key={key}>
-                  <Image source={card.icon} style={{
-                    width: 35,
-                    height: 35,
-                    marginBottom: offset.o1 + offset.oh
-                  }} />
-                  <Text style={{ fontSize: 14, fontFamily: 'Nunito' }}>{card.name}</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
 
-          </View>
+          <FlatList 
+         numColumns={2}
+           data={po.menu}
+           renderItem={({item, index}) => {
+             return(
+              <TouchableOpacity
+                  style={{
+                    display: (this.state.lowestLevel === true && (item.name == 'Approve Leave' || item.name == 'Approve OT')) ? 'none' : 'flex',
+                    width: width/2 - 20,
+                    padding: offset.o2,
+                    backgroundColor: color.light,
+                    //marginTop: offset.o1 + offset.oh,
+                    borderRadius: offset.o1,
+                    borderColor: color.cardBorder,
+                    borderWidth: 0.5,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    margin: 10,
+                    height: 110,
+                  }}
+                  onPress={() => { this.props.navigation.navigate(item.navigate) }}
+                >
+                  <View style={{
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}>
+                    <Image source={item.icon} style={{
+                      width: 35,
+                      height: 35,
+                      marginBottom: offset.o1 + offset.oh
+                    }} />
+                    <Text style={{ fontSize: 14, fontFamily: 'Nunito' }}>{item.name}</Text>
+                  </View>
+                </TouchableOpacity>
+             )
+           }}
+           showsVerticalScrollIndicator={false}
+           keyExtractor={(item, index) => index.toString()}
+         />
         </View>
         <BottomTab navigation={this.props.navigation} screen='main' />
       </SafeAreaView>

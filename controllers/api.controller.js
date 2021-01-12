@@ -4,7 +4,9 @@ import axios from 'axios'
 export default class APIs {
 
     static Auth(key, version) {
-        return axios.get(`http://apiendpoint.innovixhr.com/api/build/hr?siteKey=${key}&appVersion=${1}`)
+
+         return axios.get(`http://apiendpoint.innovixhr.com/api/build/hr?siteKey=${key}&appVersion=${1}`)
+        //return axios.get(`192.168.0.241:8077/api/build/hr?siteKey=${key}&appVersion=${1}`)
             .then(function (res) {
                 console.log("RES::", res)
                 return { data: res.data.model, status: res.data.success }
@@ -131,35 +133,22 @@ export default class APIs {
 
     // checkin controller
     static Checkin(url, auth, id, coord, user_image) {
+        let userImg = {
+            check_in_selfie: user_image?.base64
+        }
         console.log("URL::", url, auth, id, coord)
-      //  console.log("Click Check In", url, auth, id, coord)
         return axios.create({
             headers: {
                 'Authorization': auth
             }
-        }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.latitude}&longitude=${coord.longitude}&check_in_selfie=${user_image}`)
+        }).post(coord === undefined ? `${url}/checkin/${id}` : `${url}/checkin/${id}?latitude=${coord.latitude}&longitude=${coord.longitude}`, userImg)
             .then(function (res) {
-                if (res.data.data.error) {
-                    return { error: true, status: 'success' }
-                } else {
-                    return { data: res, status: 'success' }
-                }
-
-            })
-            .catch(function (error) {
-                return { error: error, status: 'fail' }
-            })
-    }
-
-    // cehckout controller
-    static Checkout(url, auth, id, coord, user_image) {
-        return axios.create({
-            headers: {
-                'Authorization': auth
-            }
-        }).post(coord === undefined ? `${url}/checkout/${id}` : `${url}/checkout/${id}?latitude=${coord.latitude}&longitude=${coord.longitude}&check_out_selfie=${user_image}`)
-            .then(function (res) {
-                if (res.data.data.error) {
+                console.log("Check In Res", res.data)
+                // if (res.data.result.error) {
+                //     return { error: true, status: 'success' }
+                // } else {
+                //     return { data: res, status: 'success' }
+                if (res.data.result.error) {
                     return { error: true, status: 'success' }
                 } else {
                     return { data: res, status: 'success' }
@@ -228,6 +217,24 @@ export default class APIs {
             })
     }
 
+    //get all OT Types
+    static getOTTypes = async (url, auth) => {
+        console.log("I'm reach also here", url, auth)
+        return axios.create({
+            headers: {
+                'Authorization': auth
+            }
+        }).get(`${url}/overtime/type`)
+            .then(function (res) {
+              console.log("Leave Types Res", res)
+              return {data: res}
+            })
+            .catch(function (error) {
+                return { error: error, status: 'fail' }
+            })
+    }
+
+
     // request ot type
     static OTRequest(id, auth, url, request_date_from, request_date_to, description) {
         return axios.create({
@@ -274,9 +281,11 @@ export default class APIs {
             }
         }).post(`${url}/approve/overtime/${otID}?status=${status}`)
             .then(function (res) {
+                console.log("OT", res)
                 return { data: res.data.data, status: 'success' }
             })
             .catch(function (error) {
+                console.log("Error", error)
                 return { error: error, status: 'fail' }
             })
     }
@@ -339,45 +348,57 @@ export default class APIs {
     }
 
     // request leave
-    static requestLeave(auth, url, id, leaveType, from, to, mroning_leave, evening_leave, description, file) {
-        let fd = new FormData()
-        for (let i = 0; i < file.length; i++) {
-            if (i === 0) {
-                fd.append(
-                    'attac', file[i]
-                )
-            } else {
-                fd.append(
-                    `attac${i + 1}`, file[i]
-                )
-            }
+    static requestLeave = async (auth, url, id, leaveType, from, to, mroning_leave, evening_leave, description, file) => {
+        console.log("Leave Request Data", auth, url, id, leaveType, from, to, description)
+        let jsonData = {
+            from_date: from,
+            to_date: to,
+            morning_leave: mroning_leave,
+            evening_leave: evening_leave,
+            description: description,
+            attac: file.length === 0 ? null : file[0]
         }
 
-        return axios.post(`${url}/leave/${id}/${leaveType}?from_date=${from}&to_date=${to}&morning_leave=${mroning_leave}&evening_leave=${evening_leave}&description=${description}`,
-            file.length === 0 ? null : fd, {
+        return axios.create({
             headers: {
                 'Authorization': auth
             }
-        }
-        )
-            .then(function (res) {
-                    console.log("Result Data", res)
-                if (res.data.data.code=='token') {
-                    return { error: true, status: 'success' }
-                } else {
-                    return { data: res.data.data, status: 'success' }
-                }
-                //console.log("API Res", res)
-                // if (res.data.data.error) {
-                //     return { tokenError: true, status: 'success' }
-                // } else {
-                    //return { data: res.data.data, status: 'success' }
-               // }
-            })
-            .catch(function (error) {
-                console.log("Error Message", error)
-                return { error: error, status: 'fail'}
-            })
+        })
+        .post(`${url}/leave/submit/attachment/${id}/${leaveType}`, jsonData)
+        .then(res => {
+            console.log("Res", res.data)
+            if (res.data.result.error) {
+                return { error: true, status: 'success', data: res.data.result }
+            }else{
+                return {error: false, status: 'success', data: res.data.result}
+            }
+        })
+        .catch(function (error) {
+            console.log("Error Message", error)
+            return { error: error, status: 'fail'}
+        })
+
+     
+        // return axios.post(`${url}/leave/submit/attachment/${id}/${leaveType}?from_date=${from}&to_date=${to}&morning_leave=${mroning_leave}&evening_leave=${evening_leave}&description=${description}&attac=${file.length === 0 ? null : file[0]}`,
+        //    // file.length === 0 ? null : fd,
+        //      {
+        //     headers: {
+        //         'Authorization': auth
+        //     }
+        // }
+        // )
+        // .then(function (res) {
+        //             console.log("Result Data", res.data)
+        //         if (res.data.data.code=='token') {
+        //             return { error: true, status: 'success' }
+        //         } else {
+        //             return { data: res.data.data, status: 'success' }
+        //         }
+        //     })
+        //     .catch(function (error) {
+        //         console.log("Error Message", error)
+        //         return { error: error, status: 'fail'}
+        //     })
     }
 
     // leave monthly
@@ -407,6 +428,7 @@ export default class APIs {
             }
         }).get(`${url}/list/leaveRequest/${id}`)
             .then(function (res) {
+                console.log("Leave Approve List", res.data.data)
                 if (res.data.data.error) {
                     return { error: true, status: 'success' }
                 } else {
@@ -419,7 +441,7 @@ export default class APIs {
     }
 
     // yearly payroll record
-    static yearPayroll = (url, auth, id, year) => {
+    static yearPayroll = async (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -438,7 +460,7 @@ export default class APIs {
     }
 
     // update leave status
-    static leaveStatusUpdate(url, auth, leaveID, status) {
+    static leaveStatusUpdate = async (url, auth, leaveID, status) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -453,7 +475,7 @@ export default class APIs {
     }
 
     // monthly payslip
-    static getPaySlip = (slipid, auth, url) => {
+    static getPaySlip = async (slipid, auth, url) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -472,7 +494,7 @@ export default class APIs {
     }
 
     // download payslip [pending ...]
-    static downloadPaySlip = (url, auth, slipid) => {
+    static downloadPaySlip = async (url, auth, slipid) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -491,7 +513,7 @@ export default class APIs {
     }
 
     // get Dashboard summary
-    static getDashboardSummary = (url, auth, id, year) => {
+    static getDashboardSummary = async (url, auth, id, year) => {
         console.log("Auth::", auth)
         return axios.create({
             headers: {
@@ -511,7 +533,7 @@ export default class APIs {
     }
 
     // get Dashboard Today Leave
-    static getTodayLeavesData = (url, auth, id, year) => {
+    static getTodayLeavesData = async (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -530,7 +552,7 @@ export default class APIs {
     }
 
     //dashboard all employee list
-    static getEmployeeListData = (url, auth, id, year) => {
+    static getEmployeeListData = async (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -549,7 +571,7 @@ export default class APIs {
     }
 
     // Dept Employee List
-    static getDeptEmployeeListData = (url, auth, id, year) => {
+    static getDeptEmployeeListData = async (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -569,7 +591,7 @@ export default class APIs {
     }
 
     //get Dashboard Birthday Lists
-    static getBirthdayListData = (url, auth, id, year) => {
+    static getBirthdayListData = async (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -588,7 +610,7 @@ export default class APIs {
     }
 
     //Dashboard Contract Profile
-    static getDashboardContractData = (url, auth, id, year) => {
+    static getDashboardContractData = async (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -607,7 +629,7 @@ export default class APIs {
     }
 
     //Dashboard Absent Emp List
-    static getDashboardTodayAbsentEmpListData = (url, auth, id, year) => {
+    static getDashboardTodayAbsentEmpListData = async (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -627,7 +649,7 @@ export default class APIs {
     }
 
     //Dashboard Attendance Emp List
-    static getDashboardAttendanceEmployeeListData = (url, auth, id, year) => {
+    static getDashboardAttendanceEmployeeListData = async (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -646,7 +668,7 @@ export default class APIs {
             })
     }
     //Dashboard Exit Employee Lists
-    static getExitEmployeeListData = (url, auth, id, year) => {
+    static getExitEmployeeListData = async (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -665,7 +687,7 @@ export default class APIs {
     }
 
     //Dashboard Join Employee List
-    static getJoinEmployeeListData = (url, auth, id, year) => {
+    static getJoinEmployeeListData = async (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -684,7 +706,7 @@ export default class APIs {
     }
 
     //Dashboard Leave Request Employee List
-    static getDashboardLeaveRequestEmpListData = (url, auth, id, year) => {
+    static getDashboardLeaveRequestEmpListData = async (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -703,7 +725,7 @@ export default class APIs {
     }
 
     //get pending leave lists for employee
-    static getLeavePendingLists = (auth, url, id) => {
+    static getLeavePendingLists = async (auth, url, id) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -724,7 +746,7 @@ export default class APIs {
 
 
     // get approved Leave Lists by HR
-    static getLeaveRequest = (auth, url, id) => {
+    static getLeaveRequest = async (auth, url, id) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -743,7 +765,7 @@ export default class APIs {
     }
 
     // get leave history
-    static leaveHistory = (url, auth, id, year, month) => {
+    static leaveHistory = async (url, auth, id, year, month) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -762,7 +784,7 @@ export default class APIs {
     }
 
     // get leave status
-    static getLeaveStatus = (url, auth) => {
+    static getLeaveStatus = async (url, auth) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -781,7 +803,7 @@ export default class APIs {
     }
 
     // get leave history
-    static getLeaveHistory = (url, auth, id, year, month) => {
+    static getLeaveHistory = async (url, auth, id, year, month) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -800,7 +822,7 @@ export default class APIs {
     }
 
     // get ot history
-    static getOTHistory = (url, auth, id, year, month) => {
+    static getOTHistory = async (url, auth, id, year, month) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -819,7 +841,7 @@ export default class APIs {
     }
 
     // get leave approve, cancel, pending
-    static getLeaveByStatus = (url, auth, id, status, year, month) => {
+    static getLeaveByStatus = async (url, auth, id, status, year, month) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -838,7 +860,7 @@ export default class APIs {
     }
 
     // ot status
-    static getOTStatus = (url, auth) => {
+    static getOTStatus = async (url, auth) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -857,7 +879,7 @@ export default class APIs {
     }
 
     // get leave summary
-    static getLeaveSummary = (url, auth, id, year) => {
+    static getLeaveSummary = async (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -876,7 +898,7 @@ export default class APIs {
     }
 
     // get ot summary
-    static getOTSummary = (url, auth, id, year) => {
+    static getOTSummary = async (url, auth, id, year) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -896,7 +918,7 @@ export default class APIs {
 
     //list/reject/leaves/empID/year/month
     //leave Rejected lists
-    static getLeaveRejectedList = (url, auth, id, year, month) => {
+    static getLeaveRejectedList = async (url, auth, id, year, month) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -915,7 +937,7 @@ export default class APIs {
     }
 
     // ot rejected
-    static getOTRejectedList = (url, auth, id, year, month) => {
+    static getOTRejectedList = async (url, auth, id, year, month) => {
         return axios.create({
             headers: {
                 'Authorization': auth
@@ -934,7 +956,7 @@ export default class APIs {
     }
 
     //get leave approve list (for employee)
-    static getLeaveApprovedList = (url, auth, id, year, month) => {
+    static getLeaveApprovedList = async (url, auth, id, year, month) => {
         return axios.create({
             headers: {
                 'Authorization': auth
